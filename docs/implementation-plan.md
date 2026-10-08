@@ -32,7 +32,7 @@ Update a stage to In progress when work begins. Mark it Complete only when its e
 | 3 | Discovery and character profiles frontend | 2 core onboarding contracts | Complete — [record](./reviews/stage-3.md) |
 | 4 | Messages, chat, and curated-photo frontend | 3 | Complete — [record](./reviews/stage-4.md) |
 | 5 | Settings, memory, payments, and reporting frontend | 4 | Complete — [record](./reviews/stage-5.md) |
-| 6 | Full administration frontend | 5 | Planned |
+| 6 | Full administration frontend | 5 | In progress — operator workflows and customer-state integration |
 | 7 | Frontend quality review and completion gate | 1–6 | Planned |
 | 8 | Backend foundation, identity, and ownership | 7 | Planned |
 | 9 | Cast, assets, and administration backend | 8 | Planned |

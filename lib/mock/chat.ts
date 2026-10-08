@@ -3,6 +3,7 @@ import samples from './chat-samples.json';
 import { getAccount } from './account';
 import { characters, listSavedConversations, readConversation, removeMockConversation, resetMockConversations, updateMockConversation } from './discovery';
 
+import { capabilities, publicAsset } from './operator-public';
 export type ChatScenario = 'ready' | 'offline' | 'delivery_failed' | 'reply_failed' | 'interrupted' | 'rate_limit' | 'usage_limit' | 'chat_paused' | 'photos_paused';
 export type Thread = { messages: Message[]; jobs: ReplyJob[] };
 export const sampleMessages = ['That sounds like a good day. Tell me more.', 'What have you been enjoying lately?', 'Show me a character photo.'];
@@ -41,7 +42,7 @@ function append(id: string, input: Partial<Message> & Pick<Message, 'role' | 'ki
 }
 export async function loadThread(id: string): Promise<Result<Thread>> {
   await delay(); const c = owned(id); if (!c) return fail('NOT_FOUND', 'This conversation is unavailable.');
-  hydrate(); if (!threads.has(id)) { threads.set(id, { messages: [], jobs: [] }); const sample = samples[c.characterId as keyof typeof samples]; append(id, { role: 'character', kind: 'text', text: sample.introduction }); persist(); }
+  hydrate(); if (!threads.has(id)) { threads.set(id, { messages: [], jobs: [] }); const sample = scriptedSample(c.characterId); append(id, { role: 'character', kind: 'text', text: sample.introduction }); persist(); }
   markRead(id); return ok(threads.get(id)!);
 }
 export async function loadConversationList(scenario: 'ready' | 'offline' | 'error' = 'ready') {
@@ -52,8 +53,9 @@ export async function loadConversationList(scenario: 'ready' | 'offline' | 'erro
   hydrate(); return ok(listSavedConversations());
 }
 export function markRead(id: string) { const c = owned(id); if (c?.unreadCount) { updateMockConversation(id, { unreadCount: 0 }); persist(); } }
-function restriction(scenario: ChatScenario): Result<never> | null {
-  if (scenario === 'chat_paused') return fail('CAPABILITY_PAUSED', 'Conversation is paused. Your history is still available.');
+function scriptedSample(characterId: string) { return samples[characterId as keyof typeof samples] ?? { introduction: `A scripted introduction for ${characters.find(c => c.id === characterId)?.name ?? 'this character'}. What has been on your mind today?`, replies: ['This is a sample reply. What would you like to talk about next?'], photoCaption: 'AI-generated character photo from the reviewed preview collection.' }; }
+function restriction(scenario: ChatScenario, characterId: string): Result<never> | null {
+  if (scenario === 'chat_paused' || !capabilities(characterId).chat) return fail('CAPABILITY_PAUSED', 'Conversation is paused. Your history is still available.');
   if (scenario === 'rate_limit') return fail('RATE_LIMITED', 'Please wait a moment before sending again. Your draft is kept.');
   if (scenario === 'usage_limit') return fail('USAGE_LIMIT', 'The preview’s conversation allowance is reached. Your history and draft are kept.');
   return null;
@@ -61,7 +63,7 @@ function restriction(scenario: ChatScenario): Result<never> | null {
 export async function sendMessage(id: string, clientMessageId: string, text: string, scenario: ChatScenario): Promise<Result<Message>> {
   const c = owned(id); if (!c || !threads.has(id)) return fail('NOT_FOUND', 'Open a conversation first.');
   if (c.status === 'archived') return fail('CAPABILITY_PAUSED', 'Restore this conversation before sending.');
-  const blocked = restriction(scenario); if (blocked) return blocked;
+  const blocked = restriction(scenario, c.characterId); if (blocked) return blocked;
   if (!text.trim() || text.length > 2000) return fail('VALIDATION', 'Write between 1 and 2,000 characters.');
   const t = threads.get(id)!;
   let m = t.messages.find(m => m.clientMessageId === clientMessageId);
@@ -80,12 +82,12 @@ export async function prepareReply(id: string, messageId: string, scenario: Chat
   if (!job || !user || user.deliveryState !== 'saved') return fail('VALIDATION', 'Save the message before requesting a reply.');
   const existing = t.messages.find(m => m.id === `${job.id}-message`); if (existing) return ok(existing);
   if (job.state === 'generating') return fail('CONFLICT', 'A reply is already being prepared.');
-  const blocked = restriction(scenario); if (blocked) return blocked;
+  const blocked = restriction(scenario, c.characterId); if (blocked) return blocked;
   job.state = 'generating'; job.errorCode = null; persist(); await delay(850);
   if (!owned(id) || threads.get(id) !== t) return fail('NOT_FOUND', 'Conversation unavailable.');
   if (scenario === 'reply_failed' || scenario === 'interrupted' || scenario === 'offline') { job.state = scenario === 'interrupted' ? 'interrupted' : 'failed'; job.errorCode = 'UNAVAILABLE'; persist(); return fail('UNAVAILABLE', 'Your message is saved. Retry the reply without sending it again.'); }
-  const sample = samples[c.characterId as keyof typeof samples]; const wantsPhoto = /photo/i.test(user.text ?? '');
-  const photoAllowed = scenario !== 'photos_paused';
+  const sample = scriptedSample(c.characterId); const wantsPhoto = /photo/i.test(user.text ?? '');
+  const photoAllowed = scenario !== 'photos_paused' && capabilities(c.characterId).photos && !!publicAsset(`${c.characterId}-gallery`, c.characterId);
   const reply = append(id, { id: `${job.id}-message`, role: 'character', kind: wantsPhoto && photoAllowed ? 'photo' : 'text', assetId: wantsPhoto && photoAllowed ? `${c.characterId}-gallery` : null, text: wantsPhoto ? photoAllowed ? sample.photoCaption : 'Character photos are paused for now. We can keep talking.' : sample.replies[(t.jobs.indexOf(job)) % sample.replies.length] });
   job.state = 'completed'; job.updatedAt = new Date().toISOString(); updateMockConversation(id, { lastMessagePreview: reply.kind === 'photo' ? 'AI-generated character photo' : reply.text, lastMessageAt: reply.createdAt, unreadCount: c.unreadCount + 1 }); persist(); return ok(reply);
 }

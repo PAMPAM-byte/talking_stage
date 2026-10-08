@@ -11,7 +11,7 @@ async function files(directory) {
 for (const file of await files(".next/static")) {
   if (!/\.(js|css)$/.test(file)) continue;
   const content = await readFile(file, "utf8");
-  for (const marker of ["DEMO-NOT-A-TRANSACTION", "Choose a scenario and load", "lab-mock-controls", "draft-0", "demo-user-a", "Developer review scenarios", "appearanceContinuity", "Chat review controls", "Messages review controls", "Toggle broken photo", "Reset chat preview", "Personal-space review controls", "Payment review controls", "Request policy review controls", "Load request sample"]) assert(!content.includes(marker), `Development tooling found in production: ${file}`);
+  for (const marker of ["DEMO-NOT-A-TRANSACTION", "Choose a scenario and load", "lab-mock-controls", "draft-0", "demo-user-a", "Developer review scenarios", "appearanceContinuity", "Chat review controls", "Messages review controls", "Toggle broken photo", "Reset chat preview", "Personal-space review controls", "Payment review controls", "Request policy review controls", "Load request sample", "Administration review controls", "Open selected preview", "Private character direction", "sample-report-pressure"]) assert(!content.includes(marker), `Development tooling found in production: ${file}`);
 }
 
 const server = spawn(process.execPath, ["node_modules/next/dist/bin/next", "start", "--hostname", "127.0.0.1", "--port", "3101"], { windowsHide: true, stdio: "pipe" });
@@ -31,6 +31,11 @@ try {
   assert(!(await home.text()).includes("Explore the design system"), "Development entry link is visible in production.");
   const preview = await fetch("http://127.0.0.1:3101/dev/design-system");
   assert.equal(preview.status, 404, "Development preview should be unavailable in production.");
+  for (const path of ["/admin", "/admin/access", "/admin/characters/char-amara", "/admin/reports/sample-report-pressure"]) {
+    const admin = await fetch("http://127.0.0.1:3101" + path); const html = await admin.text();
+    assert.equal(admin.status, 200); assert(html.includes("Administration preview unavailable"), "Production admin mock must be unavailable.");
+    assert(!html.includes("Appearance and continuity") && !html.includes("Private character direction"), "Private instructions leaked into production admin HTML.");
+  }
   console.log("Production checks passed: home 200, preview 404, development link/fixtures/tooling excluded.");
 } finally {
   server.kill();

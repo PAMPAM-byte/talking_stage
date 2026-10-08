@@ -1,13 +1,15 @@
+import { capabilities, hydrateOperatorPublic, isPublishedPreview, publicCast, subscribeOperatorPublic } from './operator-public';
 import cast from './public-cast.json';
 import type { CharacterFilters, Conversation, PublicCharacter, Result } from '../contracts';
 import { getAccount } from './account';
 
-export const characters = cast as PublicCharacter[];
+export const characters = cast.map(c => ({ ...c })) as PublicCharacter[];
+subscribeOperatorPublic(() => { characters.splice(0, characters.length, ...publicCast()); });
 export type DiscoveryScenario = 'ready' | 'empty' | 'offline' | 'error' | 'deactivated' | 'paused';
 const key = 'talkingstage:mock-conversations:v1';
 const memory = new Map<string, Conversation>();
 let conversationsHydrated = false;
-function allowed() { const a = getAccount(); return a.age === 'adult' && a.consent && a.user?.adultAccessState === 'approved' && a.user.onboardingStep === 'complete'; }
+function allowed() { hydrateOperatorPublic(); const a = getAccount(); return a.age === 'adult' && a.consent && a.user?.adultAccessState === 'approved' && a.user.onboardingStep === 'complete'; }
 async function run<T>(scenario: DiscoveryScenario, operation: () => Result<T>): Promise<Result<T>> {
   await new Promise(resolve => setTimeout(resolve, 350));
   if (!allowed()) return fail('UNAUTHENTICATED', 'Complete adult onboarding to continue.');
@@ -16,8 +18,8 @@ async function run<T>(scenario: DiscoveryScenario, operation: () => Result<T>): 
 }
 function ok<T>(data: T): Result<T> { return { data: structuredClone(data), requestId: 'discovery-preview' }; }
 function fail<T>(code: import('../contracts').ErrorCode, message: string, retryable = false): Result<T> { return { error: { code, message, retryable }, requestId: 'discovery-preview' }; }
-export function listCharacters(filters: CharacterFilters, scenario: DiscoveryScenario = 'ready') { return run(scenario, () => ok(scenario === 'empty' ? [] : characters.filter(c => (!filters.gender || c.gender === filters.gender) && (!filters.personality || c.personalityTags.includes(filters.personality)) && (!filters.interest || c.interests.includes(filters.interest))))); }
-export function getCharacter(id: string, scenario: DiscoveryScenario = 'ready') { return run(scenario, () => { const c = characters.find(c => c.id === id); return !c || id === 'char-draft' ? fail<PublicCharacter>('NOT_FOUND', 'This profile doesn’t exist.') : scenario === 'deactivated' || id === 'char-unavailable' ? fail<PublicCharacter>('UNAVAILABLE', 'This character is no longer available.') : ok({ ...c, availability: { chat: scenario !== 'paused', photos: true } }); }); }
+export function listCharacters(filters: CharacterFilters, scenario: DiscoveryScenario = 'ready') { return run(scenario, () => ok(scenario === 'empty' ? [] : characters.filter(c => isPublishedPreview(c.id) && (!filters.gender || c.gender === filters.gender) && (!filters.personality || c.personalityTags.includes(filters.personality)) && (!filters.interest || c.interests.includes(filters.interest))))); }
+export function getCharacter(id: string, scenario: DiscoveryScenario = 'ready') { return run(scenario, () => { const c = characters.find(c => c.id === id); return !c || !isPublishedPreview(id) || id === 'char-draft' ? fail<PublicCharacter>('NOT_FOUND', 'This profile doesn’t exist.') : scenario === 'deactivated' || id === 'char-unavailable' ? fail<PublicCharacter>('UNAVAILABLE', 'This character is no longer available.') : ok({ ...c, availability: { chat: scenario !== 'paused' && capabilities(id).chat, photos: capabilities(id).photos } }); }); }
 function conversations() {
   if (!conversationsHydrated) {
     conversationsHydrated = true;
@@ -27,7 +29,7 @@ function conversations() {
 }
 export function savedConversation(characterId: string) { return allowed() ? conversations().find(c => c.characterId === characterId) : undefined; }
 export function startConversation(characterId: string, scenario: DiscoveryScenario = 'ready') { return run(scenario, () => {
-  if (scenario === 'paused' || scenario === 'deactivated') return fail<Conversation>('CAPABILITY_PAUSED', 'Conversation is unavailable right now. Choose another character.');
+  if (scenario === 'paused' || scenario === 'deactivated' || !capabilities(characterId).chat) return fail<Conversation>('CAPABILITY_PAUSED', 'Conversation is unavailable right now. Choose another character.');
   if (!characters.some(c => c.id === characterId)) return fail<Conversation>('NOT_FOUND', 'This character is unavailable.');
   const existing = savedConversation(characterId); if (existing) return ok(existing);
   const now = new Date().toISOString(); const row: Conversation = { id: `preview-${characterId}`, userId: getAccount().user!.id, characterId, status: 'active', relationshipState: 'introductory', lastMessagePreview: null, lastMessageAt: null, unreadCount: 0, version: 1, createdAt: now, updatedAt: now };

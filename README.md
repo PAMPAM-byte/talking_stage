@@ -8,6 +8,8 @@ Run `npm run dev`, then open [TalkingStage](http://localhost:3000).
 
 The [design-system preview](http://localhost:3000/dev/design-system) is available only in development. It demonstrates components, responsive shells, and synthetic mock scenarios. It is excluded from production browser assets and returns 404 in production.
 
+The [administration preview](http://localhost:3000/admin/access) is also development-only. Select the synthetic admin role to review cast, assets, reports, ledger, capability switches, analytics and audit. It does not establish secure access; production administration routes show an unavailable screen.
+
 ## Checks
 
 - `npm run lint` — ESLint.
@@ -28,6 +30,8 @@ The [design-system preview](http://localhost:3000/dev/design-system) is availabl
 - [Chat mock contracts and persistence rules](docs/stage-4-contracts.md)
 - [Stage 5 settings, memory, payments and reporting review](docs/reviews/stage-5.md)
 - [Personal-space mock contracts and deletion semantics](docs/stage-5-contracts.md)
+- [Stage 6 administration review](docs/reviews/stage-6.md)
+- [Administration contracts and publication rules](docs/stage-6-contracts.md)
 
 Use the frontend-design skill for every frontend design implementation. See `AGENTS.md` for continuing project instructions.
 

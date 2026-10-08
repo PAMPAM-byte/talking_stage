@@ -20,6 +20,8 @@
     ],
     "paths": {
       "@talkingstage/preview": ["./app/dev/design-system/preview.tsx"],
+      "@talkingstage/admin-fixtures": ["./lib/mock/admin-fixtures.ts"],
+      "@talkingstage/admin-ui": ["./components/admin/admin-workspace.tsx"],
       "@/*": ["./*"]
     }
   },

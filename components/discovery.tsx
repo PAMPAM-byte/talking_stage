@@ -7,6 +7,7 @@ import { characters, listCharacters, type DiscoveryScenario } from '@/lib/mock/d
 import { useMockAccount } from './account-provider';
 import { UserBoundary } from './user-boundary';
 import { Badge, Button, Chip, EmptyState, Notice, SelectField, Skeleton } from './ui/primitives';
+import { useOperatorPreview } from './operator-preview';
 import { Overlay } from './ui/overlay';
 import { Icon } from './ui/icon';
 import { characterAsset } from '@/lib/mock/character-assets';
@@ -14,19 +15,19 @@ import { characterAsset } from '@/lib/mock/character-assets';
 export function CharacterPhoto({ character, kind = 'portrait', eager = false, broken = false, retryable = true }: { character: PublicCharacter; kind?: 'portrait' | 'gallery'; eager?: boolean; broken?: boolean; retryable?: boolean }) {
   const [failed, setFailed] = useState(false); const [attempt, setAttempt] = useState(0);
   const asset = characterAsset(character.id, kind);
-  return <div className="character-photo">{failed ? <div className="photo-failure"><Icon name="photo" /><p>Photo couldn’t be loaded.</p>{retryable && <Button variant="secondary" onClick={() => { setFailed(false); setAttempt(v => v + 1); }}>Retry photo</Button>}</div> : <Image key={attempt} src={broken ? '/images/missing-preview.webp' : asset.displayUrl} alt={`${character.name}, ${character.age}, a fictional adult AI character${kind === 'gallery' ? ' in a lifestyle photo' : ' in a portrait'}`} fill sizes="(min-width: 900px) 33vw, (min-width: 600px) 50vw, 100vw" loading={eager ? 'eager' : 'lazy'} style={{ objectFit: 'cover', objectPosition: `${asset.focalPoint.x * 100}% ${asset.focalPoint.y * 100}%` }} onError={() => setFailed(true)} />}</div>;
+  return <div className="character-photo">{!asset.displayUrl ? <div className="photo-failure"><Icon name="photo" /><p>Photo unavailable for this preview.</p></div> : failed ? <div className="photo-failure"><Icon name="photo" /><p>Photo couldn’t be loaded.</p>{retryable && <Button variant="secondary" onClick={() => { setFailed(false); setAttempt(v => v + 1); }}>Retry photo</Button>}</div> : <Image key={attempt} src={broken ? '/images/missing-preview.webp' : asset.displayUrl} alt={`${character.name}, ${character.age}, a fictional adult AI character${kind === 'gallery' ? ' in a lifestyle photo' : ' in a portrait'}`} fill sizes="(min-width: 900px) 33vw, (min-width: 600px) 50vw, 100vw" loading={eager ? 'eager' : 'lazy'} style={{ objectFit: 'cover', objectPosition: `${asset.focalPoint.x * 100}% ${asset.focalPoint.y * 100}%` }} onError={() => setFailed(true)} />}</div>;
 }
 export function ScenarioControls({ value, onChange }: { value: DiscoveryScenario; onChange: (s: DiscoveryScenario) => void }) {
   return process.env.NODE_ENV === 'development' ? <details className="discovery-qa"><summary>Developer review scenarios</summary><SelectField label="Discovery scenario" value={value} onChange={e => onChange(e.target.value as DiscoveryScenario)}>{['ready', 'empty', 'offline', 'error', 'deactivated', 'paused'].map(s => <option key={s} value={s}>{s}</option>)}</SelectField></details> : null;
 }
 export function Discovery() { return <UserBoundary><DiscoveryContent /></UserBoundary>; }
 function DiscoveryContent() {
-  const account = useMockAccount();
+  const account = useMockAccount(); const operator = useOperatorPreview();
   const preferred = account.user?.preferences.characterGenders;
   const [filters, setFilters] = useState<CharacterFilters>(() => ({ gender: preferred?.length === 1 ? preferred[0] : undefined }));
   const [draft, setDraft] = useState(filters); const [open, setOpen] = useState(false); const [scenario, setScenario] = useState<DiscoveryScenario>('ready');
   const [result, setResult] = useState<Result<PublicCharacter[]> | null>(null); const [retry, setRetry] = useState(0);
-  useEffect(() => { let current = true; listCharacters(filters, scenario).then(r => { if (current) setResult(r); }); return () => { current = false; }; }, [filters, scenario, retry]);
+  useEffect(() => { let current = true; listCharacters(filters, scenario).then(r => { if (current) setResult(r); }); return () => { current = false; }; }, [filters, scenario, retry, operator.revision]);
   const change = (next: CharacterFilters) => { setResult(null); setFilters(next); };
   const reset = () => change({}); const selected = Object.values(filters).filter(Boolean);
   return <div className="discovery-page stack"><header className="discovery-heading"><div className="stack"><p className="supporting muted">Welcome, {account.user?.displayName}.</p><h1 className="display discovery-title">A little spark.<br />A good conversation.</h1><p className="muted">Meet fictional AI characters with a personality of their own.</p></div><div className="discovery-disclosure"><Icon name="info" /><span>Every character is AI.<br />Every story is fictional.</span></div></header>
