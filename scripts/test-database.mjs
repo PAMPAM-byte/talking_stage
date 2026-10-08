@@ -1,0 +1,70 @@
+import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
+import { PGlite } from '@electric-sql/pglite';
+
+// Real PostgreSQL execution with a minimal Auth schema, not a Supabase service.
+const db = new PGlite();
+try {
+  await db.exec(`create role anon; create role authenticated; create schema auth;
+    create table auth.users(id uuid primary key, raw_user_meta_data jsonb not null default '{}');
+    create function auth.uid() returns uuid language sql stable as $$ select nullif(current_setting('request.jwt.claim.sub', true),'')::uuid $$;
+    grant usage on schema auth, public to authenticated, anon;
+    grant execute on function auth.uid() to authenticated, anon;`);
+  await db.exec(await readFile(new URL('../supabase/migrations/202610080001_foundation.sql', import.meta.url), 'utf8'));
+  const alice = '00000000-0000-4000-8000-000000000001';
+  const bob = '00000000-0000-4000-8000-000000000002';
+  const incomplete = '00000000-0000-4000-8000-000000000003';
+  const undeclared = '00000000-0000-4000-8000-000000000004';
+  const character = '00000000-0000-4000-8000-000000000010';
+  const ca = '00000000-0000-4000-8000-000000000020';
+  const cb = '00000000-0000-4000-8000-000000000021';
+  await db.exec(`insert into auth.users values ('${alice}','{"adult_declaration":"18-plus-v1","role":"admin"}'), ('${bob}','{"adult_declaration":"18-plus-v1"}'), ('${incomplete}','{"adult_declaration":"18-plus-v1"}'), ('${undeclared}','{}');
+    update public.profiles set display_name='Test adult', genders=array['man'], ai_consent_at=now(), onboarding_complete=true where id in ('${alice}','${bob}');
+    insert into public.characters(id,name,age,gender,status) values('${character}','Test character',25,'man','published');
+    insert into public.conversations(id,user_id,character_id) values('${ca}','${alice}','${character}'),('${cb}','${bob}','${character}');
+    insert into public.messages(conversation_id,sequence,role,kind,text) values('${ca}',1,'user','text','Alice private'),('${cb}',1,'user','text','Bob private');
+    insert into public.memories(user_id,character_id,content,consent) values('${alice}','${character}','Alice memory','explicit'),('${bob}','${character}','Bob memory','explicit');
+    insert into public.payment_intents(user_id,conversation_id,character_id,amount_minor,reference,idempotency_key,recipient_disclosure) values('${alice}','${ca}','${character}',100,'a','a','Operator'),('${bob}','${cb}','${character}',100,'b','b','Operator');
+    insert into public.reports(reporter_id,target_kind,target_id,reason) values('${alice}','character','${character}','Test'),('${bob}','character','${character}','Test');`);
+  async function actor(id, role = 'authenticated') { await db.exec(`reset role; set role ${role}; select set_config('request.jwt.claim.sub','${id}',false);`); }
+  async function count(table) { return Number((await db.query(`select count(*) as n from public.${table}`)).rows[0].n); }
+  await actor(alice);
+  for (const table of ['profiles','conversations','messages','memories','payment_intents','reports']) assert.equal(await count(table), 1, `${table} isolates Alice`);
+  assert.equal((await db.query(`select * from public.conversations where id='${cb}'`)).rows.length, 0, 'changing target ID cannot read Bob');
+  assert.equal((await db.query('select public.is_admin() as admin')).rows[0].admin, false, 'metadata cannot grant admin');
+  await assert.rejects(db.query('select * from private.user_roles'), /permission denied/);
+  await assert.rejects(db.query('select * from private.character_direction'), /permission denied/);
+  await assert.rejects(db.query(`update public.profiles set onboarding_complete=true`), /permission denied/);
+  await assert.rejects(db.query(`insert into public.messages(conversation_id,sequence,role,kind,text) values('${ca}',2,'character','text','Forged')`), /permission denied/);
+  await db.query(`select public.save_preferences('Alice updated',array['man','woman'],'english_pidgin',true,1)`);
+  await assert.rejects(db.query(`select public.save_preferences('Stale',array['man'],'english',false,1)`), /conflict/);
+  await assert.rejects(db.query(`select public.save_preferences('Invalid',array['invalid'],'english',false,2)`), /invalid_preferences/);
+  await actor(bob);
+  assert.equal((await db.query('select display_name from public.profiles')).rows[0].display_name,'Test adult','Alice mutation does not update Bob');
+  assert.equal((await db.query('select text from public.messages')).rows[0].text,'Bob private');
+  await actor(incomplete);
+  for (const table of ['characters','conversations','messages','memories','payment_intents','reports']) assert.equal(await count(table),0, `${table} requires onboarding`);
+  await assert.rejects(db.query('select public.complete_onboarding(1,false)'), /consent_required/);
+  await db.query(`select public.save_preferences('New adult',array['woman'],'english',false,1)`);
+  await db.query('select public.complete_onboarding(2,true)');
+  assert.equal(await count('characters'),1,'onboarding enables public cast reads');
+  await actor(undeclared);
+  await assert.rejects(db.query(`select public.save_preferences('No declaration',array['man'],'english',false,1)`), /ineligible/);
+  await actor('', 'anon');
+  await assert.rejects(db.query('select * from public.profiles'), /permission denied/);
+  await assert.rejects(db.query('select public.is_admin()'), /permission denied/);
+  await db.exec('reset role');
+  await assert.rejects(db.query(`insert into public.payment_intents(user_id,conversation_id,character_id,amount_minor,reference,idempotency_key,recipient_disclosure) values('${alice}','${cb}','${character}',100,'cross','cross','Operator')`), /foreign key/);
+  await assert.rejects(db.query(`insert into public.messages(conversation_id,sequence,role,kind,text) values('${ca}',1,'user','text','Duplicate')`), /unique/);
+  const otherCharacter = '00000000-0000-4000-8000-000000000011';
+  const otherAsset = '00000000-0000-4000-8000-000000000012';
+  await db.query(`insert into public.characters(id,name,age,gender) values('${otherCharacter}','Other character',26,'woman')`);
+  await db.query(`insert into public.character_assets(id,character_id,storage_path,slot,review_state,published) values('${otherAsset}','${otherCharacter}','test/other','chat','approved',true)`);
+  await assert.rejects(db.query(`insert into public.messages(conversation_id,sequence,role,kind,asset_id) values('${ca}',2,'character','photo','${otherAsset}')`), /asset_not_eligible/);
+  await db.query(`insert into private.user_roles(user_id,role) values('${alice}','admin')`);
+  await actor(alice);
+  assert.equal((await db.query('select public.is_admin() as admin')).rows[0].admin,true,'trusted provisioning grants admin');
+  for (let version = 2; version <= 30; version++) await db.query(`select public.save_preferences('Alice updated',array['man'],'english',false,${version})`);
+  await assert.rejects(db.query(`select public.save_preferences('Rate limit',array['man'],'english',false,31)`), /rate_limited/);
+  console.log('Database checks passed: migration, two-actor RLS, anonymous/incomplete access, trusted roles, optimistic preferences, consent and cross-owner constraints.');
+} finally { await db.close(); }

@@ -1,6 +1,6 @@
 # TalkingStage implementation plan
 
-Version 1.11 · 8 October 2026 · Status: Stage 7 complete for backend handoff; Stage 8 preparation in progress
+Version 1.12 · 8 October 2026 · Status: Stage 7 complete for backend handoff; Stage 8 implementation in progress
 
 Product owner: PAMPAM
 
@@ -34,7 +34,7 @@ Update a stage to In progress when work begins. Mark it Complete only when its e
 | 5 | Settings, memory, payments, and reporting frontend | 4 | Complete — [record](./reviews/stage-5.md) |
 | 6 | Full administration frontend | 5 | Complete — [record](./reviews/stage-6.md) |
 | 7 | Frontend quality review and completion gate | 1–6 | Complete for backend handoff — [review](./reviews/stage-7.md); manual checks deferred before pilot |
-| 8 | Backend foundation, identity, and ownership | 7 | In progress — [architecture preparation](./stage-8-architecture.md); service selection pending |
+| 8 | Backend foundation, identity, and ownership | 7 | In progress — Supabase approved; [local implementation evidence](./reviews/stage-8.md); live configuration/integration pending |
 | 9 | Cast, assets, and administration backend | 8 | Planned |
 | 10 | Conversations, AI, and memory backend | 9 | Planned |
 | 11 | Payments and reconciliation backend | 10 | Planned |
@@ -212,8 +212,8 @@ Evidence so far: [Stage 7 review](./reviews/stage-7.md), [contract index](./fron
 **PRD coverage:** AUTH-01, AGE-01, PREF-01; data model, privacy and ownership foundations.
 
 - [ ] Select/configure approved database and authentication services; define environment handling and server-only secrets.
-- [ ] Implement the minimum PRD entities: User, Character, CharacterAsset, Conversation, Message, Memory, PaymentIntent, PaymentEvent, Report, AdminAudit.
-- [ ] Add ownership constraints, uniqueness/idempotency keys, indices, lifecycle timestamps, and migration procedures.
+- [x] Implement the minimum PRD entities: User, Character, CharacterAsset, Conversation, Message, Memory, PaymentIntent, PaymentEvent, Report, AdminAudit. Foundation migration exists; feature migrations follow in Stages 9–12.
+- [x] Add ownership constraints, uniqueness/idempotency keys, indices, lifecycle timestamps, and migration procedures. Local PostgreSQL checks pass; deployed migration/restore evidence is still required.
 - [ ] Implement registration, sign-in, recovery, session handling, sign-out, and server-enforced private-page/API access.
 - [ ] Implement the selected age-assurance flow and adult-access enforcement server-side, not merely client-side.
 - [ ] Implement preferences and admin roles; prevent user-supplied IDs/roles from granting access.
@@ -364,4 +364,4 @@ If integration exposes a contract mismatch, update the affected screen/adapter a
 - Next.js scaffold exists.
 - Design-system tokens, reusable components, responsive shells, local mock foundation, and development-only preview are implemented.
 - Stages 0–6 frontend implementation is complete, including the user-selected 18+ checkbox declaration. The current frontend is accepted and Gate A permits backend handoff. Physical-device/accessibility checks remain mandatory before private-pilot access.
-- **Current stage: Stage 8 — Backend foundation, identity and ownership.** Architecture/service preparation has started; no backend service is connected yet. Stage 7 is complete for handoff under the user-authorised manual-review deferral. Follow [Stage 8 preparation](./stage-8-architecture.md), preserve the accepted frontend and apply frontend-design to every UI implementation.
+- **Current stage: Stage 8 — Backend foundation, identity and ownership.** Supabase is approved; schema, account actions, ownership policies and real-mode route boundaries are implemented locally. No backend service is connected yet. Configure the development environment and complete the [live acceptance checklist](./stage-8-setup.md). Stage 7 is complete for handoff under the user-authorised manual-review deferral. Preserve the accepted frontend and apply frontend-design to every UI implementation.

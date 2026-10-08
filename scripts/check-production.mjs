@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { readdir, readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { spawn } from "node:child_process";
+import { chromium } from "@playwright/test";
 
 // Check actual build output rather than assuming a route guard removes tooling.
 async function files(directory) {
@@ -33,10 +34,41 @@ try {
   assert.equal(preview.status, 404, "Development preview should be unavailable in production.");
   for (const path of ["/admin", "/admin/access", "/admin/characters/char-amara", "/admin/reports/sample-report-pressure"]) {
     const admin = await fetch("http://127.0.0.1:3101" + path); const html = await admin.text();
-    assert.equal(admin.status, 200); assert(html.includes("Administration preview unavailable"), "Production admin mock must be unavailable.");
+    assert.equal(admin.status, 200); assert(html.includes("Account services are unavailable") || admin.url.endsWith("/sign-in"), "Production admin must require a real configured account.");
     assert(!html.includes("Appearance and continuity") && !html.includes("Private character direction"), "Private instructions leaked into production admin HTML.");
   }
-  console.log("Production checks passed: home 200, preview 404, development link/fixtures/tooling excluded.");
+  for (const path of ["/discover", "/messages", "/settings", "/payments/demo-payment"]) {
+    const privatePage = await fetch("http://127.0.0.1:3101" + path, { headers: { Cookie: "talkingstage:mock-onboarding:v1=adult; ts-adult=forged" } });
+    const html = await privatePage.text();
+    assert(html.includes("Account services are unavailable") || privatePage.url.endsWith("/sign-in"), "Private routes must fail closed without real authentication.");
+    assert(!html.includes("Frontend preview · fictional adult AI characters"), "Private mock workspace was rendered in production.");
+  }
+  const browser = await chromium.launch({ channel: "msedge", headless: true });
+  try {
+    const page = await browser.newPage();
+    const errors = []; page.on("pageerror", error => errors.push(error.message));
+    for (const width of [320, 390, 768, 1440]) {
+      await page.setViewportSize({ width, height: 844 });
+      for (const path of ["/onboarding/age", "/sign-in", "/recover", "/auth/error", "/discover"]) {
+        await page.goto("http://127.0.0.1:3101" + path);
+        assert.equal(await page.locator("main").count(), 1);
+        assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), `${path} overflows at ${width}px`);
+      }
+    }
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("http://127.0.0.1:3101/onboarding/age");
+    assert.equal(await page.getByRole("checkbox", { name: "I am 18 or older" }).isChecked(), false);
+    await page.screenshot({ path: "docs/reviews/stage-8/age-unconfigured-390.png", fullPage: true });
+    await page.getByRole("button", { name: "I am under 18" }).click();
+    await page.getByText("You can return when you are eligible.").waitFor();
+    assert.equal(await page.getByRole("checkbox", { name: "I am 18 or older" }).count(), 0);
+    await page.goto("http://127.0.0.1:3101/sign-in");
+    const unavailable = await page.getByText("Account services are unavailable", { exact: true }).count() > 0;
+    assert.equal(await page.getByRole("button", { name: "Sign in", exact: true }).isDisabled(), unavailable);
+    await page.screenshot({ path: `docs/reviews/stage-8/sign-in-${unavailable ? 'unconfigured' : 'configured'}-390.png`, fullPage: true });
+    assert.deepEqual(errors, [], "Production account screens have browser errors");
+  } finally { await browser.close(); }
+  console.log("Production checks passed: development exclusions, missing-configuration private-route denial and responsive account UI.");
 } finally {
   server.kill();
 }

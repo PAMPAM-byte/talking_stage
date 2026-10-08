@@ -1,10 +1,10 @@
-# Stage 8 architecture preparation
+# Stage 8 architecture and implementation
 
 8 October 2026 · In progress. Gate A now permits backend handoff; no database or authentication service has been connected.
 
-## Proposed service choice
+## Approved service choice
 
-Recommend Supabase Postgres and Supabase Auth for the existing email/password, recovery and administrator-role requirements. One relational ownership model suits conversations, memories, assets, reports and ledger references; storage can follow in Stage 9. This is a researched proposal, not an approved provider or a provisioned project.
+The user approved Supabase Postgres and Supabase Auth for Stage 8. One relational ownership model suits conversations, memories, assets, reports and ledger references; storage follows in Stage 9. No development project has been provisioned or connected. See [setup and integration checklist](./stage-8-setup.md) and [implementation evidence](./reviews/stage-8.md).
 
 Use the official Next.js server-side auth integration with request cookies and validated claims; review the installed Next.js 16 documentation before adding Proxy or server mutations. Do not trust a browser session object or a submitted actor/role. [Supabase Next.js guide](https://supabase.com/docs/guides/getting-started/tutorials/with-nextjs), [server-side auth guide](https://supabase.com/docs/guides/auth/server-side/advanced-guide).
 
@@ -24,7 +24,7 @@ Recovery and registration email delivery require approved redirect URLs and a co
 
 ## Current dependencies and boundaries
 
-Database/auth provider selection is pending. Once selected, a local development setup or a designated development project must be configured; no production project is assumed. Project URL/public client key and server-side test access will be supplied through environment configuration, not chat. Public pilot deployment, paid infrastructure and external account creation are outside this preparation.
+Provider selection is resolved. The remaining dependency is a local development setup or a designated Supabase development project; no production project is assumed. Project URL/public client key and server-side test access must be supplied through environment configuration, not chat. Docker is installed but its daemon was unavailable during implementation. Public pilot deployment, paid infrastructure and external account creation are outside this work.
 
 AI replies/memory extraction, image storage/publication, payments/webhooks and complete reporting/deletion integration remain Stages 9–12. The deferred [manual device/accessibility review](./pre-pilot-manual-review.md) must pass before admitting private-pilot participants.
 
