@@ -1,3 +1,4 @@
+export const instant = false;
 import { Suspense } from 'react';
 import { PaymentDetail } from '@/components/payments';
 async function Detail({ params }: { params: Promise<{ paymentIntentId: string }> }) { const { paymentIntentId } = await params; return <PaymentDetail id={paymentIntentId} />; }

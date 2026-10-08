@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "ES2017",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -19,10 +23,18 @@
       }
     ],
     "paths": {
-      "@talkingstage/preview": ["./app/dev/design-system/preview.tsx"],
-      "@talkingstage/admin-fixtures": ["./lib/mock/admin-fixtures.ts"],
-      "@talkingstage/admin-ui": ["./components/admin/admin-workspace.tsx"],
-      "@/*": ["./*"]
+      "@talkingstage/preview": [
+        "./app/dev/design-system/preview.tsx"
+      ],
+      "@talkingstage/admin-fixtures": [
+        "./lib/mock/admin-fixtures.ts"
+      ],
+      "@talkingstage/admin-ui": [
+        "./components/admin/admin-workspace.tsx"
+      ],
+      "@/*": [
+        "./*"
+      ]
     }
   },
   "include": [
@@ -31,7 +43,11 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
-    "**/*.mts"
+    "**/*.mts",
+    ".next-auth/types/**/*.ts",
+    ".next-auth/dev/types/**/*.ts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }

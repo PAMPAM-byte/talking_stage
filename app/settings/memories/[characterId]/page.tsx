@@ -1,3 +1,4 @@
+export const instant = false;
 import { Suspense } from 'react';
 import { Memories } from '@/components/personal-space';
 async function Detail({ params }: { params: Promise<{ characterId: string }> }) { const { characterId } = await params; return <Memories characterId={characterId} />; }

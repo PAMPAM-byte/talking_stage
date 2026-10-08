@@ -10,7 +10,11 @@
     "typecheck": "tsc --noEmit",
     "test": "playwright test",
     "check:production": "node scripts/check-production.mjs",
-    "test:database": "node scripts/test-database.mjs"
+    "test:database": "node scripts/test-database.mjs",
+    "test:auth": "playwright test --config playwright.auth.config.ts",
+    "backend:start": "supabase start --exclude realtime,storage-api,imgproxy,postgres-meta,studio,edge-runtime,logflare,vector,supavisor",
+    "backend:stop": "supabase stop",
+    "backend:configure": "node scripts/configure-local-supabase.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
@@ -29,6 +33,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.4.0",
+    "supabase": "2.120.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

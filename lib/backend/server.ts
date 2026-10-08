@@ -1,13 +1,17 @@
 import "server-only";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
+import { connection } from "next/server";
 import { supabaseConfig } from "./config";
 
 export async function backendClient() {
   const config = supabaseConfig();
   if (!config) return null;
+  // Auth's internal timers must run for a request, never in a shared static shell.
+  await connection();
   const jar = await cookies();
   return createServerClient(config.url, config.key, {
+    cookieOptions: { httpOnly: true, sameSite: "lax", secure: process.env.NODE_ENV === "production" },
     cookies: {
       getAll: () => jar.getAll(),
       setAll: (values) => {

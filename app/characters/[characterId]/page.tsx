@@ -1,3 +1,4 @@
+export const instant = false;
 import { Suspense } from 'react';
 import { CharacterProfile } from '@/components/character-profile';
 async function Profile({ params }: { params: Promise<{ characterId: string }> }) { const { characterId } = await params; return <CharacterProfile id={characterId} />; }

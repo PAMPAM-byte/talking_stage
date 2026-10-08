@@ -1,10 +1,13 @@
 import assert from "node:assert/strict";
 import { readdir, readFile } from "node:fs/promises";
+import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { spawn } from "node:child_process";
 import { chromium } from "@playwright/test";
 
 // Check actual build output rather than assuming a route guard removes tooling.
+if (existsSync('.env.local')) process.loadEnvFile('.env.local');
+const serverSecrets = ['AUTH_FLOW_SECRET', 'SUPABASE_SECRET_KEY', 'SUPABASE_SERVICE_ROLE_KEY'].map(name => process.env[name]).filter(value => value && value.length >= 16);
 async function files(directory) {
   const entries = await readdir(directory, { withFileTypes: true });
   return (await Promise.all(entries.map((entry) => entry.isDirectory() ? files(join(directory, entry.name)) : join(directory, entry.name)))).flat();
@@ -12,6 +15,7 @@ async function files(directory) {
 for (const file of await files(".next/static")) {
   if (!/\.(js|css)$/.test(file)) continue;
   const content = await readFile(file, "utf8");
+  for (const secret of serverSecrets) assert(!content.includes(secret), `Server secret found in client output: ${file}`);
   for (const marker of ["DEMO-NOT-A-TRANSACTION", "Choose a scenario and load", "lab-mock-controls", "draft-0", "demo-user-a", "Developer review scenarios", "appearanceContinuity", "Chat review controls", "Messages review controls", "Toggle broken photo", "Reset chat preview", "Personal-space review controls", "Payment review controls", "Request policy review controls", "Load request sample", "Administration review controls", "Open selected preview", "Private character direction", "sample-report-pressure"]) assert(!content.includes(marker), `Development tooling found in production: ${file}`);
 }
 

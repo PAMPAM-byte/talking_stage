@@ -28,7 +28,7 @@ export function RealAccountForm({ step, configured, profile, expired = false }: 
       try {
         const result = await submitAccount(step, form);
         if (result.destination) { router.push(result.destination); router.refresh(); }
-        else { setError(result.error ?? ""); setMessage(result.message ?? ""); }
+        else { setError(result.error ?? ""); setMessage(result.message ?? ""); if (result.message && step === "preferences") router.refresh(); }
       } catch { setError("We couldn’t connect. Please try again."); }
     });
   }
@@ -51,9 +51,9 @@ export function RealAccountForm({ step, configured, profile, expired = false }: 
         <SelectField label="Conversation language" name="language" defaultValue={profile?.language ?? "english"}><option value="english">English</option><option value="english_pidgin">English with Pidgin</option></SelectField>
         <Checkbox label="Allow optional monetary requests" name="requests" defaultChecked={profile?.requests_enabled} /><p className="caption muted">You decide whether to pay. Payments go to the operator, not a real person.</p>
       </>}
-      {step === "complete" && <><div className="onboarding-summary"><p>{profile?.display_name}</p><p className="supporting muted">{profile?.genders.join(" and ")} characters · {profile?.language}</p></div><Checkbox name="consent" label="I understand the characters and their photos are AI generated, and relationships are fictional." required /></>}
+      {step === "complete" && <><div className="onboarding-summary"><p>{profile?.display_name}</p><p className="supporting muted">{profile?.genders.map(gender => gender === "woman" ? "Women" : "Men").join(" and ")} · {profile?.language === "english_pidgin" ? "English with Pidgin" : "English"}</p></div><Checkbox name="consent" label="I understand the characters and their photos are AI generated, and relationships are fictional." required /></>}
       <Button type="submit" loading={busy} disabled={!configured || (step === "age" && !adult)}>{step === "sign-in" ? "Sign in" : step === "register" ? "Create account" : step === "recover" ? "Send recovery link" : step === "recovery-complete" ? "Save new password" : step === "preferences" ? "Save preferences" : step === "complete" ? "Explore characters" : "Continue"}</Button>
-      {step === "age" && <Button variant="quiet" onClick={() => setBlocked(true)}>I am under 18</Button>}
+      {step === "age" && <Button variant="quiet" loading={busy} onClick={() => { setError(""); startTransition(async () => { try { const result = await submitAccount("underage", new FormData()); if (result.error) setError(result.error); else setBlocked(true); } catch { setError("We couldn’t connect. Please try again."); } }); }}>I am under 18</Button>}
       {step === "sign-in" && <Link href="/recover">Forgot your password?</Link>}
     </form>}
     <p className="account-footer supporting"><Link href={step === "sign-in" ? "/onboarding/age" : "/sign-in"}>{step === "sign-in" ? "Create an account" : "Already have an account? Sign in"}</Link></p>

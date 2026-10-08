@@ -1,3 +1,4 @@
+export const instant = false;
 import { Suspense } from 'react';
 import { Chat } from '@/components/chat';
 async function Introduction({ params }: { params: Promise<{ conversationId: string }> }) { const { conversationId } = await params; return <Chat id={conversationId} />; }

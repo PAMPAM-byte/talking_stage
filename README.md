@@ -17,7 +17,7 @@ To connect authentication, follow [Stage 8 setup](docs/stage-8-setup.md) and con
 - `npm run lint` — ESLint.
 - `npm run typecheck` — TypeScript.
 - `npm run test:database` — Execute the migration and two-actor ownership checks in local PostgreSQL through PGlite. Does not test a Supabase deployment or email delivery.
-- `npm test` — Playwright UI and mock-contract checks. Uses installed Microsoft Edge; configure the browser channel if testing on another system. Reuses a development server on localhost:3000, or starts one if needed.
+- `npm test` — Playwright UI and mock-contract checks. Uses installed Microsoft Edge; configure the browser channel if testing on another system. Runs an isolated mock-mode server on localhost:3103.
 - `npm run build` — Production build.
 - `npm run check:production` — After building, checks development-tool exclusion and production responses using temporary port 3101. Stops its own server afterward.
 
@@ -47,4 +47,4 @@ Use the frontend-design skill for every frontend design implementation. See `AGE
 
 ## Boundaries
 
-Supabase authentication and database code exists, but no service is configured or connected yet. AI, storage, payments and full privacy integration remain later stages. Mock data is synthetic and disposable. Eight draft profiles and sixteen generated portrait/gallery assets are available for frontend review; cast and publication approval remain pending. Chat uses character-specific scripted samples. Free-form written text stays in memory and becomes a visible placeholder on refresh; only offered sample messages persist verbatim. The two self-hosted fonts and their licences are in `app/fonts/`.
+Supabase authentication and the database are connected to a local Docker development stack; real integration verification is in progress. AI, storage, payments and full privacy integration remain later stages. Mock data is synthetic and disposable. Eight draft profiles and sixteen generated portrait/gallery assets are available for frontend review; cast and publication approval remain pending. Chat uses character-specific scripted samples. Free-form written text stays in memory and becomes a visible placeholder on refresh; only offered sample messages persist verbatim. The two self-hosted fonts and their licences are in `app/fonts/`.

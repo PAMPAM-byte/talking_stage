@@ -10,7 +10,7 @@ export async function proxy(request: NextRequest) {
   response.headers.set("Cache-Control", "private, no-store");
   const config = supabaseConfig();
   if (!config) return response;
-  const client = createServerClient(config.url, config.key, { cookies: {
+  const client = createServerClient(config.url, config.key, { cookieOptions: { httpOnly: true, sameSite: "lax", secure: process.env.NODE_ENV === "production" }, cookies: {
     getAll: () => request.cookies.getAll(),
     setAll: (values) => {
       values.forEach(({ name, value }) => request.cookies.set(name, value));
@@ -19,8 +19,16 @@ export async function proxy(request: NextRequest) {
       response.headers.set("Cache-Control", "private, no-store");
     },
   } });
-  // Authorization remains in the server data layer and RLS, not this refresh.
-  try { await client.auth.getClaims(); } catch { /* Data access still verifies identity and fails closed. */ }
+  let verified = false;
+  try { const { data } = await client.auth.getClaims(); verified = !!data?.claims?.sub; } catch {}
+  const privateRoute = ["/discover", "/characters", "/messages", "/settings", "/payments", "/admin"].some(prefix => request.nextUrl.pathname === prefix || request.nextUrl.pathname.startsWith(`${prefix}/`));
+  if (privateRoute && !verified) {
+    const denied = NextResponse.redirect(new URL("/sign-in", request.url));
+    response.cookies.getAll().forEach(cookie => denied.cookies.set(cookie));
+    denied.headers.set("Cache-Control", "private, no-store");
+    return denied;
+  }
+  // Identity, onboarding, roles and ownership are independently enforced in DAL/RLS.
   return response;
 }
 export const config = { matcher: ["/sign-in", "/register", "/onboarding/:path*", "/recover/:path*", "/auth/:path*", "/discover/:path*", "/characters/:path*", "/messages/:path*", "/settings/:path*", "/payments/:path*", "/admin/:path*"] };

@@ -1,6 +1,6 @@
 # Stage 8 development setup
 
-8 October 2026. Supabase approved; environment selection/configuration and live integration remain pending. Do not use a production database for these initial checks.
+8 October 2026. Supabase approved and running locally through Docker; the foundation migration is applied and ignored `.env.local` is configured. Real integration verification is in progress. No hosted or production project is connected.
 
 ## Environment
 
@@ -10,15 +10,17 @@ Set `NEXT_PUBLIC_TALKINGSTAGE_MODE=supabase` to use real services in development
 
 For a hosted **development** project, apply `supabase/migrations/202610080001_foundation.sql` through a trusted migration connection/CLI. The initial migration assumes a fresh application schema; existing users need an explicitly reviewed backfill rather than fabricated declaration timestamps. Keep `private` outside the Data API's exposed schemas; public profile/cast reads use RLS. Trusted database provisioning is the only path to `private.user_roles`. User metadata cannot grant administrator rights.
 
-For local development, start Docker Desktop, then initialize Supabase CLI configuration with `npx supabase init` and start it with `npx supabase start`. The checked-in migration is the source of truth. Use the local API URL/public key in `.env.local` and the CLI's local inbox for email tests. The CLI and Docker services have not been started by this implementation.
+For local development, start Docker Desktop, run `npm run backend:start`, then `npm run backend:configure`. Supabase CLI 2.120.0 is pinned; `supabase init` has already generated the checked-in configuration. The startup command runs database/Auth/REST/gateway/local inbox containers and applies the checked-in migration. The configure script fills missing local environment values without displaying credentials or overwriting a different Supabase project. `npm run backend:stop` stops this project's containers while preserving its local database.
+
+The application runs on localhost:3000, Supabase API on 127.0.0.1:54321 and the captured email inbox on 127.0.0.1:54324. Local emails are captured by Mailpit and do not reach external inboxes. Hosted production SMTP remains a separate pre-launch configuration dependency.
 
 ## Authentication configuration
 
 Use email/password authentication, a minimum 12-character password, and email confirmation. Configure the site URL and approved redirects for the exact development origin. Configure confirmation and recovery templates to link to this application's token-hash route:
 
 ```text
-Confirmation: {{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=signup
-Recovery:     {{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=recovery
+Confirmation: {{ .RedirectTo }}?token_hash={{ .TokenHash }}&type=signup
+Recovery:     {{ .RedirectTo }}?token_hash={{ .TokenHash }}&type=recovery
 ```
 
 The route accepts only those two purposes and fixed internal destinations. Recovery creates a signed, HttpOnly, user-bound, 30-minute recovery cookie; a regular signed-in session alone cannot change a password through the recovery action. Consumed/expired tokens get a useful link-failure screen. No arbitrary `next` redirect is accepted. Configure SMTP for hosted delivery before claiming registration/recovery work. Official references: [password authentication](https://supabase.com/docs/guides/auth/passwords), [SSR client/session integration](https://supabase.com/docs/guides/auth/server-side/creating-a-client), [email templates](https://supabase.com/docs/guides/auth/auth-email-templates).

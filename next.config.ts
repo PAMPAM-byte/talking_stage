@@ -1,6 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Isolate real-auth browser checks from the user's running development server.
+  distDir: process.env.TALKINGSTAGE_AUTH_TEST === "1" ? ".next-auth" : process.env.TALKINGSTAGE_PREVIEW_TEST === "1" ? ".next-preview" : ".next",
   /* config options here */
   cacheComponents: true,
   partialPrefetching: true,
