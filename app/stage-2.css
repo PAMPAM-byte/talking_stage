@@ -1,0 +1,46 @@
+.landing-header { min-height: 88px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.landing-header nav { display: flex; align-items: center; gap: 16px; }
+.landing-hero { display: grid; gap: 40px; align-items: center; padding-block: 44px 64px; }
+.landing-hero h1 { font-size: clamp(44px, 6vw, 76px); line-height: 1.04; margin-block: 20px 24px; max-width: 10ch; }
+.landing-hero h1 em { color: var(--brand); font-style: normal; }
+.landing-copy { max-width: 42ch; color: var(--text-secondary); font-size: 17px; line-height: 28px; }
+.landing-cta { margin-top: 28px; }
+.landing-disclosure { margin-top: 16px; }
+.landing-portrait { position: relative; margin: 0; padding-bottom: 46px; min-width: 0; }
+.landing-portrait__image { aspect-ratio: 1.18; border-radius: 28px; overflow: hidden; position: relative; background: var(--brand-soft); }
+.landing-portrait__image img { object-fit: cover; }
+.landing-clue { position: relative; margin: -48px 20px 0; padding: 20px 24px; border: 1px solid var(--border); border-radius: var(--radius-card); background: var(--surface); box-shadow: var(--shadow-floating); }
+.landing-clue blockquote { color: var(--brand); font-size: 26px; line-height: 32px; margin: 8px 0 12px; }
+.landing-photo-caption { margin: 12px 20px 0; }
+.landing-section { padding-block: 48px; border-top: 1px solid var(--border); }
+.landing-section h2 { margin-bottom: 20px; }
+.landing-benefits { display: grid; gap: 28px; }
+.landing-benefit { display: flex; flex-direction: column; gap: 12px; }
+.landing-benefit .icon { color: var(--brand); width: 24px; height: 24px; }
+.landing-benefit h3 { font-size: 18px; font-weight: 650; }
+.landing-benefit p { color: var(--text-secondary); max-width: 35ch; }
+.landing-bottom { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px; }
+.landing-footer { padding-block: 24px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+.account-page { min-height: 100dvh; }
+.account-header { min-height: 88px; display: flex; align-items: center; justify-content: space-between; gap: 12px; border-bottom: 1px solid var(--border); }
+.account-main { max-width: 480px; margin: 0 auto; padding: 32px 20px 48px; }
+.account-back { display: inline-flex; gap: 8px; align-items: center; min-height: 44px; text-decoration: none; font-size: 14px; margin-bottom: 24px; }
+.account-step { margin-bottom: 12px; }
+.account-description { margin-block: 16px 24px; }
+.account-form { margin-top: 24px; gap: 20px; }
+.account-footer { text-align: center; margin-top: 32px; }
+.age-options, .preference-options { border: 0; margin: 0; padding: 0; min-width: 0; }
+.age-options legend, .preference-options legend { margin-bottom: 12px; }
+.age-option { display: flex; align-items: center; gap: 12px; min-height: 56px; border: 1px solid var(--border-control); border-radius: var(--radius-control); padding: 16px; background: var(--surface); margin-bottom: 12px; cursor: pointer; }
+.age-option:has(input:checked) { border-color: var(--brand); background: var(--brand-soft); color: var(--brand); }
+.age-option input { accent-color: var(--brand); width: 20px; height: 20px; flex: none; }
+.demo-details { border-top: 1px solid var(--border); padding-top: 16px; }
+.demo-details summary { min-height: 44px; font-size: 14px; color: var(--text-secondary); }
+.demo-details p, .demo-details .field { margin-top: 12px; overflow-wrap: anywhere; }
+.onboarding-summary { border: 1px solid var(--border); border-radius: var(--radius-control); background: var(--surface); padding: 16px; }
+.onboarding-boundary { max-width: 640px; margin: 32px auto; }
+.information-page { max-width: 680px; margin: 16px auto 48px; gap: 24px; }
+.information-page h2 { font-size: 20px; font-weight: 650; }
+@media (min-width: 600px) { .landing-benefits { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (min-width: 900px) { .landing-hero { grid-template-columns: 1fr 1fr; gap: 64px; padding-block: 64px 80px; } .account-main { padding-top: 48px; } }
+@media (max-width: 599px) { .landing-header { min-height: 76px; } .landing-header nav { gap: 4px; } .landing-header .button { padding-inline: 12px; } .landing-header .header-entry { display: none; } .landing-hero { gap: 32px; padding-block: 32px 40px; } .landing-clue { margin-inline: 12px; padding: 16px 20px; } .landing-section { padding-block: 32px; } }

@@ -1,0 +1,49 @@
+.discovery-page { gap: 24px; }
+.discovery-heading { display: flex; align-items: center; justify-content: space-between; gap: 32px; padding-bottom: 8px; }
+.discovery-title { font-size: clamp(34px, 4vw, 48px); line-height: 1.12; }
+.discovery-heading .stack { gap: 12px; }
+.discovery-disclosure { display: flex; gap: 12px; align-items: center; color: var(--text-secondary); font-size: 13px; line-height: 20px; border-left: 1px solid var(--border); padding-left: 24px; }
+.discovery-toolbar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; border-block: 1px solid var(--border); padding-block: 20px; }
+.character-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 24px; }
+.character-card { overflow: hidden; border-radius: 20px; border: 1px solid var(--border); background: var(--surface); }
+.character-photo { position: relative; aspect-ratio: 4 / 5; background: var(--brand-soft); overflow: hidden; }
+.character-card__photo { display: block; position: relative; }
+.character-card__badge { position: absolute; left: 16px; bottom: 16px; }
+.character-card__badge .badge { background: var(--surface); }
+.character-card__body { padding: 20px; }
+.character-card__identity { display: flex; justify-content: space-between; flex-wrap: wrap; align-items: baseline; gap: 8px; margin-bottom: 10px; }
+.character-card__identity h2 { font-size: 23px; line-height: 30px; }
+.character-card__identity h2 a { color: var(--ink); text-decoration: none; }
+.character-card__identity h2 span { font-weight: 400; }
+.conversation-clue { margin: 0; padding: 16px; background: var(--brand-soft); border-radius: 4px 16px 16px 16px; color: var(--brand); }
+.conversation-clue .caption { display: block; margin-bottom: 8px; }
+.conversation-clue p { font-family: var(--font-display), Georgia, serif; font-size: 21px; line-height: 28px; }
+.interest-label { padding: 6px 10px; border: 1px solid var(--border); border-radius: 999px; font-size: 12px; line-height: 18px; color: var(--text-secondary); }
+.character-card__link { display: flex; justify-content: space-between; align-items: center; font-size: 14px; font-weight: 700; text-decoration: none; padding-block: 10px; }
+.preview-footnote { padding-top: 40px; }
+.discovery-qa { margin-top: 24px; border-top: 1px solid var(--border); padding-top: 16px; font-size: 13px; color: var(--text-secondary); }
+.discovery-qa .field { margin-top: 12px; max-width: 360px; }
+.profile-back { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; min-height: 44px; font-size: 14px; }
+.profile-layout { display: grid; gap: 32px; }
+.profile-gallery__main { position: relative; overflow: hidden; border-radius: 20px; }
+.gallery-expand { position: absolute; bottom: 16px; right: 16px; background: var(--surface); }
+.gallery-thumbnails { display: flex; gap: 12px; }
+.gallery-thumbnails > button { width: 76px; border: 2px solid transparent; border-radius: 12px; padding: 3px; background: transparent; overflow: hidden; }
+.gallery-thumbnails > button[aria-pressed=true] { border-color: var(--brand); }
+.gallery-thumbnails .character-photo { border-radius: 7px; }
+.profile-details { gap: 24px; align-self: start; }
+.profile-details > .badge { align-self: flex-start; }
+.profile-title { font-size: 42px; line-height: 50px; margin-bottom: 8px; }
+.profile-section { gap: 12px; }
+.profile-section h2 { font-size: 17px; }
+.profile-clue p { font-size: 25px; line-height: 32px; }
+.gallery-viewer-controls { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.photo-failure { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 20px; text-align: center; color: var(--brand); }
+.introduction-page { max-width: 620px; margin-inline: auto; }
+.introduction-page > .badge { align-self: flex-start; }
+.introduction-portrait { width: 144px; border-radius: 20px; overflow: hidden; }
+.introduction-clue { font-family: var(--font-display), Georgia, serif; font-size: 26px; line-height: 34px; margin-top: 12px; color: var(--brand); }
+.conversation-handoff { display: flex; flex-direction: column; gap: 6px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 20px; text-decoration: none; }
+@media (max-width: 599px) { .discovery-disclosure { display: none; } .discovery-toolbar .row { gap: 8px; } .discovery-toolbar .chip { padding-inline: 12px; } }
+@media (min-width: 600px) { .character-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .profile-layout { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
+@media (min-width: 1200px) { .character-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } .profile-layout { gap: 48px; } }

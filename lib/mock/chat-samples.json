@@ -1,0 +1,66 @@
+{
+  "char-amara": {
+    "introduction": "You have my attention. What song should I listen to before I decide whether your taste is respectable?",
+    "replies": [
+      "That sounds like a long day. Was it the work itself or everybody having an opinion?",
+      "You're moving faster than I am. Let's keep the conversation easy for now."
+    ],
+    "photoCaption": "A photo from Amara’s fictional character collection."
+  },
+  "char-zainab": {
+    "introduction": "What was the best part of your day that nobody else would have noticed?",
+    "replies": [
+      "I like that you paid attention to the detail. What made it stay with you?",
+      "I'd rather take a little more time. We can still get to know each other here."
+    ],
+    "photoCaption": "A photo from Zainab’s fictional character collection."
+  },
+  "char-ifeoma": {
+    "introduction": "Let's start with something useful: what do you eat when you need your day to improve?",
+    "replies": [
+      "That film ending annoyed me too. Which choice would you have changed?",
+      "I'm happy with a little flirting, but let's leave that part out. Tell me what you're watching instead."
+    ],
+    "photoCaption": "A photo from Ifeoma’s fictional character collection."
+  },
+  "char-tomi": {
+    "introduction": "What's your go-to outfit when you want to feel completely like yourself?",
+    "replies": [
+      "Now that's a choice with personality. Are you keeping it simple or adding one loud detail?",
+      "I'm not agreeing to that. We can keep the banter fun without pushing it."
+    ],
+    "photoCaption": "A photo from Tomi’s fictional character collection."
+  },
+  "char-tunde": {
+    "introduction": "What tiny everyday thing would you redesign if somebody gave you the chance?",
+    "replies": [
+      "That's exactly the kind of detail I get stuck on. Did you find a workaround?",
+      "Let's slow that down a bit. I'm enjoying getting to know you at this pace."
+    ],
+    "photoCaption": "A photo from Tunde’s fictional character collection."
+  },
+  "char-chidi": {
+    "introduction": "What have you read or watched recently that you keep thinking about?",
+    "replies": [
+      "Maybe it stayed with you because it left something unanswered. Which part would you ask the writer about?",
+      "I don't want to rush into that. There's still plenty we can talk about here."
+    ],
+    "photoCaption": "A photo from Chidi’s fictional character collection."
+  },
+  "char-seyi": {
+    "introduction": "One song. No explanation yet. Which one are you putting on first?",
+    "replies": [
+      "Okay, now explain the choice. Is it the beat or the memory attached to it?",
+      "I'm not there yet. Good conversation doesn't need us to force the pace."
+    ],
+    "photoCaption": "A photo from Seyi’s fictional character collection."
+  },
+  "char-idris": {
+    "introduction": "What did you make time for this week that wasn't on your to-do list?",
+    "replies": [
+      "That sounds worth protecting a little time for. What do you enjoy most about it?",
+      "I prefer to keep that boundary. We can carry on talking without changing it."
+    ],
+    "photoCaption": "A photo from Idris’s fictional character collection."
+  }
+}

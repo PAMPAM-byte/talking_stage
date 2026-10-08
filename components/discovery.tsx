@@ -1,0 +1,39 @@
+"use client";
+import Image from 'next/image';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import type { CharacterFilters, PublicCharacter, Result } from '@/lib/contracts';
+import { characters, listCharacters, type DiscoveryScenario } from '@/lib/mock/discovery';
+import { useMockAccount } from './account-provider';
+import { UserBoundary } from './user-boundary';
+import { Badge, Button, Chip, EmptyState, Notice, SelectField, Skeleton } from './ui/primitives';
+import { Overlay } from './ui/overlay';
+import { Icon } from './ui/icon';
+import { characterAsset } from '@/lib/mock/character-assets';
+
+export function CharacterPhoto({ character, kind = 'portrait', eager = false, broken = false, retryable = true }: { character: PublicCharacter; kind?: 'portrait' | 'gallery'; eager?: boolean; broken?: boolean; retryable?: boolean }) {
+  const [failed, setFailed] = useState(false); const [attempt, setAttempt] = useState(0);
+  const asset = characterAsset(character.id, kind);
+  return <div className="character-photo">{failed ? <div className="photo-failure"><Icon name="photo" /><p>Photo couldn’t be loaded.</p>{retryable && <Button variant="secondary" onClick={() => { setFailed(false); setAttempt(v => v + 1); }}>Retry photo</Button>}</div> : <Image key={attempt} src={broken ? '/images/missing-preview.webp' : asset.displayUrl} alt={`${character.name}, ${character.age}, a fictional adult AI character${kind === 'gallery' ? ' in a lifestyle photo' : ' in a portrait'}`} fill sizes="(min-width: 900px) 33vw, (min-width: 600px) 50vw, 100vw" loading={eager ? 'eager' : 'lazy'} style={{ objectFit: 'cover', objectPosition: `${asset.focalPoint.x * 100}% ${asset.focalPoint.y * 100}%` }} onError={() => setFailed(true)} />}</div>;
+}
+export function ScenarioControls({ value, onChange }: { value: DiscoveryScenario; onChange: (s: DiscoveryScenario) => void }) {
+  return process.env.NODE_ENV === 'development' ? <details className="discovery-qa"><summary>Developer review scenarios</summary><SelectField label="Discovery scenario" value={value} onChange={e => onChange(e.target.value as DiscoveryScenario)}>{['ready', 'empty', 'offline', 'error', 'deactivated', 'paused'].map(s => <option key={s} value={s}>{s}</option>)}</SelectField></details> : null;
+}
+export function Discovery() { return <UserBoundary><DiscoveryContent /></UserBoundary>; }
+function DiscoveryContent() {
+  const account = useMockAccount();
+  const preferred = account.user?.preferences.characterGenders;
+  const [filters, setFilters] = useState<CharacterFilters>(() => ({ gender: preferred?.length === 1 ? preferred[0] : undefined }));
+  const [draft, setDraft] = useState(filters); const [open, setOpen] = useState(false); const [scenario, setScenario] = useState<DiscoveryScenario>('ready');
+  const [result, setResult] = useState<Result<PublicCharacter[]> | null>(null); const [retry, setRetry] = useState(0);
+  useEffect(() => { let current = true; listCharacters(filters, scenario).then(r => { if (current) setResult(r); }); return () => { current = false; }; }, [filters, scenario, retry]);
+  const change = (next: CharacterFilters) => { setResult(null); setFilters(next); };
+  const reset = () => change({}); const selected = Object.values(filters).filter(Boolean);
+  return <div className="discovery-page stack"><header className="discovery-heading"><div className="stack"><p className="supporting muted">Welcome, {account.user?.displayName}.</p><h1 className="display discovery-title">A little spark.<br />A good conversation.</h1><p className="muted">Meet fictional AI characters with a personality of their own.</p></div><div className="discovery-disclosure"><Icon name="info" /><span>Every character is AI.<br />Every story is fictional.</span></div></header>
+    <div className="discovery-toolbar"><div className="row" aria-label="Character gender"><Chip selected={!filters.gender} onClick={() => change({ ...filters, gender: undefined })}>Everyone</Chip><Chip selected={filters.gender === 'woman'} onClick={() => change({ ...filters, gender: 'woman' })}>Women</Chip><Chip selected={filters.gender === 'man'} onClick={() => change({ ...filters, gender: 'man' })}>Men</Chip></div><Button variant="secondary" onClick={() => { setDraft(filters); setOpen(true); }}><Icon name="filter" />Filters{selected.length > 0 ? ` (${selected.length})` : ''}</Button></div>
+    {(filters.personality || filters.interest) && <div className="row"><span className="supporting muted">{[filters.personality, filters.interest].filter(Boolean).join(' · ')}</span><Button variant="quiet" onClick={reset}>Reset filters</Button></div>}
+    {!result ? <div className="character-grid" role="status" aria-label="Loading characters">{[0, 1, 2].map(v => <div key={v} className="stack"><Skeleton height={360} /><Skeleton width="55%" /><Skeleton height={44} /></div>)}</div> : result.error ? <Notice live tone="danger" title="Discovery unavailable"><p>{result.error.message}</p><Button variant="secondary" onClick={() => { setResult(null); setRetry(v => v + 1); }}>Try again</Button></Notice> : <><p className="caption muted" role="status">{result.data.length} {result.data.length === 1 ? 'character' : 'characters'} to discover</p>{result.data.length === 0 ? <EmptyState title="No characters fit these filters" icon="discover" action={<Button onClick={() => { setScenario('ready'); reset(); }}>Reset filters</Button>}>Try a different interest or personality, or explore everyone.</EmptyState> : <div className="character-grid">{result.data.map((c, index) => <article key={c.id} className="character-card"><Link href={`/characters/${c.id}`} className="character-card__photo" aria-label={`View ${c.name}’s profile`}><CharacterPhoto character={c} eager={index < 3} retryable={false} /><span className="character-card__badge"><Badge>AI character</Badge></span></Link><div className="character-card__body stack"><div><div className="character-card__identity"><h2><Link href={`/characters/${c.id}`}>{c.name}<span>, {c.age}</span></Link></h2><span className="caption muted">{c.fictionalLocation} · fictional</span></div><p className="supporting muted">{c.bioSnippet}</p></div><blockquote className="conversation-clue"><span className="caption">A way into the conversation</span><p>“{c.conversationClue}”</p></blockquote><div className="row">{c.interests.map(i => <span className="interest-label" key={i}>{i}</span>)}</div><Link href={`/characters/${c.id}`} className="character-card__link">Meet {c.name}<Icon name="arrow" /></Link></div></article>)}</div>}</>}
+    <Overlay open={open} onClose={() => setOpen(false)} title="Find your kind of conversation" description="Combine a gender, personality and interest. Changes apply when you’re ready." sheet footer={<><Button variant="quiet" onClick={() => setDraft({})}>Clear selections</Button><Button onClick={() => { change(draft); setOpen(false); }}>Apply filters</Button></>}><div className="stack"><SelectField label="Character gender" value={draft.gender ?? ''} onChange={e => setDraft({ ...draft, gender: e.target.value as CharacterFilters['gender'] || undefined })}><option value="">Everyone</option><option value="woman">Women</option><option value="man">Men</option></SelectField><SelectField label="Personality" value={draft.personality ?? ''} onChange={e => setDraft({ ...draft, personality: e.target.value || undefined })}><option value="">Any personality</option>{[...new Set(characters.flatMap(c => c.personalityTags))].sort().map(i => <option key={i}>{i}</option>)}</SelectField><SelectField label="Interest" value={draft.interest ?? ''} onChange={e => setDraft({ ...draft, interest: e.target.value || undefined })}><option value="">Any interest</option>{[...new Set(characters.flatMap(c => c.interests))].sort().map(i => <option key={i}>{i}</option>)}</SelectField></div></Overlay>
+    <ScenarioControls value={scenario} onChange={s => { setResult(null); setScenario(s); }} />
+  </div>;
+}

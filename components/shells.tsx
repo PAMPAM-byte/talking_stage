@@ -1,0 +1,9 @@
+import Link from "next/link";
+import type { ReactNode } from "react";
+import { Icon, type IconName } from "./ui/icon";
+export function Brand() { return <Link href="/" className="brand-mark" aria-label="TalkingStage home"><span className="brand-symbol" aria-hidden="true">“</span>TalkingStage</Link>; }
+export type NavItem = { label: string; icon: IconName; active?: boolean; href?: string; onSelect?: () => void };
+function Navigation({ items, label }: { items: NavItem[]; label: string }) { return <nav className="shell__navigation" aria-label={label}>{items.map((item) => item.href ? <Link key={item.label} href={item.href} className="shell__nav-item" aria-current={item.active ? "page" : undefined}><Icon name={item.icon} />{item.label}</Link> : <button key={item.label} type="button" onClick={item.onSelect} className="shell__nav-item" aria-current={item.active ? "page" : undefined}><Icon name={item.icon} />{item.label}</button>)}</nav>; }
+export function PublicShell({ children, actions, footer }: { children: ReactNode; actions?: ReactNode; footer?: ReactNode }) { return <div className="shell"><header className="container shell__header"><Brand />{actions}</header><main id="main-content" className="container shell__main">{children}</main>{footer && <footer className="container shell__footer">{footer}</footer>}</div>; }
+export function AppShell({ children, items, actions, admin = false }: { children: ReactNode; items: NavItem[]; actions?: ReactNode; admin?: boolean }) { return <div className={`shell shell--${admin ? "admin" : "user"}`}><header className="container shell__header"><Brand />{actions}</header><Navigation items={items} label={admin ? "Administration" : "Main navigation"} /><main id="main-content" className="container shell__main">{children}</main></div>; }
+export { ChatShell } from "./chat-shell";

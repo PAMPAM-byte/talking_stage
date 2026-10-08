@@ -1,0 +1,13 @@
+"use client";
+import { useRef, useState } from 'react';
+import type { Report } from '@/lib/contracts';
+import { sendReport, type SpaceScenario } from '@/lib/mock/personal-space';
+import { SpaceReview } from './personal-space';
+import { Button, Notice, SelectField, TextArea } from './ui/primitives';
+import { Overlay } from './ui/overlay';
+export type ReportContext = { target: Report['target']; label: string; preview: string };
+export function ReportDialog({ context, onClose }: { context: ReportContext; onClose: () => void }) {
+  const [reason, setReason] = useState(''); const [details, setDetails] = useState(''); const [scenario, setScenario] = useState<SpaceScenario>('ready'); const [busy, setBusy] = useState(false); const [error, setError] = useState(''); const [sent, setSent] = useState(false); const operation = useRef(crypto.randomUUID());
+  async function submit() { if (busy) return; setBusy(true); setError(''); const r = await sendReport(context.target, reason, details, operation.current, scenario); setBusy(false); if (r.error) setError(r.error.message); else setSent(true); }
+  return <Overlay open onClose={() => { if (!busy) onClose(); }} title={sent ? 'Report saved in preview' : `Report ${context.label}`} description={sent ? 'This is a simulated acknowledgement. No report has been sent to a real moderation team.' : 'Your report concerns the selected content. Add only the details needed to explain the issue.'} sheet footer={sent ? <Button onClick={onClose}>Done</Button> : <><Button variant="secondary" disabled={busy} onClick={onClose}>Cancel</Button><Button loading={busy} onClick={submit}>Send report</Button></>}><div className="stack">{sent ? <Notice live tone="success" title="Report recorded">The disposable report example is ready for the administration preview.</Notice> : <><blockquote className="report-context"><span className="caption muted">Selected {context.target.kind}</span><p>{context.preview}</p></blockquote><SelectField label="Report reason" value={reason} onChange={e => setReason(e.target.value)}><option value="">Choose a reason</option>{['Safety concern', 'Inappropriate content', 'Payment pressure', 'Photo concern', 'Other'].map(reason => <option key={reason}>{reason}</option>)}</SelectField><TextArea label="Additional details (optional)" value={details} maxLength={1000} onChange={e => setDetails(e.target.value)} hint="Custom details stay in memory; persisted preview reports use a placeholder." />{error && <Notice live title="Report not saved" tone="danger">{error}</Notice>}<SpaceReview value={scenario} onChange={setScenario} /></>}</div></Overlay>;
+}
