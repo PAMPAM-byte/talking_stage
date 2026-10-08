@@ -15,8 +15,10 @@ if (values.NEXT_PUBLIC_SUPABASE_URL && values.NEXT_PUBLIC_SUPABASE_URL !== url) 
 const required = {
   NEXT_PUBLIC_TALKINGSTAGE_MODE: 'supabase', NEXT_PUBLIC_SUPABASE_URL: url,
   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: key,
+  SUPABASE_SERVICE_ROLE_KEY: status.SERVICE_ROLE_KEY,
   TALKINGSTAGE_SITE_URL: 'http://localhost:3000', AUTH_FLOW_SECRET: randomBytes(32).toString('hex'),
 };
+if (!required.SUPABASE_SERVICE_ROLE_KEY) throw new Error('Local trusted Storage credentials are unavailable.');
 const additions = Object.entries(required).filter(([name]) => !values[name]).map(([name, value]) => `${name}=${value}`);
 if (additions.length) await writeFile('.env.local', `${existing.trimEnd()}\n${additions.join('\n')}\n`, { mode: 0o600 });
 console.log('Ignored .env.local configured for local Supabase; credentials were not printed.');

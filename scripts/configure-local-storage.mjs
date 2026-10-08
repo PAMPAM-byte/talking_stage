@@ -1,0 +1,10 @@
+import { createClient } from '@supabase/supabase-js';
+process.loadEnvFile('.env.local');
+const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+if (!url || !['localhost','127.0.0.1'].includes(new URL(url).hostname)) throw new Error('Storage setup requires the local stack.');
+const client = createClient(url, process.env.SUPABASE_SERVICE_ROLE_KEY, { auth: { persistSession: false, autoRefreshToken: false } });
+const found = await client.storage.getBucket('cast-private');
+const config = { public: false, fileSizeLimit: 5 * 1024 * 1024, allowedMimeTypes: ['image/webp'] };
+const result = found.data ? await client.storage.updateBucket('cast-private', config) : await client.storage.createBucket('cast-private', config);
+if (result.error) throw new Error('Private Storage setup failed. Confirm the local Storage service is running.');
+console.log('Local private cast bucket configured; direct client access has no grants.');

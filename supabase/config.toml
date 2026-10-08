@@ -196,6 +196,8 @@ password_requirements = ""
 # rp_origins = ["http://127.0.0.1:3000"]
 
 [auth.rate_limit]
+# Use npm run backend:start: CLI 2.120.0 omits Auth's rate-limit header.
+# The local startup wrapper enables gateway-controlled X-Real-IP in Auth.
 # Number of emails that can be sent per hour. Requires auth.email.smtp to be enabled.
 email_sent = 2
 # Number of SMS messages that can be sent per hour. Requires auth.sms to be enabled.

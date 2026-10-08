@@ -6,6 +6,7 @@ if (!url || !['localhost', '127.0.0.1'].includes(new URL(url).hostname)) throw n
 
 export default defineConfig({
   testDir: './tests-auth', timeout: 120000, expect: { timeout: 15000 }, workers: 1,
+  outputDir: './test-results-auth',
   fullyParallel: false, reporter: 'list',
   use: { baseURL: 'http://localhost:3102', browserName: 'chromium', channel: 'msedge', headless: true, trace: 'off' },
   webServer: {

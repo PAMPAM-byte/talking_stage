@@ -11,8 +11,19 @@
     "test": "playwright test",
     "check:production": "node scripts/check-production.mjs",
     "test:database": "node scripts/test-database.mjs",
+    "test:cast-database": "node scripts/test-cast-database.mjs",
+    "test:assets-database": "node scripts/test-assets-database.mjs",
+    "test:images": "node scripts/test-images.mjs",
+    "test:stage9": "node scripts/test-stage9-completion.mjs",
+    "test:conversations-database": "node scripts/test-conversations-database.mjs",
+    "test:reply-integration": "node scripts/test-reply-integration.mjs",
+    "test:ai-provider": "node scripts/test-ai-provider.mjs",
+    "test:photo-replies": "node scripts/test-photo-replies.mjs",
+    "test:storage-restore": "node scripts/test-storage-restore.mjs",
     "test:auth": "playwright test --config playwright.auth.config.ts",
-    "backend:start": "supabase start --exclude realtime,storage-api,imgproxy,postgres-meta,studio,edge-runtime,logflare,vector,supavisor",
+    "backend:start": "node scripts/start-local-backend.mjs",
+    "backend:limits": "node scripts/configure-local-auth-limits.mjs",
+    "backend:storage": "node scripts/configure-local-storage.mjs",
     "backend:stop": "supabase stop",
     "backend:configure": "node scripts/configure-local-supabase.mjs"
   },
@@ -22,7 +33,8 @@
     "next": "16.4.0",
     "react": "19.3.0",
     "react-dom": "19.3.0",
-    "server-only": "^0.0.1"
+    "server-only": "^0.0.1",
+    "sharp": "0.35.5"
   },
   "devDependencies": {
     "@electric-sql/pglite": "^0.5.8",

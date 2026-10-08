@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import sharp from 'sharp';
+import { inspectImage } from '../lib/backend/inspect-image.ts';
+const bytes=await sharp({create:{width:500,height:600,channels:3,background:'#682447'}}).png().toBuffer();
+const result=await inspectImage(bytes);
+assert.equal(result.variants.length,3);
+assert.equal((await sharp(result.original).metadata()).format,'webp');
+assert.equal((await sharp(result.original).metadata()).exif,undefined);
+assert.equal((await sharp(result.variants[0].bytes).metadata()).width,320);
+for(const invalid of [Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" width="500" height="500"></svg>'),Buffer.from('not an image'),Buffer.alloc(5*1024*1024+1),bytes.subarray(0,100)]) await assert.rejects(inspectImage(invalid));
+const tiny=await sharp({create:{width:20,height:20,channels:3,background:'#ffffff'}}).png().toBuffer();
+await assert.rejects(inspectImage(tiny));
+console.log('Image inspection checks passed: decode, normalization, responsive variants, metadata stripping and invalid/oversized/tiny/truncated file rejection.');

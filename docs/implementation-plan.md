@@ -1,6 +1,6 @@
 # TalkingStage implementation plan
 
-Version 1.12 · 8 October 2026 · Status: Stage 7 complete for backend handoff; Stage 8 implementation in progress
+Version 1.18 · 8 October 2026 · Status: Stage 9 complete for local backend handoff; Stage 10 in progress
 
 Product owner: PAMPAM
 
@@ -34,8 +34,8 @@ Update a stage to In progress when work begins. Mark it Complete only when its e
 | 5 | Settings, memory, payments, and reporting frontend | 4 | Complete — [record](./reviews/stage-5.md) |
 | 6 | Full administration frontend | 5 | Complete — [record](./reviews/stage-6.md) |
 | 7 | Frontend quality review and completion gate | 1–6 | Complete for backend handoff — [review](./reviews/stage-7.md); manual checks deferred before pilot |
-| 8 | Backend foundation, identity, and ownership | 7 | In progress — Supabase approved; [local implementation evidence](./reviews/stage-8.md); live configuration/integration pending |
-| 9 | Cast, assets, and administration backend | 8 | Planned |
+| 8 | Backend foundation, identity, and ownership | 7 | Complete for local handoff — real Auth/RLS/roles/throttling/restore verified; [evidence](./reviews/stage-8.md); hosted deployment checks remain Stage 13 |
+| 9 | Cast, assets, and administration backend | 8 | In progress — private cast draft integration; [review](./reviews/stage-9.md) and [contracts](./stage-9-contracts.md) |
 | 10 | Conversations, AI, and memory backend | 9 | Planned |
 | 11 | Payments and reconciliation backend | 10 | Planned |
 | 12 | Privacy, reporting, monitoring, and full integration | 11 | Planned |
@@ -51,7 +51,7 @@ Use clearly labelled provisional fixtures where a decision does not prevent fron
 | Visual direction, fonts, portrait treatment | Stage 1 completion | Use design-system proposal; record any revision |
 | Cast size, profiles, instructions, adult ages, approved assets | Stage 7 for final presentation; Stage 9 for publication | Eight characters/four per gender are provisional; mark draft fixtures |
 | Age eligibility and check method | Confirmed during Stage 7 | User selected 18+ checkbox declaration before onboarding; implemented. Self-declaration is not independent verification; enforce accepted declaration server-side in Stage 8. |
-| Account/authentication approach | Stage 7 if it changes screens; Stage 8 for integration | Mock register, sign-in, recovery, expired-session, and sign-out flows |
+| Account/authentication approach | Confirmed and integrated in Stage 8 | Supabase email/password Auth, confirmation, recovery and server-enforced adult/onboarding access; explicit development mock preview retained |
 | Language and preference options | Stage 2 completion | Nigerian English and optional Pidgin; exact labels recorded |
 | Conversation deletion, reset, archive, and memory semantics | Confirmed during Stage 5 | User chose memories kept by default with an explicit option to clear; reset/delete dialogs implement D13 |
 | Memory consent, sensitive information, retention, deletion exceptions | Stage 7 | UI and explanatory copy must match actual intended policy |
@@ -211,14 +211,14 @@ Evidence so far: [Stage 7 review](./reviews/stage-7.md), [contract index](./fron
 
 **PRD coverage:** AUTH-01, AGE-01, PREF-01; data model, privacy and ownership foundations.
 
-- [ ] Select/configure approved database and authentication services; define environment handling and server-only secrets.
+- [x] Select/configure approved database and authentication services; define environment handling and server-only secrets. Local Docker Supabase connected; hosted deployment remains separate.
 - [x] Implement the minimum PRD entities: User, Character, CharacterAsset, Conversation, Message, Memory, PaymentIntent, PaymentEvent, Report, AdminAudit. Foundation migration exists; feature migrations follow in Stages 9–12.
-- [x] Add ownership constraints, uniqueness/idempotency keys, indices, lifecycle timestamps, and migration procedures. Local PostgreSQL checks pass; deployed migration/restore evidence is still required.
-- [ ] Implement registration, sign-in, recovery, session handling, sign-out, and server-enforced private-page/API access.
-- [ ] Implement the selected age-assurance flow and adult-access enforcement server-side, not merely client-side.
-- [ ] Implement preferences and admin roles; prevent user-supplied IDs/roles from granting access.
-- [ ] Establish request validation, safe errors, rate limits, audit foundations, and initial backup/restore procedures.
-- [ ] Replace identity/preference mock adapters and verify existing screens against real responses.
+- [x] Add ownership constraints, uniqueness/idempotency keys, indices, lifecycle timestamps, and migration procedures. Migration applied locally; real two-account checks and isolated restore passed.
+- [x] Implement registration, sign-in, recovery, session handling, sign-out, and server-enforced private-page/API access.
+- [x] Implement the selected age-assurance flow and adult-access enforcement server-side, not merely client-side.
+- [x] Implement preferences and admin roles; prevent user-supplied IDs/roles from granting access.
+- [x] Establish request validation, safe errors, rate limits, audit foundations, and initial backup/restore procedures. Real local native Auth limits, retry UI, spoofed-header rejection and preserved restart verified; hosted deployment controls tracked in Stage 13.
+- [x] Replace identity/preference mock adapters and verify existing screens against real responses. Explicit development preview mode remains available.
 
 **Exit criteria:** Two-account access tests establish isolation on implemented resources. Real sign-in/recovery/age restrictions work, admin access is enforced, and secrets never reach client bundles.
 
@@ -226,13 +226,13 @@ Evidence so far: [Stage 7 review](./reviews/stage-7.md), [contract index](./fron
 
 **PRD coverage:** DISC-01–02, PROF-01, IMG-02, ADMIN-01, ADMIN-02 in part.
 
-- [ ] Implement cast creation/editing, instruction versions, preview, publication, deactivation, and pause state.
-- [ ] Implement approved object storage, asset upload validation, review status, access controls, and responsive delivery.
-- [ ] Enforce character-to-asset ownership and published-asset eligibility.
-- [ ] Publish only approved, clearly adult, visually consistent cast assets; complete operator review.
-- [ ] Implement discovery/filter/profile retrieval and unavailable-character behaviour.
-- [ ] Implement audited admin actions and independent capability configuration/kill switches.
-- [ ] Replace cast, discovery, profile, asset, and administration mock adapters.
+- [x] Implement cast creation/editing, instruction versions, preview, publication, deactivation, and pause state. Private drafts, public-only preview, instruction history, publication, deactivation and independent capability pauses are verified locally.
+- [x] Implement approved object storage, asset upload validation, review status, access controls, and responsive delivery. Local Supabase private Storage, server decoding and generated variants; real browser/role checks passed.
+- [x] Enforce character-to-asset ownership and published-asset eligibility. Trusted inspected registration, explicit review/publication and current-eligibility delivery verified.
+- [x] Publish only approved, clearly adult, visually consistent cast assets; complete operator review. Owner explicitly approved all eight profiles and sixteen photos on 8 October 2026; inspected, reviewed and published locally, with authenticated discovery/delivery and role denial verified.
+- [x] Implement discovery/filter/profile retrieval and unavailable-character behaviour. Real published records, filters, twelve-record pagination, complete filter options and rejection/deactivation denial verified; 70-record database coverage.
+- [x] Implement audited admin actions and independent capability configuration/kill switches. Mandatory cast/asset commands persist expected failures; upload failures use trusted safe audit codes. Global/per-character switches and audit UI are verified. Chat/payment stages must enforce shared permissions.
+- [x] Replace cast, discovery, profile, asset, and administration mock adapters for Stage 9. Cast/assets/preview/operations/audit use real adapters; report/payment/analytics integrations remain their later stages.
 
 **Exit criteria:** Only published active characters and eligible assets appear to users. Publishing/deactivation and pause controls work without redeployment; user access cannot edit characters or retrieve admin instructions.
 
@@ -240,14 +240,14 @@ Evidence so far: [Stage 7 review](./reviews/stage-7.md), [contract index](./fron
 
 **PRD coverage:** CHAT-01–04, MEM-01–02, IMG-01, PAY-01 behavioural foundations.
 
-- [ ] Implement user-owned conversations, ordered message persistence, previews, archive/delete/reset semantics, and bounded history retrieval.
-- [ ] Implement idempotent message submission and retry-safe response generation; distinguish saved input from failed output.
+- [x] Implement user-owned conversations, ordered message persistence, previews, archive/delete/reset semantics, and bounded history retrieval. Initial real persistence/lifecycle batch passed migration-chain and local two-user browser checks, including refresh, retries and mobile layout.
+- [ ] Implement idempotent message submission and retry-safe response generation; distinguish saved input from failed output. Saved input, private leases, duplicate-output protection, bounded explicit retry and cancellation are implemented and offline-tested. Live provider failure/billing verification remains open; keys and spending configuration are absent.
 - [ ] Select/evaluate the model for Nigerian English/Pidgin, character consistency, structured output, latency, terms, and total cost.
-- [ ] Implement the replaceable AI adapter and context assembly: product rules, versioned character identity, preferences/permitted memories, recent history, bounded summary, and structured capabilities.
-- [ ] Store factual memory separately from fictional relationship state; enforce consent/sensitive-data rules, per-user/per-character scope, disable/delete, and summary invalidation when necessary.
-- [ ] Implement structured approved-photo selection with server-side asset validation. Models cannot return arbitrary executable actions or unapproved photos.
+- [ ] Implement the replaceable AI adapter and context assembly: product rules, versioned character identity, preferences/permitted memories, recent history, bounded summary, and structured capabilities. Optional Responses transport, bounded private context and approved-photo selection are implemented. Summaries remain open; payment actions stay disabled.
+- [ ] Store factual memory separately from fictional relationship state; enforce consent/sensitive-data rules, per-user/per-character scope, disable/delete, and summary invalidation when necessary. Explicit saving, inspection, permissions, deletion and in-flight context invalidation are connected. Every save requires explicit consent; no automated extraction/classification or summaries exist yet.
+- [x] Implement structured approved-photo selection with server-side asset validation. Candidate IDs/versions are scoped to the current character and snapshotted per lease; completion rechecks ownership, approval/version and photo permissions. Text/photo output is atomic and idempotent. Offline pipeline and real Storage/card/viewer/failure checks pass. Actual live model selection/behavior remains part of the model evaluation gate.
 - [ ] Implement refusal/mute handling and request-policy eligibility. Do not create real checkout until Stage 11.
-- [ ] Add usage budgets, response timeouts, cancellation/interruption handling, summary processing, and pause enforcement.
+- [ ] Add usage budgets, response timeouts, cancellation/interruption handling, summary processing, and pause enforcement. Atomic project/user daily reservations, bounded timeouts/leases, explicit skip and final pause checks are implemented. Approved limits, current rates, actual billing verification and summary processing remain open.
 - [ ] Integrate existing message/photo/memory screens and evaluate repeated sessions for every approved character.
 
 **Exit criteria:** Conversations persist and remain isolated; deleted/disabled memories stop entering context, including summaries where relevant. Distinct voices survive multiple sessions. Prompt injection cannot access other users, select another character's asset, change balances, or mark a payment paid. Refusal does not reduce warmth or trigger repeated pressure.
@@ -298,6 +298,7 @@ Evidence so far: [Stage 7 review](./reviews/stage-7.md), [contract index](./fron
 - [ ] Establish realistic success thresholds from pilot evidence rather than invented market benchmarks.
 - [ ] Fix material findings and repeat affected checks.
 - [ ] Prepare release/rollback, capacity, backups, independent kill switches, and support ownership; obtain explicit release authorisation before public publishing.
+- [ ] Verify hosted Auth quotas, SMTP and canonical redirects; test trusted client-IP/proxy handling and anonymous limits across deployed application instances. Local Stage 8 enforcement evidence does not establish deployment behavior.
 
 **Gate C — Public release:** All PRD launch gates pass with recorded evidence, operating costs are acceptable, launch decisions are resolved, and publication is authorised. Completing the roadmap does not itself grant publication permission.
 
@@ -364,4 +365,4 @@ If integration exposes a contract mismatch, update the affected screen/adapter a
 - Next.js scaffold exists.
 - Design-system tokens, reusable components, responsive shells, local mock foundation, and development-only preview are implemented.
 - Stages 0–6 frontend implementation is complete, including the user-selected 18+ checkbox declaration. The current frontend is accepted and Gate A permits backend handoff. Physical-device/accessibility checks remain mandatory before private-pilot access.
-- **Current stage: Stage 8 — Backend foundation, identity and ownership.** Supabase is approved; schema, account actions, ownership policies and real-mode route boundaries are implemented locally. No backend service is connected yet. Configure the development environment and complete the [live acceptance checklist](./stage-8-setup.md). Stage 7 is complete for handoff under the user-authorised manual-review deferral. Preserve the accepted frontend and apply frontend-design to every UI implementation.
+- **Stage 10 in progress — Conversations, AI and memory backend.** Durable conversations, a replaceable optional AI transport, reply leases/budget reservations and explicit per-character memory are implemented. The owner instructed integration to continue without keys; live generation remains disabled pending credentials, model evaluation and approved spending configuration. Follow [Stage 10 contracts](./stage-10-contracts.md), [AI setup](./stage-10-ai-setup.md) and [review](./reviews/stage-10.md). Stage 9's eight approved profiles and sixteen photos are published locally. Hosted launch checks remain Stage 13, and the accepted manual accessibility/device gate remains before the pilot. Preserve the accepted frontend and use frontend-design for every UI implementation.

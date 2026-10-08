@@ -20,6 +20,8 @@ Automated viewport resizing and a focused composer in a shortened viewport test 
 
 ## Recording a decision
 
+Stage 9 update, 8 October 2026: the owner explicitly answered “approve” to the final question approving all eight profiles and sixteen photos for local import, review attestations and publication. Approval and successful local publication are recorded in the [cast/photo worksheet](./reviews/stage-9/cast-approval.md). This settles the local cast/photo decision; it does not authorize hosted deployment or public launch.
+
 Frontend acceptance is recorded. The accepted build includes the 18+ checkbox, email/password mock flow, eight-character presentation, memory controls, optional simulated payments and administration. Exact operating limits, service choices and final legal/support content remain prerequisites for their respective integration/launch stages; any resulting UI changes require review. The user then approved the recommended deferral with “you should do that.” Stage 7 is complete for backend handoff; manual tests remain pending before the private pilot.
 
 Record the selected behaviour, owner/date, affected screen(s) and verification evidence here. Distinguish approval of frontend presentation from authorisation to publish or connect real services. No silence, navigation through a mock role selector or generic request to proceed constitutes final cast/policy/frontend acceptance.

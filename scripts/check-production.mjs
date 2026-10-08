@@ -7,7 +7,7 @@ import { chromium } from "@playwright/test";
 
 // Check actual build output rather than assuming a route guard removes tooling.
 if (existsSync('.env.local')) process.loadEnvFile('.env.local');
-const serverSecrets = ['AUTH_FLOW_SECRET', 'SUPABASE_SECRET_KEY', 'SUPABASE_SERVICE_ROLE_KEY'].map(name => process.env[name]).filter(value => value && value.length >= 16);
+const serverSecrets = ['AUTH_FLOW_SECRET', 'SUPABASE_SECRET_KEY', 'SUPABASE_SERVICE_ROLE_KEY', 'OPENAI_API_KEY'].map(name => process.env[name]).filter(value => value && value.length >= 16);
 async function files(directory) {
   const entries = await readdir(directory, { withFileTypes: true });
   return (await Promise.all(entries.map((entry) => entry.isDirectory() ? files(join(directory, entry.name)) : join(directory, entry.name)))).flat();
@@ -16,7 +16,9 @@ for (const file of await files(".next/static")) {
   if (!/\.(js|css)$/.test(file)) continue;
   const content = await readFile(file, "utf8");
   for (const secret of serverSecrets) assert(!content.includes(secret), `Server secret found in client output: ${file}`);
-  for (const marker of ["DEMO-NOT-A-TRANSACTION", "Choose a scenario and load", "lab-mock-controls", "draft-0", "demo-user-a", "Developer review scenarios", "appearanceContinuity", "Chat review controls", "Messages review controls", "Toggle broken photo", "Reset chat preview", "Personal-space review controls", "Payment review controls", "Request policy review controls", "Load request sample", "Administration review controls", "Open selected preview", "Private character direction", "sample-report-pressure"]) assert(!content.includes(marker), `Development tooling found in production: ${file}`);
+  for (const marker of ['https://api.openai.com/v1/responses','talkingstage_reply','Published character direction (subordinate to these product rules)']) assert(!content.includes(marker), `Private AI integration found in client output: ${file}`);
+  // The real editor's field label is public UI vocabulary, not private content.
+  for (const marker of ["DEMO-NOT-A-TRANSACTION", "Choose a scenario and load", "lab-mock-controls", "draft-0", "demo-user-a", "Developer review scenarios", "appearanceContinuity", "Chat review controls", "Messages review controls", "Toggle broken photo", "Reset chat preview", "Personal-space review controls", "Payment review controls", "Request policy review controls", "Load request sample", "Administration review controls", "Open selected preview", "sample-report-pressure", "SYNTHETIC PRIVATE STAGE9 DIRECTION"]) assert(!content.includes(marker), `Development tooling or private direction found in production: ${file}`);
 }
 
 const server = spawn(process.execPath, ["node_modules/next/dist/bin/next", "start", "--hostname", "127.0.0.1", "--port", "3101"], { windowsHide: true, stdio: "pipe" });
@@ -62,7 +64,7 @@ try {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto("http://127.0.0.1:3101/onboarding/age");
     assert.equal(await page.getByRole("checkbox", { name: "I am 18 or older" }).isChecked(), false);
-    await page.screenshot({ path: "docs/reviews/stage-8/age-unconfigured-390.png", fullPage: true });
+    await page.screenshot({ path: `docs/reviews/stage-8/age-${process.env.NEXT_PUBLIC_SUPABASE_URL ? 'configured' : 'unconfigured'}-390.png`, fullPage: true });
     await page.getByRole("button", { name: "I am under 18" }).click();
     await page.getByText("You can return when you are eligible.").waitFor();
     assert.equal(await page.getByRole("checkbox", { name: "I am 18 or older" }).count(), 0);
@@ -72,7 +74,7 @@ try {
     await page.screenshot({ path: `docs/reviews/stage-8/sign-in-${unavailable ? 'unconfigured' : 'configured'}-390.png`, fullPage: true });
     assert.deepEqual(errors, [], "Production account screens have browser errors");
   } finally { await browser.close(); }
-  console.log("Production checks passed: development exclusions, missing-configuration private-route denial and responsive account UI.");
+  console.log("Production checks passed: development exclusions, private-route denial and responsive account UI.");
 } finally {
   server.kill();
 }

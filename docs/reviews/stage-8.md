@@ -1,6 +1,6 @@
 # Stage 8 implementation review
 
-8 October 2026 · **In progress**, not complete. Supabase selected with user approval; no live project is connected.
+8 October 2026 · **Complete for local backend handoff.** Approved Supabase runs locally through Docker. Real account, ownership, role, throttling, outage and restore checks passed. No hosted or production project is connected.
 
 ## Implemented locally
 
@@ -8,18 +8,26 @@
 - Versioned foundation migration for the minimum PRD entities, private character direction/roles/payment events/report resolution/audit, read-only client grants, composite ownership references, sequence/idempotency constraints and onboarding restrictions.
 - Register/sign-in/confirmation/recovery/sign-out actions, signed declaration/recovery cookies, persisted 18+ declaration, explicit onboarding consent, narrow preference RPCs with optimistic versions and transactional request limits.
 - Connected account forms reuse the approved design system. Production cannot use mock identity. Unfinished cast/chat/payment/privacy/admin operations display availability states in Supabase mode; their approved frontend fixtures remain reviewable in development mock mode.
+- Local startup corrects the pinned CLI's missing Auth rate-limit header using gateway-controlled `X-Real-IP`. The guarded configurator preserves credentials/database configuration, retains the stopped original until replacement health passes, and automatically rolls back failures. No paid hook or additional service was introduced.
 
 ## Verification
 
 - Local PGlite/PostgreSQL migration and ownership checks passed: two actors, changed target ID, anonymous/incomplete access, no role from metadata, private-table denial, direct-write denial, stale/invalid preferences, consent, cross-owner ledger reference, message sequence uniqueness, trusted admin provisioning and mutation limits.
 - Final TypeScript/production build and ESLint passed. `npm run check:production` passed: development tooling/private-fixture exclusion, private-route denial with forged preview cookies and missing configuration, real account screens at 320/390/768/1440px, under-18 refusal and zero browser page errors. Mobile screenshots were visually reviewed and the approved heading typography restored.
-- All five existing onboarding Playwright tests passed (1.3 minutes); development mock registration/preferences/recovery/expiry/refresh/sign-out and responsive public/account screens remain intact.
-- These tests do **not** establish live Supabase Auth/email behaviour. Docker's daemon was unavailable and no project configuration was present.
+- All five existing onboarding Playwright tests passed across the regression run and targeted rerun; development mock registration/preferences/recovery/expiry/refresh/sign-out and responsive public/account screens remain intact. The mock and real-auth suites now use separate artifact directories to prevent concurrent cleanup collisions. The legacy assurance redirect explicitly opts out of Next.js instant validation.
+- Real Auth integration (`tests-auth/accounts.spec.ts`) passed with two synthetic accounts: initial unchecked declaration, under-18 refusal and cookie removal, forged/expired declaration, confirmation-required registration, captured email links, saved preferences and explicit completion consent, duplicate guidance, session expiry/refresh and invalid refresh rejection, HttpOnly cookies, sign-out, recovery user binding, password update/fresh sign-in, expired/reused links and ordinary-session recovery denial. No browser page errors.
+- Independently issued real JWTs passed REST ownership checks for profiles, conversations/messages, memories, payment intents and reports. Changed IDs, anonymous calls, direct writes, private-schema access and metadata administrator escalation were denied; trusted database role provisioning enabled only the intended administrator.
+- Provider-outage browser check passed: stopping the owned local Auth container produced the safe unavailable message; the test restored Auth and confirmed health afterward.
+- Local backup/restore passed within the real-account suite and independently: Auth/public/private restored into a uniquely named disposable database, with identity references, grants, one-owner/zero-other RLS and trusted administrator membership preserved. The helper uses local `supabase_admin` for restore privileges and removes only the disposable copy. Backups stay ignored; synthetic test users/records are cleaned individually.
+- Connected 390px preferences screenshot visually reviewed: approved serif heading, plum actions, readable fields and selectable preferences. Configured production checks covered 320/390/768/1440px, private-route redirects and absence of actual server secrets from browser bundles.
+- Full real-account suite passed after a clean preserved backend restart: **3 tests, 2.6 minutes**. Password-token, signup, recovery and verification endpoints returned 429 despite changing both client forwarding headers; browser sign-in showed the retry message. Auth was restored and healthy after the throttle/outage checks. Reapplying the configurator was idempotent. The stop/start wrapper reapplied limits without resetting the database.
 
-## Remaining acceptance
+## Handoff and deployment boundaries
 
-Complete the [live integration checklist](../stage-8-setup.md), including SMTP/template configuration, real two-account tests, provider/anonymous rate limits, connected UI review and a backup/restore drill. The stage tracker stays open until that evidence exists. Stage 9 feature integration has not begun. The separate pre-pilot manual-device/accessibility gate remains required.
+All local [Stage 8 acceptance items](../stage-8-setup.md) have evidence. The initial unsuccessful throttle probes were resolved: Auth v2.197.0 skips native IP limits when the rate-limit header is empty; the local CLI supplied no header. Startup now enables the gateway-controlled header and genuine endpoint probes verify enforcement. Authenticated account mutations remain separately limited and tested in PostgreSQL.
 
-Reviewed mobile evidence: [age / service unavailable](./stage-8/age-unconfigured-390.png), [sign-in / service unavailable](./stage-8/sign-in-unconfigured-390.png). These depict the production boundary without a configured backend, not live Auth success.
+Next is Stage 9: cast, assets and administration backend. Hosted SMTP, canonical redirects, deployed quotas, trusted client-IP handling across application instances, and production recovery objectives must be verified before pilot admission. Server actions currently share their server's upstream IP bucket; local enforcement is not evidence of deployed per-user isolation. The separate pre-pilot manual-device/accessibility gate remains required. Stage 8 completion does not authorise public deployment.
+
+Connected mobile evidence: [preferences](./stage-8/preferences-connected-390.png), [sign-in](./stage-8/sign-in-configured-390.png). Historical [unconfigured sign-in](./stage-8/sign-in-unconfigured-390.png) demonstrates the missing-service boundary. Local inbox capture does not establish external SMTP delivery.
 
 Dependency audit reported five high-severity entries in the development-only Next ESLint → fast-glob → micromatch → braces chain. The upstream [braces advisory](https://github.com/advisories/GHSA-vfj7-8cjw-p6xm) currently lists no patched version. No forced Next/ESLint downgrade was applied. `npm audit --omit=dev` reported zero production vulnerabilities.

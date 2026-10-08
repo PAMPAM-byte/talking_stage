@@ -1,0 +1,53 @@
+# Stage 10 AI integration setup
+
+8 October 2026 · Integration continues without API keys. Live generation remains disabled.
+
+## Implemented boundary
+
+`lib/ai/provider.mjs` contains the replaceable provider boundary and an optional OpenAI Responses adapter. No launch model is selected. The adapter follows the official [Structured Outputs documentation](https://developers.openai.com/api/docs/guides/structured-outputs) and [Responses migration guide](https://developers.openai.com/api/docs/guides/migrate-to-responses): strict `text.format` JSON schema, explicit output parsing, refusal handling and `store: false`. This disables stored response retrieval; it does not establish zero retention or replace a review of provider terms.
+
+The adapter has no tools, previous response ID, remote conversation state, automatic retries or payment actions. It makes one bounded request, with a twenty-second timeout, a 256 KiB response ceiling, a 2,000-character reply limit and safe error codes. Its strict reply schema requires text and a nullable `photoAssetId`, whose enum contains only IDs from the current character's eligible gallery. Runtime validation also rejects unadvertised IDs and URLs. A provider refusal produces a fixed warm boundary response with no photo rather than rendering raw diagnostics. Valid JSON is not evidence of safe or high-quality model content; launch evaluations remain required.
+
+Context consists of fixed product rules, published private character direction/version, language and separate fictional relationship state, up to twenty explicitly permitted saved facts, recent text history and at most twelve eligible photo descriptors/IDs. No Storage path or original image bytes are sent to the text model. Input uses a conservative UTF-8 byte bound plus protocol allowance. Older history is removed first and then older selected facts to fit the configured bound; the target message stays last. If fixed instructions and the target cannot fit, generation fails closed. There are no summaries or automated memory extraction yet, so no summary can retain a deleted fact in this batch.
+
+## Approved photo replies
+
+Migration 008 wraps the tested claim/commit functions without weakening their ownership, budget, lease or context checks. Their original implementations are moved to private functions with client/service execution revoked. Public claim records the exact eligible gallery/chat IDs and asset versions for the current lease, requiring character ownership, publication, approved review, attestation, inspected source hash and effective photo permission. Portraits are excluded from the reply selection. Photos being paused produces an empty list and a null-only schema option.
+
+Commit rechecks the candidate snapshot, unchanged asset version, current approval/publication and current global/per-character photo permission under row locks. It saves the text reply and optional photo in one transaction with consecutive sequences; duplicate completion creates neither another image nor another text message. A foreign, withdrawn, changed or newly added unadvertised asset is rejected. The model cannot return URLs, select another character's photo or create arbitrary actions. A selected photo is the existing approved image, not a freshly generated image or a claim that a fictional character took a new photograph.
+
+Connected cards keep the accepted photo styling and AI disclosure, with a keyboard-accessible full-size viewer and reloadable unavailable state. Delivery continues through the authenticated no-store Storage proxy and current asset RLS. Withdrawal or photo pause can make a previously saved card unavailable; it does not authorize serving cached private image URLs. A browser may still display bytes already delivered before a pause, which no server can recall.
+
+## Server and database lifecycle
+
+The authenticated send action derives identity through verified Auth and saves owned input immediately. The composer/retry control then makes a separate POST to `/api/conversations/[conversationId]/replies/[messageId]`, so a slow provider call does not occupy Next.js's sequential Server Action dispatcher. The route requires the configured first-party Origin, verified completed adult Auth and an owned user message in the selected conversation. It accepts no actor or model from the browser and returns only a safe state. Skip/reset/archive controls remain usable independently of the reply request. Only `service_role` can call `claim_reply` and `finish_reply`; the server-only wrapper supplies it to the reusable pipeline. Ordinary users cannot fetch private direction/context or commit a character reply. Client-facing job status contains only the input message ID, state and attempt count.
+
+Claims hold the owned conversation lock, reject previous unresolved turns, require current adult access and chat eligibility, validate the selected model/configuration and reserve project/user daily spending atomically. Each attempt has a new UUID lease, a forty-five-second expiry and at most three attempts. Another claimant receives the current status without another reservation. Retrying earlier input and skipping a reply are explicit user actions; enabling AI does not process the saved backlog automatically. Older unresolved messages can be managed through bounded history pages.
+
+Completion locks the conversation and current eligibility/configuration rows, rechecks actor access, generation, archive/deletion, lease, memory/profile revision and published direction/configuration versions, and writes one ordered character message. Duplicate completion returns the original state. Archive/restore, memory changes and profile changes invalidate old context. Reset/delete remove jobs; copied context cannot recreate them. Skip cancels the lease and retains the user's input. A provider timeout, ambiguous failure or discarded output retains its budget reservation; there is no automatic paid retry.
+
+Daily usage totals survive conversation deletion and contain no conversation text. The configured unit is **micro-USD**, not NGN payments or a user balance. Reservation cost is the ceiling of configured maximum input/output tokens multiplied by operator-configured per-million-token rates. Reservations remain charged conservatively rather than being released after completion. Daily windows use UTC. This bounds configured token spending only; actual provider/model rates and any other charges must be verified before enabling. No spending limit has been approved or invented.
+
+## Enabling later
+
+Do not place keys in browser variables or commit `.env.local`.
+
+1. Select and evaluate the launch model/provider; approve project and per-user daily spending limits and verify applicable model pricing/terms.
+2. Set server-only `TALKINGSTAGE_AI_PROVIDER=openai`, `TALKINGSTAGE_AI_MODEL` and `OPENAI_API_KEY` for the optional adapter. Another provider should implement the same boundary with its own verified request/schema handling.
+3. Through trusted operator SQL, configure the singleton `private.ai_configuration` row with the **same model**, approved daily micro-USD limits, current input/output micro-USD rates per million tokens, and token limits. Defaults are disabled, with zero spending and rates. Configuration updates increment their version automatically.
+4. Set both the database `enabled` value and server `TALKINGSTAGE_AI_ENABLED=true` only for the approved environment, then restart the application. A key alone cannot enable replies.
+5. Run a small approved live evaluation and verify provider usage/billing, latency, timeout/ambiguous retries, Nigerian English/Pidgin and every character's voice. Inspect refusal and injection behavior, then complete the remaining Stage 10 acceptance items before opening the pilot.
+
+To pause generation, disable the server flag or database configuration. Existing global/per-character chat controls still gate claims and completion. Saved conversation history and memory inspection remain readable. The composer exposes Stop reply while its request runs: it cancels the database job before aborting its browser request, with the request signal forwarded to the provider boundary. Explicit skip also rejects later output. Disabling a server flag or aborting a request cannot recall data already sent to a provider or guarantee it was not billed; reservations remain charged conservatively. Database disable/cancellation rejects eventual output.
+
+## Memory without keys
+
+Connected memory screens are available now. Memory defaults off for each character. Every saved fact requires an unchecked explicit consent box, including sensitive facts; users can inspect, disable or delete it. The implementation does not automatically infer or classify sensitive content. Facts are scoped to actor/character, at most fifty active facts of 500 characters each, and only the most recent twenty fitting context are considered. Disabling preserves inspection while preventing new saves and excluding all facts from future context. Mutation invalidates in-flight replies that copied prior facts. Existing message text remains separately stored until reset/delete, as the screen explains.
+
+## Offline checks
+
+`npm run test:ai-provider` injects an in-memory transport and verifies request/schema, missing-key/disabled behavior, context limits, malformed/incomplete/oversized output, refusals, errors and cancellation without network access.
+
+`npm run test:reply-integration` executes the complete migration chain in PostgreSQL through PGlite, testing service-role boundaries, memory consent/isolation/invalidation, leases, duplicate completion, bounded attempts, independent budgets, pause, cancellation, profile/configuration/archive invalidation and reset. It also runs the real pipeline from claim through injected provider transport to database completion, proving repeat requests create neither another transport call nor another output. The real local conversation browser journey covers connected memory controls and endpoint ownership/Origin/Auth checks with live generation disabled. These checks establish integration mechanics, not real model quality or billing reconciliation.
+
+`npm run test:photo-replies` verifies the complete database → injected provider → text/photo commit path, duplicate suppression, private implementation grants, cross-actor/character denial, withdrawal, photo pause, changed asset versions and additions after the claim snapshot. It makes no network calls. The real local browser photo check uses a trusted synthetic message fixture in its disposable user's conversation and actual approved local image bytes; it does not represent a live model reply.

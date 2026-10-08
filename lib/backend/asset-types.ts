@@ -1,0 +1,1 @@
+export type CastAsset = { id: string; character_id: string; storage_path: string; slot: string; alt_text: string; review_state: string; published: boolean; version: number; rejection_reason: string | null };

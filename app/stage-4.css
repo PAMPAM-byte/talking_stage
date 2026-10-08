@@ -31,6 +31,7 @@
 .reply-progress { display: flex; align-items: center; gap: 10px; margin-top: 20px; color: var(--text-secondary); }
 .chat-composer { max-width: 760px; margin-inline: auto; gap: 6px; }
 .chat-composer form { display: flex; align-items: flex-end; gap: 10px; }
+.chat-composer .connected-message-composer { flex-direction: column; align-items: stretch; }
 .composer-field { flex: 1; min-width: 0; }
 .composer-field textarea { width: 100%; min-height: 48px; max-height: 144px; padding: 12px 14px; border: 1px solid var(--border-control); border-radius: 14px; background: var(--canvas); color: var(--ink); font-size: 16px; line-height: 22px; resize: none; display: block; }
 .composer-field textarea:disabled { background: var(--disabled-surface); }
@@ -46,6 +47,7 @@
 .chat-photo figcaption { padding: 12px 14px; display: flex; flex-direction: column; gap: 6px; font-size: 12px; line-height: 18px; color: var(--text-secondary); }
 .chat-photo figcaption strong { color: var(--brand); font-weight: 650; }
 .photo-viewer-caption { padding-top: 12px; }
+.connected-photo-viewer { display: block; width: 100%; max-height: 70dvh; object-fit: contain; border-radius: 14px; }
 .chat-review-controls { margin-top: 32px; font-size: 12px; color: var(--text-secondary); border-top: 1px solid var(--border); padding-top: 12px; }
 .chat-review-controls .field { margin-block: 12px; }
 @media (max-width: 599px) { .chat-shell__header { gap: 4px; padding-inline: 8px; } .chat-shell__composer { padding-inline: 12px; } .chat-avatar { width: 36px; height: 36px; border-radius: 12px; } .chat-identity { gap: 8px; } .chat-identity h1 { font-size: 16px; } .chat-shell__messages { padding-inline: 16px; } .chat-composer form .button { padding-inline: 12px; } }
