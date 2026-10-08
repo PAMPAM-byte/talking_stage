@@ -1,6 +1,6 @@
 # TalkingStage implementation plan
 
-Version 1.6 · 8 October 2026 · Status: Stage 5 frontend in review; Stage 2 assurance-method UI pending
+Version 1.6 · 8 October 2026 · Status: Stage 5 frontend implemented; Stage 2 assurance-method UI pending
 
 Product owner: PAMPAM
 
@@ -31,7 +31,7 @@ Update a stage to In progress when work begins. Mark it Complete only when its e
 | 2 | Landing, account, and adult onboarding frontend | 1 | Core prototype done; method-specific assurance pending — [record](./reviews/stage-2.md) |
 | 3 | Discovery and character profiles frontend | 2 core onboarding contracts | Complete — [record](./reviews/stage-3.md) |
 | 4 | Messages, chat, and curated-photo frontend | 3 | Complete — [record](./reviews/stage-4.md) |
-| 5 | Settings, memory, payments, and reporting frontend | 4 | In progress — implementation delivered, regression/production review running |
+| 5 | Settings, memory, payments, and reporting frontend | 4 | Complete — [record](./reviews/stage-5.md) |
 | 6 | Full administration frontend | 5 | Planned |
 | 7 | Frontend quality review and completion gate | 1–6 | Planned |
 | 8 | Backend foundation, identity, and ownership | 7 | Planned |
@@ -152,15 +152,17 @@ Evidence: [Stage 4 review and screenshots](./reviews/stage-4.md), [mock operatio
 
 **PRD coverage:** PREF-01, MEM-01–02 presentation, PAY-01–06 presentation, PRIV-01, REPORT-01.
 
-- [ ] Preferences editor and notification/access messaging appropriate to launch scope.
-- [ ] Per-character memory list, delete action, disable control, consent messaging, and confirmation states.
-- [ ] Separate archive, conversation deletion, reset, and account deletion flows with accurate consequences and retained-record explanations.
-- [ ] Allow/disable monetary requests; accepting, declining, and ignoring requests remain equally available.
-- [ ] Amount entry and explicit NGN confirmation including recipient and voluntary purpose before a simulated checkout card appears.
-- [ ] Payment cards and result screens for awaiting checkout, pending, paid, failed, cancelled, expired, refunded, and disputed states.
-- [ ] Payment history/detail views with amount, date, reference, and status.
-- [ ] Message/photo/character reporting forms, context preview, success/error feedback, and retry.
-- [ ] Match muted-request and refusal samples to the PRD: no pressure, affection downgrade, or romantic paywall.
+- [x] Preferences editor and notification/access messaging appropriate to launch scope.
+- [x] Per-character memory list, delete action, disable control, consent messaging, and confirmation states.
+- [x] Separate archive, conversation deletion, reset, and account deletion flows with accurate consequences and retained-record explanations.
+- [x] Allow/disable monetary requests; accepting, declining, and ignoring requests remain equally available.
+- [x] Amount entry and explicit NGN confirmation including recipient and voluntary purpose before a simulated checkout card appears.
+- [x] Payment cards and result screens for awaiting checkout, pending, paid, failed, cancelled, expired, refunded, and disputed states.
+- [x] Payment history/detail views with amount, date, reference, and status.
+- [x] Message/photo/character reporting forms, context preview, success/error feedback, and retry.
+- [x] Match muted-request and refusal samples to the PRD: no pressure, affection downgrade, or romantic paywall.
+
+Evidence: [Stage 5 review and screenshots](./reviews/stage-5.md), [personal-space contracts and lifecycle rules](./stage-5-contracts.md). All nine new journeys passed; all 29 regression checks passed across the complete run and the documented targeted rerun. Lint, TypeScript, production build and production-exclusion checks pass. D13 is user-confirmed: reset/delete keep memories by default with an explicit optional clear; payment history remains. Every payment/report example stays simulated. Numeric request/payment limits and real necessary-record retention remain policy decisions.
 
 **Exit criteria:** Every settings and payment/report interaction works against fixtures. All payment examples are explicitly simulated, cannot accept money, and never open a real checkout. Real verification and durable deletion remain pending backend work.
 
@@ -355,5 +357,5 @@ If integration exposes a contract mismatch, update the affected screen/adapter a
 
 - Next.js scaffold exists.
 - Design-system tokens, reusable components, responsive shells, local mock foundation, and development-only preview are implemented.
-- Stages 0–1 and 3–4 are complete. Stage 2 core frontend is implemented; final method-specific assurance screens remain open. Remaining feature screens follow in Stages 5–6; backend work remains gated behind Stage 7.
-- **Next independent implementation stage: Stage 5 — Settings, memory, payments, and reporting frontend.** Resolve the open assurance-method UI before Stage 7. Apply frontend-design for every frontend design implementation, as requested by the user.
+- Stages 0–1 and 3–5 are complete. Stage 2 core frontend is implemented; final method-specific assurance screens remain open. Remaining administration screens follow in Stage 6; backend work remains gated behind Stage 7.
+- **Next independent implementation stage: Stage 6 — Full administration frontend.** Resolve the open assurance-method UI before Stage 7. Apply frontend-design for every frontend design implementation, as requested by the user.

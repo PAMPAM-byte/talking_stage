@@ -1,6 +1,6 @@
 # Stage 5 review
 
-8 October 2026 · Frontend implementation delivered; final regression review running.
+8 October 2026 · Frontend implementation and automated review complete.
 
 PRD coverage: PREF-01, MEM-01–02 presentation, PAY-01–06 presentation, PRIV-01 and REPORT-01. Applied frontend-design and the existing TalkingStage design system.
 
@@ -20,7 +20,10 @@ No new images were needed: existing curated Stage 3 character assets are reused.
 
 ## Validation
 
-Final results will be recorded after the complete regression and production checks finish. The targeted review already exercised settings persistence/discovery, memory consent/isolation/deletion, lifecycle retention/optional clearing, graceful request refusal, message/photo reports and account deletion. Checks distinguish delayed saves and active screens from Next.js preserved hidden pages.
+- All nine Stage 5 browser journeys passed: preference failure/persistence/discovery; memory scope/consent/inspection/disable/delete; amount/recipient confirmation, creation retry and all payment states; reset/delete retention and optional clearing; muted/early requests, decline, ignore and muting; message/photo/character report context, failure/retry and persistence redaction; history pagination and actor filtering; typed account deletion/failure/clearing/access; responsive screens and captures.
+- All 29 regression checks passed across the complete run and targeted rerun. The complete run passed 26 tests; three existing chat tests hit a shared CSS-class selector collision after adding request review controls. Narrowing the helper to the labelled Chat review controls panel resolved that collision, and all three passed on rerun. Initial Stage 5 checks also corrected assertions for delayed saves and Next.js preserved hidden pages.
+- Standalone TypeScript and production-build TypeScript validation passed. The final production build passed for all 31 generated pages and dynamic route shells.
+- ESLint and production-exclusion checks passed. Production landing returns 200, development preview returns 404, and review-control strings/private instruction fixture markers are absent from production browser bundles.
 
 Inspected [mobile settings](./stage-5/settings-390.png), [desktop settings](./stage-5/settings-1440.png), [mobile confirmation](./stage-5/confirmation-390.png) and [desktop confirmation](./stage-5/confirmation-1440.png). Layout checks exercise 320, 360, 390, 430, 768, 1024 and 1440 px. Receipt confirmation adds checks at 320, 390, 768 and 1440 px.
 
@@ -30,4 +33,4 @@ This is a disposable frontend simulation with one synthetic actor. Client checks
 
 Payment provider, amount/cooldown/early-chat eligibility limits, legal retention periods, support procedures and reviewed policy copy remain open. The settings access notice correctly says real age verification is pending; Stage 2’s method-specific assurance UI still blocks Stage 7. Cast/assets still need publication approval. Physical-device keyboards, screen-reader testing and final product-owner frontend acceptance remain Stage 7 work.
 
-The next eligible implementation stage after this review is Stage 6 — full administration frontend. Backend remains gated behind Stage 7.
+Stage 5 implementation and automated review are complete. Next eligible implementation stage: Stage 6 — full administration frontend. Backend remains gated behind Stage 7; final product-owner acceptance belongs to that gate.
