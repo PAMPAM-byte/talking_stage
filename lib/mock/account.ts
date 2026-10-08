@@ -38,7 +38,7 @@ export function signOut(deleted = false) { accountDraft.email = ""; publish({ ..
 export function accountDestination(user: User | null): string {
   if (!user) return "/sign-in";
   if (user.adultAccessState === "blocked") return "/onboarding/age";
-  if (user.adultAccessState !== "approved") return "/onboarding/assurance";
+  if (user.adultAccessState !== "approved") return "/onboarding/age";
   return user.onboardingStep === "complete" ? "/discover" : "/onboarding/preferences";
 }
 export function safeReturnPath(value: string | null): string {
@@ -54,7 +54,7 @@ async function execute<T>(scenario: AccountScenario, operation: () => T): Promis
 }
 function newUser(): User {
   const timestamp = new Date().toISOString();
-  return { id: "mock-account", displayName: "", preferences: { characterGenders: [], language: "english" }, adultAccessState: "declared_adult", onboardingStep: "assurance", allowMonetaryRequests: false, version: 1, createdAt: timestamp, updatedAt: timestamp };
+  return { id: "mock-account", displayName: "", preferences: { characterGenders: [], language: "english" }, adultAccessState: "approved", onboardingStep: "preferences", allowMonetaryRequests: false, version: 1, createdAt: timestamp, updatedAt: timestamp };
 }
 export async function registerAccount(email: string, scenario: AccountScenario): Promise<Result<User>> {
   if (state.age !== "adult") return { requestId: "mock-age-required", error: { code: "ADULT_ACCESS_BLOCKED", message: "Confirm adult access before creating an account.", retryable: false } };
@@ -77,7 +77,7 @@ export async function simulateAssurance(outcome: "approved" | "failed" | "pendin
   });
 }
 export async function saveOnboardingPreferences(displayName: string, preferences: Preferences, scenario: AccountScenario) {
-  if (!state.user || state.user.adultAccessState !== "approved") return { requestId: "mock-onboarding-required", error: { code: "ONBOARDING_REQUIRED", message: "Complete the age-verification preview first.", retryable: false } } satisfies Result<User>;
+  if (!state.user || state.user.adultAccessState !== "approved") return { requestId: "mock-onboarding-required", error: { code: "ONBOARDING_REQUIRED", message: "Complete the adult declaration first.", retryable: false } } satisfies Result<User>;
   return execute(scenario, () => { const user = { ...state.user!, displayName: displayName.trim(), preferences, version: state.user!.version + 1 }; publish({ ...state, user }); return user; });
 }
 export function completeOnboarding() {

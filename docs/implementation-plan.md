@@ -1,6 +1,6 @@
 # TalkingStage implementation plan
 
-Version 1.6 · 8 October 2026 · Status: Stage 5 frontend implemented; Stage 2 assurance-method UI pending
+Version 1.11 · 8 October 2026 · Status: Stage 7 complete for backend handoff; Stage 8 preparation in progress
 
 Product owner: PAMPAM
 
@@ -28,13 +28,13 @@ Update a stage to In progress when work begins. Mark it Complete only when its e
 | --- | --- | --- | --- |
 | 0 | Product decisions and frontend planning | PRD and design system | Complete — [record](./reviews/stage-0.md) |
 | 1 | Frontend foundation and reusable components | 0 | Complete — [record](./reviews/stage-1.md) |
-| 2 | Landing, account, and adult onboarding frontend | 1 | Core prototype done; method-specific assurance pending — [record](./reviews/stage-2.md) |
+| 2 | Landing, account, and adult onboarding frontend | 1 | Complete — user-selected checkbox flow; [record](./reviews/stage-2.md) |
 | 3 | Discovery and character profiles frontend | 2 core onboarding contracts | Complete — [record](./reviews/stage-3.md) |
 | 4 | Messages, chat, and curated-photo frontend | 3 | Complete — [record](./reviews/stage-4.md) |
 | 5 | Settings, memory, payments, and reporting frontend | 4 | Complete — [record](./reviews/stage-5.md) |
-| 6 | Full administration frontend | 5 | In progress — operator workflows and customer-state integration |
-| 7 | Frontend quality review and completion gate | 1–6 | Planned |
-| 8 | Backend foundation, identity, and ownership | 7 | Planned |
+| 6 | Full administration frontend | 5 | Complete — [record](./reviews/stage-6.md) |
+| 7 | Frontend quality review and completion gate | 1–6 | Complete for backend handoff — [review](./reviews/stage-7.md); manual checks deferred before pilot |
+| 8 | Backend foundation, identity, and ownership | 7 | In progress — [architecture preparation](./stage-8-architecture.md); service selection pending |
 | 9 | Cast, assets, and administration backend | 8 | Planned |
 | 10 | Conversations, AI, and memory backend | 9 | Planned |
 | 11 | Payments and reconciliation backend | 10 | Planned |
@@ -50,7 +50,7 @@ Use clearly labelled provisional fixtures where a decision does not prevent fron
 | --- | --- | --- |
 | Visual direction, fonts, portrait treatment | Stage 1 completion | Use design-system proposal; record any revision |
 | Cast size, profiles, instructions, adult ages, approved assets | Stage 7 for final presentation; Stage 9 for publication | Eight characters/four per gender are provisional; mark draft fixtures |
-| Age-assurance method and necessary user-facing steps | Stage 7 | Build declaration flow first if needed, but do not declare it sufficient or omit the selected method's screens |
+| Age eligibility and check method | Confirmed during Stage 7 | User selected 18+ checkbox declaration before onboarding; implemented. Self-declaration is not independent verification; enforce accepted declaration server-side in Stage 8. |
 | Account/authentication approach | Stage 7 if it changes screens; Stage 8 for integration | Mock register, sign-in, recovery, expired-session, and sign-out flows |
 | Language and preference options | Stage 2 completion | Nigerian English and optional Pidgin; exact labels recorded |
 | Conversation deletion, reset, archive, and memory semantics | Confirmed during Stage 5 | User chose memories kept by default with an explicit option to clear; reset/delete dialogs implement D13 |
@@ -104,14 +104,14 @@ Evidence: [Stage 1 review and screenshots](./reviews/stage-1.md). Lint, producti
 
 - [x] Landing page explains fictional AI dating, adult access, and the entry action using the current design direction.
 - [x] Registration, sign-in, access recovery, recovery completion, sign-out, and session-expired views.
-- [x] Adult declaration, under-18 blocked state, required disclosures, and clearly labelled assurance pending/failed/approved simulation.
-- [ ] Replace the assurance simulation with the selected method's required frontend steps. Method selection is still open; this blocks final Stage 2 acceptance and Stage 7, not independent discovery work.
+- [x] Required unchecked 18+ checkbox declaration, under-18 blocked state and required disclosures before account creation.
+- [x] Replace the assurance simulation with the user-selected checkbox flow; registration leads directly to preferences and the legacy assurance URL redirects to declaration.
 - [x] Preferred name, character gender preferences, language selection, and onboarding completion.
 - [x] Draft terms, privacy, payment-recipient information, and support layouts; clearly identify unfinished policy text in review builds.
 - [x] Client validation, loading, invalid credentials, recovery feedback, retry, and mock unauthenticated redirects.
 - [x] Back navigation preserves appropriate input; consent controls are not preselected.
 
-Evidence and limits: [Stage 2 record](./reviews/stage-2.md). Stage 3 has replaced the `/discover` onboarding handoff with guarded discovery. Account email drafts stay in memory; session storage contains disposable onboarding state, never passwords/email. Method-specific assurance remains an explicit open frontend item.
+Evidence and limits: [Stage 2 record](./reviews/stage-2.md). Stage 3 has replaced the `/discover` onboarding handoff with guarded discovery. Account email drafts stay in memory; session storage contains disposable onboarding state, never passwords/email. The selected checkbox flow passed five updated onboarding tests; lint/build/TypeScript passed. No independent verification is claimed.
 
 **Exit criteria:** A reviewer can complete or fail the entire mock onboarding journey. Under-18 declarations cannot reach mock private content. Mock route checks are explicitly recognised as UI behaviour, not security enforcement.
 
@@ -170,15 +170,17 @@ Evidence: [Stage 5 review and screenshots](./reviews/stage-5.md), [personal-spac
 
 **PRD coverage:** ADMIN-01–02 and operational UI in PRD Sections 8, 15–18.
 
-- [ ] Admin shell, mock admin-access/forbidden states, dashboard, and navigation.
-- [ ] Cast list, create/edit forms, profile preview, instruction-version display, publish/deactivate/pause actions, and validation states.
-- [ ] Asset management: select/upload-preview mock flow, character association, review status, publication eligibility, and rejection reasons.
-- [ ] Character instruction editing is restricted to this admin presentation; never expose instructions to user pages.
-- [ ] Report queue, context detail, review status, and resolution flow.
-- [ ] Payment ledger, intent/event detail, verification/reconciliation status, refund/dispute display, and action confirmations.
-- [ ] Independent chat/photo/payment pause controls, character-level controls, and corresponding user-facing paused states.
-- [ ] Usage/cost/latency/failure views, configuration forms for approved limits, and audit-log presentation using fixtures.
-- [ ] Empty/error/loading states and usable narrow-screen table/card alternatives.
+- [x] Admin shell, mock admin-access/forbidden states, dashboard, and navigation.
+- [x] Cast list, create/edit forms, profile preview, instruction-version display, publish/deactivate/pause actions, and validation states.
+- [x] Asset management: select/upload-preview mock flow, character association, review status, publication eligibility, and rejection reasons.
+- [x] Character instruction editing is restricted to this admin presentation; never expose instructions to user pages.
+- [x] Report queue, context detail, review status, and resolution flow.
+- [x] Payment ledger, intent/event detail, verification/reconciliation status, refund/dispute display, and action confirmations.
+- [x] Independent chat/photo/payment pause controls, character-level controls, and corresponding user-facing paused states.
+- [x] Usage/cost/latency/failure views, configuration forms for approved limits, and audit-log presentation using fixtures.
+- [x] Empty/error/loading states and usable narrow-screen table/card alternatives.
+
+Evidence: [Stage 6 review and screenshots](./reviews/stage-6.md), [administration contracts](./stage-6-contracts.md). All 37 frontend checks passed in the final complete run, including eight administration journeys. Lint, TypeScript, build and production-exclusion checks pass. Production administration preview and private direction are excluded. Limit fields remain labelled provisional/undecided until approved; real roles, moderation, uploads and financial verification remain backend work.
 
 **Exit criteria:** Every operator workflow can be walked through with mocks, including publishing, reviewing a report, inspecting payment events, and independently pausing capabilities. The UI does not imply admin access is secured before backend role enforcement exists.
 
@@ -186,19 +188,22 @@ Evidence: [Stage 5 review and screenshots](./reviews/stage-5.md), [personal-spac
 
 **Outcome:** All launch frontend work is complete and documented before backend implementation begins.
 
-- [ ] Review the full landing → onboarding → discovery → profile → chat → optional payment → history journey.
-- [ ] Review memory management, request muting, reporting, chat/reset/delete, recovery, and account deletion journeys.
-- [ ] Review all administration workflows and their effects on mock customer-facing states.
-- [ ] Exercise loading, empty, error, offline, forbidden, expired-session, unavailable-character, limit, and paused states.
-- [ ] Inspect at 320, 360, 390, 430, 768, 1024, and 1440 px; test portrait/landscape and mobile keyboard behaviour.
-- [ ] Check keyboard navigation, labels, dialog focus, text zoom, contrast, reduced motion, and screen-reader announcements.
-- [ ] Verify typography, image crops, navigation, disclosure copy, spacing, and component consistency against the design system.
-- [ ] Run repository lint/type/build checks and meaningful frontend journey checks. Record any environment limitations rather than claiming unperformed checks passed.
-- [ ] Capture representative screens and a state/journey review record, including admin and payment failures.
-- [ ] Finalise frontend contracts: required fields, ownership identifiers, pagination, timestamps, state enums, error shapes, and idempotency inputs. They are documented contracts, not implemented endpoints.
-- [ ] Resolve screen-changing decisions, remove dead controls and unintended placeholders, and record frontend acceptance with the product owner.
+- [x] Review the full landing → onboarding → discovery → profile → chat → optional payment → history journey.
+- [x] Review memory management, request muting, reporting, chat/reset/delete, recovery, and account deletion journeys.
+- [x] Review all administration workflows and their effects on mock customer-facing states.
+- [x] Exercise loading, empty, error, offline, forbidden, expired-session, unavailable-character, limit, and paused states.
+- [x] Review automated coverage at 320, 360, 390, 430, 768, 1024 and 1440 px, landscape and shortened composer viewport; physical-device keyboard checks are explicitly deferred before private-pilot access.
+- [x] Review automated keyboard, label, dialog-focus, effective enlarged-layout, contrast and reduced-motion checks; actual text-only zoom and screen-reader checks are explicitly deferred before private-pilot access.
+- [x] Verify typography, image crops, navigation, disclosure copy, spacing, and component consistency against the design system.
+- [x] Run repository lint/type/build checks and meaningful frontend journey checks. Record any environment limitations rather than claiming unperformed checks passed.
+- [x] Capture representative screens and a state/journey review record, including admin and payment failures.
+- [x] Finalise frontend contracts: required fields, ownership identifiers, pagination, timestamps, state enums, error shapes, and idempotency inputs. They are documented contracts, not implemented endpoints.
+- [x] Record product-owner acceptance of the current frontend presentation (8 October 2026).
+- [x] Accept current prototype presentation and carry exact operating/policy decisions to the relevant integration and launch gates. Any resulting screen changes require review; draft content is not approved final public copy.
 
-**Gate A — Frontend complete:** Every launch screen and required state above is implemented, all critical frontend findings are resolved, the review record exists, and frontend acceptance is recorded. Until this gate passes, Stages 8–12 must not start. Provider-dependent UI omissions or incomplete admin screens prevent the gate from passing.
+Evidence so far: [Stage 7 review](./reviews/stage-7.md), [contract index](./frontend-contracts.md), [decision/acceptance worksheet](./stage-7-decisions.md). The prior complete 37-check regression baseline passed; 17 current affected/new checks passed, including three cross-feature/layout/contrast checks. Lint, TypeScript, production build and exclusion checks pass after the name-limit correction. All required widths have automated coverage; real phone keyboard, actual text-only zoom and screen-reader review remain unperformed. User confirmed ages 18 and over are eligible, with age checking before onboarding. The user selected a checkbox; that flow is implemented and replaces the prior provider-selection prerequisite. The user accepted the frontend and explicitly authorised the recommended manual-check deferral on 8 October 2026. Gate A is passed for backend handoff under the revised scope; deferred checks remain unperformed.
+
+**Gate A — Frontend complete for backend handoff (passed 8 October 2026):** Every launch frontend screen and required mock interaction is implemented, automated review evidence exists and product-owner acceptance is recorded. The user explicitly authorised deferring physical-device, actual text-only zoom and screen-reader checks until before private-pilot access. Those checks are pending, not passed; follow the [manual review checklist](./pre-pilot-manual-review.md). Backend Stages 8–12 may now proceed. Integration must resolve policy/service decisions and review any resulting UI changes. This gate does not approve pilot access, public publication or final cast/policy content.
 
 ## 5. Backend and integration stages
 
@@ -286,6 +291,7 @@ Evidence: [Stage 5 review and screenshots](./reviews/stage-5.md), [personal-spac
 
 - [ ] Record founder approval of final cast, branding, disclosures, and monetary-request rules.
 - [ ] Review adult onboarding, published assets, privacy/payment information, support contact, provider terms, and domain/naming status.
+- [ ] **Before admitting any private-pilot participant**, complete the deferred physical-device, actual text-only zoom and screen-reader review using the [manual checklist](./pre-pilot-manual-review.md); resolve material findings and record evidence. No automated-test result substitutes for this gate.
 - [ ] Conduct a small adult-only pilot; monitor meaningful exchanges, seven-day returns, character distribution, payments, AI cost, failures, reports, refusals, and refunds.
 - [ ] Benchmark real first-response feedback and total reply latency. The PRD's approximately three-second feedback target is provisional, not a promise until measured.
 - [ ] Evaluate character voices across sessions, repetition, memory usefulness, image consistency, and treatment after refusal.
@@ -357,5 +363,5 @@ If integration exposes a contract mismatch, update the affected screen/adapter a
 
 - Next.js scaffold exists.
 - Design-system tokens, reusable components, responsive shells, local mock foundation, and development-only preview are implemented.
-- Stages 0–1 and 3–5 are complete. Stage 2 core frontend is implemented; final method-specific assurance screens remain open. Remaining administration screens follow in Stage 6; backend work remains gated behind Stage 7.
-- **Next independent implementation stage: Stage 6 — Full administration frontend.** Resolve the open assurance-method UI before Stage 7. Apply frontend-design for every frontend design implementation, as requested by the user.
+- Stages 0–6 frontend implementation is complete, including the user-selected 18+ checkbox declaration. The current frontend is accepted and Gate A permits backend handoff. Physical-device/accessibility checks remain mandatory before private-pilot access.
+- **Current stage: Stage 8 — Backend foundation, identity and ownership.** Architecture/service preparation has started; no backend service is connected yet. Stage 7 is complete for handoff under the user-authorised manual-review deferral. Follow [Stage 8 preparation](./stage-8-architecture.md), preserve the accepted frontend and apply frontend-design to every UI implementation.

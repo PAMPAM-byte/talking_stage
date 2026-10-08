@@ -1,6 +1,6 @@
 # Stage 6 review
 
-8 October 2026 · Validation in progress.
+8 October 2026 · Frontend implementation and automated review complete.
 
 PRD coverage: ADMIN-01–02 and operational presentation in Sections 8 and 15–18. Applied frontend-design with the established plum palette, Manrope interface type and restrained DM Serif display headings. The signature is a cast-centred review queue; lists and status cards become single-column records on phones.
 
@@ -18,12 +18,18 @@ Production administration routes render an unavailable screen. Private direction
 
 ## Validation
 
-Final browser, lint, TypeScript, build and production-exclusion results will be recorded when the current checks finish.
+- All 37 Playwright checks passed in the final complete run: eight new administration journeys and all 29 existing customer/foundation checks.
+- Administration checks cover access states, failed draft saves, instruction versions and conflicts, public/private separation, publication/deactivation, owned asset review/local-file refresh, report resolution/retry/audit, payment reconciliation without status changes, independent capability pauses and responsive analytics/audit states.
+- ESLint, standalone TypeScript and the production build passed. The build generated all 44 pages and dynamic route shells.
+- Production-exclusion checks passed: landing 200, design-system preview 404, sampled admin routes display the unavailable screen, and developer controls/private instruction markers are absent from browser bundles.
+- A development console inspection confirmed no warnings/errors on overview and character detail after adding Suspense and explicit waiting-navigation configuration for browser-selected mock access. Initial administration test runs corrected assertions for nullable public storage and Next.js preserved hidden pages; the final suite passed without reruns.
 
-Representative captures: [mobile overview](./stage-6/overview-390.png), [desktop overview](./stage-6/overview-1440.png), [mobile assets](./stage-6/assets-390.png) and [mobile character editor](./stage-6/character-390.png). Overview and payment lists are checked at 320, 360, 390, 430, 768, 1024 and 1440 px.
+Inspected refreshed captures: [mobile overview](./stage-6/overview-390.png), [desktop overview](./stage-6/overview-1440.png), [mobile assets](./stage-6/assets-390.png) and [mobile character editor](./stage-6/character-390.png). Overview and payment lists fit 320, 360, 390, 430, 768, 1024 and 1440 px. Mobile header spacing and desktop card alignment were refined after visual review.
 
 ## Limits and gates
 
 This is a disposable frontend simulation. Browser roles, versions, scope checks and audit records provide no real authentication, authorisation, durable moderation or verified financial state. Synthetic analytics are not measurements. Local files stay in memory and must be reselected/reviewed after refresh. Private custom direction and resolution text serialize as placeholders.
 
 Stage 7 must resolve the selected age-assurance method and its unfinished Stage 2 screens, final cast/assets, screen-changing request/payment limits, policy/support and retention copy, and other recorded decisions. Physical-device keyboard, assistive-technology and final product-owner acceptance remain Stage 7 work. Backend remains gated until Gate A passes.
+
+Stage 6 implementation and automated review are complete. Next stage: Stage 7 frontend quality review and completion gate; final product-owner acceptance belongs to that gate.

@@ -40,7 +40,7 @@ export function saveSampleMemory(id: string, sensitive: boolean, consent: boolea
 }); }
 export function deleteMemory(id: string, scenario: SpaceScenario) { return run(scenario, () => { const m = state.memories.find(m => m.id === id && m.userId === actor()); if (!m) return fail('Memory not found.', 'NOT_FOUND'); state.memories = state.memories.filter(m => m.id !== id); changed(); return ok(true); }); }
 export function savePreferences(name: string, preferences: Preferences, scenario: SpaceScenario) { return run(scenario, () => {
-  if (!name.trim() || name.trim().length > 40 || !preferences.characterGenders.length || preferences.characterGenders.some(g => !['woman', 'man'].includes(g)) || !['english', 'english_pidgin'].includes(preferences.language)) return fail('Add a name of up to 40 characters and select at least one character gender.');
+  if (!name.trim() || name.trim().length > 60 || !preferences.characterGenders.length || preferences.characterGenders.some(g => !['woman', 'man'].includes(g)) || !['english', 'english_pidgin'].includes(preferences.language)) return fail('Add a name of up to 60 characters and select at least one character gender.');
   patchMockUser({ displayName: name.trim(), preferences }); return ok(true);
 }); }
 export function saveRequests(enabled: boolean, scenario: SpaceScenario) { return run(scenario, () => { patchMockUser({ allowMonetaryRequests: enabled }); changed(); return ok(enabled); }); }
@@ -100,4 +100,3 @@ export function operatorSpaceSnapshot(): { reports: (Report & { context: string 
   return structuredClone({ reports, payments: state.payments });
 }
 export function operatorUpdateReport(id: string, next: Report['state'], resolution: string | null) { if (!hasMockAdminAccess()) return; const r = state.reports.find(r => r.id === id); if (r) { r.state = next; r.resolution = resolution; changed(); } }
-

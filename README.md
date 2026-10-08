@@ -1,6 +1,6 @@
 # TalkingStage
 
-A mobile-first Nigerian AI dating experience for adults, built with Next.js and TypeScript. The launch frontend is being completed before backend implementation.
+A mobile-first Nigerian AI dating experience for adults, built with Next.js and TypeScript. The frontend is accepted for backend handoff; Stage 8 architecture preparation is underway.
 
 ## Development
 
@@ -32,6 +32,11 @@ The [administration preview](http://localhost:3000/admin/access) is also develop
 - [Personal-space mock contracts and deletion semantics](docs/stage-5-contracts.md)
 - [Stage 6 administration review](docs/reviews/stage-6.md)
 - [Administration contracts and publication rules](docs/stage-6-contracts.md)
+- [Stage 7 frontend quality review](docs/reviews/stage-7.md)
+- [Frontend integration contract index](docs/frontend-contracts.md)
+- [Frontend gate decisions and acceptance worksheet](docs/stage-7-decisions.md)
+- [Mandatory manual review before private-pilot access](docs/pre-pilot-manual-review.md)
+- [Stage 8 architecture preparation](docs/stage-8-architecture.md)
 
 Use the frontend-design skill for every frontend design implementation. See `AGENTS.md` for continuing project instructions.
 

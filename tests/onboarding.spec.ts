@@ -1,7 +1,11 @@
 import { test, expect } from "@playwright/test";
 
 test("adult onboarding, preferences, refresh, sign out and protected access", async ({ page }) => {
-  await page.goto("/onboarding/age");
+  await page.goto("/onboarding/assurance");
+  await expect(page).toHaveURL(/\/onboarding\/age$/);
+  await expect(page.getByRole("checkbox", { name: "I am 18 or older" })).not.toBeChecked();
+  await page.getByRole("button", { name: "Continue", exact: true }).click();
+  await expect(page.getByRole("checkbox", { name: "I am 18 or older" })).toHaveAttribute("aria-invalid", "true");
   await page.getByLabel("I am 18 or older").check();
   await page.getByRole("button", { name: "Continue", exact: true }).click();
   await expect(page).toHaveURL(/\/register$/);
@@ -11,14 +15,8 @@ test("adult onboarding, preferences, refresh, sign out and protected access", as
   await page.getByLabel("Password", { exact: true }).fill("ExamplePassword123!");
   await page.getByLabel("I understand the characters are fictional AI and agree to the draft terms.").check();
   await page.getByRole("button", { name: "Create demo account" }).click();
-  await expect(page).toHaveURL(/\/onboarding\/assurance$/);
-  await page.getByLabel("Simulated verification result").selectOption("pending");
-  await page.getByRole("button", { name: "Run verification preview" }).click();
-  await expect(page.getByText("Verification pending", { exact: true })).toBeVisible();
+  await expect(page).toHaveURL(/\/onboarding\/preferences$/);
   await page.goto("/discover");
-  await expect(page).toHaveURL(/\/onboarding\/assurance$/);
-  await page.getByLabel("Simulated verification result").selectOption("approved");
-  await page.getByRole("button", { name: "Run verification preview" }).click();
   await expect(page).toHaveURL(/\/onboarding\/preferences$/);
   await page.getByLabel("Preferred name").fill("Pampam");
   await page.getByRole("button", { name: "Women", exact: true }).click();
@@ -42,8 +40,7 @@ test("adult onboarding, preferences, refresh, sign out and protected access", as
 
 test("underage access, invalid sign-in, recovery expiration and generic acknowledgement", async ({ page }) => {
   await page.goto("/onboarding/age");
-  await page.getByLabel("I am under 18").check();
-  await page.getByRole("button", { name: "Continue", exact: true }).click();
+  await page.getByRole("button", { name: "I am under 18", exact: true }).click();
   await expect(page.getByRole("heading", { name: "TalkingStage is for adults." })).toBeVisible();
   await page.goto("/discover");
   await expect(page).toHaveURL(/\/onboarding\/age$/);
@@ -112,7 +109,7 @@ test("registration drafts and retry survive navigation without storing credentia
   await expect(page.getByLabel("Email address")).toHaveValue("draft@example.test");
   await page.getByLabel("Simulated response").selectOption("ready");
   await page.getByRole("button", { name: "Create demo account" }).click();
-  await expect(page).toHaveURL(/\/onboarding\/assurance$/);
+  await expect(page).toHaveURL(/\/onboarding\/preferences$/);
 });
 
 test("demo sign-in resumes onboarding and session expiry clears access", async ({ page }) => {
@@ -120,7 +117,7 @@ test("demo sign-in resumes onboarding and session expiry clears access", async (
   await page.getByLabel("Email address").fill("pending@talkingstage.example");
   await page.getByLabel("Password", { exact: true }).fill("TalkingStage123!");
   await page.getByRole("button", { name: "Sign in to preview" }).click();
-  await expect(page).toHaveURL(/\/onboarding\/assurance$/);
+  await expect(page).toHaveURL(/\/onboarding\/preferences$/);
   await page.goto("/sign-in?returnTo=//example.com");
   await page.getByLabel("Email address").fill("demo@talkingstage.example");
   await page.getByLabel("Password", { exact: true }).fill("TalkingStage123!");

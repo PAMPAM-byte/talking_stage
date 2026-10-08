@@ -4,7 +4,7 @@
 
 ## Settings and memories
 
-`savePreferences` updates the mock actor’s display name (1–40 characters), character genders and English/English with Pidgin choice; failures preserve the editor. `saveRequests` changes character-initiated request permission independently of a user choosing to give. Requests start muted.
+`savePreferences` updates the mock actor’s display name (1–60 characters, aligned with onboarding during Stage 7), character genders and English/English with Pidgin choice; failures preserve the editor. `saveRequests` changes character-initiated request permission independently of a user choosing to give. Requests start muted.
 
 `memoryState(characterId)` scopes inspectable facts to the signed-in mock actor and selected character. Permission starts disabled for each character. `permittedMemoryContext(characterId)` returns no facts when disabled and otherwise returns only surviving facts for that character. Deletion removes the fact from both inspection and that future-context selection. Scripted replies never extract or consume personal facts; actual context assembly belongs to Stage 10.
 

@@ -2,7 +2,7 @@
 
 Date: 8 October 2026 (Africa/Lagos).
 
-Status: Core frontend prototype implemented. Final method-specific age-assurance screens remain pending provider selection. Stage 2 must not be treated as satisfying production age assurance or the Stage 7 gate.
+Status: Frontend implemented, including the user-selected 18+ checkbox declaration added during Stage 7. This is self-declaration, not independent age verification, and does not establish production enforcement or pass Gate A on its own.
 
 ## Delivered
 
@@ -10,7 +10,7 @@ Status: Core frontend prototype implemented. Final method-specific age-assurance
 - Image loading/failure/reload handling and responsive Next.js image delivery. Draft artwork is labelled AI-generated; cast approval is not implied. [Image and complete generation prompt](./stage-2-image.md), using the built-in imagegen tool. Saved asset: `public/images/landing-characters.png`.
 - Adult declaration and under-18 blocked state. Blocked demo access cannot continue through registration or sign-in.
 - Registration, sign-in, duplicate-demo-account/invalid-input feedback, recovery request, recovery completion, expired/invalid reference, sign-out, and session-expired views.
-- Assurance preview with approved/pending/failed scenarios. Pending/failed states cannot enter the mock private destination. The final method is explicitly undecided; no identity documents are collected and no actual verification is claimed.
+- The initial assurance simulation was replaced during Stage 7 following the user's checkbox choice: unchecked adult declaration before registration, required confirmation/error, under-18 blocking and direct progression from registration to preferences. The legacy assurance route redirects to the declaration; no identity documents are collected and no independent verification is claimed.
 - Preferred name, women/men/both selection, English/English-with-Pidgin choice, completion summary, explicit AI acknowledgement, and editable preferences before/after completion.
 - Local mock account operations with latency/offline/failure scenarios. Disposable session-storage state preserves onboarding/preferences across refresh, but never stores email or password. Email draft is retained only in browser memory across client navigation; passwords are not preserved between screens.
 - Mock eligibility redirects and a narrow allowlist for return paths. Client checks are presentation only; server security remains Stage 8 work.
@@ -32,6 +32,8 @@ Evidence:
 
 ## Validation
 
+Checkbox follow-up during Stage 7, 8 October 2026: all five updated onboarding journeys passed, covering unchecked/required checkbox feedback, registration directly to preferences, incomplete-onboarding access blocking, explicit under-18 denial, retry, refresh, recovery and session expiry. Inspected the updated [mobile age screen](./stage-2/age-390.png). Lint, production build/TypeScript and production-exclusion checks passed. The following original validation record describes the earlier simulation before the user-selected method replaced it.
+
 Final validation passed on 8 October 2026: lint, production build/TypeScript, all 10 Playwright tests, and production-preview exclusion. Checks cover:
 
 - ESLint, TypeScript, production compilation, and route generation.
@@ -44,8 +46,8 @@ No provider, email delivery, real authentication, durable backend ownership, or 
 
 ## Remaining decision and next stage
 
-**Age assurance:** Select the method, then implement its specific frontend steps before Stage 7. The simulation remains clearly labelled and does not substitute for those steps. Production assurance progression is disabled in the simulation screen; backend verification/enforcement comes in Stage 8.
+**Age method resolved on 8 October 2026:** The user selected a checkbox, after confirming 18+ eligibility and placement before onboarding. This supersedes the earlier provider-dependent frontend prerequisite. Server-enforced declaration and adult access remain Stage 8 work; checkbox presentation is not proof of age.
 
 Account method, final terms/privacy/support content, and brand/cast approval also remain on their existing decision deadlines. Current labels are provisional: women, men, or both; English or English with Pidgin.
 
-Independent next work: **Stage 3 — Discovery and character profiles frontend**. Its input/onboarding contracts are ready, so this work can proceed while the assurance-method decision is open. No backend work is eligible.
+Stages 3–7 are complete for frontend handoff. The user accepted the frontend and authorised deferring manual device/accessibility review until before private-pilot access. Gate A now permits **Stage 8 — Backend foundation, identity and ownership**. Final launch/service decisions remain on their respective gates.
