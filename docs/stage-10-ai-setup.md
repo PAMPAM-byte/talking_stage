@@ -54,7 +54,17 @@ To pause generation, disable the server flag or database configuration. Existing
 
 Connected memory screens are available now. Memory defaults off for each character. Every saved fact requires an unchecked explicit consent box, including sensitive facts; users can inspect, disable or delete it. The implementation does not automatically infer or classify sensitive content. Facts are scoped to actor/character, at most fifty active facts of 500 characters each, and only the most recent twenty fitting context are considered. Disabling preserves inspection while preventing new saves and excluding all facts from future context. Mutation invalidates in-flight replies that copied prior facts. Existing message text remains separately stored until reset/delete, as the screen explains.
 
-## Offline checks
+## Request controls without keys
+
+Migration `202610090011_request_foundations.sql` is applied locally after a private database snapshot. Connected `/settings/requests` supports the global preference and independent per-conversation mute and stop controls. Unmuting preserves a stop; allowing requests again preserves a mute. Archive/restore and reset preserve both choices. Owned, adult-only mutations reject stale versions and invalidate copied reply/summary context. Chat access and fictional relationship state are unchanged.
+
+The private request policy defaults disabled, with unapproved exchange, amount and cooldown thresholds left null. The future eligibility predicate checks ownership/adult access, active status, chat/payment permissions, explicit user preferences, completed exchanges and cooldown. Missing configuration denies eligibility. Worker context carries these controls, but monetary actions remain disabled even when a test policy passes eligibility. The provider schema still permits only text and an approved photo ID.
+
+No proposals, checkout, payment records or real monetary requests are created by these controls. Stage 11 must bind refusal to actual proposals and atomically recheck permissions, amount limits and cooldown before issuing a request. Free-form refusal recognition and continued warmth after refusal require live model evaluation; instructions and deterministic checks alone do not establish this behavior.
+
+`npm run test:requests` verifies the complete migration chain offline, including ownership, independent flags, explicit resume, reset retention, incomplete-policy denial, synthetic exchange/cooldown thresholds, stale-context rejection and private grants. Synthetic policy values exist only in the test database and are not approved production defaults. The local browser journey verifies persistence, cross-user denial and the mobile controls without AI calls.
+
+## Offline verification commands
 
 `npm run test:ai-provider` injects an in-memory transport and verifies request/schema, missing-key/disabled behavior, context limits, malformed/incomplete/oversized output, refusals, errors and cancellation without network access.
 

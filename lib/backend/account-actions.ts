@@ -85,6 +85,9 @@ export async function submitAccount(step: string, form: FormData): Promise<Accou
     return { error: "This action is unavailable." };
   } catch { return unavailable; }
 }
+export async function resetOnboardingDraft() {
+  (await cookies()).delete("ts-adult");
+}
 export async function signOutAccount() {
   const client = await backendClient();
   try { if (client) await client.auth.signOut(); } catch { /* Always clear this browser's local access, including during provider outage. */ }

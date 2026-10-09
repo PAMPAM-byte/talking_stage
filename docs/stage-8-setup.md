@@ -16,14 +16,19 @@ The application runs on localhost:3000, Supabase API on 127.0.0.1:15421, databas
 
 ## Authentication configuration
 
-Use email/password authentication, a minimum 12-character password, and email confirmation. Configure the site URL and approved redirects for the exact development origin. Configure confirmation and recovery templates to link to this application's token-hash route:
+Use email/password authentication and a minimum 12-character password. **Email confirmation is disabled for signup and sign-in in local development and production**, as explicitly instructed by the owner on 9 October 2026. New signup returns an authenticated session and goes directly to preferences; existing accounts sign in with email/password. The 18+ declaration, onboarding, AI consent, passwords and access controls still apply. Configure the site URL and approved redirects for the exact environment origin. Recovery still uses email links:
 
 ```text
-Confirmation: {{ .RedirectTo }}?token_hash={{ .TokenHash }}&type=signup
 Recovery:     {{ .RedirectTo }}?token_hash={{ .TokenHash }}&type=recovery
 ```
 
-The route accepts only those two purposes and fixed internal destinations. Recovery creates a signed, HttpOnly, user-bound, 30-minute recovery cookie; a regular signed-in session alone cannot change a password through the recovery action. Consumed/expired tokens get a useful link-failure screen. No arbitrary `next` redirect is accepted. Configure SMTP for hosted delivery before claiming registration/recovery work. Official references: [password authentication](https://supabase.com/docs/guides/auth/passwords), [SSR client/session integration](https://supabase.com/docs/guides/auth/server-side/creating-a-client), [email templates](https://supabase.com/docs/guides/auth/auth-email-templates).
+The route retains compatibility with legacy signup links and fixed internal destinations. Recovery creates a signed, HttpOnly, user-bound, 30-minute recovery cookie; a regular signed-in session alone cannot change a password through the recovery action. Consumed/expired tokens get a useful link-failure screen. No arbitrary `next` redirect is accepted. Configure SMTP for hosted recovery delivery. Official references: [password authentication](https://supabase.com/docs/guides/auth/passwords), [SSR client/session integration](https://supabase.com/docs/guides/auth/server-side/creating-a-client), [email templates](https://supabase.com/docs/guides/auth/auth-email-templates).
+
+**Hosted production setup:** The owner confirmed no hosted Supabase project exists yet. Before connecting the production app, open Authentication → Sign In / Providers → Email and turn **Confirm Email off**. The equivalent Auth configuration is `mailer_autoconfirm: true`; see [Supabase's configuration guide](https://supabase.com/docs/guides/auth/general-configuration). `supabase/config.toml` governs local services and does not change a hosted project's setting. The same application flow runs in production, with no environment-specific confirmation requirement or browser/service-role bypass. Verify signup returns a session and direct sign-in succeeds against the hosted project before release; that hosted check is pending project creation.
+
+Local configuration uses `[auth.email] enable_confirmations = false`. The startup helper also applies `GOTRUE_MAILER_AUTOCONFIRM=true` to an already-running project Auth container while preserving its gateway-controlled rate-limit header, users and credentials.
+
+Existing unconfirmed accounts are not automatically repaired by that setting. One existing local email/password account was updated through the trusted Auth admin API after a private backup, under the owner's explicit direct-sign-in instruction. This records implicit confirmation under the selected policy, not proof of email ownership. Passwords and other access restrictions remain intact. If a hosted project ever contains older unconfirmed accounts, review and apply the same policy through its trusted Auth administration before claiming those accounts can sign in directly.
 
 The 18+ checkbox comes before registration. Its server action creates a signed short-lived declaration cookie. Registration requires that cookie and AI/terms consent; a profile trigger records declaration version/time at account creation. This is accepted self-declaration, not independent verification. Private access additionally requires validated identity, saved preferences and explicit completion consent.
 
@@ -42,8 +47,8 @@ Before pilot deployment, verify hosted Auth quotas, exact redirects, SMTP delive
 ## Live acceptance checklist
 
 - [x] Apply migration locally; verify grants/RLS and private-schema exposure.
-- [x] Register two synthetic adults through the unchecked age checkbox; confirm captured emails; inspect persisted declaration version/time.
-- [x] Verify invalid credentials, duplicate signup, unconfirmed email, expiry/refresh, persisted preferences and sign-out.
+- [x] Register two synthetic adults through the unchecked age checkbox; verify immediate authenticated onboarding without email confirmation; inspect persisted declaration version/time. Current flow verified 9 October 2026.
+- [x] Verify invalid credentials, duplicate signup guidance, expiry/refresh, persisted preferences and sign-out. Previously unconfirmed local accounts follow the explicitly selected policy described above.
 - [x] Verify under-18 refusal, direct registration, incomplete onboarding and forged/expired cookies cannot unlock private routes.
 - [x] Verify recovery email, expired/reused token, different-account cookie, password update and fresh sign-in; ordinary sessions cannot perform recovery updates.
 - [x] Verify two independently authenticated users, changed target IDs, anonymous access and stale versions.

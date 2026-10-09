@@ -1,0 +1,33 @@
+import {expect,test} from '@playwright/test';
+
+test('returning home clears blocked onboarding, consent and registration drafts',async({page,context})=>{
+  await page.goto('/onboarding/age');
+  await page.getByRole('button',{name:'I am under 18',exact:true}).click();
+  await expect(page.getByText('You can return when you are eligible.',{exact:true})).toBeVisible();
+  await page.getByRole('link',{name:'Back to TalkingStage',exact:true}).click();
+  await expect(page).toHaveURL('http://localhost:3102/');
+  await page.getByRole('link',{name:'Find your conversation'}).click();
+  await expect(page.getByRole('checkbox',{name:'I am 18 or older',exact:true})).not.toBeChecked();
+  await expect(page.getByRole('button',{name:'Continue',exact:true})).toBeDisabled();
+  await expect(page.getByText('You can return when you are eligible.',{exact:true})).toHaveCount(0);
+  await page.getByRole('checkbox',{name:'I am 18 or older',exact:true}).check();
+  await page.getByRole('button',{name:'Continue',exact:true}).click();
+  await expect(page).toHaveURL(/\/register$/);
+  await page.getByLabel('Email address').fill('discarded-draft@example.test');
+  await page.getByLabel('Password',{exact:true}).fill('DisposableDraftOnly123!');
+  await page.getByRole('checkbox',{name:'I accept the terms and understand I’ll talk with fictional AI characters.'}).check();
+  await page.getByRole('link',{name:'Back to TalkingStage',exact:true}).click();
+  await expect(page).toHaveURL('http://localhost:3102/');
+  expect((await context.cookies()).some(cookie=>cookie.name==='ts-adult')).toBe(false);
+  await page.goto('/register');
+  await expect(page.getByLabel('Email address')).toHaveValue('');
+  await expect(page.getByLabel('Password',{exact:true})).toHaveValue('');
+  await expect(page.getByRole('checkbox',{name:'I accept the terms and understand I’ll talk with fictional AI characters.'})).not.toBeChecked();
+  await page.getByLabel('Email address').fill('discarded-draft@example.test');
+  await page.getByLabel('Password',{exact:true}).fill('DisposableDraftOnly123!');
+  await page.getByRole('checkbox',{name:'I accept the terms and understand I’ll talk with fictional AI characters.'}).check();
+  await page.getByRole('button',{name:'Create account',exact:true}).click();
+  await expect(page).toHaveURL(/\/onboarding\/age$/);
+  await expect(page.getByRole('checkbox',{name:'I am 18 or older',exact:true})).not.toBeChecked();
+  await expect(page.getByRole('button',{name:'Continue',exact:true})).toBeDisabled();
+});

@@ -1,6 +1,6 @@
 # TalkingStage implementation plan
 
-Version 1.19 · 9 October 2026 · Status: Stage 9 complete for local backend handoff; Stage 10 in progress
+Version 1.20 · 9 October 2026 · Status: Stage 9 complete for local backend handoff; Stage 10 in progress
 
 Product owner: PAMPAM
 
@@ -35,8 +35,8 @@ Update a stage to In progress when work begins. Mark it Complete only when its e
 | 6 | Full administration frontend | 5 | Complete — [record](./reviews/stage-6.md) |
 | 7 | Frontend quality review and completion gate | 1–6 | Complete for backend handoff — [review](./reviews/stage-7.md); manual checks deferred before pilot |
 | 8 | Backend foundation, identity, and ownership | 7 | Complete for local handoff — real Auth/RLS/roles/throttling/restore verified; [evidence](./reviews/stage-8.md); hosted deployment checks remain Stage 13 |
-| 9 | Cast, assets, and administration backend | 8 | In progress — private cast draft integration; [review](./reviews/stage-9.md) and [contracts](./stage-9-contracts.md) |
-| 10 | Conversations, AI, and memory backend | 9 | Planned |
+| 9 | Cast, assets, and administration backend | 8 | Complete for local backend handoff — [review](./reviews/stage-9.md) and [contracts](./stage-9-contracts.md) |
+| 10 | Conversations, AI, and memory backend | 9 | In progress — integration and request controls verified without keys; live evaluation pending; [review](./reviews/stage-10.md) |
 | 11 | Payments and reconciliation backend | 10 | Planned |
 | 12 | Privacy, reporting, monitoring, and full integration | 11 | Planned |
 | 13 | Private pilot and public-launch readiness | 12 | Planned |
@@ -246,7 +246,7 @@ Evidence so far: [Stage 7 review](./reviews/stage-7.md), [contract index](./fron
 - [ ] Implement the replaceable AI adapter and context assembly: product rules, versioned character identity, preferences/permitted memories, recent history, bounded summary, and structured capabilities. Optional Responses transport, bounded private context, approved-photo selection and extractive summaries are implemented and offline-tested. Live context quality remains open; payment actions stay disabled.
 - [ ] Store factual memory separately from fictional relationship state; enforce consent/sensitive-data rules, per-user/per-character scope, disable/delete, and summary invalidation when necessary. Explicit saving, inspection, permissions, deletion and in-flight context invalidation are connected. Every factual save requires explicit consent; no automated fact extraction/classification exists. Separate bounded summary excerpts require enabled memory, erase on context changes and exclude pre-change history from rebuilding. Live sensitive-content evaluation remains open.
 - [x] Implement structured approved-photo selection with server-side asset validation. Candidate IDs/versions are scoped to the current character and snapshotted per lease; completion rechecks ownership, approval/version and photo permissions. Text/photo output is atomic and idempotent. Offline pipeline and real Storage/card/viewer/failure checks pass. Actual live model selection/behavior remains part of the model evaluation gate.
-- [ ] Implement refusal/mute handling and request-policy eligibility. Do not create real checkout until Stage 11.
+- [x] Implement refusal/mute handling and request-policy eligibility. Owned global preferences, independent conversation mute/stop/explicit-resume controls, context invalidation and fail-closed configurable early-chat/cooldown/amount-policy foundations are implemented. Reset preserves these controls and refusal changes no relationship state. Monetary actions remain unavailable; real proposal binding and atomic final payment enforcement belong to Stage 11. Live model warmth/refusal behavior still requires evaluation.
 - [ ] Add usage budgets, response timeouts, cancellation/interruption handling, summary processing, and pause enforcement. Atomic project/user daily reservations, bounded timeouts/leases, explicit skip and final pause checks are implemented. Summary processing uses an independent reservation against the same daily totals and defaults disabled. Approved limits, current rates and actual billing/live processing verification remain open.
 - [ ] Integrate existing message/photo/memory screens and evaluate repeated sessions for every approved character.
 
