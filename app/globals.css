@@ -99,14 +99,25 @@ textarea.field__control { resize: vertical; min-height: 104px; }
 .field__hint { color: var(--text-secondary); font-size: 14px; line-height: 20px; }
 .choice { display: flex; align-items: flex-start; gap: 12px; min-height: 44px; cursor: pointer; }
 .choice input { width: 20px; height: 20px; flex: none; margin-top: 2px; accent-color: var(--brand); }
+.choice input[type="checkbox"] { appearance: none; border: 1px solid var(--border-control); border-radius: 4px; background-color: var(--surface); background-position: center; background-repeat: no-repeat; background-size: 16px; cursor: pointer; transition: background-color var(--motion-fast), border-color var(--motion-fast); }
+.choice input[type="checkbox"]:checked { background-color: var(--brand); border-color: var(--brand); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='m3 8 3 3 7-7' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); }
+@media (hover: hover) {
+  .choice:hover input[type="checkbox"]:not(:disabled) { background-color: var(--brand-soft); border-color: var(--brand); }
+  .choice:hover input[type="checkbox"]:checked:not(:disabled) { background-color: var(--brand-hover); border-color: var(--brand-hover); }
+}
+.choice input[type="checkbox"]:active:not(:disabled) { background-color: var(--brand-pressed); border-color: var(--brand-pressed); }
+.choice input[type="checkbox"]:disabled { opacity: .55; cursor: not-allowed; }
+@media (forced-colors: active) { .choice input[type="checkbox"] { appearance: auto; background-image: none; } }
 .switch { display: flex; align-items: center; justify-content: space-between; gap: 20px; min-height: 48px; cursor: pointer; }
 .switch__input { appearance: none; width: 44px; height: 28px; flex: none; margin: 0; border: 1px solid var(--border-control); border-radius: var(--radius-pill); background: var(--disabled-surface); position: relative; transition: background var(--motion-fast); }
 .switch__input::after { content: ""; position: absolute; left: 3px; top: 3px; width: 20px; height: 20px; border-radius: 50%; background: var(--text-secondary); transition: transform var(--motion-fast); }
 .switch__input:checked { background: var(--brand); border-color: var(--brand); }
 .switch__input:checked::after { background: var(--surface); transform: translateX(16px); }
 .switch__input:disabled { opacity: .65; cursor: not-allowed; }
-.chip { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 10px 16px; border: 1px solid var(--border-control); border-radius: var(--radius-pill); background: var(--surface); color: var(--text-secondary); font-size: 14px; font-weight: 600; }
-.chip[aria-pressed="true"] { background: var(--brand-soft); border-color: var(--brand); color: var(--brand); }
+.chip { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 10px 16px; border: 1px solid var(--border-control); border-radius: var(--radius-pill); background: var(--surface); color: var(--text-secondary); font-size: 14px; font-weight: 600; cursor: pointer; transition: background-color var(--motion-fast), border-color var(--motion-fast), color var(--motion-fast); }
+.chip[aria-pressed="true"], .chip[aria-current="page"] { background: var(--brand-soft); border-color: var(--brand); color: var(--brand); }
+@media (hover: hover) { .chip:hover:not(:disabled) { background: var(--brand); border-color: var(--brand); color: var(--surface); } }
+.chip:active:not(:disabled) { background: var(--brand-pressed); border-color: var(--brand-pressed); color: var(--surface); }
 .badge { display: inline-flex; align-items: center; gap: 5px; padding: 5px 10px; max-width: 100%; border-radius: var(--radius-pill); background: var(--brand-soft); color: var(--brand); font-size: 12px; line-height: 16px; font-weight: 650; }
 .badge--neutral { background: var(--canvas); color: var(--text-secondary); border: 1px solid var(--border); }
 .badge--success { background: var(--success-soft); color: var(--success); }

@@ -27,9 +27,9 @@ test('scripted replies, multiline composer, owned photos, viewer, and safe refre
   await signIn(page); await openChat(page);
   await expect(page.getByText('You have my attention.', { exact: false })).toBeVisible();
   const input = page.getByRole('textbox', { name: 'Message Amara' });
-  await input.fill('Custom private wording'); await input.press('Enter');
+  await input.fill('Custom private wording'); await input.press('Shift+Enter');
   await expect(input).toHaveValue('Custom private wording\n');
-  await input.press('Control+Enter');
+  await input.press('Enter');
   await expect(page.locator('.message-turn--user')).toHaveCount(1);
   await expect(page.getByText('Saved in preview', { exact: true })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Send message' })).not.toHaveAttribute('aria-busy', 'true');

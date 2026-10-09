@@ -17,6 +17,23 @@
 .chat-avatar .character-photo { aspect-ratio: 1; }
 .chat-identity h1 { font-size: 16px; line-height: 23px; font-weight: 700; }
 .chat-thread { max-width: 760px; margin-inline: auto; }
+.connected-chat-avatar { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; background: var(--brand-soft); color: var(--brand); border: 2px solid var(--surface); box-shadow: 0 0 0 1px var(--border); font-weight: 700; }
+.connected-chat-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.connected-chat .chat-shell__header { border-bottom: 2px solid var(--brand-soft); }
+.connected-chat .chat-thread { gap: 16px; }
+.connected-chat-shortcuts { display: flex; flex-wrap: wrap; gap: 8px; }
+.connected-chat-shortcuts a { padding: 8px 12px; min-height: 44px; display: inline-flex; align-items: center; font-size: 13px; border: 1px solid var(--border); border-radius: var(--radius-pill); background: var(--surface); }
+.connected-chat-options { border: 1px solid var(--border); border-radius: 16px; background: var(--surface); padding: 12px 16px; font-size: 14px; }
+.connected-chat-options summary { cursor: pointer; color: var(--brand); }
+.connected-chat-options > div { margin-top: 16px; }
+.connected-chat-welcome { margin-block: 16px; padding: 28px 24px; border: 1px solid var(--border); border-radius: 24px; background: var(--surface); text-align: center; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.connected-chat-quote { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 16px; background: var(--brand-soft); color: var(--brand); font-family: var(--font-display); font-size: 48px; line-height: 1; padding-top: 10px; }
+.connected-chat-welcome h2 { font-size: clamp(24px, 4vw, 32px); line-height: 1.2; }
+.connected-chat-welcome blockquote { max-width: 36ch; color: var(--brand); font-size: 16px; }
+.connected-chat-welcome > p { max-width: 40ch; }
+.connected-chat .chat-shell__composer { border-top: 2px solid var(--brand-soft); }
+.connected-chat .connected-message-composer textarea { min-height: 76px; max-height: 160px; border-radius: 20px; }
+@media (hover: hover) { .connected-chat-shortcuts a:hover { background: var(--brand-soft); border-color: var(--brand); } }
 .chat-disclosure { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 10px; margin-bottom: 20px; }
 .chat-disclosure p { color: var(--text-secondary); font-size: 12px; line-height: 18px; max-width: 48ch; }
 .chat-profile-link { text-align: center; font-size: 13px; margin-bottom: 24px; }
@@ -32,6 +49,10 @@
 .chat-composer { max-width: 760px; margin-inline: auto; gap: 6px; }
 .chat-composer form { display: flex; align-items: flex-end; gap: 10px; }
 .chat-composer .connected-message-composer { flex-direction: column; align-items: stretch; }
+.connected-composer-row { display: flex; align-items: flex-end; gap: 10px; width: 100%; }
+.connected-composer-row .field { flex: 1; min-width: 0; }
+.chat-composer form .button.composer-send { width: 48px; height: 48px; min-height: 48px; padding: 0; border-radius: 16px; flex: none; }
+.composer-send[aria-busy="true"] > .icon { display: none; }
 .composer-field { flex: 1; min-width: 0; }
 .composer-field textarea { width: 100%; min-height: 48px; max-height: 144px; padding: 12px 14px; border: 1px solid var(--border-control); border-radius: 14px; background: var(--canvas); color: var(--ink); font-size: 16px; line-height: 22px; resize: none; display: block; }
 .composer-field textarea:disabled { background: var(--disabled-surface); }

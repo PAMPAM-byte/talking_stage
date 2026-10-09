@@ -20,7 +20,7 @@ Successful mutations have a separate technical thirty-per-minute actor limit, us
 
 Private reply jobs are bound to the saved user message, conversation and generation, with a composite foreign key and cascade removal. With the current disabled configuration their state is `blocked_provider`. No scripted character introduction, synthetic reply, typing indicator or paid model call is presented as real AI. The screens explicitly say messages are saved and replies are unavailable. The configured integration supports explicit retry and skip, with leases and final eligibility checks.
 
-The composer retains input and its stable UUID after a failed submission, clearing them only on success. Enter creates a newline; Ctrl/Command+Enter submits outside IME composition. Written text stays out of browser storage and application logs; durable private database storage is now the real service behavior. The reply pipeline is implemented but not enabled or verified against a live model. Cross-device draft recovery is unimplemented.
+The composer retains input and its stable UUID after a failed submission, clearing them only on success. Enter sends; Shift+Enter creates a newline. IME composition and repeated keydown events do not submit. Written text stays out of browser storage and application logs; durable private database storage is now the real service behavior. The reply pipeline is implemented but not enabled or verified against a live model. Cross-device draft recovery is unimplemented.
 
 ## Remaining Stage 10 work
 

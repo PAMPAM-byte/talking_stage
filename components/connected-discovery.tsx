@@ -8,26 +8,32 @@ type Filters={gender?:string;interest?:string;personality?:string;page?:string};
 type CastRow = { id:string;name:string;age:number;gender:string;bio:string;conversation_clue:string;fictional_location:string;occupation:string;interests:string[];personality:string[] };
 async function eligibleCast(id?: string,filters:Filters={}) {
  const account=await currentAccount(); if(!account) return null;
- const result=id?await account.client.from('characters').select('id,name,age,gender,bio,conversation_clue,fictional_location,occupation,interests,personality').eq('id',id):await account.client.rpc('discover_cast',{p_page:Number(filters.page??1),p_gender:filters.gender||null,p_interest:filters.interest||null,p_personality:filters.personality||null});
+ const preferred=account.profile.genders;
+ const gender=filters.gender===undefined?(preferred.length===1?preferred[0]:'all'):(['man','woman'].includes(filters.gender)?filters.gender:'all');
+ const effectiveFilters={...filters,gender};
+ const result=id?await account.client.from('characters').select('id,name,age,gender,bio,conversation_clue,fictional_location,occupation,interests,personality').eq('id',id):await account.client.rpc('discover_cast',{p_page:Number(filters.page??1),p_gender:gender==='all'?null:gender,p_interest:filters.interest||null,p_personality:filters.personality||null});
  if(result.error) return null;
  const characters=(id?result.data:result.data.characters) as CastRow[];
  const collection=id?{page:1,total:characters.length,interests:[] as string[],personalities:[] as string[]}:result.data as {page:number;total:number;interests:string[];personalities:string[]};
- if(!characters.length) return {account,characters,assets:[] as {id:string;character_id:string;slot:string;alt_text:string}[],collection};
+ if(!characters.length) return {account,characters,assets:[] as {id:string;character_id:string;slot:string;alt_text:string}[],collection,filters:effectiveFilters};
  const assets=await account.client.from('character_assets').select('id,character_id,slot,alt_text').in('character_id',characters.map(c=>c.id));
  if(assets.error) return null;
- return {account,characters,assets:assets.data??[],collection};
+ return {account,characters,assets:assets.data??[],collection,filters:effectiveFilters};
 }
-export async function ConnectedDiscovery({ filters }: {filters:Filters}) {
- const data=await eligibleCast(undefined,filters);
+export async function ConnectedDiscovery({ filters:requestedFilters }: {filters:Filters}) {
+ const data=await eligibleCast(undefined,requestedFilters);
  if(!data) return <Notice title="Discovery unavailable" tone="warning">Reload to try again.</Notice>;
  const rows=data.characters;
+ const filters=data.filters;
+ const genderHref=(gender:string)=>{if(gender==='all')return '/discover?gender=all';const query=new URLSearchParams({gender});for(const key of ['interest','personality'] as const)if(filters[key])query.set(key,filters[key]!);return `/discover?${query}`;};
  const pageHref=(page:number)=>{const query=new URLSearchParams();for(const key of ['gender','interest','personality'] as const)if(filters[key])query.set(key,filters[key]!);query.set('page',String(page));return `/discover?${query}`;};
  return <div className="discovery-page stack"><header className="discovery-heading"><div className="stack"><p className="supporting muted">Welcome, {data.account.profile.display_name}.</p><h1 className="display discovery-title">A little spark.<br/>A good conversation.</h1><p className="muted">Meet fictional AI characters with a personality of their own.</p></div><div className="discovery-disclosure">Every character is AI.<br/>Every story is fictional.</div></header>
- <form className="row" action="/discover"><label className="field">Gender<select className="field__control" name="gender" defaultValue={filters.gender??''}><option value="">Everyone</option><option value="woman">Women</option><option value="man">Men</option></select></label><label className="field">Interest<select className="field__control" name="interest" defaultValue={filters.interest??''}><option value="">Any interest</option>{data.collection.interests.map(i=><option key={i}>{i}</option>)}</select></label><label className="field">Personality<select className="field__control" name="personality" defaultValue={filters.personality??''}><option value="">Any personality</option>{data.collection.personalities.map(i=><option key={i}>{i}</option>)}</select></label><button className="button button--secondary">Apply filters</button><Link href="/discover">Reset filters</Link></form>
+ <nav className="row" aria-label="Character gender">{[['all','Everyone'],['woman','Women'],['man','Men']].map(([gender,label])=><Link key={gender} className="chip" href={genderHref(gender)} aria-current={filters.gender===gender?'page':undefined}>{label}</Link>)}</nav>
+ <form key={`${filters.gender}-${filters.interest}-${filters.personality}`} className="row" action="/discover"><input type="hidden" name="gender" value={filters.gender}/><label className="field">Interest<select className="field__control" name="interest" defaultValue={filters.interest??''}><option value="">Any interest</option>{data.collection.interests.map(i=><option key={i}>{i}</option>)}</select></label><label className="field">Personality<select className="field__control" name="personality" defaultValue={filters.personality??''}><option value="">Any personality</option>{data.collection.personalities.map(i=><option key={i}>{i}</option>)}</select></label><button className="button button--secondary">Apply filters</button><Link href="/discover?gender=all">Explore all characters</Link></form>
  <p role="status" className="caption muted">{data.collection.total} characters to discover</p>
  {rows.length?<div className="character-grid">{rows.map(c=>{const photo=data.assets.find(a=>a.character_id===c.id&&a.slot==='portrait');return <article key={c.id} className="character-card"><Link href={`/characters/${c.id}`} className="character-photo">
  {/* eslint-disable-next-line @next/next/no-img-element */}
- {photo?<img src={`/api/cast-assets/${photo.id}?w=640`} srcSet={[320,640,1280].map(w=>`/api/cast-assets/${photo.id}?w=${w} ${w}w`).join(', ')} sizes="(min-width:900px) 33vw, (min-width:600px) 50vw, 100vw" alt={photo.alt_text} loading="lazy" className="connected-cast-photo" />:<span className="photo-paused">Photos are paused</span>}</Link><div className="character-card__body stack"><Badge>Fictional AI character</Badge><h2>{c.name}, {c.age}</h2><p className="muted">{c.fictional_location} · {c.occupation}</p><blockquote className="conversation-clue">{c.conversation_clue}</blockquote><Link className="button button--secondary" href={`/characters/${c.id}`}>Meet {c.name}</Link></div></article>;})}</div>:<EmptyState title="No characters to show" action={<Link href="/discover">Reset filters</Link>}>Try another filter, or return when more reviewed characters are available.</EmptyState>}
+ {photo?<img src={`/api/cast-assets/${photo.id}?w=640`} srcSet={[320,640,1280].map(w=>`/api/cast-assets/${photo.id}?w=${w} ${w}w`).join(', ')} sizes="(min-width:900px) 33vw, (min-width:600px) 50vw, 100vw" alt={photo.alt_text} loading="lazy" className="connected-cast-photo" />:<span className="photo-paused">Photos are paused</span>}</Link><div className="character-card__body stack"><Badge>Fictional AI character</Badge><h2>{c.name}, {c.age}</h2><p className="muted">{c.fictional_location} · {c.occupation}</p><blockquote className="conversation-clue">{c.conversation_clue}</blockquote><Link className="button button--secondary" href={`/characters/${c.id}`}>Meet {c.name}</Link></div></article>;})}</div>:<EmptyState title="No characters to show" action={<Link href="/discover?gender=all">Reset filters</Link>}>Try another filter, or return when more reviewed characters are available.</EmptyState>}
  <Pagination page={data.collection.page} total={data.collection.total} href={pageHref}/>
  </div>;
 }

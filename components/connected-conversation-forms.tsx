@@ -3,6 +3,7 @@ import {useRef,useState,useTransition} from 'react';
 import {useRouter} from 'next/navigation';
 import {conversationAction} from '@/lib/backend/conversation-actions';
 import {Button,Checkbox,Notice,TextArea} from './ui/primitives';
+import {Icon} from './ui/icon';
 async function requestReply(id:string,messageId:string,signal?:AbortSignal):Promise<{message:string}> {
  try{
  const response=await fetch(`/api/conversations/${id}/replies/${messageId}`,{method:'POST',credentials:'same-origin',signal});
@@ -29,8 +30,8 @@ export function SavedMessageComposer({id,generation,disabled,name,replies=false}
  data.set('clientId',attempt.current.id);start(async()=>{const next=await conversationAction(data);setResult(next);if(!next.error){setText('');attempt.current=null;if(replies&&next.messageId){setActiveReply(next.messageId);controller.current=new AbortController();setResult(await requestReply(id,next.messageId,controller.current.signal));setActiveReply(null);controller.current=null;router.refresh();}}});}}>
  <input type="hidden" name="id" value={id}/><input type="hidden" name="operation" value="send"/><input type="hidden" name="generation" value={generation}/>
  {result.error&&<Notice live title="Message not saved" tone="danger">{result.error}</Notice>}{result.message&&<p role="status" className="caption muted">{result.message}</p>}
- <TextArea label={`Message ${name}`} name="text" value={text} onChange={event=>setText(event.target.value)} maxLength={2000} rows={2} disabled={disabled||pending} required placeholder={`Say something to ${name}…`} onKeyDown={event=>{if(event.key==='Enter'&&(event.ctrlKey||event.metaKey)&&!event.nativeEvent.isComposing){event.preventDefault();event.currentTarget.form?.requestSubmit();}}}/>
- <Button type="submit" loading={pending} disabled={disabled||!text.trim()}>{replies?'Send message':'Save message'}</Button>
+ <div className="connected-composer-row"><TextArea label={`Message ${name}`} name="text" value={text} onChange={event=>setText(event.target.value)} maxLength={2000} rows={2} disabled={disabled||pending} required placeholder={`Say something to ${name}…`} onKeyDown={event=>{if(event.key==='Enter'&&!event.shiftKey&&!event.nativeEvent.isComposing&&event.nativeEvent.keyCode!==229){event.preventDefault();if(!event.repeat&&!disabled&&!pending&&text.trim())event.currentTarget.form?.requestSubmit();}}}/>
+ <Button type="submit" className="composer-send" loading={pending} disabled={disabled||!text.trim()} aria-label="Send message"><Icon name="arrow"/></Button></div>
  {activeReply&&<Button variant="quiet" loading={stopping} onClick={()=>stop(async()=>{const data=new FormData();data.set('id',id);data.set('messageId',activeReply);data.set('operation','skip');const next=await conversationAction(data);setResult(next);if(!next.error){controller.current?.abort();setActiveReply(null);router.refresh();}})}>Stop reply</Button>}</form>;
 }
 export function ReplyRetry({id,messageId,retry=true}:{id:string;messageId:string;retry?:boolean}) {
