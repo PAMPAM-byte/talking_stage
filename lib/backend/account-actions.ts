@@ -6,7 +6,7 @@ import { setFlowCookie, validFlowCookie } from "./flow-cookie";
 
 export type AccountResult = { error?: string; message?: string; destination?: string };
 const unavailable = { error: "Account services are unavailable. Please try again later." };
-const confirmationMessage = "Check your email for a confirmation link. If you already have an account, sign in or reset your password.";
+const existingAccountMessage = "If you already have an account, sign in or reset your password.";
 function providerFailure(error: { status?: number; name?: string }) {
   if (error.status === 429) return { error: "Too many attempts. Wait a few minutes and try again." };
   if ((error.status ?? 0) >= 500 || error.name === "AuthRetryableFetchError") return unavailable;
@@ -40,16 +40,16 @@ export async function submitAccount(step: string, form: FormData): Promise<Accou
       if (step === "register") {
         if (!await validFlowCookie("adult", "18-plus-v1")) return { destination: "/onboarding/age" };
         if (form.get("consent") !== "on") return { error: "Accept the terms and AI disclosure to continue." };
-        const { data, error } = await client.auth.signUp({ email, password, options: { data: { adult_declaration: "18-plus-v1" }, emailRedirectTo: `${origin()}/auth/confirm` } });
-        if (error?.code === "user_already_exists") { (await cookies()).delete("ts-adult"); return { message: confirmationMessage }; }
+        const { data, error } = await client.auth.signUp({ email, password, options: { data: { adult_declaration: "18-plus-v1" } } });
+        if (error?.code === "user_already_exists") { (await cookies()).delete("ts-adult"); return { message: existingAccountMessage }; }
         if (error) return providerFailure(error) ?? { error: "We couldn’t create your account. Check your details or try again later." };
         (await cookies()).delete("ts-adult");
         if (data.session) return { destination: "/onboarding/preferences" };
-        return { message: confirmationMessage };
+        return { error: "We couldn’t finish signing you in. Try signing in with your email and password." };
       }
       if (step === "sign-in") {
         const { error } = await client.auth.signInWithPassword({ email, password });
-        if (error) return providerFailure(error) ?? { error: "We couldn’t sign you in. Check your email and password, or confirm your email first." };
+        if (error) return providerFailure(error) ?? { error: "We couldn’t sign you in. Check your email and password, or reset your password." };
         const account = await currentAccount();
         if (!account || !account.profile.adult_declared_at) { await client.auth.signOut(); return { error: "This account needs an accepted adult declaration. Contact support." }; }
         return { destination: account.profile.onboarding_complete ? "/discover" : "/onboarding/preferences" };

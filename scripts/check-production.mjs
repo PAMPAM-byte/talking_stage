@@ -16,7 +16,7 @@ for (const file of await files(".next/static")) {
   if (!/\.(js|css)$/.test(file)) continue;
   const content = await readFile(file, "utf8");
   for (const secret of serverSecrets) assert(!content.includes(secret), `Server secret found in client output: ${file}`);
-  for (const marker of ['https://api.openai.com/v1/responses','talkingstage_reply','Published character direction (subordinate to these product rules)']) assert(!content.includes(marker), `Private AI integration found in client output: ${file}`);
+  for (const marker of ['https://api.openai.com/v1/responses','talkingstage_reply','talkingstage_summary','Published character direction (subordinate to these product rules)']) assert(!content.includes(marker), `Private AI integration found in client output: ${file}`);
   // The real editor's field label is public UI vocabulary, not private content.
   for (const marker of ["DEMO-NOT-A-TRANSACTION", "Choose a scenario and load", "lab-mock-controls", "draft-0", "demo-user-a", "Developer review scenarios", "appearanceContinuity", "Chat review controls", "Messages review controls", "Toggle broken photo", "Reset chat preview", "Personal-space review controls", "Payment review controls", "Request policy review controls", "Load request sample", "Administration review controls", "Open selected preview", "sample-report-pressure", "SYNTHETIC PRIVATE STAGE9 DIRECTION"]) assert(!content.includes(marker), `Development tooling or private direction found in production: ${file}`);
 }

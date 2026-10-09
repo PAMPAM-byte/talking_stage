@@ -5,6 +5,7 @@ import { resolve } from 'node:path';
 // Local CLI v2.120.0 omits GOTRUE_RATE_LIMIT_HEADER. Auth v2.197.0 then
 // skips its native IP limits. Reconfigure only this project's Auth container;
 // retain the stopped original until the replacement passes its health check.
+// Apply the owner-selected direct email/password signup policy at the same time.
 const name = 'supabase_auth_talking_stage';
 const previous = `${name}_rate_limit_rollback`;
 const inspect = target => JSON.parse(execFileSync('docker', ['inspect', target], { encoding: 'utf8', windowsHide: true }))[0];
@@ -21,12 +22,12 @@ if (auth.Config.Labels?.['com.supabase.cli.project'] !== 'talking_stage' ||
     gatewayEnv.KONG_TRUSTED_IPS || gatewayEnv.KONG_REAL_IP_HEADER) {
   throw new Error('Unexpected local Auth/gateway configuration; no container was changed.');
 }
-if (env.GOTRUE_RATE_LIMIT_HEADER === 'X-Real-IP') {
+if (env.GOTRUE_RATE_LIMIT_HEADER === 'X-Real-IP' && env.GOTRUE_MAILER_AUTOCONFIRM === 'true') {
   if (auth.State.Health?.Status !== 'healthy') throw new Error('Configured local Auth is not healthy. Restart the local backend before testing.');
-  console.log('Local Auth native IP limits already enabled.');
+  console.log('Local Auth native IP limits and direct signup already enabled.');
   process.exit(0);
 }
-if (env.GOTRUE_RATE_LIMIT_HEADER) throw new Error('An existing rate-limit header will not be overwritten.');
+if (env.GOTRUE_RATE_LIMIT_HEADER && env.GOTRUE_RATE_LIMIT_HEADER !== 'X-Real-IP') throw new Error('An existing rate-limit header will not be overwritten.');
 const host = execFileSync('docker', ['context', 'inspect', '--format', '{{.Endpoints.docker.Host}}'], { encoding: 'utf8', windowsHide: true }).trim();
 const socketPath = host.startsWith('npipe://') ? host.slice(8) : host.startsWith('unix://') ? host.slice(7) : null;
 if (!socketPath) throw new Error('Only a local Docker socket is supported.');
@@ -52,7 +53,7 @@ if (existing.some(container => container.Names.includes(`/${previous}`))) throw 
 const endpoints = Object.fromEntries(Object.entries(auth.NetworkSettings.Networks).map(([network, settings]) => [network, { Aliases: settings.Aliases }]));
 const replacement = {
   ...auth.Config,
-  Env: [...auth.Config.Env, 'GOTRUE_RATE_LIMIT_HEADER=X-Real-IP'],
+  Env: [...auth.Config.Env.filter(value=>!value.startsWith('GOTRUE_RATE_LIMIT_HEADER=')&&!value.startsWith('GOTRUE_MAILER_AUTOCONFIRM=')), 'GOTRUE_RATE_LIMIT_HEADER=X-Real-IP', 'GOTRUE_MAILER_AUTOCONFIRM=true'],
   HostConfig: auth.HostConfig,
   NetworkingConfig: { EndpointsConfig: endpoints },
 };
@@ -74,7 +75,7 @@ try {
   }
   if (!healthy) throw new Error('Replacement local Auth did not pass its health check.');
   await api('DELETE', `/containers/${previous}`);
-  console.log('Local Auth native IP limits enabled through gateway-controlled X-Real-IP; database and credentials preserved.');
+  console.log('Local Auth direct signup and native IP limits enabled; database and credentials preserved.');
 } catch (error) {
   try {
     if (created) await api('DELETE', `/containers/${name}?force=true`);

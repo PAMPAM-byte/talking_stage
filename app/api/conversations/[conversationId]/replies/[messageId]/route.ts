@@ -1,7 +1,8 @@
 import {currentAccount} from '@/lib/backend/server';
-import {processReply} from '@/lib/backend/reply-worker';
+import {processReply,processSummary} from '@/lib/backend/reply-worker';
+import {after} from 'next/server';
 import {revalidatePath} from 'next/cache';
-export const maxDuration=30;
+export const maxDuration=60;
 const uuid=/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i;
 export async function POST(request:Request,{params}:{params:Promise<{conversationId:string;messageId:string}>}) {
  const respond=(state:string,status=200)=>Response.json({state},{status,headers:{'Cache-Control':'no-store'}});
@@ -18,6 +19,10 @@ export async function POST(request:Request,{params}:{params:Promise<{conversatio
   const owned=await account.client.from('messages').select('id').eq('id',messageId).eq('conversation_id',conversationId).eq('role','user').single();
   if(owned.error)return respond('unavailable',404);
   const state=await processReply(messageId,account.user.id,request.signal);
+  if(state==='completed')after(async()=>{
+   // Best effort, independently budgeted and disabled by default. No raw logs.
+   try{await processSummary(messageId,account.user.id);}catch{/* A summary failure never changes a delivered reply. */}
+  });
   revalidatePath('/messages','layout');return respond(state);
  }catch{return respond('unavailable',503);}
 }

@@ -12,7 +12,7 @@ For a hosted **development** project, apply `supabase/migrations/202610080001_fo
 
 For local development, start Docker Desktop, run `npm run backend:start`, then `npm run backend:configure` and `npm run backend:storage`. Supabase CLI 2.120.0 is pinned; `supabase init` has already generated the checked-in configuration. The startup command runs database/Auth/REST/Storage/gateway/local inbox containers and applies the checked-in migrations. The configure script fills missing local environment values without displaying credentials or overwriting a different Supabase project. The Storage configurator creates or updates the private `cast-private` bucket with a 5 MB limit and WebP-only uploads; it requires the server-only local credential and rejects remote projects. `npm run backend:stop` stops this project's containers while preserving its local database.
 
-The application runs on localhost:3000, Supabase API on 127.0.0.1:54321 and the captured email inbox on 127.0.0.1:54324. Local emails are captured by Mailpit and do not reach external inboxes. Hosted production SMTP remains a separate pre-launch configuration dependency.
+The application runs on localhost:3000, Supabase API on 127.0.0.1:15421, database on 127.0.0.1:15422 and captured email inbox on 127.0.0.1:15424. The local ports were moved on 9 October 2026 because Windows reserved the original 54320–54324 range. Local emails are captured by Mailpit and do not reach external inboxes. Hosted production SMTP remains a separate pre-launch configuration dependency.
 
 ## Authentication configuration
 

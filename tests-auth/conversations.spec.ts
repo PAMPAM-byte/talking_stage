@@ -44,6 +44,9 @@ test('real conversation persistence, retries, ownership and lifecycle',async({pa
   const disabled=await service.rpc('claim_reply',{p_message:saved.id,p_actor:users[0],p_model:'synthetic'});
   expect(disabled.error).toBeNull();expect(disabled.data.state).toBe('blocked_provider');
   const missingFinish=await service.rpc('finish_reply',{p_job:randomUUID(),p_actor:users[0],p_lease:randomUUID(),p_text:null,p_failure:null,p_asset:null});expect(missingFinish.error).toBeNull();expect(missingFinish.data).toBe('discarded');
+  expect((await a.rpc('claim_summary',{p_message:saved.id,p_actor:users[0],p_model:'synthetic'})).error).not.toBeNull();
+  const unavailableSummary=await service.rpc('claim_summary',{p_message:saved.id,p_actor:users[0],p_model:'synthetic'});expect(unavailableSummary.error).toBeNull();expect(unavailableSummary.data).toEqual({state:'unavailable'});
+  const missingSummary=await service.rpc('finish_summary',{p_conversation:id,p_actor:users[0],p_lease:randomUUID(),p_excerpts:[],p_failure:null});expect(missingSummary.error).toBeNull();expect(missingSummary.data).toBe('discarded');
   const replyPath=`/api/conversations/${id}/replies/${saved.id}`;
   const ownedReply=await page.request.post(replyPath,{headers:{Origin:'http://localhost:3102'}});expect(ownedReply.status()).toBe(200);expect(await ownedReply.json()).toEqual({state:'blocked_provider'});
   expect((await page.request.post(replyPath,{headers:{Origin:'https://untrusted.example'}})).status()).toBe(403);

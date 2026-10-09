@@ -27,6 +27,7 @@ To connect authentication, follow [Stage 8 setup](docs/stage-8-setup.md) and con
 - `npm run test:reply-integration` — Complete migration-chain checks for private context, memory consent, reply leases, budgets, retries, cancellation and stale-output rejection.
 - `npm run test:ai-provider` — Offline injected-transport checks for the optional AI adapter; makes no network calls.
 - `npm run test:photo-replies` — Approved photo selection, version/pause/ownership checks and atomic idempotent text/photo replies with an offline transport.
+- `npm run test:summaries` — Extractive summary scope, source validation, independent budgets and privacy invalidation through the offline database/provider pipeline.
 - `npm run test:storage-restore` — Isolated local synthetic image backup/restore, checksum and private-access drill; see [recovery procedure](docs/storage-recovery.md).
 - `npm test` — Playwright UI and mock-contract checks. Uses installed Microsoft Edge; configure the browser channel if testing on another system. Runs an isolated mock-mode server on localhost:3103.
 - `npm run build` — Production build.

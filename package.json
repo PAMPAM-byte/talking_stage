@@ -19,6 +19,7 @@
     "test:reply-integration": "node scripts/test-reply-integration.mjs",
     "test:ai-provider": "node scripts/test-ai-provider.mjs",
     "test:photo-replies": "node scripts/test-photo-replies.mjs",
+    "test:summaries": "node scripts/test-summaries.mjs",
     "test:storage-restore": "node scripts/test-storage-restore.mjs",
     "test:auth": "playwright test --config playwright.auth.config.ts",
     "backend:start": "node scripts/start-local-backend.mjs",

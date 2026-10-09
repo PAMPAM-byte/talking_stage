@@ -2,10 +2,12 @@ import { expect, test, type BrowserContext, type Page } from '@playwright/test';
 import { createClient } from '@supabase/supabase-js';
 import { execFileSync } from 'node:child_process';
 import { createHmac, randomUUID } from 'node:crypto';
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import sharp from 'sharp';
 
 const endpoint = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const inboxPort = readFileSync('supabase/config.toml','utf8').match(/\[local_smtp\][\s\S]*?^port\s*=\s*(\d+)/m)?.[1];
+if (!inboxPort) throw new Error('Local email test port is missing from Supabase configuration.');
 const key = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!;
 const password = `Ts!${randomUUID()}Aa9`;
 const run = randomUUID();
@@ -20,7 +22,7 @@ function sql(query: string) {
 async function emailLink(email: string, purpose: string) {
   let link = '';
   await expect.poll(async () => {
-    const response = await fetch(`http://127.0.0.1:54324/view/latest.html?query=${encodeURIComponent(`to:${email}`)}`);
+    const response = await fetch(`http://127.0.0.1:${inboxPort}/view/latest.html?query=${encodeURIComponent(`to:${email}`)}`);
     if (!response.ok) return false;
     const html = await response.text();
     const href = html.match(/href="([^"]+token_hash[^"]+)"/)?.[1]?.replaceAll('&amp;', '&');
@@ -62,11 +64,6 @@ async function register(page: Page, email: string, name: string) {
   await page.getByLabel('Password', { exact: true }).fill(password);
   await page.getByRole('checkbox', { name: /I accept the terms/ }).check();
   await page.getByRole('button', { name: 'Create account', exact: true }).click();
-  await expect(page.locator('main').getByRole('status')).toContainText('Check your email for a confirmation link');
-  await signIn(page, email);
-  await expect(page.locator('main').getByRole('alert')).toContainText('confirm your email first');
-  const link = await emailLink(email, 'signup');
-  try { await page.goto(link); } catch { throw new Error('The local confirmation link could not be opened.'); }
   await expect(page).toHaveURL(/\/onboarding\/preferences$/);
   await page.getByLabel('Preferred name').fill(name);
   await page.getByRole('button', { name: 'Women', exact: true }).click();
@@ -84,7 +81,6 @@ async function register(page: Page, email: string, name: string) {
   await expect(page.getByText(`Welcome, ${name}.`, { exact: true })).toBeVisible();
   await page.reload();
   await expect(page.getByText(`Welcome, ${name}.`, { exact: true })).toBeVisible();
-  return link;
 }
 
 test('real local registration, declarations, ownership, preferences, roles, recovery and sign-out', async ({ browser }) => {
@@ -123,7 +119,7 @@ test('real local registration, declarations, ownership, preferences, roles, reco
       await pa.getByRole('button', { name: 'Create account', exact: true }).click();
       await expect(pa).toHaveURL(/\/onboarding\/age$/);
     });
-    const confirmation = await register(pa, emailA, 'Stage eight A');
+    await register(pa, emailA, 'Stage eight A');
     await register(pb, emailB, 'Stage eight B');
     const cauth = client(); const bauth = client();
     const loginA = await cauth.auth.signInWithPassword({ email: emailA, password });
@@ -321,8 +317,6 @@ test('real local registration, declarations, ownership, preferences, roles, reco
       await signIn(pa, emailA, fresh); await expect(pa).toHaveURL(/\/discover$/);
       try { await pa.goto(recovery); } catch { throw new Error('The reused recovery link check could not be opened.'); }
       await expect(pa).toHaveURL(/\/auth\/error$/);
-      try { await pa.goto(confirmation); } catch { throw new Error('The reused confirmation link check could not be opened.'); }
-      await expect(pa).toHaveURL(/\/auth\/error$/);
       await pa.goto('/recover'); await pa.getByLabel('Email address').fill(emailA);
       await pa.getByRole('button', { name: 'Send recovery link' }).click();
       await expect(pa.locator('main').getByRole('status')).toContainText('If an account matches that email');
@@ -344,7 +338,7 @@ test('real local registration, declarations, ownership, preferences, roles, reco
       expect(restored).toContain('Local restore passed');
 
     });
-    await test.step('a duplicate signup receives safe confirmation guidance', async () => {
+    await test.step('a duplicate signup receives safe sign-in guidance', async () => {
       const duplicate = await browser.newContext(); const page = await duplicate.newPage();
       try {
         await page.goto('/onboarding/age'); await page.getByRole('checkbox', { name: 'I am 18 or older' }).check();
