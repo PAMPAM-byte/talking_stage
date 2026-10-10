@@ -259,7 +259,9 @@ test('real local registration, declarations, ownership, preferences, roles, reco
       expect((await bauth.rpc('admin_list_controls')).error).not.toBeNull();
       expect((await bauth.rpc('admin_list_audit')).error).not.toBeNull();
       expect((await bauth.rpc('effective_capabilities',{p_character:draftId})).data).toEqual({chat:true,photos:false,payments:true});
-      await pb.goto('/discover');await expect(pb.getByText('Photos are paused')).toBeVisible();
+      await pb.goto('/discover?gender=woman&interest=Music');
+      const pausedCard=pb.locator('.character-card').filter({has:pb.getByRole('link',{name:/Meet Stage9/})});
+      await expect(pausedCard.getByText('Photos are paused')).toBeVisible();
       expect(await pa.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true);
       await pa.screenshot({path:'docs/reviews/stage-9/operations-390.png',fullPage:true,caret:'initial'});
       const stale=await cauth.rpc('admin_save_controls',{p_character:draftId,p_version:0,p_chat:true,p_photos:true,p_payments:true,p_reason:'Synthetic stale edit'});

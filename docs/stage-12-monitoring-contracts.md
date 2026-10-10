@@ -16,6 +16,8 @@ Monitoring cannot change a service result: return values and thrown exceptions a
 
 The live local probe passed for application, Auth and database. No automated uptime scheduler, alert destination, log-retention period, latency target or escalation owner has been selected. Hosted availability, model cost/usage and payment-failure alerts remain open; the seven-day backup policy is not a log-retention policy.
 
+The subsequent [integration review](./reviews/local-integration.md) exposed a slow sign-in outage recovery. Server and navigation-proxy backend requests now use an eight-second per-request deadline, combined with caller cancellation. The existing safe failure result and retry controls remain. This is not an eight-second limit on an entire SDK refresh sequence and does not prove that a timed-out mutation failed to commit.
+
 ## Validation
 
 `npm run test:monitoring` injects sensitive canaries into return/error objects, verifies exact emitted fields and fixed labels, rejection/outage classification, unchanged return/throw identity and logging-sink failure isolation. Scoped lint, TypeScript and isolated production build validate integration. Focused authenticated browser checks cover minimal liveness, failed sign-in recovery, report submission/review and interrupted deletion followed by successful erasure. See [review](./reviews/monitoring.md) for executed outcomes.

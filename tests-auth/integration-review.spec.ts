@@ -46,7 +46,9 @@ test('connected mobile layouts, keyboard photo access and interrupted preference
     }
     await page.goto(`/characters/${character}?gender=woman`);
     const photo = page.locator('.profile-photo-open').first();
-    await photo.focus(); await page.keyboard.press('Enter'); await expect(page.getByRole('dialog')).toBeVisible();
+    await expect(photo).toBeVisible();
+    await expect.poll(() => photo.locator('img').evaluate(image => (image as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);
+    await photo.press('Enter'); await expect(page.getByRole('dialog')).toBeVisible();
     await page.keyboard.press('Escape'); await expect(page.getByRole('dialog')).toHaveCount(0); await expect(photo).toBeFocused();
 
     await page.goto('/settings/preferences');

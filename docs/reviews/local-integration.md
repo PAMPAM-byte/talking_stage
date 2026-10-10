@@ -30,4 +30,6 @@ The owner authorized a full local integration review while AI keys and hosted Su
 
 Database/offline suites passed for foundation ownership, conversations, account deletion, reporting, reply leases/context/budgets, provider validation, photo selection/commit, summaries and request controls. No AI key or paid provider call was used.
 
-Browser results and final production verification are being completed. Physical-device testing, screen-reader verification, live AI voices/injection/usage/billing, payment gateway flows, hosted recovery/alerts and production policy review remain open. Automated keyboard checks are not a claim that those manual gates passed.
+The initial complete authenticated browser run finished with fifteen passes and the two findings above. Those two journeys and the new connected integration smoke test are being rerun after correction. Final isolated production build/TypeScript, scoped lint, deadline/cancellation checks and production verification passed, including private-route denial and development/secret exclusion. No skipped tests were reported in the initial run.
+
+Physical-device testing, screen-reader verification, live AI voices/injection/usage/billing, payment gateway flows, hosted recovery/alerts and production policy review remain open. Automated keyboard checks are not a claim that those manual gates passed.
