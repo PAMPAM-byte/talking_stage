@@ -27,7 +27,8 @@
     "backend:limits": "node scripts/configure-local-auth-limits.mjs",
     "backend:storage": "node scripts/configure-local-storage.mjs",
     "backend:stop": "supabase stop",
-    "backend:configure": "node scripts/configure-local-supabase.mjs"
+    "backend:configure": "node scripts/configure-local-supabase.mjs",
+    "backend:test-account": "node scripts/configure-local-test-account.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",

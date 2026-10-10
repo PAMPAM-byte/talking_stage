@@ -17,13 +17,24 @@ const titles: Record<FlowStep, [string, string]> = {
   preferences: ["Let’s make it feel like you.", "A few choices to help you find your kind of conversation."],
   complete: ["Your next conversation awaits.", "One last thing before you explore."],
 };
-export function RealAccountForm({ step, configured, profile, expired = false }: { step: FlowStep; configured: boolean; profile?: AccountProfile; expired?: boolean }) {
+export function RealAccountForm({ step, configured, profile, expired = false, localTestAccount }: { step: FlowStep; configured: boolean; profile?: AccountProfile; expired?: boolean; localTestAccount?: { email: string; password: string } }) {
   const router = useRouter(); const [busy, startTransition] = useTransition();
   const [pendingAction, setPendingAction] = useState<"submit" | "underage" | "leave" | null>(null);
   const [error, setError] = useState(""); const [message, setMessage] = useState("");
   const [adult, setAdult] = useState(false); const [blocked, setBlocked] = useState(false);
   const [genders, setGenders] = useState(profile?.genders ?? []);
   const formRef = useRef<HTMLFormElement>(null);
+  function fillTestAccount() {
+    if (busy || !localTestAccount || !formRef.current) return;
+    const email = formRef.current.elements.namedItem("email");
+    const password = formRef.current.elements.namedItem("password");
+    if (email instanceof HTMLInputElement && password instanceof HTMLInputElement) {
+      email.value = localTestAccount.email;
+      password.value = localTestAccount.password;
+      setError(""); setMessage("");
+      password.focus();
+    }
+  }
   function leaveOnboarding() {
     if (busy) return;
     setPendingAction("leave");
@@ -71,6 +82,7 @@ export function RealAccountForm({ step, configured, profile, expired = false }: 
     {error && <Notice title={error} tone="danger" live />}{message && <Notice title={message} tone="success" live />}
     {blocked ? <Notice title="TalkingStage is for adults 18 and over" tone="warning">You can return when you are eligible.</Notice> : <form ref={formRef} className="stack account-form" onSubmit={submit}>
       <input type="hidden" name="version" value={profile?.version ?? 0} />
+      {step === "sign-in" && localTestAccount && <Notice title="Testing locally"><p>Use the sample account to explore TalkingStage.</p><p className="caption">Email: {localTestAccount.email}<br />Password: {localTestAccount.password}</p><Button variant="secondary" disabled={busy} onClick={fillTestAccount}>Use test account</Button></Notice>}
       {step === "age" && <><Checkbox name="adult" label="I am 18 or older" checked={adult} disabled={busy} onChange={e => setAdult(e.target.checked)} required aria-describedby="adult-hint" /><p id="adult-hint" className="caption muted">This is your declaration, not independent age verification.</p></>}
       {["register", "sign-in", "recover"].includes(step) && <TextField label="Email address" name="email" type="email" autoComplete="email" maxLength={254} required />}
       {["register", "sign-in", "recovery-complete"].includes(step) && <TextField label="Password" name="password" type="password" autoComplete={step === "sign-in" ? "current-password" : "new-password"} minLength={step === "sign-in" ? 1 : 12} maxLength={128} hint={step !== "sign-in" ? "Use at least 12 characters." : undefined} required />}

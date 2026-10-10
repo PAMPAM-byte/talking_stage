@@ -470,7 +470,7 @@
     "aiLabel": "Fictional AI character",
     "portraitAssetId": "char-damilola-portrait",
     "galleryAssetIds": [
-      "char-damilola-gallery-v2"
+      "char-damilola-gallery-v3"
     ],
     "availability": {
       "chat": true,

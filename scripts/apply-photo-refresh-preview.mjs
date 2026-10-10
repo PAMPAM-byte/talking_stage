@@ -4,6 +4,8 @@ import sharp from 'sharp';
 const castPath='lib/mock/public-cast.json';
 const cast=JSON.parse(await readFile(castPath,'utf8'));
 const plan=JSON.parse(await readFile('docs/character-photo-refresh/prompts.json','utf8'));
+// This applies the original batch; never overwrite a later owner-requested revision.
+for(const p of plan){const c=cast.find(c=>c.id===p.key);const current=p.slot==='portrait'?c?.portraitAssetId:c?.galleryAssetIds[0];assert([`${p.key}-${p.slot}`,`${p.key}-${p.slot}-v2`].includes(current),'Later photography revision exists; use its reviewed replacement record.');}
 const details={};
 const captions={
  'char-amara':'browsing vinyl records at a Lagos market', 'char-zainab':'examining architectural drawings on an Abuja site visit',

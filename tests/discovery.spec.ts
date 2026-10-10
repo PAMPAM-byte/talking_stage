@@ -39,6 +39,20 @@ test('filters apply together, cancel without changing results, reset and handle 
   await expect(page.locator('.character-card')).toHaveCount(cast.length);
 });
 
+test('selected gender survives visiting and refreshing a preview profile', async ({ page }) => {
+  await signIn(page);
+  for (const [label, gender] of [['Women', 'woman'], ['Men', 'man'], ['Everyone', 'all']]) {
+    await page.getByRole('button', { name: label, exact: true }).click();
+    await expect(page.locator('.character-card')).toHaveCount(cast.filter(c => gender === 'all' || c.gender === gender).length);
+    await page.locator('.character-card').first().getByRole('link', { name: /^Meet / }).click();
+    await expect(page).toHaveURL(new RegExp(`/characters/[^?]+\\?gender=${gender}`));
+    await page.reload();
+    await page.getByRole('link', { name: 'Back to discovery', exact: true }).click();
+    await expect(page.getByRole('button', { name: label, exact: true })).toHaveAttribute('aria-pressed', 'true');
+    await expect(page.locator('.character-card')).toHaveCount(cast.filter(c => gender === 'all' || c.gender === gender).length);
+  }
+});
+
 test('gallery stays with its character, keyboard works, and starting resumes one conversation', async ({ page }) => {
   await signIn(page);
   await page.getByRole('link', { name: 'Meet Amara', exact: true }).click();

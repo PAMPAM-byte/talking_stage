@@ -1,0 +1,15 @@
+{
+  "key": "char-damilola",
+  "slot": "gallery",
+  "revision": 3,
+  "tool": "Built-in image_gen",
+  "reference": "public/images/characters/char-damilola-portrait.webp",
+  "output": "docs/character-photo-refresh/assets/char-damilola-gallery-v3.png",
+  "prompt": "Use case: identity-preserve. Create ONE photorealistic vertical 3:4 lifestyle photo for a fictional adult dating profile. Reference image identifies Damilola, a 36-year-old adult Nigerian woman: preserve her exact face, medium-brown skin, rounded square face, chin-length sleek black bob wig and realistic fuller body proportions. Replace all clothing, setting and pose. She is standing on an outdoor tennis court in Ikeja, Lagos, smiling directly at a friend's camera after a game. Wear a tasteful white athletic tennis top, forest-green tennis skort with coverage, white tennis trainers, and a white baseball-style sports face cap. Her bob remains visible beneath the cap. Hold a proper tennis racket with oval strung head and realistic grip in one hand, at her side, and raise the other hand beside her shoulder in a clear two-finger V peace sign. Both hands must be natural with correct anatomy. Full-body framing with cap, face, peace-sign hand, entire racket and shoes comfortably in frame. Tennis net and green court with crisp white court lines in the background; soft late-afternoon natural daylight, casual unforced cheerful pose, realistic skin texture and fabric, believable everyday sports photography. No café, no bank setting, no collages, no readable brand logos, no text, no watermarks.",
+  "status": "reviewed",
+  "sourceHash": "19cdb043c47df0f159c9c3782354ba3c672bbe43968cf7183a921e3126cd3def",
+  "reviewedAt": "2026-10-10T14:43:00.172Z",
+  "review": "Face and bob continuity, adult identity, white cap, sportswear, full tennis racket, natural two-finger peace sign, court setting and full-body framing inspected.",
+  "scene": "Damilola on a tennis court in Ikeja, wearing white and green tennis sportswear and a white cap, holding a racket and smiling at the camera with a peace sign.",
+  "altText": "Damilola, 36, a fictional adult AI character, wearing tennis sportswear and a white cap, holding a racket and giving a peace sign on a tennis court."
+}

@@ -4,6 +4,11 @@ import sharp from 'sharp';
 const cast=JSON.parse(await readFile('lib/mock/public-cast.json','utf8'));
 const prompts=JSON.parse(await readFile('docs/character-photo-refresh/prompts.json','utf8'));
 assert.equal(prompts.length,24);
+// Keep original generation records; reviewed follow-up photos override the current review.
+try{
+ const revisions=JSON.parse(await readFile('docs/character-photo-refresh/revisions.json','utf8'));
+ for(const file of revisions){const revision=JSON.parse(await readFile(`docs/character-photo-refresh/${file}`,'utf8'));assert.equal(revision.status,'reviewed');const index=prompts.findIndex(p=>p.key===revision.key&&p.slot===revision.slot);assert(index>=0);prompts[index]=revision;}
+}catch(error){if(error.code!=='ENOENT')throw error;}
 const escape=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const cards=[];
 for(const c of cast){
@@ -12,7 +17,7 @@ for(const c of cast){
   const replacement=prompts.find(p=>p.key===c.id&&p.slot===slot);
   const source=replacement?replacement.output:`public/images/characters/${c.portraitAssetId}.webp`;
   const meta=await sharp(source).metadata();assert(meta.width>=640&&meta.height>=640);
-  const path=replacement?`assets/${c.id}-${slot}-v2.png`:`../../${source}`;
+  const path=replacement?replacement.output.replace('docs/character-photo-refresh/',''):`../../${source}`;
   images.push(`<a href="${path}"><img src="${path}" alt="${escape(c.name)} — ${slot}" width="${meta.width}" height="${meta.height}"></a>`);
  }
  cards.push(`<article><h2>${escape(c.name)}, ${c.age}</h2><div class="pair">${images.join('')}</div><p>${escape(prompts.find(p=>p.key===c.id&&p.slot==='gallery').scene)}</p></article>`);

@@ -166,5 +166,12 @@
       "x": 0.5,
       "y": 0.5
     }
+  },
+  "char-damilola-gallery-v3": {
+    "altText": "Damilola, 36, a fictional adult AI character, wearing tennis sportswear and a white cap, holding a racket and giving a peace sign on a tennis court.",
+    "focalPoint": {
+      "x": 0.5,
+      "y": 0.5
+    }
   }
 }
