@@ -1,30 +1,16 @@
 [
   {
-    "key": "char-kunle",
-    "portrait": "Photorealistic editorial portrait of fictional adult Nigerian Kunle, 31, Public health programme officer. Clearly adult Nigerian man, medium brown skin, shaved scalp, subtle glasses and relaxed smart casual clothing. Identity details: Long oval face, high forehead, slim build, shaved scalp and fine round glasses. Vertical 3:4, natural light, authentic skin texture, fully clothed, no celebrity resemblance, text or logos.",
-    "gallery": "Preserve the exact adult face, hairstyle, age and body type in char-kunle-portrait.png. Leafy park beside a bicycle, casual polo and trousers; no agency logos or real outreach participants. Photorealistic vertical 3:4 editorial lifestyle photo, natural skin, fully clothed, no text or logos.",
-    "reference": "assets/char-kunle-portrait.png",
+    "key": "char-adaora",
+    "portrait": "Photorealistic editorial portrait of fictional adult Nigerian Adaora, 24, Upcoming singer-songwriter. Clearly adult Nigerian woman, deep brown skin, short natural curls, small gold hoops, relaxed contemporary style. Vertical 3:4, natural light, authentic skin texture, fully clothed, no celebrity resemblance, text or logos.",
+    "gallery": "Preserve the exact adult face, hairstyle, age and body type in char-adaora-portrait.png. A daylight rehearsal studio, tasteful casual outfit, acoustic guitar nearby; no concert logos. Photorealistic vertical 3:4 editorial lifestyle photo, natural skin, fully clothed, no text or logos.",
+    "reference": "assets/char-adaora-portrait.png",
     "tool": "Built-in image_gen"
   },
   {
-    "key": "char-ranti",
-    "portrait": "Photorealistic editorial portrait of fictional adult Nigerian Ranti, 28, Hair stylist and salon owner. Clearly adult Nigerian woman, rich brown skin, shoulder-length natural locs with auburn tips, creative tasteful contemporary clothing. Identity details: Heart-shaped face, short thick shoulder-length natural locs with auburn tips, slim build and small nose stud. Vertical 3:4, natural light, authentic skin texture, fully clothed, no celebrity resemblance, text or logos.",
-    "gallery": "Preserve the exact adult face, hairstyle, age and body type in char-ranti-portrait.png. Bright modern salon between appointments, fully clothed in a lavender blouse; no identifiable clients or business branding. Photorealistic vertical 3:4 editorial lifestyle photo, natural skin, fully clothed, no text or logos.",
-    "reference": "assets/char-ranti-portrait.png",
-    "tool": "Built-in image_gen"
-  },
-  {
-    "key": "char-zuri",
-    "portrait": "Photorealistic editorial portrait of fictional adult Nigerian Zuri, 29, Beauty creator · Lagos baddie. Clearly adult Nigerian woman age 29, medium-deep brown skin, angular heart-shaped face, almond eyes, long straight black lace-front wig with a centre part, full curvy hourglass build with BBL-style hips and realistic balanced anatomy, tasteful fitted plum dress with covered chest. Vertical 3:4, natural light, authentic skin texture, fully clothed, no celebrity resemblance, text or logos.",
-    "gallery": "Preserve the exact adult face, hairstyle, age and body type in char-zuri-portrait.png. Tasteful Lagos rooftop restaurant at early evening, fully clothed standing three-quarter view in a fitted emerald midi dress, confident relaxed posture; no sexualised pose or emphasis. Photorealistic vertical 3:4 editorial lifestyle photo, natural skin, fully clothed, no text or logos.",
-    "reference": "assets/char-zuri-portrait.png",
-    "tool": "Built-in image_gen"
-  },
-  {
-    "key": "char-kiki",
-    "portrait": "Photorealistic editorial portrait of fictional adult Nigerian Kiki, 32, People operations manager. Clearly adult Nigerian woman age 32, very deep brown skin, shaved head with clean scalp, oval face, strong cheekbones, small gap between front teeth, tall lean build, simple silver earrings and cobalt smart-casual tailoring. Vertical 3:4, natural light, authentic skin texture, fully clothed, no celebrity resemblance, text or logos.",
-    "gallery": "Preserve the exact adult face, hairstyle, age and body type in char-kiki-portrait.png. Light-filled pottery studio on a day off, fully clothed in a relaxed terracotta shirt and trousers; distinct face and shaved head maintained. Photorealistic vertical 3:4 editorial lifestyle photo, natural skin, fully clothed, no text or logos.",
-    "reference": "assets/char-kiki-portrait.png",
+    "key": "char-raymond",
+    "portrait": "Photorealistic editorial portrait of fictional adult Nigerian Raymond, 49, Entrepreneur · Sugar daddy personality. Clearly adult Nigerian man around fifty, dark skin, closely cropped salt-and-pepper hair and neat beard, refined linen tailoring. Identity details: Broad square face, deep-set eyes, stocky build and visible mature smile lines; distinct from Chief and Femi. Vertical 3:4, natural light, authentic skin texture, fully clothed, no celebrity resemblance, text or logos.",
+    "gallery": "Preserve the exact adult face, hairstyle, age and body type in char-raymond-portrait.png. Quiet hotel garden with a book and coffee; tasteful relaxed tailoring without visible brands. Photorealistic vertical 3:4 editorial lifestyle photo, natural skin, fully clothed, no text or logos.",
+    "reference": "assets/char-raymond-portrait.png",
     "tool": "Built-in image_gen"
   },
   {
@@ -35,24 +21,10 @@
     "tool": "Built-in image_gen"
   },
   {
-    "key": "char-adaora",
-    "portrait": "Photorealistic editorial portrait of fictional adult Nigerian Adaora, 24, Upcoming singer-songwriter. Clearly adult Nigerian woman, deep brown skin, short natural curls, small gold hoops, relaxed contemporary style. Vertical 3:4, natural light, authentic skin texture, fully clothed, no celebrity resemblance, text or logos.",
-    "gallery": "Preserve the exact adult face, hairstyle, age and body type in char-adaora-portrait.png. A daylight rehearsal studio, tasteful casual outfit, acoustic guitar nearby; no concert logos. Photorealistic vertical 3:4 editorial lifestyle photo, natural skin, fully clothed, no text or logos.",
-    "reference": "assets/char-adaora-portrait.png",
-    "tool": "Built-in image_gen"
-  },
-  {
     "key": "char-chief-chukwudi",
-    "portrait": "Photorealistic editorial portrait of fictional adult Nigerian Chief Chukwudi, 56, Chief · Businessman and community patron. Clearly adult Nigerian man in his fifties, deep brown skin, greying beard, tasteful traditional embroidered attire and a simple cap. Identity details: Long face, prominent nose, broad shoulders, deep smile lines and full grey beard; distinctly older than Raymond. Vertical 3:4, natural light, authentic skin texture, fully clothed, no celebrity resemblance, text or logos.",
+    "portrait": "Photorealistic editorial portrait of fictional adult Nigerian Chief Chukwudi, 56, Chief · Businessman and community patron. Clearly adult Nigerian man age 56, very deep dark brown skin, long narrow face, prominent long nose, high cheekbones, narrow-set eyes, grey eyebrows and mature wrinkles, full long grey beard with a pointed bottom, tall broad-shouldered frame and narrow jaw. Navy embroidered traditional tunic and teal traditional cap. Vertical 3:4, natural light, authentic skin texture, fully clothed, no celebrity resemblance, text or logos.",
     "gallery": "Preserve the exact adult face, hairstyle, age and body type in char-chief-chukwudi-portrait.png. Sunlit veranda overlooking a garden, relaxed traditional outfit and a highlife record sleeve with no readable branding. Photorealistic vertical 3:4 editorial lifestyle photo, natural skin, fully clothed, no text or logos.",
     "reference": "assets/char-chief-chukwudi-portrait.png",
-    "tool": "Built-in image_gen"
-  },
-  {
-    "key": "char-raymond",
-    "portrait": "Photorealistic editorial portrait of fictional adult Nigerian Raymond, 49, Entrepreneur · Sugar daddy personality. Clearly adult Nigerian man around fifty, dark skin, closely cropped salt-and-pepper hair and neat beard, refined linen tailoring. Identity details: Broad square face, deep-set eyes, stocky build and visible mature smile lines; distinct from Chief and Femi. Vertical 3:4, natural light, authentic skin texture, fully clothed, no celebrity resemblance, text or logos.",
-    "gallery": "Preserve the exact adult face, hairstyle, age and body type in char-raymond-portrait.png. Quiet hotel garden with a book and coffee; tasteful relaxed tailoring without visible brands. Photorealistic vertical 3:4 editorial lifestyle photo, natural skin, fully clothed, no text or logos.",
-    "reference": "assets/char-raymond-portrait.png",
     "tool": "Built-in image_gen"
   },
   {
@@ -95,6 +67,34 @@
     "portrait": "Photorealistic editorial portrait of fictional adult Nigerian Emeka, 29, Nurse. Clearly adult Nigerian man, dark brown skin, short natural hair, clean-shaven jaw and approachable expression. Identity details: Round face, broad cheerful smile, sturdy build and clean-shaven jaw; low tapered natural hair. Vertical 3:4, natural light, authentic skin texture, fully clothed, no celebrity resemblance, text or logos.",
     "gallery": "Preserve the exact adult face, hairstyle, age and body type in char-emeka-portrait.png. Daylight kitchen preparing a meal, relaxed fully clothed casual outfit; no workplace patients. Photorealistic vertical 3:4 editorial lifestyle photo, natural skin, fully clothed, no text or logos.",
     "reference": "assets/char-emeka-portrait.png",
+    "tool": "Built-in image_gen"
+  },
+  {
+    "key": "char-ranti",
+    "portrait": "Photorealistic editorial portrait of fictional adult Nigerian Ranti, 28, Hair stylist and salon owner. Clearly adult Nigerian woman age 28, very deep ebony brown skin, slender elongated face, hollow cheeks, pointed chin, broad flat nose, straight low brows, small hooded eyes, small mouth with thinner lips, light freckles and a silver nose stud. Tall lean frame with narrow shoulders; shoulder-length natural locs with auburn tips, bright creative linen clothing. Vertical 3:4, natural light, authentic skin texture, fully clothed, no celebrity resemblance, text or logos.",
+    "gallery": "Preserve the exact adult face, hairstyle, age and body type in char-ranti-portrait.png. Bright modern salon between appointments, fully clothed in a lavender blouse; no identifiable clients or business branding. Photorealistic vertical 3:4 editorial lifestyle photo, natural skin, fully clothed, no text or logos.",
+    "reference": "assets/char-ranti-portrait.png",
+    "tool": "Built-in image_gen"
+  },
+  {
+    "key": "char-kunle",
+    "portrait": "Photorealistic editorial portrait of fictional adult Nigerian Kunle, 31, Public health programme officer. Clearly adult Nigerian man, medium brown skin, shaved scalp, subtle glasses and relaxed smart casual clothing. Identity details: Long oval face, high forehead, slim build, shaved scalp and fine round glasses. Vertical 3:4, natural light, authentic skin texture, fully clothed, no celebrity resemblance, text or logos.",
+    "gallery": "Preserve the exact adult face, hairstyle, age and body type in char-kunle-portrait.png. Leafy park beside a bicycle, casual polo and trousers; no agency logos or real outreach participants. Photorealistic vertical 3:4 editorial lifestyle photo, natural skin, fully clothed, no text or logos.",
+    "reference": "assets/char-kunle-portrait.png",
+    "tool": "Built-in image_gen"
+  },
+  {
+    "key": "char-zuri",
+    "portrait": "Photorealistic editorial portrait of fictional adult Nigerian Zuri, 29, Beauty creator · Lagos baddie. Clearly adult Nigerian woman age 29, medium-deep brown skin, angular heart-shaped face, almond eyes, long straight black lace-front wig with a centre part, full curvy hourglass build with BBL-style hips and realistic balanced anatomy, tasteful fitted plum dress with covered chest. Vertical 3:4, natural light, authentic skin texture, fully clothed, no celebrity resemblance, text or logos.",
+    "gallery": "Preserve the exact adult face, hairstyle, age and body type in char-zuri-portrait.png. Lagos rooftop cafe at dusk, seated with coffee in a modest emerald long-sleeve blouse with a high covered neckline and dark trousers; relaxed head-to-waist composition with city lights behind. Photorealistic vertical 3:4 editorial lifestyle photo, natural skin, fully clothed, no text or logos.",
+    "reference": "assets/char-zuri-portrait.png",
+    "tool": "Built-in image_gen"
+  },
+  {
+    "key": "char-kiki",
+    "portrait": "Photorealistic editorial portrait of fictional adult Nigerian Kiki, 32, People operations manager. Clearly adult Nigerian woman age 32, very deep brown skin, shaved head with clean scalp, oval face, strong cheekbones, small gap between front teeth, tall lean build, simple silver earrings and cobalt smart-casual tailoring. Vertical 3:4, natural light, authentic skin texture, fully clothed, no celebrity resemblance, text or logos.",
+    "gallery": "Preserve the exact adult face, hairstyle, age and body type in char-kiki-portrait.png. Light-filled pottery studio on a day off, fully clothed in a relaxed terracotta shirt and trousers; distinct face and shaved head maintained. Photorealistic vertical 3:4 editorial lifestyle photo, natural skin, fully clothed, no text or logos.",
+    "reference": "assets/char-kiki-portrait.png",
     "tool": "Built-in image_gen"
   }
 ]

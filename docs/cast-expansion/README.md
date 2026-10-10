@@ -32,6 +32,15 @@ Each has an individual biography, interests, conversation opening, voice and rel
 
 Images are generated through the built-in image-generation tool. [The prompt record](./image-prompts.json) describes each identity and gallery scene. Matching gallery images use their own character portrait as reference. Generated originals are retained in `assets/`; private Storage serves normalized WebP versions.
 
+## Verification completed
+
+- Fourteen private local drafts were saved and the importer rerun without duplicates; original eight published profiles remain intact.
+- Twenty-eight images were visually inspected for adult appearance, distinct identities and portrait/gallery continuity. Chief and Ranti portraits were revised after comparison. This implementation review is not the owner's publication attestation.
+- All twenty-eight sources fully decoded, with metadata stripped and 320/640/1280 WebP variants produced. Owned photos were uploaded into private local Storage with pending review and no publication.
+- Browser inspection loaded fourteen cards and all twenty-eight images at widths of 390 and 1280 pixels, with no horizontal overflow. Captures: [mobile](./review-390.png), [desktop](./review-1280.png).
+- The local authenticated discovery browser test passed (48.4 seconds overall), covering saved Men/Women preferences and explicit Everyone choices. Its assertions now account for independent gender pagination when the cast grows.
+- ESLint and TypeScript checks passed. Temporary importer administrator roles were removed and maintenance accounts disabled. No AI-provider key was needed for the image-generation tool; application AI availability remains unchanged.
+
 ## Publication decision
 
 These fourteen profiles and twenty-eight new photos require their own adult appearance, identity continuity and non-explicit review attestations before customer publication, as specified by [the Stage 9 image/publication contract](../stage-9-contracts.md). The [earlier owner approval](../reviews/stage-9/cast-approval.md) covered the original eight characters and sixteen photos only. This document does not extend that approval or authorize hosted deployment.
