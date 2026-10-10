@@ -61,11 +61,11 @@ test('gallery stays with its character, keyboard works, and starting resumes one
   const dialog = page.getByRole('dialog');
   await expect(dialog).toBeVisible();
   await dialog.getByRole('button', { name: 'Next photo' }).click();
-  await expect(dialog.getByRole('status')).toHaveText('Photo 2 of 2');
+  await expect(dialog.getByRole('status').filter({ hasText: /^Photo/ })).toHaveText('Photo 2 of 2');
   await expect(dialog.locator('img')).toHaveAttribute('src', new RegExp(cast.find(c => c.id === 'char-amara')!.galleryAssetIds[0]));
   await expect.poll(() => dialog.locator('img').evaluate(image => (image as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);
   await page.keyboard.press('ArrowLeft');
-  await expect(dialog.getByRole('status')).toHaveText('Photo 1 of 2');
+  await expect(dialog.getByRole('status').filter({ hasText: /^Photo/ })).toHaveText('Photo 1 of 2');
   await expect(dialog.locator('img')).toHaveAttribute('src', /char-amara-portrait/);
   await page.keyboard.press('Escape');
   await expect(page.getByRole('button', { name: /View photos/ })).toBeFocused();

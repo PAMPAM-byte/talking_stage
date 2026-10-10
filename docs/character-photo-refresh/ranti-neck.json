@@ -1,0 +1,14 @@
+{
+  "key": "char-ranti",
+  "slot": "gallery",
+  "revision": 3,
+  "tool": "Built-in image_gen",
+  "reference": "docs/character-photo-refresh/assets/char-ranti-gallery-v2.png",
+  "output": "docs/character-photo-refresh/assets/char-ranti-gallery-v3.png",
+  "prompt": "Use case: identity-preserve, precise anatomy correction. Edit this existing fictional adult Nigerian woman's full-body salon photograph. Change only the head-neck-shoulder connection to correct the awkward compressed/twisted neck: give Ranti a natural visible neck of realistic length, anatomically believable jaw-to-neck transition, relaxed shoulders and a gentle comfortable glance toward the camera rather than an extreme over-shoulder twist. Preserve her exact facial identity, complexion, brown-tipped locs, friendly smile, white T-shirt, plum wide-leg trousers, white trainers, full-body stance, hand holding keys at the salon door, composition and warm natural daylight. Preserve the entire blue storefront, plants, street and salon interior and the exact sign text 'Ranti Locs Studio'. It must remain one realistic candid lifestyle photo, vertical composition same aspect ratio as the source. No additional people, no redesigned scene, no new text or watermark. Prioritize realistic neck anatomy and subtle local correction.",
+  "status": "reviewed",
+  "sourceHash": "ce09ebb6fa3fbd52936ca45f0102aa9e5c8138c447c92caaa2c21186de165f84",
+  "reviewedAt": "2026-10-10T18:52:44.695Z",
+  "review": "Neck length, jaw-to-neck transition, shoulder connection and relaxed head turn visually inspected; identity, locs, clothing and salon setting preserved.",
+  "altText": "Ranti, 28, a fictional adult AI character, opening her salon beneath the Ranti Locs Studio sign."
+}

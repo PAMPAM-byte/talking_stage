@@ -1,3 +1,5 @@
 export const instant = false;
 import { Settings } from '@/components/personal-space';
-export default function Page() { return <Settings />; }
+import { ConnectedSettings } from '@/components/connected-settings';
+import { usesSupabase } from '@/lib/backend/config';
+export default function Page() { return usesSupabase() ? <ConnectedSettings /> : <Settings />; }

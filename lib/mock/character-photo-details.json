@@ -173,5 +173,19 @@
       "x": 0.5,
       "y": 0.5
     }
+  },
+  "char-ranti-gallery-v3": {
+    "altText": "Ranti, 28, a fictional adult AI character, opening her salon beneath the Ranti Locs Studio sign.",
+    "focalPoint": {
+      "x": 0.5,
+      "y": 0.5
+    }
+  },
+  "char-ranti-gallery-v4": {
+    "altText": "Ranti, 28, a fictional adult AI character, standing comfortably beside her salon door beneath the Ranti Locs Studio sign.",
+    "focalPoint": {
+      "x": 0.5,
+      "y": 0.5
+    }
   }
 }

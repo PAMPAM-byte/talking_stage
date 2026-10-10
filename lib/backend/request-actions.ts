@@ -12,6 +12,6 @@ export async function requestAction(form:FormData):Promise<{error?:string;messag
    result=await account.client.rpc('manage_conversation_requests',{p_conversation:id,p_operation:operation,p_version:version});
   }
   if(result.error)return {error:result.error.message.includes('conflict')?'Your settings changed. Reload and try again.':'The change was not saved. Reload and try again.'};
-  revalidatePath('/settings/requests');revalidatePath('/settings/preferences');revalidatePath('/messages','layout');return {message:'Request settings saved.'};
+  revalidatePath('/settings');revalidatePath('/settings/requests');revalidatePath('/settings/preferences');revalidatePath('/messages','layout');return {message:'Request settings saved.'};
  }catch{return {error:'Request settings are unavailable. Try again later.'};}
 }

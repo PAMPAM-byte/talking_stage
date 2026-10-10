@@ -593,7 +593,7 @@
     "aiLabel": "Fictional AI character",
     "portraitAssetId": "char-ranti-portrait",
     "galleryAssetIds": [
-      "char-ranti-gallery-v2"
+      "char-ranti-gallery-v4"
     ],
     "availability": {
       "chat": true,

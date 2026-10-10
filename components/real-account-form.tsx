@@ -17,13 +17,14 @@ const titles: Record<FlowStep, [string, string]> = {
   preferences: ["Let’s make it feel like you.", "A few choices to help you find your kind of conversation."],
   complete: ["Your next conversation awaits.", "One last thing before you explore."],
 };
-export function RealAccountForm({ step, configured, profile, expired = false, localTestAccount }: { step: FlowStep; configured: boolean; profile?: AccountProfile; expired?: boolean; localTestAccount?: { email: string; password: string } }) {
+export function RealAccountForm({ step, configured, profile, expired = false, localTestAccount, settings = false }: { step: FlowStep; configured: boolean; settings?: boolean; profile?: AccountProfile; expired?: boolean; localTestAccount?: { email: string; password: string } }) {
   const router = useRouter(); const [busy, startTransition] = useTransition();
   const [pendingAction, setPendingAction] = useState<"submit" | "underage" | "leave" | null>(null);
   const [error, setError] = useState(""); const [message, setMessage] = useState("");
   const [adult, setAdult] = useState(false); const [blocked, setBlocked] = useState(false);
   const [genders, setGenders] = useState(profile?.genders ?? []);
   const formRef = useRef<HTMLFormElement>(null);
+  const Content = settings ? 'div' : 'main';
   function fillTestAccount() {
     if (busy || !localTestAccount || !formRef.current) return;
     const email = formRef.current.elements.namedItem("email");
@@ -75,8 +76,8 @@ export function RealAccountForm({ step, configured, profile, expired = false, lo
       finally { setPendingAction(null); }
     });
   }
-  return <div className="account-page"><header className="container account-header"><Brand /><Link className="button button--quiet" href="/support">Help</Link></header><main id="main-content" className="account-main">
-    <Link className="account-back" href="/" aria-disabled={busy} onNavigate={event => { event.preventDefault(); leaveOnboarding(); }}>Back to TalkingStage</Link><h1 className="display page-title">{titles[step][0]}</h1><p className="account-description muted">{titles[step][1]}</p>
+  return <div className={settings ? "space-page stack settings-preferences" : "account-page"}>{!settings && <header className="container account-header"><Brand /><Link className="button button--quiet" href="/support">Help</Link></header>}<Content id={settings ? undefined : 'main-content'} className={settings ? "stack" : "account-main"}>
+    {settings ? <Link className="profile-back" href="/settings">Back to settings</Link> : <Link className="account-back" href="/" aria-disabled={busy} onNavigate={event => { event.preventDefault(); leaveOnboarding(); }}>Back to TalkingStage</Link>}<h1 className="display page-title">{settings ? "Preferences" : titles[step][0]}</h1><p className="account-description muted">{settings ? "Choose who you want to meet and how you like to chat." : titles[step][1]}</p>
     {!configured && <Notice title="Account services are unavailable" tone="warning">Please try again later.</Notice>}
     {expired && <Notice title="Sign in to continue">Your session has expired.</Notice>}
     {error && <Notice title={error} tone="danger" live />}{message && <Notice title={message} tone="success" live />}
@@ -100,6 +101,6 @@ export function RealAccountForm({ step, configured, profile, expired = false, lo
       {step === "age" && <Button variant="quiet" loading={busy && pendingAction === "underage"} disabled={busy} onClick={declareUnderage}>I am under 18</Button>}
       {step === "sign-in" && <Link href="/recover">Forgot your password?</Link>}
     </form>}
-    <p className="account-footer supporting"><Link href={step === "sign-in" ? "/onboarding/age" : "/sign-in"}>{step === "sign-in" ? "Create an account" : "Already have an account? Sign in"}</Link></p>
-  </main></div>;
+    {!settings && <p className="account-footer supporting"><Link href={step === "sign-in" ? "/onboarding/age" : "/sign-in"}>{step === "sign-in" ? "Create an account" : "Already have an account? Sign in"}</Link></p>}
+  </Content></div>;
 }

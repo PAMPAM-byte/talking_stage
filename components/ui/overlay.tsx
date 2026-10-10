@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useId, useRef, type ReactNode } from "react";
 import { IconButton } from "./primitives";
-export function Overlay({ open, onClose, title, description, children, footer, sheet = false }: { open: boolean; onClose: () => void; title: string; description?: string; children?: ReactNode; footer?: ReactNode; sheet?: boolean }) {
+export function Overlay({ open, onClose, title, description, children, footer, sheet = false, className = '' }: { open: boolean; onClose: () => void; title: string; description?: string; children?: ReactNode; footer?: ReactNode; sheet?: boolean; className?: string }) {
   const ref = useRef<HTMLDialogElement>(null); const id = useId();
   useEffect(() => {
     const dialog = ref.current; if (!dialog) return;
@@ -11,5 +11,5 @@ export function Overlay({ open, onClose, title, description, children, footer, s
     if (!dialog.open) dialog.showModal();
     return () => { if (dialog.open) dialog.close(); document.body.style.overflow = previousOverflow; previousFocus?.focus(); };
   }, [open]);
-  return <dialog ref={ref} className={`overlay${sheet ? " overlay--sheet" : ""}`} aria-labelledby={`${id}-title`} aria-describedby={description ? `${id}-description` : undefined} onCancel={(event) => { event.preventDefault(); onClose(); }}><div className="overlay__header"><h2 id={`${id}-title`}>{title}</h2><IconButton icon="close" label={`Close ${title.toLowerCase()}`} onClick={onClose} /></div>{description && <p className="muted supporting" id={`${id}-description`} style={{ marginBottom: 20 }}>{description}</p>}{children}{footer && <div className="overlay__footer">{footer}</div>}</dialog>;
+  return <dialog ref={ref} className={`overlay${sheet ? " overlay--sheet" : ""} ${className}`} aria-labelledby={`${id}-title`} aria-describedby={description ? `${id}-description` : undefined} onCancel={(event) => { event.preventDefault(); onClose(); }}><div className="overlay__header"><h2 id={`${id}-title`}>{title}</h2><IconButton icon="close" label={`Close ${title.toLowerCase()}`} onClick={onClose} /></div>{description && <p className="muted supporting" id={`${id}-description`} style={{ marginBottom: 20 }}>{description}</p>}{children}{footer && <div className="overlay__footer">{footer}</div>}</dialog>;
 }

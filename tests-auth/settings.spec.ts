@@ -1,0 +1,96 @@
+import { expect, test } from '@playwright/test';
+import { createClient } from '@supabase/supabase-js';
+import { randomUUID } from 'node:crypto';
+import { mkdirSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
+
+test('settings links render their own pages and saved controls survive navigation', async ({ page }) => {
+  test.setTimeout(150000);
+  const options = { auth: { persistSession: false, autoRefreshToken: false } };
+  const service = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!, options);
+  const email = `settings-${randomUUID()}@example.test`;
+  const password = `Ts!${randomUUID()}Aa9`;
+  const created = await service.auth.admin.createUser({ email, password, email_confirm: true, user_metadata: { adult_declaration: '18-plus-v1' } });
+  expect(created.error).toBeNull();
+  const id = created.data.user!.id;
+  try {
+    await page.goto('/sign-in');
+    await page.getByLabel('Email address').fill(email);
+    await page.getByLabel('Password', { exact: true }).fill(password);
+    await page.getByRole('button', { name: 'Sign in', exact: true }).click();
+    await expect(page).toHaveURL(/\/onboarding\/preferences$/);
+    await page.getByRole('textbox', { name: 'Preferred name', exact: true }).fill('Settings review');
+    await page.getByRole('button', { name: 'Women', exact: true }).click();
+    await page.getByRole('button', { name: 'Save preferences', exact: true }).click();
+    await page.getByRole('checkbox', { name: /I understand the characters and their photos/ }).check();
+    await page.getByRole('button', { name: 'Explore characters', exact: true }).click();
+    await expect(page).toHaveURL(/\/discover$/);
+    await page.getByRole('link', { name: 'Settings', exact: true }).click();
+    await expect(page.getByRole('navigation', { name: 'Personal settings' })).toBeVisible();
+    mkdirSync('docs/reviews/settings', { recursive: true });
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.screenshot({ path: 'docs/reviews/settings/settings-1280.png', fullPage: true });
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.screenshot({ path: 'docs/reviews/settings/settings-390.png', fullPage: true });
+    await page.getByRole('link', { name: /^Preferences Your name/ }).click();
+    await expect(page.getByRole('heading', { name: 'Preferences', exact: true })).toBeVisible();
+    await expect(page.locator('header .brand-mark:visible')).toHaveCount(1);
+    await page.getByRole('textbox', { name: 'Preferred name', exact: true }).fill('Updated settings');
+    await page.getByRole('button', { name: 'Save preferences', exact: true }).click();
+    await expect(page.getByText('Your preferences are saved.', { exact: true })).toBeVisible();
+    await page.getByRole('link', { name: 'Back to settings', exact: true }).click();
+    await expect(page.getByText('Your space, Updated settings.', { exact: true })).toBeVisible();
+    await page.getByRole('link', { name: /^Saved memories Choose/ }).click();
+    await expect(page.getByRole('heading', { name: 'Saved memories', exact: true })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'No memories yet', exact: true })).toBeVisible();
+    await page.getByRole('link', { name: 'Back to settings', exact: true }).click();
+    await page.getByRole('link', { name: /^Monetary requests Set/ }).click();
+    await expect(page.getByRole('heading', { name: 'Monetary requests', exact: true })).toBeVisible();
+    await page.getByRole('checkbox', { name: 'Allow optional monetary requests' }).check();
+    const version = page.locator('form:visible').filter({ has: page.getByRole('button', { name: 'Save request preference', exact: true }) }).locator('input[name="version"]');
+    const previousVersion = await version.inputValue();
+    await page.getByRole('button', { name: 'Save request preference', exact: true }).click();
+    await expect(version).not.toHaveValue(previousVersion);
+    await expect(page.getByText('Request settings saved.', { exact: true })).toBeVisible();
+    await page.getByRole('link', { name: 'Back to settings', exact: true }).click();
+    await expect(page.getByText('Requests allowed', { exact: true })).toBeVisible();
+    await page.reload();
+    await page.getByRole('link', { name: /^Monetary requests Set/ }).click();
+    await expect(page.getByRole('checkbox', { name: 'Allow optional monetary requests' })).toBeChecked();
+    await page.screenshot({ path: 'docs/reviews/settings/requests-390.png', fullPage: true });
+    await page.getByRole('link', { name: 'Back to settings', exact: true }).click();
+    await page.getByRole('link', { name: /^Preferences Your name/ }).click();
+    await expect(page.getByRole('textbox', { name: 'Preferred name', exact: true })).toHaveValue('Updated settings');
+    await expect(page.getByRole('checkbox', { name: 'Allow optional monetary requests' })).toBeChecked();
+    await page.screenshot({ path: 'docs/reviews/settings/preferences-390.png', fullPage: true });
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+    await page.getByRole('link', { name: 'Discover', exact: true }).click();
+    await page.locator('.character-card').first().getByRole('link', { name: /^Meet / }).click();
+    await page.getByRole('button', { name: 'Start conversation', exact: true }).click();
+    await expect(page).toHaveURL(/\/messages\/[a-f0-9-]+$/);
+    await page.getByRole('link', { name: /^Manage memories with / }).click();
+    await page.getByRole('button', { name: 'Turn memory on', exact: true }).click();
+    await page.getByRole('textbox', { name: 'A fact to remember', exact: true }).fill('Synthetic settings memory.');
+    await page.getByRole('checkbox', { name: 'I give permission to save this fact and use it in future chats with this character.' }).check();
+    await page.getByRole('button', { name: 'Save memory', exact: true }).click();
+    await expect(page.getByText('Synthetic settings memory.', { exact: true })).toBeVisible();
+    await page.reload();
+    await expect(page.getByText('Synthetic settings memory.', { exact: true })).toBeVisible();
+    await page.screenshot({ path: 'docs/reviews/settings/memories-390.png', fullPage: true });
+    await page.getByRole('button', { name: 'Delete memory', exact: true }).click();
+    await expect(page.getByText('No saved facts for this character.', { exact: true })).toBeVisible();
+    await page.getByRole('button', { name: 'Turn memory off', exact: true }).click();
+    await expect(page.getByRole('button', { name: 'Turn memory on', exact: true })).toBeVisible();
+    await page.getByRole('link', { name: 'Back to saved memories', exact: true }).click();
+    await expect(page.getByRole('heading', { name: 'Saved memories', exact: true })).toBeVisible();
+    await page.getByRole('link', { name: 'Back to settings', exact: true }).click();
+    await expect(page.getByRole('navigation', { name: 'Personal settings' })).toBeVisible();
+  } finally {
+    expect(/^[a-f0-9-]{36}$/.test(id)).toBe(true);
+    execFileSync('docker', ['exec', '-i', 'supabase_db_talking_stage', 'psql', '-U', 'postgres', '-d', 'postgres', '-v', 'ON_ERROR_STOP=1'], {
+      input: `delete from public.memories where user_id='${id}';delete from public.memory_preferences where user_id='${id}';delete from public.messages where conversation_id in(select id from public.conversations where user_id='${id}');delete from public.conversations where user_id='${id}';`,
+      windowsHide: true, stdio: ['pipe', 'pipe', 'pipe'],
+    });
+    expect((await service.auth.admin.deleteUser(id)).error).toBeNull();
+  }
+});

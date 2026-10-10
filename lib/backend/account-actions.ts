@@ -1,6 +1,7 @@
 "use server";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 import { backendClient, currentAccount } from "./server";
 import { setFlowCookie, validFlowCookie } from "./flow-cookie";
 
@@ -76,6 +77,10 @@ export async function submitAccount(step: string, form: FormData): Promise<Accou
       if (!name || name.length > 60 || !genders.length || genders.length > 2 || genders.some(g => !["man", "woman"].includes(String(g))) || !["english", "english_pidgin"].includes(language) || !Number.isSafeInteger(version)) return { error: "Enter a display name, choose who you’d like to meet, and select a language." };
       const { error } = await client.rpc("save_preferences", { p_name: name, p_genders: genders, p_language: language, p_requests: form.get("requests") === "on", p_version: version });
       if (error) return { error: "Your preferences weren’t saved. Refresh the page to get the latest version and try again." };
+      revalidatePath("/settings");
+      revalidatePath("/settings/preferences");
+      revalidatePath("/settings/requests");
+      revalidatePath("/discover");
       return account.profile.onboarding_complete ? { message: "Your preferences are saved." } : { destination: "/onboarding/complete" };
     }
     if (step === "complete") {

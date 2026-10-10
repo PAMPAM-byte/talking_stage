@@ -26,7 +26,7 @@
 .profile-back { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; min-height: 44px; font-size: 14px; }
 .profile-layout { display: grid; gap: 32px; }
 .profile-gallery__main { position: relative; overflow: hidden; border-radius: 20px; }
-.gallery-expand { position: absolute; bottom: 16px; right: 16px; background: var(--surface); }
+.gallery-expand { position: absolute; bottom: 16px; right: 16px; z-index: 2; background: var(--surface); }
 .gallery-thumbnails { display: flex; gap: 12px; }
 .gallery-thumbnails > button { width: 76px; border: 2px solid transparent; border-radius: 12px; padding: 3px; background: transparent; overflow: hidden; }
 .gallery-thumbnails > button[aria-pressed=true] { border-color: var(--brand); }
@@ -38,6 +38,10 @@
 .profile-section h2 { font-size: 17px; }
 .profile-clue p { font-size: 25px; line-height: 32px; }
 .gallery-viewer-controls { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.profile-photo-open { position: relative; display: block; width: 100%; padding: 0; border: 0; border-radius: 20px; background: var(--surface); overflow: hidden; cursor: zoom-in; }
+.profile-photo-open .cast-review-photo { display: block; }
+.profile-photo-unavailable { display: grid; place-content: center; gap: 16px; aspect-ratio: 3 / 4; border-radius: 20px; background: var(--brand-soft); color: var(--brand); text-align: center; }
+.profile-gallery__main .photo-failure { z-index: 1; }
 .photo-failure { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 20px; text-align: center; color: var(--brand); }
 .introduction-page { max-width: 620px; margin-inline: auto; }
 .introduction-page > .badge { align-self: flex-start; }
@@ -47,3 +51,7 @@
 @media (max-width: 599px) { .discovery-disclosure { display: none; } .discovery-toolbar .row { gap: 8px; } .discovery-toolbar .chip { padding-inline: 12px; } }
 @media (min-width: 600px) { .character-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .profile-layout { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
 @media (min-width: 1200px) { .character-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } .profile-layout { gap: 48px; } }
+
+.overlay--profile-photo { width: min(920px, calc(100% - 32px)); }
+.profile-photo-viewer img { display: block; width: 100%; height: min(60dvh, 760px); object-fit: contain; border-radius: 14px; }
+.profile-photo-viewer + .gallery-viewer-controls { margin-top: 16px; }

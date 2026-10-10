@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import {ConnectedProfilePhotos} from './connected-profile-photos';
 import {ReportControl} from './connected-reporting';
 import { characterHref } from '@/lib/discovery-navigation';
 import { CharacterInterests } from './character-interests';
@@ -47,7 +48,5 @@ export async function ConnectedCharacter({id,backHref='/discover'}:{id:string;ba
  const capabilities=await data.account.client.rpc('effective_capabilities',{p_character:c.id});
  const model=configuredReplyModel();const replies=!!model&&(await data.account.client.rpc('reply_availability',{p_model:model})).data===true;
  const conversationAction=capabilities.data?.chat===true?<ConversationControl id={c.id} operation="start" label="Start conversation"/>:<Notice title="Chat is paused">You can still explore this character’s profile.</Notice>;
- return <div className="stack"><Link href={backHref}>Back to discovery</Link><h1 className="display page-title">{c.name}, {c.age}</h1><Badge>Fictional adult AI character</Badge><p className="muted">{c.fictional_location} · {c.occupation}</p><div className="character-grid">{data.assets.filter(a=>['portrait','gallery'].includes(a.slot)).map(a=><div key={a.id} className="stack">
- {/* eslint-disable-next-line @next/next/no-img-element */}
- <img className="cast-review-photo" src={`/api/cast-assets/${a.id}?w=640`} srcSet={[320,640,1280].map(w=>`/api/cast-assets/${a.id}?w=${w} ${w}w`).join(', ')} sizes="(min-width:900px) 33vw, 100vw" alt={a.alt_text} loading="lazy" /><ReportControl target={{kind:"photo",id:a.id}} label={`${c.name}’s ${a.slot} photo`} buttonLabel="Report photo" preview={a.alt_text}/></div>)}</div><ReportControl target={{kind:"character",id:c.id}} label={`${c.name}’s profile`} buttonLabel="Report character" preview={`${c.name}, ${c.age} · ${c.bio}`}/><p>{c.bio}</p><blockquote className="conversation-clue">{c.conversation_clue}</blockquote><CharacterInterests interests={c.interests} />{conversationAction}{!replies&&<Notice title="Replies are not available yet">You can save messages while we prepare AI replies.</Notice>}</div>;
+ return <div className="stack"><Link href={backHref}>Back to discovery</Link><h1 className="display page-title">{c.name}, {c.age}</h1><Badge>Fictional adult AI character</Badge><p className="muted">{c.fictional_location} · {c.occupation}</p><ConnectedProfilePhotos name={c.name} assets={data.assets}/><ReportControl target={{kind:"character",id:c.id}} label={`${c.name}’s profile`} buttonLabel="Report character" preview={`${c.name}, ${c.age} · ${c.bio}`}/><p>{c.bio}</p><blockquote className="conversation-clue">{c.conversation_clue}</blockquote><CharacterInterests interests={c.interests} />{conversationAction}{!replies&&<Notice title="Replies are not available yet">You can save messages while we prepare AI replies.</Notice>}</div>;
 }

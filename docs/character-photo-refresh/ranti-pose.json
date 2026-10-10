@@ -1,0 +1,14 @@
+{
+  "key": "char-ranti",
+  "slot": "gallery",
+  "revision": 4,
+  "tool": "Built-in image_gen",
+  "reference": "docs/character-photo-refresh/assets/char-ranti-gallery-v3.png",
+  "output": "docs/character-photo-refresh/assets/char-ranti-gallery-v4.png",
+  "prompt": "undefined\n",
+  "status": "reviewed",
+  "sourceHash": "51f4ad0acff806d05c1ea45fa9b95bde9d7fde197654e3675a8c1dcdc6e06463",
+  "reviewedAt": "2026-10-10T19:04:08.206Z",
+  "review": "Clear pose correction inspected: torso and shoulders face the camera, visible natural neck, upright head and relaxed shoulders; character identity, outfit and salon scene preserved.",
+  "altText": "Ranti, 28, a fictional adult AI character, standing comfortably beside her salon door beneath the Ranti Locs Studio sign."
+}
