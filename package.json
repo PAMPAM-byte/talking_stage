@@ -11,6 +11,7 @@
     "test": "playwright test",
     "check:production": "node scripts/check-production.mjs",
     "test:database": "node scripts/test-database.mjs",
+    "test:reports-database": "node scripts/test-reports-database.mjs",
     "test:cast-database": "node scripts/test-cast-database.mjs",
     "test:assets-database": "node scripts/test-assets-database.mjs",
     "test:images": "node scripts/test-images.mjs",

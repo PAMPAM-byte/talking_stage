@@ -1,6 +1,6 @@
 # TalkingStage implementation plan
 
-Version 1.20 · 9 October 2026 · Status: Stage 9 complete for local backend handoff; Stage 10 in progress
+Version 1.21 · 10 October 2026 · Status: Stage 10 in progress; independent Stage 12 reporting delivered locally
 
 Product owner: PAMPAM
 
@@ -38,7 +38,7 @@ Update a stage to In progress when work begins. Mark it Complete only when its e
 | 9 | Cast, assets, and administration backend | 8 | Complete for local backend handoff — [review](./reviews/stage-9.md) and [contracts](./stage-9-contracts.md) |
 | 10 | Conversations, AI, and memory backend | 9 | In progress — integration and request controls verified without keys; live evaluation pending; [review](./reviews/stage-10.md) |
 | 11 | Payments and reconciliation backend | 10 | Planned |
-| 12 | Privacy, reporting, monitoring, and full integration | 11 | Planned |
+| 12 | Privacy, reporting, monitoring, and full integration | 11 for full integration; 9–10 for independent reporting | In progress — independent reporting slice delivered locally; [review](./reviews/stage-12.md) |
 | 13 | Private pilot and public-launch readiness | 12 | Planned |
 | 14 | Separately scoped post-launch improvements | 13 | Deferred |
 
@@ -273,7 +273,7 @@ Evidence so far: [Stage 7 review](./reviews/stage-7.md), [contract index](./fron
 
 **PRD coverage:** PRIV-01, REPORT-01, ADMIN-02; PRD Sections 15–18.
 
-- [ ] Implement reports with relevant, access-controlled context, review queue, resolutions, and audit trail.
+- [x] Implement reports with relevant, access-controlled context, review queue, resolutions, and audit trail. Connected profile/photo/message reporting, selected private evidence, idempotent retries, admin-only queue/detail, versioned review/resolution and safe audit are verified against local Supabase; [contracts](./stage-12-reporting-contracts.md) and [review](./reviews/stage-12.md). Hosted operations and retention remain open.
 - [ ] Complete account/chat deletion and memory reset/removal workflows across database, summaries, assets where applicable, caches, and background processing.
 - [ ] Enforce documented retention/payment-record exceptions and backup expiry behaviour; explain them accurately in the existing UI.
 - [ ] Ensure sensitive admin access is authorised, narrowly scoped, and logged.
@@ -366,3 +366,5 @@ If integration exposes a contract mismatch, update the affected screen/adapter a
 - Design-system tokens, reusable components, responsive shells, local mock foundation, and development-only preview are implemented.
 - Stages 0–6 frontend implementation is complete, including the user-selected 18+ checkbox declaration. The current frontend is accepted and Gate A permits backend handoff. Physical-device/accessibility checks remain mandatory before private-pilot access.
 - **Stage 10 in progress — Conversations, AI and memory backend.** Durable conversations, a replaceable optional AI transport, reply leases/budget reservations and explicit per-character memory are implemented. The owner instructed integration to continue without keys; live generation remains disabled pending credentials, model evaluation and approved spending configuration. Follow [Stage 10 contracts](./stage-10-contracts.md), [AI setup](./stage-10-ai-setup.md) and [review](./reviews/stage-10.md). Stage 9's eight approved profiles and sixteen photos are published locally. Hosted launch checks remain Stage 13, and the accepted manual accessibility/device gate remains before the pilot. Preserve the accepted frontend and use frontend-design for every UI implementation.
+
+- **Independent Stage 12 reporting slice delivered locally on 10 October 2026.** The owner authorised reporting/admin review while AI keys remain unavailable. This does not close Stage 10, bypass payment acceptance, or satisfy Gate B. Account deletion/retention and the remaining Stage 12 integrations are next independent work.

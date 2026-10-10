@@ -1,5 +1,7 @@
 # Stage 10 AI integration setup
 
+Independent work completed without AI keys on 10 October 2026: connected profile/photo/message reports and administrator review are available against local Supabase. See [reporting contracts](./stage-12-reporting-contracts.md) and [Stage 12 reporting review](./reviews/stage-12.md). Account deletion and retention remain the next independent privacy tasks; live AI evaluation is still pending.
+
 9 October 2026 · Integration continues without API keys. Live generation remains disabled.
 
 ## Implemented boundary
