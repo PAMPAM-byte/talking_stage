@@ -1,7 +1,7 @@
 import {expect,test} from '@playwright/test';
 import {createClient} from '@supabase/supabase-js';
 import {randomUUID} from 'node:crypto';
-import {readFileSync} from 'node:fs';
+import {readFileSync,existsSync} from 'node:fs';
 import catalog from '../docs/cast-expansion/characters.json';
 
 test('expanded cast exposes matching photos and public profiles to an ordinary adult account',async({page})=>{
@@ -11,6 +11,7 @@ test('expanded cast exposes matching photos and public profiles to an ordinary a
  const service=createClient(endpoint,process.env.SUPABASE_SERVICE_ROLE_KEY!,options);
  const viewer=createClient(endpoint,process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,options);
  const state=JSON.parse(readFileSync('.local-services/expanded-cast-drafts.json','utf8'));
+ if(existsSync('.local-services/photo-refresh.json'))Object.assign(state.characters,JSON.parse(readFileSync('.local-services/photo-refresh.json','utf8')).characters);
  const email=`cast-expansion-${randomUUID()}@example.test`;const password=`Ts!${randomUUID()}Aa9`;
  const created=await service.auth.admin.createUser({email,password,email_confirm:true,user_metadata:{adult_declaration:'18-plus-v1'}});
  expect(created.error).toBeNull();const id=created.data.user!.id;
@@ -32,7 +33,7 @@ test('expanded cast exposes matching photos and public profiles to an ordinary a
    await expect(page.getByRole('heading',{name:`${c.profile.name}, ${c.profile.age}`,exact:true})).toBeVisible();
    await expect(page.getByText(`${c.profile.fictionalLocation} · ${c.profile.occupation}`,{exact:true})).toBeVisible();
    const photos=page.locator('img.cast-review-photo');await expect(photos).toHaveCount(2);
-   await photos.evaluateAll(images=>images.forEach(image=>(image as HTMLImageElement).loading='eager'));
+   for(const photo of await photos.all())await photo.scrollIntoViewIfNeeded();
    await expect.poll(()=>photos.evaluateAll(images=>images.every(image=>(image as HTMLImageElement).complete&&(image as HTMLImageElement).naturalWidth>0))).toBe(true);
    for(const slot of ['portrait','gallery'])expect(await photos.evaluateAll((images,asset)=>images.some(image=>image.getAttribute('src')?.includes(asset)),entry.assets[slot].id)).toBe(true);
    const music=page.getByRole('region',{name:'Favourite artists'});

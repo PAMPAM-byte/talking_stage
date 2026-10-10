@@ -4,6 +4,8 @@
 
 Open [the visual review](./review.html) in a browser to compare biographies, conversation clues, portraits and gallery photos. Full profile copy, appearance continuity and conversation direction are in [characters.json](./characters.json). The existing eight published characters remain separate.
 
+The owner-requested [photography refresh](../character-photo-refresh/README.md) now supplies distinct candid galleries for all twenty-two profiles, plus new Seyi and Tunde portraits. This review uses those current gallery assets; the original generation prompts and sources remain historical records.
+
 | Character | Age | Role | Distinct appearance |
 | --- | --- | --- | --- |
 | Adaora | 25 | Upcoming singer-songwriter | Deep brown skin, short natural curls, mustard linen |

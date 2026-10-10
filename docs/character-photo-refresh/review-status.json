@@ -1,0 +1,201 @@
+{
+  "status": "reviewed",
+  "reviewedAt": "2026-10-10T03:25:08.844Z",
+  "authorization": "Owner requested these replacements and website integration on 10 October 2026.",
+  "tool": "Built-in image_gen",
+  "review": "Inspected all 22 pairs, both new portraits, and full-resolution requested beach, salon, photographer, Vivian and Chief scenes. Adult identity continuity, natural hair variation, action, background, clothing and framing checked. Exactly 24 distinct replacements.",
+  "replacements": [
+    {
+      "key": "char-seyi",
+      "slot": "portrait",
+      "source": "docs/character-photo-refresh/assets/char-seyi-portrait-v2.png",
+      "sourceHash": "dba2ecd8a3c0da458b745c9ca5c240fcd4ec7c74db8e9454bf94015655842fe7",
+      "width": 1086,
+      "height": 1448
+    },
+    {
+      "key": "char-tunde",
+      "slot": "portrait",
+      "source": "docs/character-photo-refresh/assets/char-tunde-portrait-v2.png",
+      "sourceHash": "66762561b151e60336fad11e11a5e64453c18e07dfea2c28e1fedde312a6738b",
+      "width": 1086,
+      "height": 1448
+    },
+    {
+      "key": "char-amara",
+      "slot": "gallery",
+      "source": "docs/character-photo-refresh/assets/char-amara-gallery-v2.png",
+      "sourceHash": "0a8af6180cb7be2c831534404509654bc815c4333c9a54c3a8df8f6ce100cd34",
+      "width": 1086,
+      "height": 1448
+    },
+    {
+      "key": "char-zainab",
+      "slot": "gallery",
+      "source": "docs/character-photo-refresh/assets/char-zainab-gallery-v2.png",
+      "sourceHash": "8667637a169e7e2da25a0bf3378c371ad3d4e42039abcfc55bfd26cf275b499a",
+      "width": 1086,
+      "height": 1448
+    },
+    {
+      "key": "char-ifeoma",
+      "slot": "gallery",
+      "source": "docs/character-photo-refresh/assets/char-ifeoma-gallery-v2.png",
+      "sourceHash": "14b513164a4c28be308a732c714f20678407fe7f2bc2f5476d721ac309168568",
+      "width": 1086,
+      "height": 1448
+    },
+    {
+      "key": "char-tomi",
+      "slot": "gallery",
+      "source": "docs/character-photo-refresh/assets/char-tomi-gallery-v2.png",
+      "sourceHash": "f31d6865837a477530058f727ad11240075215b0ed1dd86ee7ef12cabca3bb1b",
+      "width": 1086,
+      "height": 1448
+    },
+    {
+      "key": "char-tunde",
+      "slot": "gallery",
+      "source": "docs/character-photo-refresh/assets/char-tunde-gallery-v2.png",
+      "sourceHash": "eaba6143d17ed71c38d79e10902216028691d69a7ef4f48fb5132e85e9b8ddca",
+      "width": 1086,
+      "height": 1448
+    },
+    {
+      "key": "char-chidi",
+      "slot": "gallery",
+      "source": "docs/character-photo-refresh/assets/char-chidi-gallery-v2.png",
+      "sourceHash": "a0ab5f057238c4c3e0ab3565a22c0a136d8ddc7df34b16dbf60b11ee5c7d2324",
+      "width": 1086,
+      "height": 1448
+    },
+    {
+      "key": "char-seyi",
+      "slot": "gallery",
+      "source": "docs/character-photo-refresh/assets/char-seyi-gallery-v2.png",
+      "sourceHash": "62473c0e608d4d0b7fb1440f9ff11852c885a2e9a8491dd93b29797d60695b10",
+      "width": 1086,
+      "height": 1448
+    },
+    {
+      "key": "char-idris",
+      "slot": "gallery",
+      "source": "docs/character-photo-refresh/assets/char-idris-gallery-v2.png",
+      "sourceHash": "5488c7e3e92807371482449469ee10a433eb6a59d3a6659e3b665676e6b5d247",
+      "width": 1086,
+      "height": 1448
+    },
+    {
+      "key": "char-adaora",
+      "slot": "gallery",
+      "source": "docs/character-photo-refresh/assets/char-adaora-gallery-v2.png",
+      "sourceHash": "2a3cf94fcfdf6a37cb3b209a50fcfab9ae0994a92d8637e172f4a44a4c35daf9",
+      "width": 1086,
+      "height": 1448
+    },
+    {
+      "key": "char-raymond",
+      "slot": "gallery",
+      "source": "docs/character-photo-refresh/assets/char-raymond-gallery-v2.png",
+      "sourceHash": "8f4d5790f82d15f43c037c3d3022ae98f6c1aa026fb25f5a7986302cdde7e336",
+      "width": 1086,
+      "height": 1448
+    },
+    {
+      "key": "char-vivian",
+      "slot": "gallery",
+      "source": "docs/character-photo-refresh/assets/char-vivian-gallery-v2.png",
+      "sourceHash": "e7eaccad8e2739b00bdea7ca844159b5f6f3f572c0eaf88c14eb408d68afa45b",
+      "width": 1086,
+      "height": 1448
+    },
+    {
+      "key": "char-chief-chukwudi",
+      "slot": "gallery",
+      "source": "docs/character-photo-refresh/assets/char-chief-chukwudi-gallery-v2.png",
+      "sourceHash": "ef97c816f7e5bcd104136ef8445727656dd1d66d0ebafd459e425d94f06eccf4",
+      "width": 1086,
+      "height": 1448
+    },
+    {
+      "key": "char-hon-femi",
+      "slot": "gallery",
+      "source": "docs/character-photo-refresh/assets/char-hon-femi-gallery-v2.png",
+      "sourceHash": "28528029e189fefe864bef5a03881f257e9e9f485127ae7ec429b081382f343c",
+      "width": 1086,
+      "height": 1448
+    },
+    {
+      "key": "char-nneka",
+      "slot": "gallery",
+      "source": "docs/character-photo-refresh/assets/char-nneka-gallery-v2.png",
+      "sourceHash": "365fa492c45a1309ab0c7b54195fa350beed576c1e1f0778eed70cc721b669c6",
+      "width": 1086,
+      "height": 1448
+    },
+    {
+      "key": "char-malik",
+      "slot": "gallery",
+      "source": "docs/character-photo-refresh/assets/char-malik-gallery-v2.png",
+      "sourceHash": "8a8e1b144378ee8c98d1a1ad019e7cf614f11cc502e3744eff849fb47e03f289",
+      "width": 1086,
+      "height": 1448
+    },
+    {
+      "key": "char-damilola",
+      "slot": "gallery",
+      "source": "docs/character-photo-refresh/assets/char-damilola-gallery-v2.png",
+      "sourceHash": "72756b94244ceb36b741a07a60ec17e9e50da76ed77780f2d28c1c5812e43454",
+      "width": 1086,
+      "height": 1448
+    },
+    {
+      "key": "char-dr-aisha",
+      "slot": "gallery",
+      "source": "docs/character-photo-refresh/assets/char-dr-aisha-gallery-v2.png",
+      "sourceHash": "b49e3d4b286e1b07d7d88cea7ec07a7c498fb0b3a4c6a6c96f4ee27766ba5cc7",
+      "width": 1086,
+      "height": 1448
+    },
+    {
+      "key": "char-emeka",
+      "slot": "gallery",
+      "source": "docs/character-photo-refresh/assets/char-emeka-gallery-v2.png",
+      "sourceHash": "b82a0c2a7f7999d60179492c05f25b46e5d773962f41ca5466cf1d74dd33142a",
+      "width": 1086,
+      "height": 1448
+    },
+    {
+      "key": "char-kunle",
+      "slot": "gallery",
+      "source": "docs/character-photo-refresh/assets/char-kunle-gallery-v2.png",
+      "sourceHash": "c3b97540d8667282eebae5e09920bce3360cc93bdbef06fe5e78c31a57732ee6",
+      "width": 1086,
+      "height": 1448
+    },
+    {
+      "key": "char-ranti",
+      "slot": "gallery",
+      "source": "docs/character-photo-refresh/assets/char-ranti-gallery-v2.png",
+      "sourceHash": "4bef5e7cc989713fb44024572dbd23e03728d0a0c1a2b90d5420abf3e450b9f0",
+      "width": 1086,
+      "height": 1448
+    },
+    {
+      "key": "char-zuri",
+      "slot": "gallery",
+      "source": "docs/character-photo-refresh/assets/char-zuri-gallery-v2.png",
+      "sourceHash": "633cab92fe8755ba49933aa969c2c57c4bcf0cedac9303ccc99f69757a1b632c",
+      "width": 1086,
+      "height": 1448
+    },
+    {
+      "key": "char-kiki",
+      "slot": "gallery",
+      "source": "docs/character-photo-refresh/assets/char-kiki-gallery-v2.png",
+      "sourceHash": "3b4a148c75aa0341e5114f5d3c895bd627c092727a3e3b8af9afb4c709ffb30b",
+      "width": 1086,
+      "height": 1448
+    }
+  ]
+}

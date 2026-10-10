@@ -21,7 +21,7 @@
     "aiLabel": "Fictional AI character",
     "portraitAssetId": "char-amara-portrait",
     "galleryAssetIds": [
-      "char-amara-gallery"
+      "char-amara-gallery-v2"
     ],
     "availability": {
       "chat": true,
@@ -50,7 +50,7 @@
     "aiLabel": "Fictional AI character",
     "portraitAssetId": "char-zainab-portrait",
     "galleryAssetIds": [
-      "char-zainab-gallery"
+      "char-zainab-gallery-v2"
     ],
     "availability": {
       "chat": true,
@@ -79,7 +79,7 @@
     "aiLabel": "Fictional AI character",
     "portraitAssetId": "char-ifeoma-portrait",
     "galleryAssetIds": [
-      "char-ifeoma-gallery"
+      "char-ifeoma-gallery-v2"
     ],
     "availability": {
       "chat": true,
@@ -108,7 +108,7 @@
     "aiLabel": "Fictional AI character",
     "portraitAssetId": "char-tomi-portrait",
     "galleryAssetIds": [
-      "char-tomi-gallery"
+      "char-tomi-gallery-v2"
     ],
     "availability": {
       "chat": true,
@@ -135,9 +135,9 @@
     ],
     "conversationClue": "Ask me what I redesigned in my head this week.",
     "aiLabel": "Fictional AI character",
-    "portraitAssetId": "char-tunde-portrait",
+    "portraitAssetId": "char-tunde-portrait-v2",
     "galleryAssetIds": [
-      "char-tunde-gallery"
+      "char-tunde-gallery-v2"
     ],
     "availability": {
       "chat": true,
@@ -166,7 +166,7 @@
     "aiLabel": "Fictional AI character",
     "portraitAssetId": "char-chidi-portrait",
     "galleryAssetIds": [
-      "char-chidi-gallery"
+      "char-chidi-gallery-v2"
     ],
     "availability": {
       "chat": true,
@@ -193,9 +193,9 @@
     ],
     "conversationClue": "Name one song you would never skip.",
     "aiLabel": "Fictional AI character",
-    "portraitAssetId": "char-seyi-portrait",
+    "portraitAssetId": "char-seyi-portrait-v2",
     "galleryAssetIds": [
-      "char-seyi-gallery"
+      "char-seyi-gallery-v2"
     ],
     "availability": {
       "chat": true,
@@ -224,7 +224,7 @@
     "aiLabel": "Fictional AI character",
     "portraitAssetId": "char-idris-portrait",
     "galleryAssetIds": [
-      "char-idris-gallery"
+      "char-idris-gallery-v2"
     ],
     "availability": {
       "chat": true,
@@ -256,7 +256,7 @@
     "aiLabel": "Fictional AI character",
     "portraitAssetId": "char-adaora-portrait",
     "galleryAssetIds": [
-      "char-adaora-gallery"
+      "char-adaora-gallery-v2"
     ],
     "availability": {
       "chat": true,
@@ -286,7 +286,7 @@
     "aiLabel": "Fictional AI character",
     "portraitAssetId": "char-raymond-portrait",
     "galleryAssetIds": [
-      "char-raymond-gallery"
+      "char-raymond-gallery-v2"
     ],
     "availability": {
       "chat": true,
@@ -316,7 +316,7 @@
     "aiLabel": "Fictional AI character",
     "portraitAssetId": "char-vivian-portrait",
     "galleryAssetIds": [
-      "char-vivian-gallery"
+      "char-vivian-gallery-v2"
     ],
     "availability": {
       "chat": true,
@@ -346,7 +346,7 @@
     "aiLabel": "Fictional AI character",
     "portraitAssetId": "char-chief-chukwudi-portrait",
     "galleryAssetIds": [
-      "char-chief-chukwudi-gallery"
+      "char-chief-chukwudi-gallery-v2"
     ],
     "availability": {
       "chat": true,
@@ -376,7 +376,7 @@
     "aiLabel": "Fictional AI character",
     "portraitAssetId": "char-hon-femi-portrait",
     "galleryAssetIds": [
-      "char-hon-femi-gallery"
+      "char-hon-femi-gallery-v2"
     ],
     "availability": {
       "chat": true,
@@ -408,7 +408,7 @@
     "aiLabel": "Fictional AI character",
     "portraitAssetId": "char-nneka-portrait",
     "galleryAssetIds": [
-      "char-nneka-gallery"
+      "char-nneka-gallery-v2"
     ],
     "availability": {
       "chat": true,
@@ -439,7 +439,7 @@
     "aiLabel": "Fictional AI character",
     "portraitAssetId": "char-malik-portrait",
     "galleryAssetIds": [
-      "char-malik-gallery"
+      "char-malik-gallery-v2"
     ],
     "availability": {
       "chat": true,
@@ -470,7 +470,7 @@
     "aiLabel": "Fictional AI character",
     "portraitAssetId": "char-damilola-portrait",
     "galleryAssetIds": [
-      "char-damilola-gallery"
+      "char-damilola-gallery-v2"
     ],
     "availability": {
       "chat": true,
@@ -500,7 +500,7 @@
     "aiLabel": "Fictional AI character",
     "portraitAssetId": "char-dr-aisha-portrait",
     "galleryAssetIds": [
-      "char-dr-aisha-gallery"
+      "char-dr-aisha-gallery-v2"
     ],
     "availability": {
       "chat": true,
@@ -531,7 +531,7 @@
     "aiLabel": "Fictional AI character",
     "portraitAssetId": "char-emeka-portrait",
     "galleryAssetIds": [
-      "char-emeka-gallery"
+      "char-emeka-gallery-v2"
     ],
     "availability": {
       "chat": true,
@@ -561,7 +561,7 @@
     "aiLabel": "Fictional AI character",
     "portraitAssetId": "char-kunle-portrait",
     "galleryAssetIds": [
-      "char-kunle-gallery"
+      "char-kunle-gallery-v2"
     ],
     "availability": {
       "chat": true,
@@ -593,7 +593,7 @@
     "aiLabel": "Fictional AI character",
     "portraitAssetId": "char-ranti-portrait",
     "galleryAssetIds": [
-      "char-ranti-gallery"
+      "char-ranti-gallery-v2"
     ],
     "availability": {
       "chat": true,
@@ -625,7 +625,7 @@
     "aiLabel": "Fictional AI character",
     "portraitAssetId": "char-zuri-portrait",
     "galleryAssetIds": [
-      "char-zuri-gallery"
+      "char-zuri-gallery-v2"
     ],
     "availability": {
       "chat": true,
@@ -656,7 +656,7 @@
     "aiLabel": "Fictional AI character",
     "portraitAssetId": "char-kiki-portrait",
     "galleryAssetIds": [
-      "char-kiki-gallery"
+      "char-kiki-gallery-v2"
     ],
     "availability": {
       "chat": true,

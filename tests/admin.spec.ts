@@ -72,7 +72,7 @@ test('asset review requires attestation/rejection reason and uploads stay local 
   await expect(page.getByRole('dialog').getByRole('button', { name: 'Approve asset' })).toBeDisabled(); await expect(page.getByRole('dialog').getByRole('button', { name: 'Publish asset', exact: true })).toBeDisabled();
   await page.getByLabel('Rejection reason').fill('Synthetic identity-continuity concern.'); await page.getByRole('dialog').getByRole('button', { name: 'Reject asset' }).click(); await expect(page.getByRole('dialog')).toHaveCount(0);
   await expect(page.locator('.admin-assets-grid')).toContainText('Synthetic identity-continuity concern.');
-  await page.getByRole('button', { name: 'Register asset preview' }).click(); await page.getByLabel('Owned character asset slot').selectOption('char-amara-gallery');
+  await page.getByRole('button', { name: 'Register asset preview' }).click(); await page.getByLabel('Owned character asset slot').selectOption(cast.find(c => c.id === 'char-amara')!.galleryAssetIds[0]);
   await page.getByLabel('Choose a local image').setInputFiles({ name: 'invalid.txt', mimeType: 'text/plain', buffer: Buffer.from('synthetic') }); await expect(page.getByText('Image not selected', { exact: true })).toBeVisible();
   await page.getByLabel('Choose a local image').setInputFiles('public/images/characters/char-amara-gallery.webp'); await page.getByLabel('Image description').fill('Synthetic local character gallery preview'); await page.getByRole('button', { name: 'Register preview', exact: true }).click(); await expect(page.getByRole('dialog')).toHaveCount(0);
   const stored = await page.evaluate(() => sessionStorage.getItem('talkingstage:mock-admin-data:v1')); expect(stored).not.toContain('blob:');

@@ -7,9 +7,11 @@
 .landing-cta { margin-top: 28px; }
 .landing-disclosure { margin-top: 16px; }
 .landing-portrait { position: relative; margin: 0; padding-bottom: 46px; min-width: 0; }
-.landing-portrait__image { aspect-ratio: 1.18; border-radius: 28px; overflow: hidden; position: relative; background: var(--brand-soft); }
-.landing-portrait__image img { object-fit: cover; }
-.landing-clue { position: relative; margin: -48px 20px 0; padding: 20px 24px; border: 1px solid var(--border); border-radius: var(--radius-card); background: var(--surface); box-shadow: var(--shadow-floating); }
+.landing-portrait__image { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; aspect-ratio: 3 / 2; border-radius: 28px; overflow: hidden; position: relative; background: var(--brand-soft); }
+.landing-portrait__panel { position: relative; min-width: 0; overflow: hidden; }
+.landing-portrait__image img { object-fit: cover; object-position: center; }
+.landing-portrait__panel .empty-state { padding: 16px 12px; min-height: 100%; font-size: 14px; }
+.landing-clue { position: relative; margin: -16px 20px 0; padding: 20px 24px; border: 1px solid var(--border); border-radius: var(--radius-card); background: var(--surface); box-shadow: var(--shadow-floating); }
 .landing-clue blockquote { color: var(--brand); font-size: 26px; line-height: 32px; margin: 8px 0 12px; }
 .landing-photo-caption { margin: 12px 20px 0; }
 .landing-section { padding-block: 48px; border-top: 1px solid var(--border); }
