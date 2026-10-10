@@ -46,3 +46,5 @@ The [Storage recovery procedure](./storage-recovery.md) covers paired database/o
 - Later chat/payment stages must consume effective capability permissions server-side. The separate physical-device, text-zoom and screen-reader gate remains before the private pilot, under the accepted deferral.
 
 Stage 9's local exit criteria pass. AI/chat persistence, checkout, report resolution and customer deletion remain Stages 10–12; hosted launch checks remain Stage 13. Local publication does not authorize hosted deployment or pilot admission.
+
+10 October cast expansion: following owner authorization, fourteen additional profiles and twenty-eight reviewed photos were published locally through the same audited workflow. The local cast now totals twenty-two profiles and forty-four approved/published photos. Fictional ages were chosen to fit the portraits, neighbourhoods were added, and selected profiles include favourite artists. [Authorization and verification](./reviews/cast-expansion-publication.md) records ordinary-account profile/image checks and pagination; generation and AI-provider configuration remain unchanged.

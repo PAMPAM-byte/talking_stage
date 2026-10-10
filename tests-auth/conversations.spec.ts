@@ -49,6 +49,13 @@ test('real conversation persistence, retries, ownership and lifecycle',async({pa
   await composer.press('Enter');
   await expect(page.locator('.message-bubble')).toHaveText('A synthetic message that survives refresh.');
   await page.reload();await expect(page.locator('.message-bubble')).toHaveText('A synthetic message that survives refresh.');
+  const back=page.getByRole('link',{name:'Back to Amara’s profile',exact:true});
+  await expect(back).toHaveAttribute('href',`/characters/${character}`);
+  await back.click();await expect(page).toHaveURL(new RegExp(`/characters/${character}$`));
+  await expect(page.getByRole('heading',{name:'Amara, 28',exact:true})).toBeVisible();
+  await page.getByRole('button',{name:'Start conversation',exact:true}).click();
+  await expect(page).toHaveURL(new RegExp(`/messages/${id}$`));
+  await expect(page.locator('.message-bubble')).toHaveText('A synthetic message that survives refresh.');
   const saved=(await a.from('messages').select('id,client_message_id').eq('conversation_id',id)).data![0];
   const retry=await a.rpc('save_user_message',{p_conversation:id,p_client_id:saved.client_message_id,p_generation:1,p_text:'A synthetic message that survives refresh.'});
   expect(retry.error).toBeNull();expect(retry.data.id).toBe(saved.id);

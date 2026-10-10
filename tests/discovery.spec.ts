@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import cast from '../lib/mock/public-cast.json';
 
 async function signIn(page: Page) {
   await page.goto('/sign-in');
@@ -6,13 +7,13 @@ async function signIn(page: Page) {
   await page.getByLabel('Password', { exact: true }).fill('TalkingStage123!');
   await page.getByRole('button', { name: 'Sign in to preview' }).click();
   await expect(page).toHaveURL(/\/discover$/);
-  await expect(page.locator('.character-card')).toHaveCount(8);
+  await expect(page.locator('.character-card')).toHaveCount(cast.length);
 }
 
 test('filters apply together, cancel without changing results, reset and handle failures', async ({ page }) => {
   await signIn(page);
   await page.getByRole('button', { name: 'Women', exact: true }).click();
-  await expect(page.locator('.character-card')).toHaveCount(4);
+  await expect(page.locator('.character-card')).toHaveCount(cast.filter(c => c.gender === 'woman').length);
   await page.getByRole('button', { name: /Filters/ }).click();
   await page.getByLabel('Personality', { exact: true }).selectOption('reserved');
   await page.getByLabel('Interest', { exact: true }).selectOption('books');
@@ -28,14 +29,14 @@ test('filters apply together, cancel without changing results, reset and handle 
   await page.getByRole('button', { name: 'Apply filters' }).click();
   await expect(page.getByRole('heading', { name: 'No characters fit these filters' })).toBeVisible();
   await page.getByRole('button', { name: 'Reset filters', exact: true }).last().click();
-  await expect(page.locator('.character-card')).toHaveCount(8);
+  await expect(page.locator('.character-card')).toHaveCount(cast.length);
   await page.getByText('Developer review scenarios', { exact: true }).click();
   await page.getByLabel('Discovery scenario').selectOption('offline');
   await expect(page.getByRole('status').filter({ hasText: 'Discovery unavailable' }).or(page.getByRole('alert'))).toBeVisible();
   await page.getByRole('button', { name: 'Try again' }).click();
   await expect(page.getByRole('alert')).toBeVisible();
   await page.getByLabel('Discovery scenario').selectOption('ready');
-  await expect(page.locator('.character-card')).toHaveCount(8);
+  await expect(page.locator('.character-card')).toHaveCount(cast.length);
 });
 
 test('gallery stays with its character, keyboard works, and starting resumes one conversation', async ({ page }) => {

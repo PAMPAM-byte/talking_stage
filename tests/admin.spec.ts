@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import cast from '../lib/mock/public-cast.json';
 
 async function operator(page: Page, role = 'admin') {
   await page.goto('/admin/access'); await page.getByLabel('Preview role').selectOption(role);
@@ -39,18 +40,18 @@ test('admin mock access distinguishes signed out, non-admin and expired; read fa
 test('create/edit/profile preview, failed save and version conflict retain fields and private direction', async ({ page }) => {
   await operator(page); await page.goto('/admin/characters/new'); await page.getByRole('button', { name: 'Save character draft' }).click();
   await expect(page.getByText('Action not completed', { exact: true }).filter({ visible: true })).toBeVisible();
-  for (const [label, value] of Object.entries({ 'Character name': 'Nneka', 'Fictional Nigerian location': 'Lagos', Occupation: 'Architect', 'Discovery bio': 'A fictional architect with a love of city walks.', 'Full biography': 'I enjoy thoughtful conversation and beautiful buildings.', 'Conversation clue': 'Which building would you redesign?', 'Interests (comma separated)': 'architecture, music', 'Personality tags (comma separated)': 'thoughtful, playful', 'Appearance and continuity': 'Clearly adult Nigerian woman, consistent fictional identity.', 'Language and voice': 'Thoughtful English with optional Pidgin.' })) await page.getByLabel(label, { exact: true }).fill(value);
+  for (const [label, value] of Object.entries({ 'Character name': 'Draft Nneka', 'Fictional Nigerian location': 'Lagos', Occupation: 'Architect', 'Discovery bio': 'A fictional architect with a love of city walks.', 'Full biography': 'I enjoy thoughtful conversation and beautiful buildings.', 'Conversation clue': 'Which building would you redesign?', 'Interests (comma separated)': 'architecture, music', 'Personality tags (comma separated)': 'thoughtful, playful', 'Appearance and continuity': 'Clearly adult Nigerian woman, consistent fictional identity.', 'Language and voice': 'Thoughtful English with optional Pidgin.' })) await page.getByLabel(label, { exact: true }).fill(value);
   await page.getByLabel('Adult age').fill('17'); await page.getByRole('button', { name: 'Save character draft' }).click(); await expect(page.getByText('Action not completed', { exact: true }).filter({ visible: true })).toBeVisible();
   await page.getByLabel('Adult age').fill('29'); await scenario(page, 'offline'); await page.getByRole('button', { name: 'Save character draft' }).click();
-  await expect(page.getByLabel('Character name')).toHaveValue('Nneka'); await page.getByRole('button', { name: 'Preview profile' }).click(); await expect(page.getByRole('dialog')).toContainText('Nneka, 29'); await page.keyboard.press('Escape'); await expect(page.getByRole('button', { name: 'Preview profile' })).toBeFocused();
-  await scenario(page, 'ready'); await page.getByRole('button', { name: 'Save character draft' }).click(); await expect(page).toHaveURL(/\/admin\/characters\/char-/); await page.reload(); await expect(page.getByLabel('Character name')).toHaveValue('Nneka');
+  await expect(page.getByLabel('Character name')).toHaveValue('Draft Nneka'); await page.getByRole('button', { name: 'Preview profile' }).click(); await expect(page.getByRole('dialog')).toContainText('Draft Nneka, 29'); await page.keyboard.press('Escape'); await expect(page.getByRole('button', { name: 'Preview profile' })).toBeFocused();
+  await scenario(page, 'ready'); await page.getByRole('button', { name: 'Save character draft' }).click(); await expect(page).toHaveURL(/\/admin\/characters\/char-/); await page.reload(); await expect(page.getByLabel('Character name')).toHaveValue('Draft Nneka');
   await expect(page.getByText('Instruction version 1', { exact: true })).toBeVisible();
   const instructions = page.getByLabel('Character instructions'); await instructions.fill('Private instruction sentinel. Fictional adult, non-explicit; honour refusal and mute.');
   await scenario(page, 'conflict'); await page.getByRole('button', { name: 'Save character draft' }).click(); await expect(instructions).toHaveValue('Private instruction sentinel. Fictional adult, non-explicit; honour refusal and mute.');
   await page.getByRole('button', { name: 'Reload current version, keep edits' }).click(); await scenario(page, 'ready'); await page.getByRole('button', { name: 'Save character draft' }).click(); await expect(page.getByText('Instruction version 2', { exact: true })).toBeVisible();
   const storage = await page.evaluate(() => ({ admin: sessionStorage.getItem('talkingstage:mock-admin-data:v1'), public: sessionStorage.getItem('talkingstage:mock-operator-public:v1') }));
   expect(storage.admin).not.toContain('Private instruction sentinel'); expect(storage.public ?? '').not.toContain('Private instruction sentinel');
-  await customer(page); await expect(page.locator('.character-card')).toHaveCount(8); await expect(page.getByText('Nneka', { exact: true })).toHaveCount(0);
+  await customer(page); await expect(page.locator('.character-card')).toHaveCount(cast.length); await expect(page.getByText('Draft Nneka', { exact: true })).toHaveCount(0);
 });
 
 test('publication requires adult scope and owned approved assets; publication and deactivation reach discovery', async ({ page }) => {

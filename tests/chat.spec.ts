@@ -119,8 +119,9 @@ test('archive, restore, delete, and list failures keep management clear', async 
 test('unread comes from a background reply and clears when opened; broken photo can reload', async ({ page }) => {
   await signIn(page); await openChat(page); await send(page, 'Show me a character photo.');
   await expect(page.getByText('Saved in preview', { exact: true })).toBeVisible();
-  await page.getByRole('link', { name: 'Back to messages' }).click();
-  await expect(page).toHaveURL(/\/messages$/);
+  await page.getByRole('link', { name: /^Back to .+’s profile$/ }).click();
+  await expect(page).toHaveURL(/\/characters\/char-/);
+  await page.goto('/messages');
   await expect(page.locator('.shell--user .message-list').getByText('1 unread', { exact: true })).toBeVisible();
   await page.locator('.shell--user .conversation-row__link').click();
   await expect(page.getByRole('button', { name: 'View Amara’s character photo' })).toBeVisible();
@@ -129,8 +130,9 @@ test('unread comes from a background reply and clears when opened; broken photo 
   await page.getByRole('button', { name: 'Toggle broken photo' }).click();
   await page.getByRole('button', { name: 'Reload photo' }).click();
   await expect(page.locator('.chat-photo img')).toBeVisible();
-  await page.getByRole('link', { name: 'Back to messages' }).click();
-  await expect(page).toHaveURL(/\/messages$/);
+  await page.getByRole('link', { name: /^Back to .+’s profile$/ }).click();
+  await expect(page).toHaveURL(/\/characters\/char-/);
+  await page.goto('/messages');
   await expect(page.locator('.shell--user .message-list').getByText('1 unread', { exact: true })).toHaveCount(0);
 });
 
@@ -151,8 +153,9 @@ test('chat fits all review widths, long messages, compact height and screenshots
   }
   await page.setViewportSize({ width: 390, height: 460 });
   await expect(page.getByRole('button', { name: 'Send message' })).toBeInViewport();
-  await page.getByRole('link', { name: 'Back to messages' }).click();
-  await expect(page).toHaveURL(/\/messages$/);
+  await page.getByRole('link', { name: /^Back to .+’s profile$/ }).click();
+  await expect(page).toHaveURL(/\/characters\/char-/);
+  await page.goto('/messages');
   await page.setViewportSize({ width: 390, height: 844 });
   await expect(page.locator('.shell--user .conversation-row')).toHaveCount(1);
   await page.screenshot({ path: 'docs/reviews/stage-4/messages-390.png', fullPage: true });

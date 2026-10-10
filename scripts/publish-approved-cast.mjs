@@ -14,7 +14,7 @@ const options={auth:{persistSession:false,autoRefreshToken:false}};
 const service=createClient(url,process.env.SUPABASE_SERVICE_ROLE_KEY,options);
 const admin=createClient(url,process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,options);
 const fixtures=JSON.parse(await readFile('docs/stage-0/characters.json','utf8')).characters;
-const publicCast=JSON.parse(await readFile('lib/mock/public-cast.json','utf8'));
+const publicCast=JSON.parse(await readFile('lib/mock/public-cast.json','utf8')).filter(c=>fixtures.some(f=>f.id===c.id));
 assert.equal(fixtures.length,8);assert.equal(publicCast.length,8);
 const digest=bytes=>createHash('sha256').update(bytes).digest('hex');
 const canonical=value=>Array.isArray(value)?value.map(canonical):value&&typeof value==='object'?Object.fromEntries(Object.keys(value).sort().map(key=>[key,canonical(value[key])])):value;
@@ -99,8 +99,8 @@ try {
   console.log(`${item.profile.name}: inspected, reviewed, previewed and published locally.`);
   if(processed%3===0&&processed<plan.length){console.log('Waiting for the native cast mutation window before the next batch.');await new Promise(resolve=>setTimeout(resolve,61000));}
  }
- const discovery=check(await admin.rpc('discover_cast'),'Published discovery');
- assert.equal(plan.filter(item=>discovery.characters.some(c=>c.id===state.characters[item.key].id)).length,8);
+ const discovery=check(await admin.from('characters').select('id'),'Published discovery');
+ assert.equal(plan.filter(item=>discovery.some(c=>c.id===state.characters[item.key].id)).length,8);
  state.completedAt=new Date().toISOString();await save();console.log('Approved local cast publication complete: eight profiles and sixteen owned photos.');
 }finally {
  if(actor){sql(`delete from private.user_roles where user_id='${actor}';`);check(await service.auth.admin.updateUserById(actor,{ban_duration:'876000h'}),'Disable maintenance identity');await admin.auth.signOut();}

@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { CharacterInterests } from './character-interests';
 import { currentAccount } from '@/lib/backend/server';
 import { Badge, EmptyState, Notice } from './ui/primitives';
 import {Pagination} from './ui/pagination';
@@ -46,5 +47,5 @@ export async function ConnectedCharacter({id}:{id:string}) {
  const conversationAction=capabilities.data?.chat===true?<ConversationControl id={c.id} operation="start" label="Start conversation"/>:<Notice title="Chat is paused">You can still explore this character’s profile.</Notice>;
  return <div className="stack"><Link href="/discover">Back to discovery</Link><h1 className="display page-title">{c.name}, {c.age}</h1><Badge>Fictional adult AI character</Badge><p className="muted">{c.fictional_location} · {c.occupation}</p><div className="character-grid">{data.assets.filter(a=>['portrait','gallery'].includes(a.slot)).map(a=>
  // eslint-disable-next-line @next/next/no-img-element
- <img key={a.id} className="cast-review-photo" src={`/api/cast-assets/${a.id}?w=640`} srcSet={[320,640,1280].map(w=>`/api/cast-assets/${a.id}?w=${w} ${w}w`).join(', ')} sizes="(min-width:900px) 33vw, 100vw" alt={a.alt_text} loading="lazy" />)}</div><p>{c.bio}</p><blockquote className="conversation-clue">{c.conversation_clue}</blockquote><div className="row">{c.interests.map(i=><Badge key={i}>{i}</Badge>)}</div>{conversationAction}{!replies&&<Notice title="Replies are not available yet">You can save messages while we prepare AI replies.</Notice>}</div>;
+ <img key={a.id} className="cast-review-photo" src={`/api/cast-assets/${a.id}?w=640`} srcSet={[320,640,1280].map(w=>`/api/cast-assets/${a.id}?w=${w} ${w}w`).join(', ')} sizes="(min-width:900px) 33vw, 100vw" alt={a.alt_text} loading="lazy" />)}</div><p>{c.bio}</p><blockquote className="conversation-clue">{c.conversation_clue}</blockquote><CharacterInterests interests={c.interests} />{conversationAction}{!replies&&<Notice title="Replies are not available yet">You can save messages while we prepare AI replies.</Notice>}</div>;
 }

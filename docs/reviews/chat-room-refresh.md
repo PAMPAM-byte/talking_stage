@@ -2,6 +2,12 @@
 
 10 October 2026
 
+## Return to the character profile
+
+The chat header Back control now links directly to its conversation's character profile in connected and preview modes. Its accessible name identifies the character and destination. The destination comes from the conversation's character ID, so it also works when the chat is opened directly or from the message list. Existing conversations and messages are preserved.
+
+The connected browser regression passed profile return and resuming the same saved conversation, alongside persistence, ownership and lifecycle checks (1.5 minutes overall). The preview browser regression passed profile return, background unread handling and broken-photo recovery (51.9 seconds overall). TypeScript and targeted ESLint passed.
+
 The owner requested a character picture beside the conversation name and a more inviting room. The connected header now displays the current character's portrait through the authenticated, no-store image proxy. Asset lookup uses the member's existing RLS permissions. Missing, paused or failed portraits show an initial instead of a broken image; no new public Storage URL is introduced.
 
 The refreshed room follows the frontend-design skill and the existing design system: a portrait-led header, plum/rose details, rounded profile/memory shortcuts, a quieter expandable options card and a compact composer. An empty conversation introduces the character with the approved public conversation clue, a quotation motif and a serif welcome heading. It does not fabricate a character message, activity status or available AI reply. Archive/reset/delete controls, private memories and the explicit unavailable-reply notice remain available.
