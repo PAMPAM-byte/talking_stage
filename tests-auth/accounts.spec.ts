@@ -243,7 +243,7 @@ test('real local registration, declarations, ownership, preferences, roles, reco
       await pa.getByRole('button',{name:'Confirm publish character'}).click();
       await expect.poll(async () => (await bauth.from('characters').select('id').eq('id',draftId)).data?.length).toBe(1);
       await pb.goto('/discover?gender=woman');await expect(pb.getByRole('link',{name:/Meet Stage9/})).toBeVisible();
-      await pb.getByRole('link',{name:/Meet Stage9/}).click();await expect(pb).toHaveURL(new RegExp(`/characters/${draftId}$`));await expect(pb.getByText('An updated synthetic biography.')).toBeVisible();
+      await pb.getByRole('link',{name:/Meet Stage9/}).click();await expect(pb).toHaveURL(new RegExp(`/characters/${draftId}\\?gender=woman$`));await expect(pb.getByText('An updated synthetic biography.')).toBeVisible();
       const delivered=await pb.request.get(`/api/cast-assets/${assets[0].id}?w=320`);expect(delivered.status()).toBe(200);expect(delivered.headers()['cache-control']).toContain('no-store');
       const anon=await browser.newContext();try {expect((await anon.request.get(`http://localhost:3102/api/cast-assets/${assets[0].id}`)).status()).toBe(401);}finally{await anon.close();}
       await pa.goto('/admin/operations');

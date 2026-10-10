@@ -1,6 +1,7 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import { supabaseConfig, usesSupabase } from "@/lib/backend/config";
+import { dependencyFetch } from '@/lib/backend/dependency-fetch.mjs';
 
 export async function proxy(request: NextRequest) {
   // Overwrite client-supplied navigation metadata; it controls presentation only.
@@ -10,7 +11,7 @@ export async function proxy(request: NextRequest) {
   response.headers.set("Cache-Control", "private, no-store");
   const config = supabaseConfig();
   if (!config) return response;
-  const client = createServerClient(config.url, config.key, { cookieOptions: { httpOnly: true, sameSite: "lax", secure: process.env.NODE_ENV === "production" }, cookies: {
+  const client = createServerClient(config.url, config.key, { global: { fetch: dependencyFetch }, cookieOptions: { httpOnly: true, sameSite: "lax", secure: process.env.NODE_ENV === "production" }, cookies: {
     getAll: () => request.cookies.getAll(),
     setAll: (values) => {
       values.forEach(({ name, value }) => request.cookies.set(name, value));

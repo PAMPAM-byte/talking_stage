@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import { connection } from "next/server";
 import { supabaseConfig } from "./config";
 import { observe } from '@/lib/monitoring/events.mjs';
+import { dependencyFetch } from './dependency-fetch.mjs';
 
 export async function backendClient() {
   const config = supabaseConfig();
@@ -12,6 +13,7 @@ export async function backendClient() {
   await connection();
   const jar = await cookies();
   return createServerClient(config.url, config.key, {
+    global: { fetch: dependencyFetch },
     cookieOptions: { httpOnly: true, sameSite: "lax", secure: process.env.NODE_ENV === "production" },
     cookies: {
       getAll: () => jar.getAll(),

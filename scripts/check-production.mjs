@@ -12,7 +12,8 @@ async function files(directory) {
   const entries = await readdir(directory, { withFileTypes: true });
   return (await Promise.all(entries.map((entry) => entry.isDirectory() ? files(join(directory, entry.name)) : join(directory, entry.name)))).flat();
 }
-for (const file of await files(".next/static")) {
+const buildDirectory = process.env.TALKINGSTAGE_PREVIEW_TEST === '1' ? '.next-preview' : process.env.TALKINGSTAGE_AUTH_TEST === '1' ? '.next-auth' : '.next';
+for (const file of await files(join(buildDirectory, 'static'))) {
   if (!/\.(js|css)$/.test(file)) continue;
   const content = await readFile(file, "utf8");
   for (const secret of serverSecrets) assert(!content.includes(secret), `Server secret found in client output: ${file}`);

@@ -27,6 +27,7 @@
     "test:backup-store": "node scripts/test-backup-store.mjs",
     "test:privacy-restore": "node scripts/test-privacy-restore.mjs",
     "test:monitoring": "node scripts/test-monitoring.mjs",
+    "test:dependency-fetch": "node scripts/test-dependency-fetch.mjs",
     "health:local": "node scripts/check-local-health.mjs",
     "test:cast-database": "node scripts/test-cast-database.mjs",
     "test:assets-database": "node scripts/test-assets-database.mjs",
