@@ -3,6 +3,7 @@ import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { connection } from "next/server";
 import { supabaseConfig } from "./config";
+import { observe } from '@/lib/monitoring/events.mjs';
 
 export async function backendClient() {
   const config = supabaseConfig();
@@ -25,9 +26,9 @@ export async function backendClient() {
 export async function currentAccount() {
   const client = await backendClient();
   if (!client) return null;
-  const { data, error } = await client.auth.getUser();
+  const { data, error } = await observe('auth.identity', () => client.auth.getUser());
   if (error || !data.user) return null;
-  const profile = await client.from("profiles").select("id,display_name,genders,language,requests_enabled,onboarding_complete,adult_declared_at,version").eq("id", data.user.id).single();
+  const profile = await observe('account.profile', () => client.from("profiles").select("id,display_name,genders,language,requests_enabled,onboarding_complete,adult_declared_at,version").eq("id", data.user.id).single());
   if (profile.error || !profile.data) return null;
   return { client, user: data.user, profile: profile.data };
 }

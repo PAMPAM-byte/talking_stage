@@ -2,6 +2,7 @@ import {currentAccount} from '@/lib/backend/server';
 import {processReply,processSummary} from '@/lib/backend/reply-worker';
 import {after} from 'next/server';
 import {revalidatePath} from 'next/cache';
+import { emit } from '@/lib/monitoring/events.mjs';
 export const maxDuration=60;
 const uuid=/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i;
 export async function POST(request:Request,{params}:{params:Promise<{conversationId:string;messageId:string}>}) {
@@ -21,8 +22,8 @@ export async function POST(request:Request,{params}:{params:Promise<{conversatio
   const state=await processReply(messageId,account.user.id,request.signal);
   if(state==='completed')after(async()=>{
    // Best effort, independently budgeted and disabled by default. No raw logs.
-   try{await processSummary(messageId,account.user.id);}catch{/* A summary failure never changes a delivered reply. */}
+   try{await processSummary(messageId,account.user.id);}catch{emit('ai.summary', 'unexpected');/* A summary failure never changes a delivered reply. */}
   });
   revalidatePath('/messages','layout');return respond(state);
- }catch{return respond('unavailable',503);}
+ }catch{emit('ai.reply', 'unexpected');return respond('unavailable',503);}
 }

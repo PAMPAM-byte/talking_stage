@@ -14,5 +14,6 @@ export async function ConnectedSettings() {
     <header className="stack"><p className="supporting muted">Your space, {account.profile.display_name}.</p><h1 className="display page-title">Settings</h1><p className="muted">Make TalkingStage feel comfortable for you.</p></header>
     <nav className="settings-controls" aria-label="Personal settings">{items.map(item => <Link className="setting-link" href={item.href} key={item.href}><span className="setting-link__icon"><Icon name={item.icon} /></span><div><h2>{item.title}</h2><p className="supporting muted">{item.description}</p><span className="settings-detail">{item.detail}</span></div><Icon name="arrow" /></Link>)}</nav>
     <aside className="settings-help"><Icon name="info" /><div><h2>Your choices stay in your hands</h2><p className="supporting muted">Saving memories and giving are optional. You can change your preferences at any time.</p><div className="row"><Link href="/privacy">Privacy information</Link><Link href="/support">Help & support</Link></div></div></aside>
+    <div className="account-danger stack"><h2>Account and data</h2><p className="supporting muted">Review what account deletion removes and what may remain in backups.</p><Link className="button button--danger" href="/settings/account">Delete account</Link></div>
   </section>;
 }

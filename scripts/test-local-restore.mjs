@@ -3,8 +3,11 @@ import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { randomUUID } from 'node:crypto';
 import { pathToFileURL } from 'node:url';
+import { localOnly, syncErasures } from './lib/local-backups.mjs';
 
-export function restoreLocalBackup(path) {
+export async function restoreLocalBackup(path) {
+  localOnly();
+  const records = await syncErasures();
   const container = 'supabase_db_talking_stage';
   const target = `stage8_restore_${randomUUID().replaceAll('-', '_')}`;
   assert(/^stage8_restore_[a-f0-9_]+$/.test(target));
@@ -14,9 +17,13 @@ export function restoreLocalBackup(path) {
   command(['createdb', '-U', 'supabase_admin', '--template=template0', target]);
   try {
     query('drop schema public;');
+    query('create schema privacy_guard authorization postgres; revoke all on schema privacy_guard from public,anon,authenticated,service_role; create table privacy_guard.account_erasures(actor_id uuid primary key,deleted_at timestamptz not null default now()); alter table privacy_guard.account_erasures owner to postgres; alter table privacy_guard.account_erasures enable row level security;');
     // This local cluster administrator can preserve managed Auth owners/default
     // privileges. The ordinary application postgres role cannot restore those.
     command(['pg_restore', '-U', 'supabase_admin', '-d', target, '--exit-on-error'], dump);
+    assert.equal(query("select to_regprocedure('private.erase_restored_account(uuid)') is not null;"), 't', 'Historical snapshots require the managed restore workflow');
+    query(`begin; update private.privacy_configuration set account_deletion_enabled=false; ${records.map(record => `select private.erase_restored_account('${record.actorId}');`).join('\n')} commit;`);
+    for (const record of records) assert.equal(query(`select count(*) from auth.users where id='${record.actorId}';`), '0');
     const actor = query("select id from public.profiles where display_name='Stage eight updated';");
     const foreign = query("select c.id from public.conversations c join public.profiles p on p.id=c.user_id where p.display_name='Stage eight B';");
     const cast = query("select id from public.characters where name='Stage 8 test character';");
@@ -42,5 +49,5 @@ export function restoreLocalBackup(path) {
 }
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   if (!process.argv[2]) throw new Error('Supply a local Stage 8 test snapshot path.');
-  restoreLocalBackup(process.argv[2]);
+  await restoreLocalBackup(process.argv[2]);
 }

@@ -19,6 +19,7 @@
 # next.js
 /.next/
 /.next-auth/
+/.next-auth-stalled-*/
 /.next-preview/
 /.local-services/
 /.local-backups/

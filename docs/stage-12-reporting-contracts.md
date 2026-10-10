@@ -16,7 +16,7 @@ Private `report_context` stores only the selected public profile, photo descript
 
 Reporter-visible `reports` rows are isolated by RLS. They contain their own submitted details and public review state; internal evidence and resolution notes remain in private tables without client grants. Ordinary accounts cannot read another reporter's rows, inspect private evidence, update state, or invoke moderator operations. No AI provider is involved in reporting or resolution.
 
-Selected moderation evidence currently survives a conversation reset/delete so an existing report can still be reviewed. New reports cannot target removed messages. This is a technical snapshot behavior, not an approved retention duration or public-launch exception. Account deletion, evidence erasure/anonymisation, retention policy, backup expiry, and legal exceptions remain outstanding Stage 12 work. No completed account-deletion claim is made by this slice.
+Selected moderation evidence survives a conversation reset/delete so an existing report can still be reviewed. New reports cannot target removed messages. This is a technical snapshot behavior, not an approved retention duration or public-launch exception. The independent [local account-deletion slice](./stage-12-deletion-contracts.md) erases the ordinary account's submitted reports, selected evidence and resolutions and removes their audit references. Hosted retention policy, backup expiry and legal exceptions remain outstanding Stage 12 work.
 
 ## Administrator flow
 
