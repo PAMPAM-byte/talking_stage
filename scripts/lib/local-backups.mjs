@@ -3,10 +3,11 @@ import { readFile, readdir, lstat, realpath, unlink } from 'node:fs/promises';
 import { resolve, join } from 'node:path';
 import { randomUUID } from 'node:crypto';
 import assert from 'node:assert/strict';
+import { existsSync } from 'node:fs';
 import { backupStore, uuid, sha } from './local-backup-store.mjs';
 export const store = backupStore();
 export function localOnly() { if (!process.env.NEXT_PUBLIC_SUPABASE_URL)
-    process.loadEnvFile('.env.local'); assert(['127.0.0.1', 'localhost'].includes(new URL(process.env.NEXT_PUBLIC_SUPABASE_URL).hostname), 'Loopback Supabase required'); }
+    process.loadEnvFile(existsSync('.env.docker.local') ? '.env.docker.local' : '.env.local'); assert(['127.0.0.1', 'localhost'].includes(new URL(process.env.NEXT_PUBLIC_SUPABASE_URL).hostname), 'Loopback Supabase required'); }
 const docker = (args, input) => { try {
     return execFileSync('docker', ['exec', ...(input ? ['-i'] : []), 'supabase_db_talking_stage', ...args], { input, windowsHide: true, maxBuffer: 128 * 1024 * 1024, stdio: ['pipe', 'pipe', 'pipe'] });
 }

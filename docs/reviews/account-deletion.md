@@ -1,5 +1,7 @@
 # Stage 12 review — account deletion
 
+Hosted follow-up on 11 October 2026: disposable-account active-data deletion and historical restore suppression passed. The second account and shared cast were preserved; temporary accounts/snapshot/restore targets were removed and tombstones retained. General-user deletion remains disabled pending off-site and deployment safeguards. See [hosted account deletion review](./hosted-account-deletion.md) for exact transport scope and remaining gates.
+
 10 October 2026 · Local account-deletion slice delivered. Full Stage 12 and hosted retention remain open.
 
 The Settings account page now provides a real deletion flow, using the frontend-design skill and existing design system. Users review consequences, type `DELETE`, enter their current password and confirm. Cancel keeps the account; password/backend failures retain confirmation input. A successful operation signs out and opens the connected account-deleted page. Settings includes a separate account/data entry beneath personal controls.

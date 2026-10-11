@@ -50,7 +50,16 @@
     "backend:check-hosted-cast": "node scripts/publish-hosted-cast.mjs --check",
     "backend:publish-hosted-cast": "node scripts/publish-hosted-cast.mjs --publish",
     "backend:hosted-test-account": "node scripts/configure-hosted-test-account.mjs",
-    "test:hosted": "playwright test --config playwright.hosted.config.ts"
+    "test:hosted": "playwright test --config playwright.hosted.config.ts",
+    "backup:hosted:create": "node scripts/hosted-backups.mjs create",
+    "backup:hosted:verify": "node scripts/hosted-backups.mjs verify",
+    "backup:hosted:restore-check": "node scripts/hosted-backups.mjs restore-check",
+    "backup:hosted:sync": "node scripts/hosted-backups.mjs sync",
+    "backup:hosted:expire": "node scripts/hosted-backups.mjs expire",
+    "backup:hosted:daily": "node scripts/run-scheduled-hosted-backup.mjs",
+    "backup:hosted:schedule": "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File scripts/install-hosted-backup-task.ps1",
+    "test:hosted-backup-crypto": "node scripts/test-hosted-backup-crypto.mjs",
+    "test:hosted-privacy-restore": "node scripts/test-hosted-privacy-restore.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",

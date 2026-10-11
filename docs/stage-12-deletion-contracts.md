@@ -1,5 +1,7 @@
 # Stage 12 account deletion contracts
 
+11 October 2026 hosted follow-up: a disposable-account rehearsal passed real hosted active-data deletion and restore suppression from a pre-deletion encrypted snapshot, with another account preserved. The RPC was enabled only inside a transaction for the synthetic actor and restored to disabled before commit. Existing accounts were not deleted. The hosted browser activation and off-site protection gates remain open. See [hosted review](./reviews/hosted-account-deletion.md).
+
 10 October 2026 · Local active-data deletion; hosted retention policy remains pending.
 
 The Settings account page now connects the accepted typed `DELETE` and final-confirmation flow to a real account deletion operation. Current-password verification obtains a fresh session before deletion. The server derives the account email/ID from verified Auth and accepts neither from the browser. The database additionally requires completed adult access, exact confirmation, a token issued within five minutes, and an explicitly enabled deployment configuration. Anonymous and service-role calls cannot execute this RPC.

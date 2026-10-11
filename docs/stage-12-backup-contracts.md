@@ -1,5 +1,7 @@
 # Local backup expiry and restore protection
 
+Hosted follow-up, 11 October 2026: the owner confirmed the Free plan and supplied the database root certificate. Encrypted hosted database/photo exports and isolated recovery passed; a daily 03:15 Lagos-time Windows job is installed, with same-day deduplication verified through an actual task run. Seven-day expiry applies to those local encrypted copies. Hosted-origin deletion replay now passes with disposable accounts; off-site protection, enabled browser deletion and alerts remain open. See [hosted backups](./hosted-backups.md). Local jobs now use preserved `.env.docker.local` by default after the hosted app switch, while continuing to reject explicit remote targets. The following original local contracts describe the Docker catalogue, not these separate hosted copies.
+
 10 October 2026 · Local implementation delivered; owner-approved seven-day managed-backup retention enabled. Hosted recovery remains open.
 
 Ordinary-account deletion now inserts an account UUID and deletion timestamp into `privacy_guard.account_erasures` in the same transaction as erasure. A failed deletion creates no record. The private journal has no email, password, messages or memory facts. Ordinary users cannot read it or invoke the owner-only restore cleanup helper. Existing financial/operator retention guards also apply during restore: a conflict stops verification rather than silently dropping retained records.

@@ -1,0 +1,15 @@
+import assert from 'node:assert/strict';
+import { randomBytes } from 'node:crypto';
+import { encryptBundle, decryptBundle } from './lib/hosted-backup-crypto.mjs';
+const key = randomBytes(32), project = 'synthetic-project';
+const bundle = { version: 1, project, dataSql: 'SYNTHETIC SENSITIVE RECORD', objects: [{ bytes: 'synthetic' }] };
+const first = encryptBundle(bundle, key, project), second = encryptBundle(bundle, key, project);
+assert(!first.equals(second), 'Each backup requires a fresh nonce.');
+assert(!first.includes(Buffer.from(bundle.dataSql)));
+assert.deepEqual(decryptBundle(first, key, project), bundle);
+assert.throws(() => decryptBundle(first, randomBytes(32), project));
+assert.throws(() => decryptBundle(first, key, 'another-project'));
+const corrupt = Buffer.from(first); corrupt[corrupt.length - 1] ^= 1;
+assert.throws(() => decryptBundle(corrupt, key, project));
+assert.throws(() => decryptBundle(first.subarray(0, 35), key, project));
+console.log('Hosted backup encryption passed: authenticated round-trip, private payload, fresh nonces, wrong key/project, corruption and truncation denial.');
