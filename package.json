@@ -46,7 +46,11 @@
     "backend:storage": "node scripts/configure-local-storage.mjs",
     "backend:stop": "supabase stop",
     "backend:configure": "node scripts/configure-local-supabase.mjs",
-    "backend:test-account": "node scripts/configure-local-test-account.mjs"
+    "backend:test-account": "node scripts/configure-local-test-account.mjs",
+    "backend:check-hosted-cast": "node scripts/publish-hosted-cast.mjs --check",
+    "backend:publish-hosted-cast": "node scripts/publish-hosted-cast.mjs --publish",
+    "backend:hosted-test-account": "node scripts/configure-hosted-test-account.mjs",
+    "test:hosted": "playwright test --config playwright.hosted.config.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",

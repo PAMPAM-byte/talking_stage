@@ -1,6 +1,6 @@
 # TalkingStage implementation plan
 
-Version 1.26 · 10 October 2026 · Status: Stage 10 in progress; independent Stage 12 reporting, deletion, backups and monitoring delivered locally
+Version 1.27 · 10 October 2026 · Status: Stage 10 in progress; independent Stage 12 reporting, deletion, backups and monitoring delivered locally
 
 Product owner: PAMPAM
 
@@ -370,3 +370,5 @@ If integration exposes a contract mismatch, update the affected screen/adapter a
 - **Independent Stage 12 reporting and ordinary-account deletion slices delivered locally on 10 October 2026.** The owner authorised independent work while AI keys remain unavailable. This does not close Stage 10, bypass payment acceptance, or satisfy Gate B. Local restore suppression and owner-approved seven-day managed-backup expiry are now delivered; see [backup contracts](./stage-12-backup-contracts.md) and [review](./reviews/backup-restore.md). Daily local expiry is installed and verified. Local monitoring and recovery are also delivered; see [monitoring contracts](./stage-12-monitoring-contracts.md) and [incident runbook](./incident-runbook.md). Daily local backup creation is installed for 02:45 with retries; its first snapshot passed isolated restore and same-day deduplication checks. Hosted retention/recovery, alerts and remaining Stage 12 integrations remain open.
 
 Local integration review completed on 10 October 2026: preserved-filter and expanded-cast test assumptions corrected, Auth-outage request recovery bounded, mobile/keyboard/interrupted-preference checks verified. See [review](./reviews/local-integration.md). This does not close Gate B or authorize pilot/public access.
+
+Hosted development handoff completed on 11 October 2026 under owner authorization: fourteen migrations, 22 approved characters and 44 current photos published, private access and a connected browser journey verified, application configuration switched with a preserved Docker rollback file. See [hosted setup](./hosted-setup.md). AI remains disabled. SMTP/recovery, deployed-site operations, hosted retention/deletion/restore protections and remaining Gate B/pilot checks are still open.
