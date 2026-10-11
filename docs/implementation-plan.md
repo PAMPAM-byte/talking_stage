@@ -2,6 +2,8 @@
 
 11 October 2026 operational update: Free-plan encrypted hosted database/photo exports, isolated recovery and seven-day local-copy retention passed. The daily 03:15 Lagos-time Windows job is installed and its task run verified same-day deduplication. See [hosted backups](./hosted-backups.md). Hosted-origin deletion and historical restore suppression passed with disposable accounts under a transaction-scoped gate; see [review](./reviews/hosted-account-deletion.md). General-user deletion, off-site protection and alerts remain open; this does not close Stage 12 or Gate B.
 
+11 October 2026 monitoring update: `npm run health:hosted` now checks hosted Auth, the published catalogue, sampled private-photo availability/access and daily backup freshness. Live checks and safe simulated outage reporting passed; [review](./reviews/hosted-monitoring.md). Automated uptime/alert delivery and remaining Stage 12 acceptance stay open.
+
 Version 1.27 · 10 October 2026 · Status: Stage 10 in progress; independent Stage 12 reporting, deletion, backups and monitoring delivered locally
 
 Product owner: PAMPAM

@@ -59,7 +59,9 @@
     "backup:hosted:daily": "node scripts/run-scheduled-hosted-backup.mjs",
     "backup:hosted:schedule": "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File scripts/install-hosted-backup-task.ps1",
     "test:hosted-backup-crypto": "node scripts/test-hosted-backup-crypto.mjs",
-    "test:hosted-privacy-restore": "node scripts/test-hosted-privacy-restore.mjs"
+    "test:hosted-privacy-restore": "node scripts/test-hosted-privacy-restore.mjs",
+    "health:hosted": "node scripts/check-hosted-health.mjs",
+    "test:hosted-health": "node scripts/test-hosted-health.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",

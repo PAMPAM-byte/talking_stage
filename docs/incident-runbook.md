@@ -1,4 +1,4 @@
-# Local incident and support runbook
+# Incident and support runbook
 
 10 October 2026 · Development operations; hosted on-call ownership and alerts remain pending.
 
@@ -25,4 +25,10 @@
 - Database recovery: follow [backup contracts](./stage-12-backup-contracts.md). Run isolated deletion replay checks; do not promote an old snapshot into user access. Hosted promotion and offline disaster recovery require a reviewed process.
 - Daily backup failure: inspect the current-user backup-creation task's latest result and `.local-services/privacy/scheduled-backup.json`. Start Docker/local Supabase if stopped, then run `npm run backup:daily`. A same-day success verifies the existing snapshot instead of duplicating it. Persistent failure needs attention before seven-day expiry removes older copies. Check that no backup process is running before clearing a crash-left scheduled-job lock.
 
-Before hosted rollout, assign incident/support ownership, configure a protected collector with an approved retention period, select availability/latency/usage alerts and delivery destination, and test containment against the hosted deployment. Nothing here sends messages to a support team or changes hosted services.
+## Hosted checks
+
+Run `npm run health:hosted` from the project directory. See [executed review and limits](./reviews/hosted-monitoring.md). A nonzero exit means at least one dependency or the backup history needs attention. Check internet access and private environment configuration first. Auth failures require checking the Supabase Auth service; database failures require checking database availability and the published catalogue. Photo failures require checking Storage, approved asset paths and private access controls. Keep the bucket private; making it public is not an outage fix. Repeat the check once the cause is addressed.
+
+For a `failed` or `stale` backup, inspect Task Scheduler's `TalkingStage-HostedBackupCreate-037C2CB1` result and the private `.local-services/hosted-privacy/scheduled-backup.json`. Start Docker/local Supabase, confirm CLI login and the saved root certificate, then run `npm run backup:hosted:daily`. A same-day success verifies the existing snapshot. A `missing` or `invalid` history requires checking the job and protected local state; do not invent a successful timestamp or replace missing encryption/signing keys. After recovery, repeat `npm run health:hosted`. Use [hosted backup procedures](./hosted-backups.md) for integrity verification and isolated restore. No health command restores data or modifies the deletion gate.
+
+The backup check reads recorded job history; it cannot detect every missing/corrupt snapshot, and the manual command cannot notify an operator when the computer is off. Before hosted rollout, assign incident/support ownership, configure a protected collector with an approved retention period, select availability/latency/usage alerts and delivery destination, and test containment against the hosted deployment. Nothing here sends messages to a support team or changes hosted services.

@@ -1,5 +1,7 @@
 # Monitoring and failure recovery
 
+11 October 2026 hosted update: read-only Auth/database/private-photo availability and local hosted-backup freshness diagnostics passed against the hosted project. Safe total-outage reporting passed with injected failures. Run `npm run health:hosted`; see [review and limits](./reviews/hosted-monitoring.md). Scheduled uptime checks, alert delivery and hosted collection remain open.
+
 10 October 2026 · Local monitoring foundation. Hosted alerts and Stage 12 acceptance remain open.
 
 Server operation events now cover Auth identity/sign-up/sign-in/recovery/password changes, preference/onboarding/profile operations, conversation mutations, reply cancellation, submitted reports/admin review, account deletion/cleanup, and reply/summary worker outcomes. The Next.js request-error hook records uncaught server failures. The events use a fixed JSON schema: timestamp, schema version, operation label, outcome, elapsed milliseconds and, for uncaught requests, an allowlisted route kind.

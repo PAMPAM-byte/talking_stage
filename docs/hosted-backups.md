@@ -44,6 +44,8 @@ The photo check uses preserved `.env.docker.local` credentials, refuses remote t
 
 ## Validation and remaining work
 
+Off-site destination setup is now documented in [off-site backup setup](./offsite-backup-setup.md). Cloudflare R2 Standard is recommended; the owner has no existing bucket. Account/bucket provisioning, protected key recovery, uploads and off-site acceptance remain pending. No remote copies have been created.
+
 Passed: encryption round-trip, nonce uniqueness, plaintext concealment, wrong key/project, corruption and truncation rejection; existing catalogue signature, path-bound, retention and monotonic-ledger tests. Local scheduled backup helpers now load `.env.docker.local` by default when no explicit process URL is present, keeping their source local after the app switched to hosted Supabase. An explicit remote process URL still fails their loopback guard.
 
 Hosted snapshot `72bd3ca7-0776-4158-ae5d-849ea5aa3b63` was encrypted and verified with all 176 private photo objects. Its actual isolated recovery passed Auth/profile/asset counts, public row security and denied authenticated private-schema access. All 176 photos were uploaded into a disposable private local bucket, re-downloaded with identical hashes and denied to anonymous clients. The disposable database and bucket were removed. There were zero current hosted erasure records, so this run did not exercise a previously deleted hosted account. Existing synthetic/local deletion tests do not substitute for that hosted-origin acceptance.
