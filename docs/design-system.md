@@ -4,6 +4,12 @@ Version 1.0 · 7 October 2026 · Design specification
 
 This is the proposed visual system for TalkingStage, based on the PRD dated 6 October 2026 and the requested professional, attractive, minimal, modern, mobile-first direction. It defines the design; it does not implement application screens or commit to unresolved product providers. Character examples below are illustrative, pending cast approval.
 
+## Reference refresh · 12 October 2026
+
+The founder requested a mobile-focused refresh using the supplied dating-app screenshot. This supersedes the original plum/rose palette and serif heading treatment below. The implemented palette is deep violet `#432582`, lavender `#BA98FA`, lime `#E2FF8C`, mist `#F7F5FC`, white `#FFFFFF`, and ink `#211638`. Manrope bold carries display headings and Manrope regular carries body and utility text; the existing licensed serif remains available for supporting character copy.
+
+The signature is a large rounded portrait framed in violet, with a conversation clue and a lavender floating navigation pill. Mobile discovery remains a vertical portrait feed; tablet uses two columns and desktop uses a violet navigation rail with up to three columns. No swipe matching, compatibility scores, distances, favourites, or simulated activity are introduced. AI identity, fictional locations, accessibility, safe areas, reduced motion, mock contracts, and all launch states remain required. The visual request approves this direction, not additional product functionality. Shared implementation: `app/dating-refresh.css`.
+
 ## 1. Direction
 
 **An intimate, polished dating interface with portraits at its centre.** Crisp white surfaces, a faint mauve canvas, deep plum actions, and soft rose accents make the product feel romantic without becoming sugary. Typography, generous breathing room, and a small number of purposeful controls provide the professional finish.

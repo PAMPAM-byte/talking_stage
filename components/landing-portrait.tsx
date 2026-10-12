@@ -13,9 +13,8 @@ export function LandingPortrait() {
   return <figure className="landing-portrait">
     <div className="landing-portrait__image">
       <LandingPhoto src="/images/characters/char-zuri-gallery-v2.webp" alt="Zuri, 29, a fictional adult AI character, enjoying the beach with coconut water." name="Zuri" />
-      <LandingPhoto src="/images/characters/char-kunle-portrait.webp" alt="Kunle, 35, a fictional adult AI character, wearing glasses and a navy shirt." name="Kunle" />
     </div>
     <div className="landing-clue"><span className="caption muted">A little clue to the conversation</span><blockquote className="display">“A good outfit gets attention. What keeps yours?”</blockquote><span className="supporting">Zuri, 29 · Fictional AI character</span></div>
-    <figcaption className="landing-photo-caption caption muted">Zuri, 29 and Kunle, 35 · AI-generated fictional characters</figcaption>
+    <figcaption className="landing-photo-caption caption muted">Zuri, 29 · AI-generated fictional character</figcaption>
   </figure>;
 }
