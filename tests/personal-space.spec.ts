@@ -1,3 +1,4 @@
+import cast from '../lib/mock/public-cast.json';
 import { expect, test, type Page } from '@playwright/test';
 
 async function login(page: Page) {
@@ -36,7 +37,7 @@ test('preferences preserve failed changes and update discovery after save and re
   await saveScenario(page, 'ready'); await page.getByRole('button', { name: 'Save preferences' }).click();
   await expect(page.getByText('Preferences saved', { exact: true })).toBeVisible(); await page.reload();
   await expect(page.getByLabel('Preferred name')).toHaveValue('Ada'); await expect(page.getByLabel('Conversation language')).toHaveValue('english_pidgin');
-  await page.goto('/discover'); await expect(page.locator('.character-card')).toHaveCount(4);
+  await page.goto('/discover'); await expect(page.locator('.discovery-deck')).toHaveAttribute('data-selection-size', String(cast.filter(c => c.gender === 'woman').length));
 });
 
 test('memory is scoped, sensitive consent is explicit, and disabled facts remain deletable', async ({ page }) => {

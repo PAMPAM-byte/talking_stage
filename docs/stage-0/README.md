@@ -16,6 +16,10 @@ Planning completion does not mean founder approvals, reviewed images, or provide
 
 ## 1. Design plan and critique
 
+Founder follow-up on 12 October: Meet/right swipe enters a conversation directly through the existing start/resume operation. View profile remains a separate action. This supersedes the profile-first Meet behavior recorded below.
+
+12 October 2026 founder amendment: replace the discovery feed/grid with a one-character swipe deck, as explicitly requested. The original feed critique below is historical. Pass/Meet gestures are browsing actions; Meet opens the existing profile and chat remains an explicit profile action. No mutual matching or durable like model is added. [Current research and decisions](../reviews/swipe-discovery.md).
+
 Subject: Nigerian adults browsing fictional AI characters and continuing private conversations. Discovery's job is to help someone select a personality, not imply a mutual human match.
 
 Palette: mist `#FAF8FA`, white `#FFFFFF`, charcoal plum `#241C23`, muted grape `#716570`, deep plum `#682447`, rose wash `#F5EAF0`. Typography: DM Serif Display for restrained page/profile headings; Manrope for the interface, chat, and tabular payment numerals. Layout: one portrait-led discovery column on mobile, with three labelled app destinations and a dedicated chat viewport. Signature: a character-specific conversation clue under each portrait.

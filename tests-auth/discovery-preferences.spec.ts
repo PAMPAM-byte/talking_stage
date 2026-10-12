@@ -32,8 +32,15 @@ test('discovery follows saved gender preferences and explicit all-character choi
       const expected=result.data.characters as {name:string;age:number;gender:string}[];
       expect(expected.length).toBeGreaterThan(0);
       if(gender!=='all')expect(expected.every(c=>c.gender===gender)).toBe(true);
-      await expect(page.locator('.character-card')).toHaveCount(expected.length);
-      for(const c of expected)await expect(page.getByRole('heading',{name:`${c.name}, ${c.age}`,exact:true})).toBeVisible();
+      await expect(page.locator('.discovery-deck')).toHaveAttribute('data-selection-size',String(expected.length));
+      if(await page.getByRole('button',{name:'Browse again',exact:true}).count())await page.getByRole('button',{name:'Browse again',exact:true}).click();
+      for(const c of expected){
+        await expect(page.locator('.character-card')).toHaveCount(1);
+        await expect(page.getByRole('heading',{name:`${c.name}, ${c.age}`,exact:true})).toBeVisible();
+        await page.getByRole('button',{name:`Pass ${c.name}`,exact:true}).click();
+      }
+      await page.getByRole('button',{name:'Browse again',exact:true}).click();
+      await page.locator('.discovery-deck-filters').evaluate(node=>{(node as HTMLDetailsElement).open=true;});
       await expect(page.getByRole('navigation',{name:'Character gender'}).getByRole('link',{name:gender==='man'?'Men':gender==='woman'?'Women':'Everyone',exact:true})).toHaveAttribute('aria-current','page');
     }
     await check('man');

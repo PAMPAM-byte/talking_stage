@@ -65,7 +65,7 @@ test('settings links render their own pages and saved controls survive navigatio
     await page.screenshot({ path: 'docs/reviews/settings/preferences-390.png', fullPage: true });
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     await page.getByRole('link', { name: 'Discover', exact: true }).click();
-    await page.locator('.character-card').first().getByRole('link', { name: /^Meet / }).click();
+    await page.getByRole('link', { name: 'View profile', exact: true }).click();
     await page.getByRole('button', { name: 'Start conversation', exact: true }).click();
     await expect(page).toHaveURL(/\/messages\/[a-f0-9-]+$/);
     await page.getByRole('link', { name: /^Manage memories with / }).click();

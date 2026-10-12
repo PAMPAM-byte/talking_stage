@@ -46,8 +46,12 @@ test('hosted registration, gender discovery, 44 photos, chat persistence, isolat
       const data = await api<Discovery>('/rest/v1/rpc/discover_cast', { p_page: 1, p_gender: gender }, session.access_token);
       if (gender) expect(data.characters.every(character => character.gender === gender)).toBe(true);
       else expect(data.total).toBe(22);
-      await expect(page.locator('.character-card')).toHaveCount(data.characters.length);
-      for (const character of data.characters) await expect(page.getByRole('heading', { name: `${character.name}, ${character.age}`, exact: true })).toBeVisible();
+      await expect(page.locator('.discovery-deck')).toHaveAttribute('data-selection-size', String(data.characters.length));
+      for (const character of data.characters) {
+        await expect(page.locator('.character-card')).toHaveCount(1);
+        await expect(page.getByRole('heading', { name: `${character.name}, ${character.age}`, exact: true })).toBeVisible();
+        await page.getByRole('button', { name: `Pass ${character.name}`, exact: true }).click();
+      }
     }
     const state = JSON.parse(readFileSync('.local-services/hosted-cast/state.json', 'utf8'));
     const assets = await api<Asset[]>('/rest/v1/character_assets?select=id,character_id,slot,storage_path', undefined, session.access_token, false, 'GET');
@@ -66,7 +70,9 @@ test('hosted registration, gender discovery, 44 photos, chat persistence, isolat
       expect(direct.ok()).toBe(false);
     } finally { await anonymous.close(); }
     await page.goto('/discover?gender=woman');
-    await page.getByRole('link', { name: 'Meet Amara', exact: true }).click();
+    await page.getByRole('button', { name: 'Browse again', exact: true }).click();
+    await expect(page.getByRole('heading', { name: 'Amara, 28', exact: true })).toBeVisible();
+    await page.getByRole('link', { name: 'View profile', exact: true }).click();
     await expect(page).toHaveURL(new RegExp(`/characters/${state.characters['char-amara'].id}\\?gender=woman$`));
     const photos = page.locator('.profile-photo-open'); await expect(photos).toHaveCount(2);
     for (const photo of await photos.all()) {
@@ -76,8 +82,7 @@ test('hosted registration, gender discovery, 44 photos, chat persistence, isolat
     }
     await page.getByRole('link', { name: 'Back to discovery', exact: true }).click();
     await expect(page).toHaveURL(/\/discover\?gender=woman$/);
-    await page.getByRole('link', { name: 'Meet Amara', exact: true }).click();
-    await page.getByRole('button', { name: 'Start conversation', exact: true }).click();
+    await page.getByRole('button', { name: 'Meet Amara', exact: true }).click();
     await expect(page).toHaveURL(/\/messages\/[a-f0-9-]+$/);
     const conversation = new URL(page.url()).pathname.split('/').pop()!;
     const portrait = page.getByRole('img', { name: 'Amara’s character portrait', exact: true });

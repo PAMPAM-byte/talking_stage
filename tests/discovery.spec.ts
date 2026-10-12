@@ -7,13 +7,13 @@ async function signIn(page: Page) {
   await page.getByLabel('Password', { exact: true }).fill('TalkingStage123!');
   await page.getByRole('button', { name: 'Sign in to preview' }).click();
   await expect(page).toHaveURL(/\/discover$/);
-  await expect(page.locator('.character-card')).toHaveCount(cast.length);
+  await expect(page.locator('.character-card')).toHaveCount(1);
 }
 
 test('filters apply together, cancel without changing results, reset and handle failures', async ({ page }) => {
   await signIn(page);
   await page.getByRole('button', { name: 'Women', exact: true }).click();
-  await expect(page.locator('.character-card')).toHaveCount(cast.filter(c => c.gender === 'woman').length);
+  await expect(page.locator('.character-card')).toHaveCount(1);
   await page.getByRole('button', { name: /Filters/ }).click();
   await page.getByLabel('Personality', { exact: true }).selectOption('reserved');
   await page.getByLabel('Interest', { exact: true }).selectOption('books');
@@ -29,33 +29,33 @@ test('filters apply together, cancel without changing results, reset and handle 
   await page.getByRole('button', { name: 'Apply filters' }).click();
   await expect(page.getByRole('heading', { name: 'No characters fit these filters' })).toBeVisible();
   await page.getByRole('button', { name: 'Reset filters', exact: true }).last().click();
-  await expect(page.locator('.character-card')).toHaveCount(cast.length);
+  await expect(page.locator('.character-card')).toHaveCount(1);
   await page.getByText('Developer review scenarios', { exact: true }).click();
   await page.getByLabel('Discovery scenario').selectOption('offline');
   await expect(page.getByRole('status').filter({ hasText: 'Discovery unavailable' }).or(page.getByRole('alert'))).toBeVisible();
   await page.getByRole('button', { name: 'Try again' }).click();
   await expect(page.getByRole('alert')).toBeVisible();
   await page.getByLabel('Discovery scenario').selectOption('ready');
-  await expect(page.locator('.character-card')).toHaveCount(cast.length);
+  await expect(page.locator('.character-card')).toHaveCount(1);
 });
 
 test('selected gender survives visiting and refreshing a preview profile', async ({ page }) => {
   await signIn(page);
   for (const [label, gender] of [['Women', 'woman'], ['Men', 'man'], ['Everyone', 'all']]) {
     await page.getByRole('button', { name: label, exact: true }).click();
-    await expect(page.locator('.character-card')).toHaveCount(cast.filter(c => gender === 'all' || c.gender === gender).length);
-    await page.locator('.character-card').first().getByRole('link', { name: /^Meet / }).click();
+    await expect(page.locator('.character-card')).toHaveCount(1);
+    await page.getByRole('link', { name: 'View profile', exact: true }).click();
     await expect(page).toHaveURL(new RegExp(`/characters/[^?]+\\?gender=${gender}`));
     await page.reload();
     await page.getByRole('link', { name: 'Back to discovery', exact: true }).click();
     await expect(page.getByRole('button', { name: label, exact: true })).toHaveAttribute('aria-pressed', 'true');
-    await expect(page.locator('.character-card')).toHaveCount(cast.filter(c => gender === 'all' || c.gender === gender).length);
+    await expect(page.locator('.character-card')).toHaveCount(1);
   }
 });
 
 test('gallery stays with its character, keyboard works, and starting resumes one conversation', async ({ page }) => {
   await signIn(page);
-  await page.getByRole('link', { name: 'Meet Amara', exact: true }).click();
+  await page.getByRole('link', { name: 'View profile', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'Amara, 28' })).toBeVisible();
   await page.getByRole('button', { name: /View photos/ }).click();
   const dialog = page.getByRole('dialog');

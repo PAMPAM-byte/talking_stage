@@ -17,29 +17,26 @@ test('profile return preserves gender, other filters and pagination even after r
     await expect(page.getByRole('navigation', { name: 'Character gender' }).getByRole('link', { name: label, exact: true })).toHaveAttribute('aria-current', 'page');
     await expect(page.locator('.character-card').first()).toBeVisible();
     const originalUrl = page.url();
-    await page.locator('.character-card').first().getByRole('link', { name: /^Meet / }).click();
+    await page.getByRole('link', { name: 'View profile', exact: true }).click();
     await expect(page).toHaveURL(new RegExp(`/characters/[^?]+\\?gender=${gender}`));
     await page.reload();
     await page.getByRole('link', { name: 'Back to discovery', exact: true }).click();
     await expect(page).toHaveURL(originalUrl);
     await expect(page.getByRole('navigation', { name: 'Character gender' }).getByRole('link', { name: label, exact: true })).toHaveAttribute('aria-current', 'page');
-    const names = await page.locator('.character-card .button').allTextContents();
-    for (const label of names) {
-      const name = label.replace(/^Meet\s+/, '').trim();
-      expect(cast.some(character => character.name === name && (gender === 'all' || character.gender === gender))).toBe(true);
-    }
+    const name = (await page.getByRole('button', { name: /^Meet / }).getAttribute('aria-label'))!.replace(/^Meet\s+/, '').trim();
+    expect(cast.some(character => character.name === name && (gender === 'all' || character.gender === gender))).toBe(true);
   }
 
   for (const query of ['gender=woman&interest=books', 'gender=all&page=2']) {
     await page.goto(`/discover?${query}`);
     await expect(page.locator('.character-card').first()).toBeVisible();
     const originalUrl = page.url();
-    await page.locator('.character-card').first().getByRole('link', { name: /^Meet / }).click();
+    await page.getByRole('link', { name: 'View profile', exact: true }).click();
     await expect(page).toHaveURL(/\/characters\//);
     await page.getByRole('link', { name: 'Back to discovery', exact: true }).click();
     await expect(page).toHaveURL(originalUrl);
     await expect(page.locator('.character-card').first()).toBeVisible();
-    await page.locator('.character-card').first().locator('a.character-photo').click();
+    await page.getByRole('link', { name: 'View profile', exact: true }).click();
     await expect(page).toHaveURL(/\/characters\//);
     await page.goBack();
     await expect(page).toHaveURL(originalUrl);

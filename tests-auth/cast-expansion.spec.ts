@@ -22,11 +22,15 @@ test('expanded cast exposes matching photos and public profiles to an ordinary a
   await page.setViewportSize({width:390,height:844});
   await page.goto('/sign-in');await page.getByLabel('Email address').fill(email);await page.getByLabel('Password',{exact:true}).fill(password);await page.getByRole('button',{name:'Sign in',exact:true}).click();
   await expect(page).toHaveURL(/\/discover$/);
-  await expect(page.locator('.character-card')).toHaveCount(12);
-  await page.getByRole('link',{name:'Next page',exact:true}).click();
-  await expect(page.locator('.character-card')).toHaveCount(10);
-  await page.getByRole('link',{name:'Previous page',exact:true}).click();
-  await expect(page.locator('.character-card')).toHaveCount(12);
+  await expect(page.locator('.discovery-deck')).toHaveAttribute('data-selection-size','12');
+  await expect(page.locator('.character-card')).toHaveCount(1);
+  for(let i=0;i<12;i++)await page.getByRole('button',{name:/^Pass /}).click();
+  await page.getByRole('link',{name:'Keep discovering',exact:true}).click();
+  await expect(page.locator('.discovery-deck')).toHaveAttribute('data-selection-size','10');
+  await expect(page.locator('.character-card')).toHaveCount(1);
+  await page.goto('/discover');
+  await page.getByRole('button',{name:'Browse again',exact:true}).click();
+  await expect(page.locator('.discovery-deck')).toHaveAttribute('data-selection-size','12');
   for(const c of catalog.characters){
    const entry=state.characters[c.key];
    await page.goto(`/characters/${entry.id}`);

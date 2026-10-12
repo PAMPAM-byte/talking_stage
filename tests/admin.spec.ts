@@ -51,7 +51,7 @@ test('create/edit/profile preview, failed save and version conflict retain field
   await page.getByRole('button', { name: 'Reload current version, keep edits' }).click(); await scenario(page, 'ready'); await page.getByRole('button', { name: 'Save character draft' }).click(); await expect(page.getByText('Instruction version 2', { exact: true })).toBeVisible();
   const storage = await page.evaluate(() => ({ admin: sessionStorage.getItem('talkingstage:mock-admin-data:v1'), public: sessionStorage.getItem('talkingstage:mock-operator-public:v1') }));
   expect(storage.admin).not.toContain('Private instruction sentinel'); expect(storage.public ?? '').not.toContain('Private instruction sentinel');
-  await customer(page); await expect(page.locator('.character-card')).toHaveCount(cast.length); await expect(page.getByText('Draft Nneka', { exact: true })).toHaveCount(0);
+  await customer(page); await expect(page.locator('.discovery-deck')).toHaveAttribute('data-selection-size', String(cast.length)); await expect(page.getByText('Draft Nneka', { exact: true })).toHaveCount(0);
 });
 
 test('publication requires adult scope and owned approved assets; publication and deactivation reach discovery', async ({ page }) => {
@@ -63,7 +63,7 @@ test('publication requires adult scope and owned approved assets; publication an
   await customer(page); await expect(page.getByText('Public profile updated in the operator preview.', { exact: true })).toBeVisible();
   const publicStorage = await page.evaluate(() => sessionStorage.getItem('talkingstage:mock-operator-public:v1')); expect(publicStorage).not.toContain('instructions'); expect(publicStorage).not.toContain('appearanceContinuity');
   await page.goto('/admin/characters/char-amara'); await page.getByRole('button', { name: 'Deactivate character', exact: true }).click(); await page.getByRole('dialog').getByRole('button', { name: 'Confirm deactivation' }).click(); await expect(page.getByRole('dialog')).toHaveCount(0);
-  await page.goto('/discover'); await expect(page.locator('.character-card')).toHaveCount(7); await page.goto('/characters/char-amara'); await expect(page.getByRole('heading', { name: 'Profile not found' })).toBeVisible();
+  await page.goto('/discover'); await expect(page.locator('.discovery-deck')).toHaveAttribute('data-selection-size', String(cast.length - 1)); await page.goto('/characters/char-amara'); await expect(page.getByRole('heading', { name: 'Profile not found' })).toBeVisible();
 });
 
 test('asset review requires attestation/rejection reason and uploads stay local and pending', async ({ page }) => {
