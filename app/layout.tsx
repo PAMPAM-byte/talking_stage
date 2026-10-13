@@ -12,6 +12,7 @@ import "./brand-theme.css";
 import "./information.css";
 import "./landing.css";
 import "./how-it-works.css";
+import "./personalities.css";
 
 const interfaceFont = localFont({ src: "./fonts/Manrope.ttf", variable: "--font-interface", display: "swap", weight: "200 800", fallback: ["system-ui", "sans-serif"] });
 const displayFont = localFont({ src: "./fonts/DMSerifDisplay.ttf", variable: "--font-display", display: "swap", weight: "400", fallback: ["Georgia", "serif"] });

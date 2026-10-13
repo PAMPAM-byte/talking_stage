@@ -1,5 +1,7 @@
 # TalkingStage implementation plan
 
+Personalities frontend: a dedicated public preview linked from landing navigation and its cast section. Four provisional local characters receive portrait, clue, interest, and expandable biography treatments. Adult onboarding remains the entry to the application; Discover stays a single-character swipe deck. See [review](./reviews/personalities.md).
+
 How it works frontend: dedicated guide linked from landing navigation and its quick overview. It explains adult onboarding, swipe discovery, direct chat, memory/boundary controls, and voluntary payments using labelled examples. No new backend flow or product behavior is introduced. See [review](./reviews/how-it-works.md).
 
 Support frontend refinement: responsive help-topic cards, guidance, native FAQs, and links to existing recovery/settings/policy routes. No support submission integration or invented contact is introduced. See [support review](./reviews/support-page.md).

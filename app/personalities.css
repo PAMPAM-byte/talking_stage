@@ -1,0 +1,48 @@
+.personalities-hero { display: grid; align-items: center; gap: 48px; padding-block: 56px 72px; }
+.personalities-hero h1 { font-size: clamp(46px, 6vw, 76px); }
+.personalities-hero > div > p:not(.tsl-eyebrow):not(.personalities-disclosure) { font-size: 16px; line-height: 1.9; color: var(--text-secondary); max-width: 45ch; margin-top: 24px; }
+.personalities-hero-actions { display: flex; flex-wrap: wrap; gap: 16px 24px; align-items: center; margin-top: 28px; }
+.personalities-disclosure { font-size: 11px; line-height: 1.8; color: var(--text-secondary); margin-top: 20px; }
+.personalities-feature { margin: 0; width: 100%; max-width: 430px; justify-self: center; }
+.personalities-feature-photo { position: relative; aspect-ratio: 4 / 4.5; overflow: hidden; border-radius: 24px; background: var(--brand-soft); }
+.personalities-feature-photo > span, .personalities-card-photo > span { position: absolute; top: 16px; left: 16px; background: white; color: var(--brand); font-size: 10px; padding: 6px 10px; border-radius: 6px; font-weight: 750; }
+.personalities-feature figcaption { position: relative; margin: -40px 16px 0; padding: 24px; border: 1px solid var(--border); border-radius: 18px; background: white; }
+.personalities-feature .tsl-eyebrow { font-size: 10px; margin-bottom: 12px; }
+.personalities-feature blockquote { margin: 0; font-family: var(--font-display), Georgia, serif; color: var(--ink); font-size: 24px; line-height: 1.4; }
+.personalities-feature figcaption > span { display: block; font-size: 11px; color: var(--text-secondary); line-height: 1.8; margin-top: 14px; }
+.personalities-introductions { border-top: 1px solid var(--border); scroll-margin-top: 24px; }
+.personalities-cards { display: grid; gap: 40px 24px; }
+.personalities-cards article { min-width: 0; }
+.personalities-card-photo { position: relative; aspect-ratio: 4 / 5; overflow: hidden; border-radius: 20px; background: var(--brand-soft); }
+.personalities-card-body { padding-top: 20px; }
+.personalities-name { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.personalities-name h3 { font-size: 26px; line-height: 1.4; letter-spacing: -.6px; font-weight: 750; }
+.personalities-name h3 span { font-weight: 400; }
+.personalities-name svg { color: var(--brand); }
+.personalities-occupation { font-size: 12px; color: var(--text-secondary); margin-top: 6px; }
+.personalities-traits { font-size: 12px; color: var(--brand); text-transform: capitalize; margin-top: 12px; }
+.personalities-card-body blockquote { margin: 18px 0; font-family: var(--font-display), Georgia, serif; font-size: 22px; line-height: 1.5; }
+.personalities-interests { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+.personalities-interests span { padding: 5px 10px; font-size: 11px; border-radius: 6px; background: var(--brand-soft); color: var(--brand); }
+.personalities-card-body details { border-top: 1px solid var(--border); }
+.personalities-card-body summary { display: flex; justify-content: space-between; align-items: center; gap: 12px; min-height: 52px; padding-block: 12px; list-style: none; font-size: 12px; font-weight: 700; }
+.personalities-card-body summary::-webkit-details-marker { display: none; }
+.personalities-card-body summary > span { color: var(--brand); font-size: 22px; }
+.personalities-card-body details[open] summary > span { rotate: 45deg; }
+.personalities-card-body details p { font-size: 13px; line-height: 1.9; color: var(--text-secondary); padding-bottom: 14px; }
+.personalities-card-body details .personalities-location { font-size: 11px; }
+.personalities-expectations { background: #faf9fa; }
+.personalities-principles { display: grid; gap: 32px; }
+.personalities-principles svg { color: var(--brand); width: 26px; height: 26px; margin-bottom: 20px; }
+.personalities-principles h3 { font-size: 17px; font-weight: 750; margin-bottom: 14px; }
+.personalities-principles p { color: var(--text-secondary); font-size: 13px; line-height: 1.9; }
+.personalities-full-guide { display: flex; width: fit-content; margin: 32px auto 0; }
+.personalities-note { display: flex; gap: 20px; max-width: 800px; }
+.personalities-note > svg { color: var(--brand); margin-top: 4px; }
+.personalities-note h2 { font-size: 24px; letter-spacing: -.6px; }
+.personalities-note p { color: var(--text-secondary); font-size: 14px; line-height: 1.9; margin-top: 18px; }
+.personalities-note a { margin-top: 14px; }
+@media (min-width: 600px) { .personalities-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 48px 32px; } }
+@media (min-width: 1000px) { .personalities-hero { grid-template-columns: 1.1fr 1fr; gap: 80px; } .personalities-cards { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; } .personalities-principles { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px; } .personalities-name h3 { font-size: 23px; } }
+@media (max-width: 599px) { .personalities-guide-link { display: none; } .personalities-hero { padding-top: 36px; } }
+@media (prefers-reduced-motion: no-preference) { html:has(.personalities-page) { scroll-behavior: smooth; } .personalities-card-body summary > span { transition: rotate 160ms ease; } }
