@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
   distDir: process.env.TALKINGSTAGE_AUTH_TEST === "1" ? ".next-auth" : process.env.TALKINGSTAGE_PREVIEW_TEST === "1" ? ".next-preview" : ".next",
   /* config options here */
   cacheComponents: true,
+  images: { qualities: [75, 90] },
   partialPrefetching: true,
   experimental: { serverActions: { bodySizeLimit: '6mb' } },
   turbopack: {

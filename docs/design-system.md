@@ -1,5 +1,7 @@
 # TalkingStage design system
 
+FAQs refinement: `/faqs` presents four topic shortcuts and 16 native expandable answers, with editorial topic headings alongside readable answer columns. Red/white/blush and Manrope/serif styling follow the shared identity. Real anchor navigation, keyboard operation, reduced motion, and links to detailed guides remain central; no decorative search or unsupported service promises are introduced.
+
 Personalities page: `/personalities` is a public editorial introduction using the shared red/white/blush palette and Manrope/serif typography. A featured portrait and character-specific conversation clue lead four local cast previews with interests and expandable biographies. Fictional adult AI identity and generated-photo disclosures remain explicit. This marketing preview does not replace the one-character Discover swipe flow or change Meet behavior.
 
 How it works: a dedicated `/how-it-works` page explains the real three-stage journey in alternating editorial panels: adult onboarding, single-character discovery, and direct conversation entry. A portrait/conversation-clue example anchors the page, while clearly labelled onboarding and chat illustrations show the experience. Shared red/white/blush tokens, Manrope headings, restrained serif accents, control explanations, FAQs, and an adult onboarding CTA maintain the landing identity.
