@@ -1,5 +1,7 @@
 # TalkingStage implementation plan
 
+13 October 2026 landing amendment: the founder requested a professional red-and-white dating-style marketing page. The frontend refresh includes responsive sections, fictional AI disclosures, onboarding links, keyboard-accessible FAQs, and photo recovery. This does not introduce backend functionality or change launch gates. See [landing review and validation](./reviews/landing-red.md).
+
 12 October 2026 discovery amendment: the founder requested dating-style swiping instead of the feed/grid. The shared frontend now presents one character at a time with Pass/Meet gestures, undo, accessible buttons, filter continuity, and selection recovery. This changes presentation and local browsing state; it does not introduce mutual matching or backend like operations. See [research and validation](./reviews/swipe-discovery.md).
 
 11 October 2026 operational update: Free-plan encrypted hosted database/photo exports, isolated recovery and seven-day local-copy retention passed. The daily 03:15 Lagos-time Windows job is installed and its task run verified same-day deduplication. See [hosted backups](./hosted-backups.md). Hosted-origin deletion and historical restore suppression passed with disposable accounts under a transaction-scoped gate; see [review](./reviews/hosted-account-deletion.md). General-user deletion, off-site protection and alerts remain open; this does not close Stage 12 or Gate B.

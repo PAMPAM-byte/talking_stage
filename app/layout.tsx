@@ -8,6 +8,7 @@ import "./stage-5.css";
 import "./stage-6.css";
 import "./dating-refresh.css";
 import "./discovery-deck.css";
+import "./landing.css";
 
 const interfaceFont = localFont({ src: "./fonts/Manrope.ttf", variable: "--font-interface", display: "swap", weight: "200 800", fallback: ["system-ui", "sans-serif"] });
 const displayFont = localFont({ src: "./fonts/DMSerifDisplay.ttf", variable: "--font-display", display: "swap", weight: "400", fallback: ["Georgia", "serif"] });

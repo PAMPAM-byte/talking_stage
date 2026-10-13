@@ -1,5 +1,13 @@
 # TalkingStage design system
 
+## Landing refresh · 13 October 2026
+
+Motion amendment: the founder requested professional animation, scroll reveals, and parallax. Portraits move at opposing depths (up to 28px on desktop, halved on mobile); the illustrative chat has a smaller depth offset. One-time 680ms reveals stagger headings and cards; hover effects and FAQ opening remain restrained. Reduced motion disables all landing animation and smooth scrolling. Content stays visible without JavaScript, keyboard focus cancels pending reveals, and no scroll trapping or continuous animation is used.
+
+The founder requested a red-and-white dating-style marketing page with generous white space and complete product content. The landing page uses white, red `#CF2445`, blush `#FFF1F3`, ink `#242126`, and muted text `#6C666E`. Manrope provides headings and body text; DM Serif Display italic accents selected headline words. These tokens are scoped to the landing page in `app/landing.css`.
+
+The signature is a staggered portrait collage with a character-specific conversation clue. Content includes the introduction, three-step discovery flow, fictional personality previews, a labelled conversation example, user controls, FAQs, and adult onboarding calls to action. Local cast images and provisional fixtures are retained. No invented testimonials, popularity counts, human matching, or new service integration are introduced. See [landing review](./reviews/landing-red.md).
+
 Version 1.0 · 7 October 2026 · Design specification
 
 This is the proposed visual system for TalkingStage, based on the PRD dated 6 October 2026 and the requested professional, attractive, minimal, modern, mobile-first direction. It defines the design; it does not implement application screens or commit to unresolved product providers. Character examples below are illustrative, pending cast approval.

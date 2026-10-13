@@ -79,7 +79,7 @@ test("landing, account, and policy layouts are responsive and capture review ima
   for (const width of [390, 1440]) {
     await page.setViewportSize({ width, height: 900 });
     await page.goto("/");
-    await expect(page.locator(".landing-portrait__image img")).toBeVisible();
+    await expect(page.locator('section[aria-labelledby="landing-title"] img').first()).toBeVisible();
     await page.screenshot({ path: `docs/reviews/stage-2/landing-${width}.png`, fullPage: true });
   }
   await page.setViewportSize({ width: 390, height: 844 });
