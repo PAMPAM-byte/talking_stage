@@ -34,7 +34,7 @@ export default function Home() {
     <LandingMotion />
     <header className={`${styles.container} ${styles.header}`}>
       <Brand />
-      <nav className={styles.desktopNav} aria-label="About TalkingStage"><a href="#how-it-works">How it works</a><a href="#personalities">The personalities</a><a href="#your-control">Your experience</a><a href="#questions">FAQs</a></nav>
+      <nav className={styles.desktopNav} aria-label="About TalkingStage"><Link href="/how-it-works">How it works</Link><a href="#personalities">The personalities</a><a href="#your-control">Your experience</a><a href="#questions">FAQs</a></nav>
       <div className={styles.headerActions}><Link href="/sign-in" className={styles.signIn}>Sign in</Link><Link href="/onboarding/age" className={styles.headerCta}>Get started <Icon name="arrow" /></Link></div>
     </header>
     <main id="main-content">
@@ -59,6 +59,7 @@ export default function Home() {
       <section id="how-it-works" className={`${styles.container} ${styles.section}`} aria-labelledby="how-title">
         <div className={styles.sectionHeading}><p className={styles.eyebrow}>Your first hello</p><h2 id="how-title">Good chemistry starts<br />with a little <em>curiosity.</em></h2><p>From “who’s that?” to “tell me more.”<br />Here’s how your talking stage begins.</p></div>
         <ol className={styles.steps}>{steps.map((step, index) => <li key={step.title}><div className={styles.stepTop}><span className={styles.stepNumber}>0{index + 1}</span><Icon name={step.icon} /></div><h3>{step.title}</h3><p>{step.text}</p></li>)}</ol>
+        <Link href="/how-it-works" className={`${styles.textLink} how-full-guide`}>Read the full guide <Icon name="arrow" /></Link>
       </section>
 
       <section id="personalities" className={styles.blushSection} aria-labelledby="personalities-title"><div className={`${styles.container} ${styles.section}`}>
@@ -85,6 +86,6 @@ export default function Home() {
 
       <section className={`${styles.container} ${styles.finalSection}`} aria-labelledby="final-title"><div className={styles.finalCard}><span className={styles.finalHeart} aria-hidden="true">♡</span><p className={styles.eyebrow}>There’s a conversation waiting to begin.</p><h2 id="final-title">Shoot your shot.<br /><em>Start with hello.</em></h2><p>A little curiosity could be the start of your kind of banter.</p><EntryLink light>Start with hello</EntryLink><span className={styles.finalNote}>18+ · Fictional AI dating · At your own pace</span></div></section>
     </main>
-    <footer className={`${styles.container} ${styles.footer}`}><div className={styles.footerTop}><div className={styles.footerBrand}><Brand /><p>A little banter. A little chemistry.<br />A fictional AI dating experience<br />with Nigerian personality.</p></div><nav aria-label="Explore TalkingStage"><h3>Explore</h3><a href="#how-it-works">How it works</a><a href="#personalities">The personalities</a><a href="#questions">FAQs</a><Link href="/sign-in">Sign in</Link></nav><nav aria-label="Help and information"><h3>Here to help</h3><Link href="/support">Support</Link><Link href="/payment-information">Payment information</Link><Link href="/privacy">Privacy</Link><Link href="/terms">Terms</Link></nav></div><div className={styles.footerBottom}><p>© 2026 TalkingStage.</p><p>For adults 18+. All characters and their photos are fictional and AI-generated.</p></div>{!usesSupabase() && <p className={styles.previewNote}>Local frontend preview. Account and conversation actions use clearly labelled demo data; payments are simulated.</p>}</footer>
+    <footer className={`${styles.container} ${styles.footer}`}><div className={styles.footerTop}><div className={styles.footerBrand}><Brand /><p>A little banter. A little chemistry.<br />A fictional AI dating experience<br />with Nigerian personality.</p></div><nav aria-label="Explore TalkingStage"><h3>Explore</h3><Link href="/how-it-works">How it works</Link><a href="#personalities">The personalities</a><a href="#questions">FAQs</a><Link href="/sign-in">Sign in</Link></nav><nav aria-label="Help and information"><h3>Here to help</h3><Link href="/support">Support</Link><Link href="/payment-information">Payment information</Link><Link href="/privacy">Privacy</Link><Link href="/terms">Terms</Link></nav></div><div className={styles.footerBottom}><p>© 2026 TalkingStage.</p><p>For adults 18+. All characters and their photos are fictional and AI-generated.</p></div>{!usesSupabase() && <p className={styles.previewNote}>Local frontend preview. Account and conversation actions use clearly labelled demo data; payments are simulated.</p>}</footer>
   </div>;
 }

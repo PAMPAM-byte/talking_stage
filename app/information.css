@@ -1,4 +1,63 @@
 .policy-page { padding-block: 24px 64px; }
+.support-page { padding-block: 24px 64px; }
+.support-topics { display: grid; gap: 16px; margin-bottom: 80px; }
+.support-topics > a { padding: 24px; border: 1px solid var(--border); border-radius: 18px; color: var(--ink); text-decoration: none; }
+.support-topics > a > svg { width: 26px; height: 26px; color: var(--brand); margin-bottom: 24px; }
+.support-topics h2 { font-size: 16px; font-weight: 750; line-height: 1.5; margin-bottom: 10px; }
+.support-topics p { font-size: 13px; line-height: 1.8; color: var(--text-secondary); }
+.support-topics a > span { display: flex; align-items: center; gap: 10px; color: var(--brand); font-size: 12px; font-weight: 750; margin-top: 24px; }
+.support-topics span svg { width: 16px; height: 16px; }
+.support-guides, .support-faq { display: grid; gap: 32px; margin-bottom: 80px; }
+.support-section-heading h2 { font-size: clamp(28px, 3vw, 38px); line-height: 1.2; font-weight: 750; letter-spacing: -.04em; }
+.support-section-heading > p:last-child:not(.policy-eyebrow) { color: var(--text-secondary); font-size: 14px; line-height: 1.85; margin-top: 18px; max-width: 30ch; }
+.support-guide-list article { display: flex; gap: 16px; padding-block: 28px; border-bottom: 1px solid var(--border); scroll-margin-top: 28px; }
+.support-guide-list article:first-child { padding-top: 0; }
+.support-guide-list article > svg { color: var(--brand); margin-top: 4px; }
+.support-guide-list h3 { font-size: 20px; line-height: 1.4; font-weight: 750; letter-spacing: -.5px; margin-bottom: 14px; }
+.support-guide-list p { font-size: 14px; line-height: 1.95; color: var(--text-secondary); }
+.support-guide-list a { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; font-size: 13px; font-weight: 700; text-decoration: none; margin-top: 14px; }
+.support-guide-list a svg { width: 16px; height: 16px; }
+.support-extra-links { display: flex; flex-wrap: wrap; gap: 4px 20px; }
+.support-extra-links a { font-size: 12px; color: var(--text-secondary); margin-top: 0; font-weight: 600; }
+.support-contact { display: flex; gap: 20px; padding: 28px; border-radius: 20px; background: var(--brand-soft); }
+.support-contact > svg { color: var(--brand); margin-top: 3px; }
+.support-contact .policy-eyebrow { margin-bottom: 12px; }
+.support-contact h2 { font-size: 24px; line-height: 1.4; letter-spacing: -.6px; font-weight: 750; margin-bottom: 16px; }
+.support-contact p:not(.policy-eyebrow) { font-size: 14px; line-height: 1.85; color: var(--text-secondary); max-width: 72ch; }
+.support-contact-label { display: block; color: var(--brand); font-size: 11px; font-weight: 700; line-height: 1.8; margin-top: 20px; }
+@media (min-width: 600px) { .support-topics { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1000px) { .support-topics { grid-template-columns: repeat(4, minmax(0, 1fr)); } .support-guides, .support-faq { grid-template-columns: 1fr 1.7fr; gap: 80px; } .support-contact { padding: 40px; } }
+@media (max-width: 599px) { .support-page { padding-top: 8px; } .support-topics, .support-guides, .support-faq { margin-bottom: 56px; } .support-contact { padding: 24px 20px; gap: 12px; } }
+@media (hover: hover) { .support-topics a:hover { background: var(--brand-soft); border-color: var(--brand); } }
+@media (prefers-reduced-motion: no-preference) { html:has(.support-page) { scroll-behavior: smooth; } .support-topics a { transition: background-color 180ms ease, border-color 180ms ease; } }
+.payment-overview { display: grid; gap: 32px; padding: 28px; background: var(--brand-soft); border-radius: 20px; margin-bottom: 48px; }
+.payment-overview-icon { display: grid; place-items: center; width: 42px; height: 42px; background: white; color: var(--brand); border-radius: 12px; margin-bottom: 20px; }
+.payment-kicker { font-size: 11px; color: var(--brand); font-weight: 750; margin-bottom: 12px; }
+.payment-recipient h2 { font-size: clamp(26px, 3vw, 36px); line-height: 1.25; letter-spacing: -.035em; font-weight: 750; margin-bottom: 18px; }
+.payment-recipient h2 em { font-family: var(--font-display), Georgia, serif; color: var(--brand); font-weight: 400; }
+.payment-recipient > p:last-child { font-size: 14px; line-height: 1.85; color: var(--text-secondary); max-width: 44ch; }
+.payment-facts { margin: 0; align-self: center; }
+.payment-facts > div { display: grid; gap: 6px; padding-block: 16px; border-bottom: 1px solid #ebcdd4; }
+.payment-facts > div:first-child { padding-top: 0; }
+.payment-facts dt { font-size: 11px; color: var(--text-secondary); }
+.payment-facts dd { margin: 0; font-size: 14px; font-weight: 700; line-height: 1.6; }
+.payment-flow { margin-top: 24px; border: 1px solid var(--border); border-radius: 16px; padding: 24px; }
+.payment-flow-label { font-size: 12px; color: var(--brand); font-weight: 750; margin-bottom: 24px; }
+.payment-flow ol { display: grid; gap: 24px; list-style: none; padding: 0; margin: 0; }
+.payment-flow li { display: flex; gap: 16px; }
+.payment-flow li > span { display: grid; place-items: center; width: 32px; height: 32px; flex: none; border-radius: 50%; background: var(--brand-soft); color: var(--brand); font-size: 11px; font-weight: 750; }
+.payment-flow strong { font-size: 14px; font-weight: 750; }
+.payment-flow li p { font-size: 13px; line-height: 1.85; color: var(--text-secondary); margin-top: 6px; }
+.payment-status-note { display: flex; gap: 12px; padding: 20px; margin-top: 24px; border-radius: 12px; background: var(--brand-soft); }
+.payment-status-note svg { color: var(--brand); margin-top: 3px; }
+.payment-status-note p { font-size: 13px; line-height: 1.85; color: var(--text-secondary); }
+.payment-status-note strong { display: block; color: var(--ink); margin-bottom: 6px; }
+.payment-links { display: flex; flex-wrap: wrap; gap: 8px 24px; margin-top: 20px; }
+.payment-links a { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; font-size: 13px; font-weight: 700; text-decoration: none; }
+.payment-links svg { width: 16px; height: 16px; }
+.policy-page--payments .policy-content section h2 { font-weight: 750; }
+@media (min-width: 700px) { .payment-overview { grid-template-columns: 1.2fr 1fr; gap: 48px; padding: 40px; } }
+@media (max-width: 359px) { .payment-overview { padding: 20px; } }
 .privacy-highlights { display: grid; gap: 16px; margin-bottom: 48px; }
 .privacy-highlights > div { padding: 24px; border: 1px solid var(--border); border-radius: 18px; background: white; }
 .privacy-highlights > div:first-child { background: var(--brand-soft); border-color: var(--brand-soft); }

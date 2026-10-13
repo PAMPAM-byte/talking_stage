@@ -1,5 +1,11 @@
 # TalkingStage implementation plan
 
+How it works frontend: dedicated guide linked from landing navigation and its quick overview. It explains adult onboarding, swipe discovery, direct chat, memory/boundary controls, and voluntary payments using labelled examples. No new backend flow or product behavior is introduced. See [review](./reviews/how-it-works.md).
+
+Support frontend refinement: responsive help-topic cards, guidance, native FAQs, and links to existing recovery/settings/policy routes. No support submission integration or invented contact is introduced. See [support review](./reviews/support-page.md).
+
+Payment Information frontend refinement: recipient/currency overview, seven indexed sections, a planned checkout journey, status guidance, and existing settings links. No checkout or payment service is introduced. Pending merchant, gateway, limits, refund/dispute, and retention decisions remain visible. See [review](./reviews/payment-information-page.md).
+
 Privacy frontend refinement: seven navigable sections, overview panels, memory/deletion guidance, and existing settings links replace the short policy outline. Final controller, provider, retention, and privacy-contact details remain pending. See [privacy review](./reviews/privacy-page.md).
 
 13 October 2026 shared theme amendment: the founder requested the landing identity on every page and a professional Terms page. Shared frontend tokens, navigation, controls, and information layouts now use red/white/blush. Terms content remains provisional product information; final operator and contractual review is still outstanding. No backend changes are introduced. See [review](./reviews/terms-and-shared-theme.md).

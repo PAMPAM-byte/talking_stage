@@ -1,5 +1,11 @@
 # TalkingStage design system
 
+How it works: a dedicated `/how-it-works` page explains the real three-stage journey in alternating editorial panels: adult onboarding, single-character discovery, and direct conversation entry. A portrait/conversation-clue example anchors the page, while clearly labelled onboarding and chat illustrations show the experience. Shared red/white/blush tokens, Manrope headings, restrained serif accents, control explanations, FAQs, and an adult onboarding CTA maintain the landing identity.
+
+Support refinement: a four-topic help hub replaces the short information outline, with real topic anchors, practical guidance, keyboard-accessible FAQs, and an honest support-availability panel. Shared red/white/blush tokens and Manrope/serif typography remain. The signature is direct navigation by account, conversation, payment, and reporting needs rather than a decorative or nonfunctional search field.
+
+Payment Information refinement: a blush recipient/currency panel leads the document, pairing the voluntary-support message with factual recipient, NGN currency, controls, and preview scope. Seven indexed sections and a three-step planned checkout journey use the shared Manrope/serif typography and red/white palette. Verified-result guidance and existing settings links support payment decisions. Merchant, gateway, limits, refunds, and retention remain explicitly provisional.
+
 Privacy refinement: the professional privacy page retains the shared red/white palette and editorial typography. Three overview panels introduce data, user controls, and draft scope; seven indexed sections explain existing product behavior. A blush callout highlights the distinction between conversation deletion and saved memories. Local preview storage claims remain explicitly limited to mock mode. No new production processing or retention commitments are introduced.
 
 ## Shared red identity · 13 October 2026

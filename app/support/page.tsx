@@ -1,3 +1,3 @@
-import { InformationPage } from "@/components/information-page";
+import { SupportPage } from "@/components/support-page";
 export const metadata = { title: "Support" };
-export default function Page() { return <InformationPage kind="support" />; }
+export default function Page() { return <SupportPage />; }
