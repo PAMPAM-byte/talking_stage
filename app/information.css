@@ -1,0 +1,63 @@
+.policy-page { padding-block: 24px 64px; }
+.privacy-highlights { display: grid; gap: 16px; margin-bottom: 48px; }
+.privacy-highlights > div { padding: 24px; border: 1px solid var(--border); border-radius: 18px; background: white; }
+.privacy-highlights > div:first-child { background: var(--brand-soft); border-color: var(--brand-soft); }
+.privacy-highlights svg { color: var(--brand); width: 24px; height: 24px; margin-bottom: 20px; }
+.privacy-highlights h2 { font-size: 16px; font-weight: 750; line-height: 1.5; margin-bottom: 10px; }
+.privacy-highlights p { font-size: 13px; line-height: 1.85; color: var(--text-secondary); max-width: 35ch; }
+.privacy-control-note { display: flex; gap: 12px; padding: 20px; margin-top: 24px; border-radius: 12px; background: var(--brand-soft); }
+.privacy-control-note svg { color: var(--brand); margin-top: 3px; }
+.privacy-control-note p { font-size: 13px; line-height: 1.85; color: var(--text-secondary); }
+.privacy-control-note strong { display: block; color: var(--ink); font-weight: 750; margin-bottom: 6px; }
+.privacy-actions { display: flex; flex-wrap: wrap; gap: 8px 24px; margin-top: 20px; }
+.privacy-actions a { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; font-size: 13px; font-weight: 700; text-decoration: none; }
+.privacy-actions svg { width: 16px; height: 16px; }
+.policy-page--privacy .policy-content section h2 { font-weight: 750; }
+@media (min-width: 700px) { .privacy-highlights { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; } }
+.policy-back { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; font-size: 13px; font-weight: 700; text-decoration: none; }
+.policy-back svg { width: 16px; rotate: 180deg; }
+.policy-hero { padding-block: 40px; max-width: 760px; }
+.policy-eyebrow { color: var(--brand); font-size: 12px; font-weight: 750; letter-spacing: .04em; margin-bottom: 20px; }
+.policy-hero h1 { font-size: clamp(38px, 5vw, 62px); line-height: 1.12; letter-spacing: -.055em; font-weight: 750; }
+.policy-tagline { font-family: var(--font-display), Georgia, serif; font-size: 24px; line-height: 1.4; font-style: italic; color: var(--brand); margin-top: 18px; }
+.policy-introduction { color: var(--text-secondary); font-size: 16px; line-height: 1.85; max-width: 58ch; margin-top: 18px; }
+.policy-meta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; color: var(--text-secondary); font-size: 12px; }
+.policy-meta span { padding: 6px 10px; border: 1px solid var(--border); border-radius: 6px; }
+.policy-overview { display: flex; align-items: flex-start; gap: 16px; padding: 24px; background: var(--brand-soft); border-radius: 18px; margin-block: 0 48px; }
+.policy-overview > svg { color: var(--brand); width: 24px; height: 24px; }
+.policy-overview h2 { font-size: 16px; margin-bottom: 8px; }
+.policy-overview p { font-size: 14px; line-height: 1.85; max-width: 75ch; color: var(--text-secondary); }
+.policy-layout { display: grid; gap: 40px; }
+.policy-sidebar nav > p { font-size: 12px; font-weight: 750; margin-bottom: 16px; color: var(--ink); }
+.policy-sidebar ol { list-style: none; margin: 0; padding: 0; }
+.policy-sidebar li a { display: flex; align-items: baseline; gap: 12px; min-height: 44px; padding-block: 10px; text-decoration: none; font-size: 13px; line-height: 1.7; color: var(--text-secondary); }
+.policy-sidebar li a span { font-size: 11px; color: var(--brand); font-variant-numeric: tabular-nums; }
+.policy-help { padding: 24px; border: 1px solid var(--border); border-radius: 16px; margin-top: 28px; }
+.policy-help h3 { font-size: 14px; margin-bottom: 10px; }
+.policy-help p { font-size: 13px; color: var(--text-secondary); line-height: 1.8; }
+.policy-help a, .policy-content section > a { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; font-size: 13px; font-weight: 700; margin-top: 12px; text-decoration: none; }
+.policy-help svg, .policy-content section > a svg, .policy-related svg { width: 16px; height: 16px; }
+.policy-content { min-width: 0; }
+.policy-content > .notice { margin-bottom: 16px; }
+.policy-content section { position: relative; padding-block: 32px; border-bottom: 1px solid var(--border); scroll-margin-top: 28px; }
+.policy-section-number { color: var(--brand); font-size: 11px; font-weight: 750; margin-bottom: 12px; font-variant-numeric: tabular-nums; }
+.policy-content section h2 { font-size: 22px; line-height: 1.4; letter-spacing: -.6px; margin-bottom: 16px; }
+.policy-content section > p:not(.policy-section-number) { font-size: 15px; color: var(--text-secondary); line-height: 1.95; max-width: 66ch; }
+.policy-related { padding-top: 40px; }
+.policy-related h2 { font-size: 18px; margin-bottom: 16px; }
+.policy-related nav { display: grid; gap: 12px; }
+.policy-related a { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 16px 18px; border: 1px solid var(--border); border-radius: 12px; text-decoration: none; font-size: 14px; font-weight: 650; }
+.information-footer { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 20px; align-items: center; }
+.information-footer a { min-height: 44px; display: inline-flex; align-items: center; text-decoration: none; font-size: 13px; }
+.information-footer a[aria-current="page"] { font-weight: 750; }
+@media (min-width: 700px) { .container { padding-inline: 40px; } }
+@media (min-width: 900px) {
+  .policy-layout { grid-template-columns: 260px minmax(0, 1fr); gap: 80px; }
+  .policy-sidebar { align-self: start; position: sticky; top: 32px; }
+  .policy-page { padding-top: 32px; }
+  .policy-hero { padding-block: 56px 48px; }
+  .policy-overview { margin-bottom: 64px; padding: 28px 32px; }
+}
+@media (max-width: 599px) { .information-entry { display: none; } .policy-help { display: none; } .policy-page { padding-top: 8px; } .policy-hero { padding-top: 28px; } }
+@media (hover: hover) { .policy-sidebar a:hover { color: var(--brand); } .policy-related a:hover { border-color: var(--brand); background: var(--brand-soft); } }
+@media (prefers-reduced-motion: no-preference) { html:has(.policy-page) { scroll-behavior: smooth; } .policy-related a { transition: background-color 180ms ease, border-color 180ms ease; } }

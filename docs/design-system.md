@@ -1,5 +1,13 @@
 # TalkingStage design system
 
+Privacy refinement: the professional privacy page retains the shared red/white palette and editorial typography. Three overview panels introduce data, user controls, and draft scope; seven indexed sections explain existing product behavior. A blush callout highlights the distinction between conversation deletion and saved memories. Local preview storage claims remain explicitly limited to mock mode. No new production processing or retention commitments are introduced.
+
+## Shared red identity · 13 October 2026
+
+The founder requested the landing design and colours on every page. `app/brand-theme.css` now applies the landing red `#CF2445`, white `#FFFFFF`, blush `#FFF1F3`, ink `#242126`, muted `#6C666E`, Manrope interface typography, and 12px controls across public, account, discovery, profiles, messages, settings, and administration. White navigation surfaces use red selection states; semantic warning, success, and danger colours remain distinct. This supersedes the violet/lime visual direction below while preserving swipe and direct-conversation behavior.
+
+Information pages share an editorial layout: a clear document title, restrained serif supporting line, essentials panel, section index, readable content column, and related policy links. Terms presents existing product boundaries and controls in eight navigable sections. Draft status and unresolved operator/legal details remain visible; no final contractual provisions are invented. See [review](./reviews/terms-and-shared-theme.md).
+
 ## Landing refresh · 13 October 2026
 
 Motion amendment: the founder requested professional animation, scroll reveals, and parallax. Portraits move at opposing depths (up to 28px on desktop, halved on mobile); the illustrative chat has a smaller depth offset. One-time 680ms reveals stagger headings and cards; hover effects and FAQ opening remain restrained. Reduced motion disables all landing animation and smooth scrolling. Content stays visible without JavaScript, keyboard focus cancels pending reveals, and no scroll trapping or continuous animation is used.

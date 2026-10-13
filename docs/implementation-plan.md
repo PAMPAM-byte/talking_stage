@@ -1,5 +1,9 @@
 # TalkingStage implementation plan
 
+Privacy frontend refinement: seven navigable sections, overview panels, memory/deletion guidance, and existing settings links replace the short policy outline. Final controller, provider, retention, and privacy-contact details remain pending. See [privacy review](./reviews/privacy-page.md).
+
+13 October 2026 shared theme amendment: the founder requested the landing identity on every page and a professional Terms page. Shared frontend tokens, navigation, controls, and information layouts now use red/white/blush. Terms content remains provisional product information; final operator and contractual review is still outstanding. No backend changes are introduced. See [review](./reviews/terms-and-shared-theme.md).
+
 13 October 2026 landing amendment: the founder requested a professional red-and-white dating-style marketing page. The frontend refresh includes responsive sections, fictional AI disclosures, onboarding links, keyboard-accessible FAQs, and photo recovery. This does not introduce backend functionality or change launch gates. See [landing review and validation](./reviews/landing-red.md).
 
 12 October 2026 discovery amendment: the founder requested dating-style swiping instead of the feed/grid. The shared frontend now presents one character at a time with Pass/Meet gestures, undo, accessible buttons, filter continuity, and selection recovery. This changes presentation and local browsing state; it does not introduce mutual matching or backend like operations. See [research and validation](./reviews/swipe-discovery.md).
