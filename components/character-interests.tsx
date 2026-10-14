@@ -10,8 +10,8 @@ export function CharacterInterests({ interests }: { interests: string[] }) {
       <h2 className="supporting">Interests</h2>
       <div className="row">{otherInterests.map(interest => <Badge key={interest}>{interest}</Badge>)}</div>
     </section>}
-    {favourites.length > 0 && <section className="stack" aria-label="Favourite artists">
-      <h2 className="supporting">On repeat</h2>
+    {favourites.length > 0 && <section className="stack" aria-label={favourites.length === 1 ? 'Favourite artist' : 'Favourite artists'}>
+      <h2 className="supporting">{favourites.length === 1 ? 'Favourite artist' : 'Favourite artists'}</h2>
       <div className="row">{favourites.map(artist => <Badge key={artist}>{artist}</Badge>)}</div>
     </section>}
   </div>;

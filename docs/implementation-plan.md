@@ -1,5 +1,7 @@
 # TalkingStage implementation plan
 
+14 October 2026 cache audit: backend dependency requests explicitly bypass caches; cast, asset, and availability mutations refresh additional affected profile/message/payment routes. Existing private response headers and public/image optimization remain. No cache purge or business service was introduced. See [audit and limits](./reviews/cache-audit.md).
+
 Chat frontend refinement: shared room styling, portrait-led connected opening state, polished bubbles, and unified composer treatment. Existing chat, reply, photo, reporting, and lifecycle operations remain unchanged. See [review](./reviews/chat-refresh.md).
 
 Profile frontend refinement: connected profiles now use a selected-photo gallery with thumbnails and an editorial identity/details column. Shared styles refine both connected and mock profiles. Existing reporting, full-photo viewing, and chat operations remain in use. See [research and review](./reviews/profile-refresh.md).

@@ -1,5 +1,9 @@
 # TalkingStage design system
 
+Meet feedback amendment: the founder requested removal of the sound. Meet now shows only the brief heart animation; no audio is created.
+
+Meet feedback: the founder requested a pop sound and multiple hearts immediately on Meet. A quiet synthesized three-pop cue accompanies 14 red/rose hearts for about 1.9 seconds. Feedback indicates the user's action, not a mutual match or successful conversation result. It does not delay chat entry; a pointer-transparent decorative overlay persists briefly across navigation and cleans itself up. Reduced motion suppresses the hearts. Unsupported/blocked audio is ignored safely. TypeScript, ESLint, the feedback browser check, and two existing Meet/recovery checks passed; audible playback was not subjectively evaluated.
+
 Chat refinement: a soft neutral conversation canvas, white header/composer, precise red outgoing bubbles, and restrained borders carry the shared identity. The connected empty state centers the actual character portrait and a serif conversation clue. Utility links and options remain secondary. The composer retains its accessible label, uses a unified focus treatment, and preserves existing submission and recovery behavior. No fabricated online status or reply availability is introduced.
 
 Profile refinement: a portrait gallery and blush conversation-clue panel replace the flat connected profile. Rounded photo frames, selected thumbnails, compact identity facts, readable about/interests sections, and a distinct conversation action use the shared red identity. Mock and connected profiles share scoped styles; selected-photo reporting, full-photo viewing, keyboard navigation, and existing chat actions remain available. [Research and review](./reviews/profile-refresh.md).

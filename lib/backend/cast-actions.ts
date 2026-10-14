@@ -28,6 +28,8 @@ export async function saveCast(form: FormData): Promise<CastSaveResult> {
     if (failure) return { error: failure.includes('conflict') ? 'This draft has changed. Reload it before saving; your edits are still here.' : failure.includes('rate_limited') ? 'Too many changes. Wait a minute and try again.' : 'The change was not saved. Check the required fields and try again.' };
     revalidatePath('/admin/characters', 'layout');
     revalidatePath('/discover');
+    revalidatePath('/characters', 'layout');
+    revalidatePath('/messages', 'layout');
     return { message: form.get('operation') === 'deactivate' ? 'Character deactivated.' : 'Draft saved. The published profile has not changed.', id: result.data?.id??id };
   } catch { return { error: 'Cast services are unavailable. Please try again later.' }; }
 }

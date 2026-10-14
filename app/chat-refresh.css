@@ -1,8 +1,8 @@
 /* Calm conversation canvas, expressive opening clue, precise utility controls. */
-.chat-workspace { background: #faf9fa; }
+.chat-workspace { background: #fbf2f4; }
 .connected-chat-welcome.connected-chat-welcome--minimal { background: transparent; border: 0; box-shadow: none; padding: 28px 16px; gap: 20px; }
 .connected-chat-welcome.connected-chat-welcome--minimal blockquote { background: transparent; padding: 0; margin: 0; max-width: 28ch; font-size: 22px; }
-.chat-shell { background: #faf9fa; }
+.chat-shell { background: #fbf2f4; }
 .chat-shell__header { min-height: 86px; padding-inline: 24px; background: white; border-bottom: 1px solid var(--border); }
 .chat-shell__header > .button--quiet { min-width: 44px; font-size: 13px; padding-inline: 12px; }
 .chat-identity { gap: 14px; }

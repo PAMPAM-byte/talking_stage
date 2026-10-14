@@ -52,6 +52,7 @@ export async function assetAction(form: FormData): Promise<{ error?: string; mes
       if (failure) return { error: failure.includes('conflict') ? 'This record has changed or is not eligible. Reload before trying again.' : 'Review the required attestations and publish approved portrait and gallery photos before publishing the character.' };
     }
     revalidatePath('/admin', 'layout'); revalidatePath('/discover'); revalidatePath('/characters', 'layout');
+    revalidatePath('/messages', 'layout');
     return { message: operation === 'upload' ? 'Photo uploaded. Review it before approval.' : operation === 'approved' ? 'Photo approved. Publish it when ready.' : operation === 'rejected' ? 'Photo rejected and removed from publication.' : 'Published.' };
   } catch {
     if(uploadFailure){try{await auditUploadFailure();}catch{console.error('Upload failure audit could not be recorded.');}}

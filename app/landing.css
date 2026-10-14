@@ -5,7 +5,7 @@
   background: white; color: var(--ink); overflow: clip;
 }
 .tsl-site [class~="brand-mark"] { color: var(--ink); font-size: 22px; letter-spacing: -.9px; }
-.tsl-site [class~="brand-symbol"] { background: var(--brand-soft); color: var(--brand); }
+.tsl-site [class~="brand-symbol"] { background: var(--brand); color: white; }
 .tsl-site :where(a, button, summary):focus-visible { outline: 2px solid var(--focus); outline-offset: 5px; }
 .tsl-site h1, .tsl-site h2 { font-family: var(--font-interface), sans-serif; font-weight: 750; letter-spacing: -.055em; line-height: 1.12; }
 .tsl-site h2 { font-size: clamp(34px, 4.2vw, 52px); }

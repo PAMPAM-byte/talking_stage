@@ -12,6 +12,7 @@ export async function saveControls(form: FormData): Promise<{error?:string;messa
   const result=await account.client.rpc('admin_save_controls',{p_character:scope==='global'?null:scope,p_version:version,
    p_chat:form.get('chat')==='on',p_photos:form.get('photos')==='on',p_payments:form.get('payments')==='on',p_reason:String(form.get('reason')??'').trim()});
   revalidatePath('/admin','layout');revalidatePath('/discover');revalidatePath('/characters','layout');
+  revalidatePath('/messages','layout');revalidatePath('/payments','layout');
   if(result.error || result.data?.error) return {error:result.data?.error==='conflict'?'These controls changed. Reload before saving; your choices are still here.':result.data?.error==='rate_limited'?'Too many changes. Wait a minute and try again.':'Controls were not saved. Check the reason and try again.'};
   return {message:'Controls saved.'};
  } catch {return {error:'Operations are unavailable. Please try again later.'};}

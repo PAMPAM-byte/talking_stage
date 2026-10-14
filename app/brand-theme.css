@@ -11,7 +11,7 @@
   --shadow-floating: 0 12px 40px rgb(94 22 40 / 10%);
 }
 .brand-mark { color: var(--ink); letter-spacing: -.9px; font-weight: 750; }
-.brand-symbol { background: var(--brand-soft); color: var(--brand); }
+.brand-symbol { background: var(--brand); color: white; border-radius: 12px 12px 12px 4px; font-family: var(--font-display), Georgia, serif; font-size: 30px; padding-top: 8px; }
 .button { border-radius: 12px; }
 .button--primary { box-shadow: none; }
 .field__control { border-radius: 12px; }

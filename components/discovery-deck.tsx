@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState, type CSSProperties, type PointerEvent, type ReactNode } from 'react';
 import { Icon } from './ui/icon';
 import { Button, EmptyState, Notice } from './ui/primitives';
+import { showMeetFeedback } from './meet-feedback';
 
 export type DiscoveryCard = {
   id: string; name: string; age: number; location: string; occupation?: string;
@@ -47,6 +48,7 @@ export function DiscoveryDeck({ cards, scope, nextHref, onMeet }: { cards: Disco
   function choose(direction: 'pass' | 'meet') {
     if (!card || locked.current) return;
     locked.current = true; origin.current = null; setError(''); setExit(direction);
+    if (direction === 'meet') showMeetFeedback(document.querySelector('.deck-action--meet')?.getBoundingClientRect());
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     timer.current = setTimeout(async () => {
       if (direction === 'meet') {
