@@ -6,6 +6,7 @@ import { accountDestination, signOut } from '@/lib/mock/account';
 import { AppShell } from './shells';
 import { Button, Skeleton } from './ui/primitives';
 export function UserBoundary({ children, active = 'Discover', standalone = false }: { children: ReactNode; active?: string; standalone?: boolean }) {
+  // Local mock navigation only. Real access is enforced by ProtectedArea and RLS.
   const a = useMockAccount(); const router = useRouter();
   const eligible = a.age === 'adult' && a.consent && a.user?.adultAccessState === 'approved' && a.user.onboardingStep === 'complete';
   useEffect(() => { if (a.ready && !eligible) router.replace(a.deleted ? '/account-deleted' : a.age === 'blocked' ? '/onboarding/age' : accountDestination(a.user)); }, [a.ready, eligible, a.age, a.user, a.deleted, router]);

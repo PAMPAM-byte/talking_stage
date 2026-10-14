@@ -1,3 +1,4 @@
+import { LoadingState } from '@/components/loading-state';
 export const instant = false;
 import { AdminScreen } from '@talkingstage/admin-ui';
 import { Suspense } from 'react';
@@ -7,4 +8,4 @@ async function Content({ searchParams }: { searchParams: Promise<{ state?: strin
   const filters = await searchParams;
   return <ConnectedReports state={filters.state} page={Number(filters.page ?? 1)} />;
 }
-export default function Page({ searchParams }: { searchParams: Promise<{ state?: string; page?: string }> }) { return usesSupabase() ? <Suspense fallback={<p role="status">Loading reports…</p>}><Content searchParams={searchParams} /></Suspense> : <AdminScreen section="reports" />; }
+export default function Page({ searchParams }: { searchParams: Promise<{ state?: string; page?: string }> }) { return usesSupabase() ? <Suspense fallback={<LoadingState label="Loading reports…" />}><Content searchParams={searchParams} /></Suspense> : <AdminScreen section="reports" />; }

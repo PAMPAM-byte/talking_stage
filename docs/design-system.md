@@ -1,5 +1,7 @@
 # TalkingStage design system
 
+Loading amendment: all existing skeletons now use a shared sweeping shimmer instead of opacity pulsing. Plain route-loading fallbacks for discovery, admin, memories, and payment details use a shared placeholder with a screen-reader status. A root loading boundary covers other suspended routes. Chat/profile/access placeholders retain their silhouettes. Reduced motion displays static skeletons; operation buttons retain their functional busy feedback.
+
 Meet feedback amendment: the founder requested removal of the sound. Meet now shows only the brief heart animation; no audio is created.
 
 Meet feedback: the founder requested a pop sound and multiple hearts immediately on Meet. A quiet synthesized three-pop cue accompanies 14 red/rose hearts for about 1.9 seconds. Feedback indicates the user's action, not a mutual match or successful conversation result. It does not delay chat entry; a pointer-transparent decorative overlay persists briefly across navigation and cleans itself up. Reduced motion suppresses the hearts. Unsupported/blocked audio is ignored safely. TypeScript, ESLint, the feedback browser check, and two existing Meet/recovery checks passed; audible playback was not subjectively evaluated.

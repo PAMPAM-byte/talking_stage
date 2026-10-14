@@ -1,3 +1,4 @@
+import 'server-only';
 import { Suspense, type ReactNode } from "react";
 import { redirect } from "next/navigation";
 import { headers } from "next/headers";
@@ -6,7 +7,8 @@ import { usesSupabase, supabaseConfig } from "@/lib/backend/config";
 import { currentAccount } from "@/lib/backend/server";
 import { signOutAccount } from "@/lib/backend/account-actions";
 import { AppShell, PublicShell } from "./shells";
-import { Notice } from "./ui/primitives";
+import { Notice, Skeleton } from "./ui/primitives";
+import { ChatLoading } from './chat-loading';
 
 async function ConnectedArea({ area, children }: { area: string; children: ReactNode }) {
   if (!supabaseConfig()) return <PublicShell><Notice title="Account services are unavailable" tone="warning">Please try again later.</Notice></PublicShell>;
@@ -29,5 +31,5 @@ async function ConnectedArea({ area, children }: { area: string; children: React
 export function ProtectedArea({ children, area }: { children: ReactNode; area: string }) {
   if (!usesSupabase()) return <>{children}</>;
   // Unfinished feature adapters stay in the explicit development preview.
-  return <Suspense fallback={<main id="main-content" className="container shell__main"><p role="status">Checking your account…</p></main>}><ConnectedArea area={area}>{children}</ConnectedArea></Suspense>;
+  return <Suspense fallback={area === 'Messages' ? <ChatLoading /> : <main id="main-content" className="container shell__main"><span className="sr-only" role="status">Checking your account</span><div className="stack" aria-hidden="true"><Skeleton width="60%" height={32} /><Skeleton height={260} /></div></main>}><ConnectedArea area={area}>{children}</ConnectedArea></Suspense>;
 }

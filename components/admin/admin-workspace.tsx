@@ -1,4 +1,5 @@
 "use client";
+import { LoadingState } from '@/components/loading-state';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
@@ -19,7 +20,7 @@ export function AdminFrame({ children }: { children: ReactNode }) {
   const pathname = usePathname(); const role = useSyncExternalStore(subscribeAdminAccess, adminRole, serverAdminRole); const [ready, setReady] = useState(false);
   useEffect(() => { hydrateAdminAccess(); queueMicrotask(() => setReady(true)); }, []);
   if (pathname === '/admin/access') return <PublicShell>{children}</PublicShell>;
-  if (!ready) return <PublicShell><p role="status">Checking preview access…</p><Skeleton height={160} /></PublicShell>;
+  if (!ready) return <PublicShell><LoadingState label="Checking preview access…" /><Skeleton height={160} /></PublicShell>;
   if (role !== 'admin') return <PublicShell><div className="stack admin-access"><Badge>Administration preview</Badge><h1 className="display page-title">{role === 'expired' ? 'Preview session expired' : role === 'user' ? 'Administration unavailable for this role' : 'Administration access required'}</h1><p className="muted">This prototype uses an explicit mock role. It does not authenticate operators or enforce real security.</p><Link className="button button--primary" href="/admin/access">Review preview access</Link><Link href="/">Back to TalkingStage</Link></div></PublicShell>;
   return <AppShell admin items={navigation.map(n => ({ ...n, active: n.href === '/admin' ? pathname === '/admin' : pathname.startsWith(n.href) }))} actions={<div className="row"><Badge>Operator preview</Badge><Button variant="quiet" onClick={() => chooseAdminRole('signed_out')}>Exit preview</Button></div>}><div className="admin-workspace stack"><p className="admin-disclosure caption">Administration simulation · no real roles, uploads, transactions or moderation actions</p>{children}</div></AppShell>;
 }
