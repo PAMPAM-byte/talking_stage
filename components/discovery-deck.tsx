@@ -104,7 +104,7 @@ export function DiscoveryDeck({ cards, scope, nextHref, onMeet }: { cards: Disco
             <div className="discovery-deck__photo" key={card.id}>{card.photo}</div>
             <span className="discovery-deck__badge">✦ AI character</span>
             {Math.abs(drag) > 24 && <span aria-hidden="true" className={`discovery-deck__verdict ${drag > 0 ? 'is-meet' : 'is-pass'}`}>{drag > 0 ? 'Meet' : 'Pass'}</span>}
-            <div className="discovery-deck__identity"><h2>{card.name}<span>, {card.age}</span></h2><p>{card.location} · fictional setting</p><Link href={card.href} className="discovery-deck__profile">View profile <Icon name="arrow" /></Link></div>
+            <div className="discovery-deck__identity"><h2>{card.name}<span>, {card.age}</span></h2><p>{card.location} · fictional setting</p><Link href={card.href} className="discovery-deck__profile">View profile </Link></div>
           </div>
           <div className="discovery-deck__actions">
             <button className="deck-action deck-action--undo" disabled={index === 0 || !!exit || opening} onClick={() => { setAnnouncement('Last pass undone.'); move(index - 1); }} aria-label="Undo last pass"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M4 10a8 8 0 1 1 1 9M4 4v6h6" /></svg><span>Undo</span></button>
@@ -115,6 +115,6 @@ export function DiscoveryDeck({ cards, scope, nextHref, onMeet }: { cards: Disco
         </div>
         <aside className="discovery-deck__details stack"><div><p className="caption muted">A way into the conversation</p><blockquote>“{card.clue}”</blockquote></div>{card.occupation && <p className="supporting muted">{card.occupation}</p>}<div className="row">{card.interests.slice(0, 3).map(interest => <span className="interest-label" key={interest}>{interest}</span>)}</div>{card.bio && <p className="supporting">{card.bio}</p>}<p className="caption muted">Meet starts or resumes your conversation.</p></aside>
       </div>
-    </> : <div className="discovery-deck__complete"><EmptyState icon="discover" title="You’ve seen this selection" action={<div className="row">{nextHref && <Link href={nextHref} className="button button--primary">Keep discovering <Icon name="arrow" /></Link>}<Button variant="secondary" onClick={() => move(0)}>Browse again</Button>{index > 0 && <Button variant="quiet" onClick={() => move(index - 1)}>Undo last pass</Button>}</div>}>Continue exploring or change your filters to find a different personality.</EmptyState></div>}
+    </> : <div className="discovery-deck__complete"><EmptyState icon="discover" title="You’ve seen this selection" action={<div className="row">{nextHref && <Link href={nextHref} className="button button--primary">Keep discovering </Link>}<Button variant="secondary" onClick={() => move(0)}>Browse again</Button>{index > 0 && <Button variant="quiet" onClick={() => move(index - 1)}>Undo last pass</Button>}</div>}>Continue exploring or change your filters to find a different personality.</EmptyState></div>}
   </section>;
 }

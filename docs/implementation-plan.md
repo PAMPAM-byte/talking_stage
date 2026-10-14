@@ -1,5 +1,9 @@
 # TalkingStage implementation plan
 
+Chat frontend refinement: shared room styling, portrait-led connected opening state, polished bubbles, and unified composer treatment. Existing chat, reply, photo, reporting, and lifecycle operations remain unchanged. See [review](./reviews/chat-refresh.md).
+
+Profile frontend refinement: connected profiles now use a selected-photo gallery with thumbnails and an editorial identity/details column. Shared styles refine both connected and mock profiles. Existing reporting, full-photo viewing, and chat operations remain in use. See [research and review](./reviews/profile-refresh.md).
+
 FAQs frontend: dedicated public page linked from landing navigation and the quick FAQ section. Four topics cover onboarding, discovery/chat, privacy controls, and payments/help. Answers follow existing product behavior and retain pending policy details. See [review](./reviews/faqs.md).
 
 Personalities frontend: a dedicated public preview linked from landing navigation and its cast section. Four provisional local characters receive portrait, clue, interest, and expandable biography treatments. Adult onboarding remains the entry to the application; Discover stays a single-character swipe deck. See [review](./reviews/personalities.md).

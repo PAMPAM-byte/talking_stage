@@ -1,5 +1,9 @@
 # TalkingStage design system
 
+Chat refinement: a soft neutral conversation canvas, white header/composer, precise red outgoing bubbles, and restrained borders carry the shared identity. The connected empty state centers the actual character portrait and a serif conversation clue. Utility links and options remain secondary. The composer retains its accessible label, uses a unified focus treatment, and preserves existing submission and recovery behavior. No fabricated online status or reply availability is introduced.
+
+Profile refinement: a portrait gallery and blush conversation-clue panel replace the flat connected profile. Rounded photo frames, selected thumbnails, compact identity facts, readable about/interests sections, and a distinct conversation action use the shared red identity. Mock and connected profiles share scoped styles; selected-photo reporting, full-photo viewing, keyboard navigation, and existing chat actions remain available. [Research and review](./reviews/profile-refresh.md).
+
 FAQs refinement: `/faqs` presents four topic shortcuts and 16 native expandable answers, with editorial topic headings alongside readable answer columns. Red/white/blush and Manrope/serif styling follow the shared identity. Real anchor navigation, keyboard operation, reduced motion, and links to detailed guides remain central; no decorative search or unsupported service promises are introduced.
 
 Personalities page: `/personalities` is a public editorial introduction using the shared red/white/blush palette and Manrope/serif typography. A featured portrait and character-specific conversation clue lead four local cast previews with interests and expandable biographies. Fictional adult AI identity and generated-photo disclosures remain explicit. This marketing preview does not replace the one-character Discover swipe flow or change Meet behavior.

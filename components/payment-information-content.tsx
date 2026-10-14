@@ -19,10 +19,10 @@ export function PaymentOverview() {
 }
 
 export function PaymentSectionDetail({ index }: { index: number }) {
-  if (index === 1) return <Link className="payment-section-link" href="/settings/requests">Manage monetary requests <Icon name="arrow" /></Link>;
+  if (index === 1) return <Link className="payment-section-link" href="/settings/requests">Manage monetary requests </Link>;
   if (index === 2) return <div className="payment-flow"><p className="payment-flow-label">The planned checkout journey</p><ol><li><span>01</span><div><strong>Review the details</strong><p>Check the amount, NGN currency, and operator recipient.</p></div></li><li><span>02</span><div><strong>Choose to continue</strong><p>Proceed to checkout only after your confirmation.</p></div></li><li><span>03</span><div><strong>Check the result</strong><p>Wait for a verified result before treating the payment as complete.</p></div></li></ol></div>;
   if (index === 3) return <div className="payment-status-note"><Icon name="info" /><p><strong>A return to the app is not confirmation.</strong>Check the recorded status. Pending, cancelled, or unsuccessful payments should never appear as confirmed support.</p></div>;
-  if (index === 4) return <div className="payment-links"><Link href="/settings/payments">Review payment history <Icon name="arrow" /></Link><Link href="/privacy">Read Privacy <Icon name="arrow" /></Link></div>;
-  if (index === 5) return <Link className="payment-section-link" href="/support">Visit Support <Icon name="arrow" /></Link>;
+  if (index === 4) return <div className="payment-links"><Link href="/settings/payments">Review payment history </Link><Link href="/privacy">Read Privacy </Link></div>;
+  if (index === 5) return <Link className="payment-section-link" href="/support">Visit Support </Link>;
   return null;
 }

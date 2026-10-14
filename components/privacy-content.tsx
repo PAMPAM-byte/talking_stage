@@ -21,8 +21,8 @@ export function PrivacyHighlights() {
 
 export function PrivacySectionDetail({ index }: { index: number }) {
   if (index === 2) return <div className="privacy-control-note"><Icon name="info" /><p><strong>A useful distinction</strong>Deleting a conversation and deleting its saved memories are separate choices. Review both when you want to clear a character’s history.</p></div>;
-  if (index === 3) return <div className="privacy-actions"><Link href="/settings/memories">Review memory controls <Icon name="arrow" /></Link><Link href="/settings/account">Review account deletion <Icon name="arrow" /></Link></div>;
-  if (index === 4) return <Link href="/payment-information" className="privacy-section-link">Read Payment information <Icon name="arrow" /></Link>;
-  if (index === 6) return <Link href="/support" className="privacy-section-link">Visit Support <Icon name="arrow" /></Link>;
+  if (index === 3) return <div className="privacy-actions"><Link href="/settings/memories">Review memory controls </Link><Link href="/settings/account">Review account deletion </Link></div>;
+  if (index === 4) return <Link href="/payment-information" className="privacy-section-link">Read Payment information </Link>;
+  if (index === 6) return <Link href="/support" className="privacy-section-link">Visit Support </Link>;
   return null;
 }
