@@ -5,6 +5,21 @@ import {revalidatePath} from 'next/cache';
 import { emit } from '@/lib/monitoring/events.mjs';
 export const maxDuration=60;
 const uuid=/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i;
+export async function GET(_request:Request,{params}:{params:Promise<{conversationId:string;messageId:string}>}) {
+ const respond=(state:string,status=200)=>Response.json({state},{status,headers:{'Cache-Control':'private, no-store'}});
+ try{
+  const {conversationId,messageId}=await params;
+  if(!uuid.test(conversationId)||!uuid.test(messageId))return respond('unavailable',404);
+  const account=await currentAccount();
+  if(!account)return respond('unauthorized',401);
+  if(!account.profile.onboarding_complete||!account.profile.adult_declared_at)return respond('forbidden',403);
+  // The RPC checks owner, adult access and deletion before returning any metadata.
+  const result=await account.client.rpc('reply_status',{p_conversation:conversationId});
+  if(result.error)return respond('unavailable',404);
+  const status=(result.data as {messageId:string;state:string}[]).find(item=>item.messageId===messageId);
+  return status?respond(status.state):respond('unavailable',404);
+ }catch{return respond('unavailable',503);}
+}
 export async function POST(request:Request,{params}:{params:Promise<{conversationId:string;messageId:string}>}) {
  const respond=(state:string,status=200)=>Response.json({state},{status,headers:{'Cache-Control':'no-store'}});
  try{

@@ -29,7 +29,7 @@ function hydrate() {
     const state = JSON.parse(sessionStorage.getItem(key) ?? 'null');
     if (state?.version === 1 && Array.isArray(state.rows)) for (const [id, thread] of state.rows) {
       const conversation = owned(id); if (!conversation || !Array.isArray(thread.messages) || !Array.isArray(thread.jobs)) continue;
-      const messages = thread.messages.filter((m: Message) => m.conversationId === id && Number.isSafeInteger(m.sequence) && typeof m.id === 'string' && ['user', 'character', 'system'].includes(m.role) && ['text', 'photo', 'status'].includes(m.kind) && (m.assetId === null || m.assetId === `${conversation.characterId}-gallery`) && (m.text === null || typeof m.text === 'string')).map((m: Message) => ({ ...m, deliveryState: m.deliveryState === 'sending' ? 'failed' as const : m.deliveryState }));
+      const messages = thread.messages.filter((m: Message) => m.conversationId === id && Number.isSafeInteger(m.sequence) && typeof m.id === 'string' && ['user', 'character', 'system'].includes(m.role) && ['text', 'photo', 'status'].includes(m.kind) && (m.assetId === null || characters.find(c => c.id === conversation.characterId)?.galleryAssetIds.includes(m.assetId)) && (m.text === null || typeof m.text === 'string')).map((m: Message) => ({ ...m, deliveryState: m.deliveryState === 'sending' ? 'failed' as const : m.deliveryState }));
       const jobs = thread.jobs.filter((j: ReplyJob) => j.conversationId === id && messages.some((m: Message) => m.id === j.userMessageId)).map((j: ReplyJob) => ({ ...j, state: ['waiting', 'generating'].includes(j.state) ? 'interrupted' as const : j.state }));
       threads.set(id, { messages, jobs });
     }
@@ -87,14 +87,15 @@ export async function prepareReply(id: string, messageId: string, scenario: Chat
   if (!owned(id) || threads.get(id) !== t) return fail('NOT_FOUND', 'Conversation unavailable.');
   if (scenario === 'reply_failed' || scenario === 'interrupted' || scenario === 'offline') { job.state = scenario === 'interrupted' ? 'interrupted' : 'failed'; job.errorCode = 'UNAVAILABLE'; persist(); return fail('UNAVAILABLE', 'Your message is saved. Retry the reply without sending it again.'); }
   const sample = scriptedSample(c.characterId); const wantsPhoto = /photo/i.test(user.text ?? '');
-  const photoAllowed = scenario !== 'photos_paused' && capabilities(c.characterId).photos && !!publicAsset(`${c.characterId}-gallery`, c.characterId);
-  const reply = append(id, { id: `${job.id}-message`, role: 'character', kind: wantsPhoto && photoAllowed ? 'photo' : 'text', assetId: wantsPhoto && photoAllowed ? `${c.characterId}-gallery` : null, text: wantsPhoto ? photoAllowed ? sample.photoCaption : 'Character photos are paused for now. We can keep talking.' : sample.replies[(t.jobs.indexOf(job)) % sample.replies.length] });
+  const photoAssetId = characters.find(character => character.id === c.characterId)?.galleryAssetIds[0];
+  const photoAllowed = !!photoAssetId && scenario !== 'photos_paused' && capabilities(c.characterId).photos && !!publicAsset(photoAssetId, c.characterId);
+  const reply = append(id, { id: `${job.id}-message`, role: 'character', kind: wantsPhoto && photoAllowed ? 'photo' : 'text', assetId: wantsPhoto && photoAllowed ? photoAssetId : null, text: wantsPhoto ? photoAllowed ? sample.photoCaption : 'Character photos are paused for now. We can keep talking.' : sample.replies[(t.jobs.indexOf(job)) % sample.replies.length] });
   job.state = 'completed'; job.updatedAt = new Date().toISOString(); updateMockConversation(id, { lastMessagePreview: reply.kind === 'photo' ? 'AI-generated character photo' : reply.text, lastMessageAt: reply.createdAt, unreadCount: c.unreadCount + 1 }); persist(); return ok(reply);
 }
 export async function archiveConversation(id: string, archived: boolean) { await delay(); if (!owned(id)) return fail('NOT_FOUND', 'Conversation unavailable.'); updateMockConversation(id, { status: archived ? 'archived' : 'active' }); persist(); return ok(true); }
 export async function deleteConversation(id: string) { await delay(); if (!owned(id)) return fail('NOT_FOUND', 'Conversation unavailable.'); threads.delete(id); removeMockConversation(id); persist(); return ok(true); }
 export function resetChatPreview() { threads.clear(); resetMockConversations(); persist(); }
-export function ownedPhoto(id: string, assetId: string) { const c = owned(id); return c && assetId === `${c.characterId}-gallery` ? characters.find(p => p.id === c.characterId) : undefined; }
+export function ownedPhoto(id: string, assetId: string) { const c = owned(id); return c ? characters.find(p => p.id === c.characterId && p.galleryAssetIds.includes(assetId)) : undefined; }
 export async function resetConversation(id: string) {
   if (!owned(id)) return fail('NOT_FOUND', 'Conversation unavailable.');
   threads.delete(id); updateMockConversation(id, { lastMessagePreview: null, lastMessageAt: null, unreadCount: 0, status: 'active', relationshipState: 'introductory' });

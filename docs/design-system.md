@@ -1,5 +1,7 @@
 # TalkingStage design system
 
+Delivery refinement · 15 October: connected chat immediately renders an outgoing bubble with a pending clock, a single tick after server persistence, and double ticks after a saved character reply. These are labelled saved/reply-received states, not human read receipts. A small white three-dot typing bubble on the rose canvas tracks reply generation independently of delivery. Failed delivery retries retain the original client message ID; retry/skip and stop-reply controls remain available. Motion respects reduced-motion preferences. See [delivery interaction and operational limits](./reviews/chat-delivery.md).
+
 Chat navigation amendment · 15 October: conversation pages use an explicit standalone server-protected boundary. The Messages list retains app navigation; individual conversations render only the chat header, history, and composer. Page-level boundaries avoid retaining list navigation through a reused shared layout. Server account/adult/onboarding checks remain intact.
 
 Composer refinement: a compact 44px text area in a rounded blush-tinted field, circular 44px send action, 16px input text, quiet border, and restrained focus ring replace the large empty box. Connected text entry grows to 144px with multiline text and shrinks after sending. Labels remain available to assistive technology; placeholder copy is concise. Existing Enter/Shift+Enter, error, disabled, and reply controls remain.

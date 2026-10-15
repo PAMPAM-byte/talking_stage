@@ -1,5 +1,6 @@
 import { ProtectedArea } from '@/components/protected-area';
 export const instant = false;
+export const maxDuration = 60;
 import { Suspense } from 'react';
 import { Chat } from '@/components/chat';
 import {usesSupabase} from '@/lib/backend/config';

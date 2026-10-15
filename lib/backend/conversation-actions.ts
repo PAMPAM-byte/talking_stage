@@ -2,6 +2,8 @@
 import {currentAccount} from './server';
 import {revalidatePath} from 'next/cache';
 import { observe, emit } from '@/lib/monitoring/events.mjs';
+import {after} from 'next/server';
+import {processReply,processSummary} from './reply-worker';
 export async function conversationAction(form:FormData):Promise<{error?:string;id?:string;message?:string;messageId?:string}> {
  try {
   const account=await currentAccount();if(!account?.profile.onboarding_complete||!account.profile.adult_declared_at)return {error:'Sign in with an eligible account.'};
@@ -21,6 +23,14 @@ export async function conversationAction(form:FormData):Promise<{error?:string;i
    :['archive','restore','reset','delete'].includes(operation)?await account.client.rpc('manage_conversation',{p_id:id,p_version:Number(form.get('version')),p_operation:operation,p_clear_memories:form.get('clearMemories')==='on'}):null);
   if(!result)return {error:'Choose an available action.'};
   if(result.error){const failure=result.error.message;return {error:failure.includes('chat_paused')?'Chat is paused. Your saved history is available.':failure.includes('archived')?'Restore this conversation before sending.':failure.includes('conflict')||failure.includes('thread_changed')?'This conversation changed. Reload before trying again.':failure.includes('rate_limited')?'Too many changes. Wait a minute and try again.':'The change was not saved. Reload and try again.'};}
+  if(operation==='send'&&result.data?.id){
+   const messageId=result.data.id as string;const actorId=account.user.id;
+   // Delivery has committed. Generation must never delay or roll back its acknowledgement.
+   after(async()=>{
+    try{const state=await processReply(messageId,actorId);if(state==='completed')await processSummary(messageId,actorId);}
+    catch{emit('ai.reply','unexpected');/* Persisted jobs remain available for explicit recovery. */}
+   });
+  }
   revalidatePath('/messages','layout');
   return {id:operation==='start'?result.data:id,messageId:operation==='send'?result.data.id:undefined,message:operation==='send'?'Message saved.':'Conversation updated.'};
  }catch{emit('conversation.change', 'unexpected');return {error:'Conversation services are unavailable. Please try again later.'};}
