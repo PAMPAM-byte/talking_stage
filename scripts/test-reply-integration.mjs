@@ -70,6 +70,22 @@ try{
  await actor(a);await db.query('select public.cancel_reply($1)',[configMessage]);const archivedMessage=await send('Synthetic archive input',2);await actor('', 'service_role');const archivedJob=await claim(archivedMessage);
  await actor(a);let currentVersion=(await db.query('select version from public.conversations where id=$1',[c])).rows[0].version;await db.query("select public.manage_conversation($1,$2,'archive')",[c,currentVersion]);
  currentVersion=(await db.query('select version from public.conversations where id=$1',[c])).rows[0].version;await db.query("select public.manage_conversation($1,$2,'restore')",[c,currentVersion]);await actor('', 'service_role');assert.equal(await finish(archivedJob),'discarded');
+ // Previously disabled, never-attempted jobs must not prevent the next reply after activation.
+ await actor(a);await db.query('select public.cancel_reply($1)',[archivedMessage]);
+ const dormant=await send('Synthetic pre-activation input',2);const newest=await send('Synthetic post-activation input',2);
+ await db.exec('reset role');
+ await db.query("update private.reply_jobs set state='blocked_provider',attempts=0 where user_message_id=$1",[dormant]);
+ await db.exec('update private.ai_configuration set user_daily_micro_usd=1');await actor('', 'service_role');
+ assert.equal((await claim(newest)).state,'budget_exhausted');
+ await db.exec('reset role');assert.equal((await db.query('select state from private.reply_jobs where user_message_id=$1',[dormant])).rows[0].state,'blocked_provider');
+ await db.exec('update private.ai_configuration set user_daily_micro_usd=1000000');await actor('', 'service_role');
+ const recovered=await claim(newest);assert.equal(recovered.state,'claimed');
+ await db.exec('reset role');assert.equal((await db.query('select state from private.reply_jobs where user_message_id=$1',[dormant])).rows[0].state,'cancelled');
+ assert.equal((await db.query('select count(*)::int as n from public.messages where id=$1',[dormant])).rows[0].n,1);
+ await actor(a);const later=await send('Synthetic ordered input',2);await actor('', 'service_role');
+ assert.equal((await claim(later)).state,'earlier_reply_pending');
+ assert.equal(await finish(recovered,null,'provider_error'),'failed');
+ assert.equal((await claim(later)).state,'earlier_reply_pending');
  await actor('', 'anon');await assert.rejects(db.query('select public.claim_reply($1,$2,$3)',[message,a,'synthetic']),/permission denied/);
  console.log('Reply integration database checks passed: private context/service role boundary, disabled config, memory consent/isolation/invalidation, atomic budget reservations, lease deduplication/expiry, bounded retries, output idempotency, pauses/cancellation/reset, profile/configuration/archive invalidation and full DB-to-injected-provider-to-commit processing. No network calls made.');
 }finally{await db.close();}

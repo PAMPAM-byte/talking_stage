@@ -7,7 +7,7 @@ import { chromium } from "@playwright/test";
 
 // Check actual build output rather than assuming a route guard removes tooling.
 if (existsSync('.env.local')) process.loadEnvFile('.env.local');
-const serverSecrets = ['AUTH_FLOW_SECRET', 'SUPABASE_SECRET_KEY', 'SUPABASE_SERVICE_ROLE_KEY', 'OPENAI_API_KEY'].map(name => process.env[name]).filter(value => value && value.length >= 16);
+const serverSecrets = ['AUTH_FLOW_SECRET', 'SUPABASE_SECRET_KEY', 'SUPABASE_SERVICE_ROLE_KEY', 'OPENAI_API_KEY', 'ANTHROPIC_API_KEY'].map(name => process.env[name]).filter(value => value && value.length >= 16);
 async function files(directory) {
   const entries = await readdir(directory, { withFileTypes: true });
   return (await Promise.all(entries.map((entry) => entry.isDirectory() ? files(join(directory, entry.name)) : join(directory, entry.name)))).flat();

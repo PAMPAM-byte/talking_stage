@@ -20,4 +20,10 @@ test('chat keeps sending and composer visibility across screen sizes', async ({ 
   }
   await page.setViewportSize({ width: 390, height: 460 });
   await expect(page.getByRole('button', { name: 'Send message' })).toBeInViewport();
+  await expect(page.getByRole('navigation', { name: 'Main navigation' })).toHaveCount(0);
+  await page.goto('/messages');
+  await expect(page.getByRole('navigation', { name: 'Main navigation' })).toHaveCount(1);
+  await page.locator('.shell--user .conversation-row__link').first().click();
+  await expect(page.getByRole('textbox', { name: 'Message Amara' })).toBeVisible();
+  await expect(page.getByRole('navigation', { name: 'Main navigation' })).toHaveCount(0);
 });

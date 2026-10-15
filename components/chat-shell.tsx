@@ -1,8 +1,20 @@
 "use client";
 import { useEffect, useRef, type ReactNode, type UIEventHandler } from "react";
 
-export function ChatShell({ identity, actions, back, children, composer, onMessagesScroll }: { identity: ReactNode; actions?: ReactNode; back: ReactNode; children: ReactNode; composer: ReactNode; onMessagesScroll?: UIEventHandler<HTMLElement> }) {
+export function ChatShell({ identity, actions, back, children, composer, onMessagesScroll, followMessages = false }: { identity: ReactNode; actions?: ReactNode; back: ReactNode; children: ReactNode; composer: ReactNode; onMessagesScroll?: UIEventHandler<HTMLElement>; followMessages?: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!followMessages) return;
+    const main = ref.current?.querySelector<HTMLElement>('.chat-shell__messages');
+    if (!main) return;
+    let following = true;
+    const track = () => { following = main.scrollHeight - main.scrollTop - main.clientHeight < 80; };
+    const observer = new MutationObserver(() => { if (following) main.scrollTop = main.scrollHeight; });
+    observer.observe(main, { childList: true, subtree: true });
+    main.scrollTop = main.scrollHeight;
+    main.addEventListener('scroll', track, { passive: true });
+    return () => { observer.disconnect(); main.removeEventListener('scroll', track); };
+  }, [followMessages]);
   useEffect(() => {
     const viewport = window.visualViewport;
     if (!viewport) return;

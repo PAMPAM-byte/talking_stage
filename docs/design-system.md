@@ -1,5 +1,15 @@
 # TalkingStage design system
 
+Chat navigation amendment · 15 October: conversation pages use an explicit standalone server-protected boundary. The Messages list retains app navigation; individual conversations render only the chat header, history, and composer. Page-level boundaries avoid retaining list navigation through a reused shared layout. Server account/adult/onboarding checks remain intact.
+
+Composer refinement: a compact 44px text area in a rounded blush-tinted field, circular 44px send action, 16px input text, quiet border, and restrained focus ring replace the large empty box. Connected text entry grows to 144px with multiline text and shrinks after sending. Labels remain available to assistive technology; placeholder copy is concise. Existing Enter/Shift+Enter, error, disabled, and reply controls remain.
+
+Conversation refinement: connected chat moves secondary profile/memory/lifecycle controls into a header dialog. The soft rose canvas and minimal portrait/clue opening remain; white/deep-red bubbles, quiet metadata, clear focus, and labelled message-log semantics support reading. Connected history follows additions only when the reader is near the bottom. See [research and audit](./reviews/conversation-polish.md).
+
+Filter refinement: discovery uses custom radio-card groups inside a consistent desktop dialog/mobile sheet. Aligned two-column options, bounded option scrolling, red selection outlines, native keyboard semantics, and clear/apply actions replace mismatched dropdowns. Connected and mock discovery share the controls. See [review](./reviews/discovery-filters.md).
+
+Discover refinement: a single portrait and a single conversation-clue panel form the visual hierarchy. Extra biography/interests sit behind an accessible About disclosure. Compact controls and responsive card heights reduce crowding and preserve bottom navigation clearance. Shared red/white/blush identity and existing swipe/Meet behavior remain. See [research and review](./reviews/discover-refinement.md).
+
 Loading amendment: all existing skeletons now use a shared sweeping shimmer instead of opacity pulsing. Plain route-loading fallbacks for discovery, admin, memories, and payment details use a shared placeholder with a screen-reader status. A root loading boundary covers other suspended routes. Chat/profile/access placeholders retain their silhouettes. Reduced motion displays static skeletons; operation buttons retain their functional busy feedback.
 
 Meet feedback amendment: the founder requested removal of the sound. Meet now shows only the brief heart animation; no audio is created.

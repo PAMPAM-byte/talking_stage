@@ -45,7 +45,7 @@ function ChatContent({ id }: { id: string }) {
   const operator = useOperatorPreview(conversation?.characterId ?? '');
   const archived = conversation?.status === 'archived';
   useEffect(() => { if (reading.current) markRead(id); if (nearBottom.current) end.current?.scrollIntoView({ block: 'end' }); }, [id, revision, loaded]);
-  useEffect(() => { if (!draft) return; const element = composer.current; if (element) { element.style.height = 'auto'; element.style.height = `${Math.min(144, element.scrollHeight)}px`; } }, [draft]);
+  useEffect(() => { const element = composer.current; if (element) { element.style.height = 'auto'; element.style.height = `${Math.min(144, element.scrollHeight)}px`; } }, [draft]);
   async function send() {
     if (inFlight.current || pending || !draft.trim()) return;
     inFlight.current = true; setBusy(true); setError(''); const text = draft; const clientId = crypto.randomUUID();

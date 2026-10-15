@@ -1,0 +1,30 @@
+import assert from 'node:assert/strict';
+import { providerSettings, generateReply } from '../lib/ai/provider.mjs';
+const env={TALKINGSTAGE_AI_ENABLED:'true',TALKINGSTAGE_AI_PROVIDER:'anthropic',ANTHROPIC_API_KEY:'synthetic'};
+const settings=providerSettings(env);
+assert.equal(settings.model,'claude-haiku-5-5');
+assert.equal(providerSettings({...env,TALKINGSTAGE_AI_MODEL:'claude-sonnet-4-5'}),null);
+assert.equal(providerSettings({...env,TALKINGSTAGE_AI_PROVIDER:'openai'}),null);
+assert.equal(providerSettings({...env,ANTHROPIC_API_KEY:''}),null);
+const context={character:{name:'Adult fixture',direction:'Warm and respectful.'},preferences:{},memories:[],history:[{role:'user',text:'Hello'}],maxInputTokens:48000,maxOutputTokens:1024};
+const response=(stop_reason='end_turn',text=JSON.stringify({text:'Hello there.',photoAssetId:null}))=>new Response(JSON.stringify({stop_reason,content:[{type:'text',text}]}));
+const fetcher=async(url,init)=>{
+ assert.equal(url,'https://api.anthropic.com/v1/messages');assert.equal(init.headers['x-api-key'],'synthetic');assert.equal(init.cache,'no-store');
+ const body=JSON.parse(init.body);assert.equal(body.model,'claude-haiku-5-5');assert.equal(body.output_config.format.type,'json_schema');assert.equal(body.tools,undefined);assert.equal(body.max_tokens,1024);assert(body.system.includes('non-explicit'));assert.equal(body.messages[0].role,'user');
+ assert.deepEqual(body.output_config.format.schema.properties.photoAssetId,{type:'null'});
+ return response();
+};
+assert.equal((await generateReply(context,settings,{fetcher})).text,'Hello there.');
+const photoId='00000000-0000-4000-8000-000000000099';
+const photoContext={...context,photos:[{id:photoId,description:'Approved synthetic adult photo'}]};
+await generateReply(photoContext,settings,{fetcher:async(_url,init)=>{
+ assert.deepEqual(JSON.parse(init.body).output_config.format.schema.properties.photoAssetId,{anyOf:[{type:'null'},{type:'string',enum:[photoId]}]});
+ return response('end_turn',JSON.stringify({text:'A synthetic photo.',photoAssetId:photoId}));
+}});
+assert.equal((await generateReply(context,settings,{fetcher:async()=>response('refusal','No.')})).refused,true);
+await assert.rejects(generateReply(context,settings,{fetcher:async()=>response('max_tokens')}),/invalid_output/);
+await assert.rejects(generateReply(context,settings,{fetcher:async()=>response('end_turn','{"action":"send_money"}')}),/invalid_output/);
+await assert.rejects(generateReply(context,settings,{fetcher:async()=>new Response('',{status:429})}),/provider_error/);
+await assert.rejects(generateReply(context,settings,{fetcher:async()=>{throw new DOMException('timeout','TimeoutError');}}),/timeout/);
+await assert.rejects(generateReply(context,{...settings,model:'claude-sonnet-4-5'},{fetcher}),/provider_error/);
+console.log('Claude Haiku offline checks passed: model restriction, request mapping, structured output, refusal, truncation, invalid output, provider failure and timeout. No live requests made.');
