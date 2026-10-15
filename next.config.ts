@@ -1,6 +1,9 @@
 import type { NextConfig } from "next";
+import {networkInterfaces} from 'node:os';
 
 const nextConfig: NextConfig = {
+  allowedDevOrigins: Object.values(networkInterfaces()).flatMap(entries=>
+    (entries??[]).filter(entry=>entry.family==='IPv4'&&!entry.internal).map(entry=>entry.address)),
   // Isolate real-auth browser checks from the user's running development server.
   distDir: process.env.TALKINGSTAGE_AUTH_TEST === "1" ? ".next-auth" : process.env.TALKINGSTAGE_PREVIEW_TEST === "1" ? ".next-preview" : ".next",
   /* config options here */
