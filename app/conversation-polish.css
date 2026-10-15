@@ -59,6 +59,7 @@
 .typing-bubble > span:nth-child(2) { animation-delay: 150ms; }
 .typing-bubble > span:nth-child(3) { animation-delay: 300ms; }
 .chat-log:has(.message-turn) > .chat-empty-introduction { display: none; }
+.chat-empty-introduction { display: flex; flex: 1; align-items: center; justify-content: center; }
 .chat-delivery-notice { position: fixed; z-index: 20; bottom: calc(100px + env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%); width: max-content; max-width: calc(100% - 32px); padding: 12px 18px; border: 1px solid #eadbe0; border-radius: 14px; background: white; color: #6c4653; box-shadow: 0 8px 30px rgb(94 22 40 / 8%); }
 @keyframes typing-dot { 0%, 60%, 100% { transform: translateY(0); opacity: .45; } 30% { transform: translateY(-4px); opacity: 1; } }
 @keyframes message-arrive { from { opacity: .4; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }

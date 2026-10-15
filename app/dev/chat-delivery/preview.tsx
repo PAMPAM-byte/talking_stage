@@ -6,7 +6,8 @@ import {ChatShell} from '@/components/chat-shell';
 const id='00000000-0000-4000-8000-000000000001';
 export default function DeliveryPreview(){
  const [saved,setSaved]=useState<{id:string;clientId:string;text:string}[]>([]);const fail=useRef(false);const attempts=useRef(new Map<string,string>());
- return <div className="chat-workspace connected-chat"><button style={{position:'fixed',right:8,top:8,zIndex:30,fontSize:10}} onClick={()=>{fail.current=true;}}>Fail next save</button><ConnectedChatDelivery id={id} generation={1} replies savedIds={saved.map(m=>m.id)} savedClientIds={saved.map(m=>m.clientId)} statuses={[]} saveMessage={async form=>{
+ return <div className="chat-workspace connected-chat"><button style={{position:'fixed',right:8,top:8,zIndex:30,fontSize:10}} onClick={()=>{fail.current=true;}}>Fail next save</button><ConnectedChatDelivery id={id} generation={1} replies savedIds={saved.map(m=>m.id)} savedClientIds={saved.map(m=>m.clientId)} statuses={[]} action={async form=>{
+  if(form.get('operation')==='skip')return {message:'Reply stopped'};
   await new Promise(resolve=>setTimeout(resolve,900));
   const clientId=String(form.get('clientId'));const messageId=attempts.current.get(clientId)??crypto.randomUUID();attempts.current.set(clientId,messageId);
   if(fail.current){fail.current=false;return {error:'Connection interrupted. Retry sending.'};}

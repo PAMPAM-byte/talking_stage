@@ -42,3 +42,31 @@ test('delivery failure keeps text in its bubble and retries without duplication'
  await expect(page.locator('.message-turn--user')).toHaveAttribute('data-client-id',clientId!);
  await expect(page.locator('.typing-bubble')).toBeVisible();
 });
+
+test('a failed AI reply does not turn a saved message into a delivery failure',async({page})=>{
+ let postRequests=0;
+ await page.route('**/api/conversations/**/replies/**',route=>{
+  if(route.request().method()==='POST')postRequests++;
+  return route.fulfill({json:{state:'failed'}});
+ });
+ await page.goto('/dev/chat-delivery');
+ await page.getByRole('textbox',{name:'Message Amara'}).fill('Delivery and reply are separate.');
+ await page.getByRole('button',{name:'Send message'}).click();
+ await expect(page.getByText('Your message is saved. You can retry the reply below it.',{exact:true})).toBeVisible();
+ await expect(page.getByLabel('Saved',{exact:true})).toBeVisible();
+ await expect(page.locator('.typing-bubble')).toHaveCount(0);
+ await expect(page.getByRole('button',{name:'Retry sending'})).toHaveCount(0);
+ expect(postRequests).toBe(0);
+});
+
+test('stopping a reply preserves delivery and the next draft',async({page})=>{
+ await page.route('**/api/conversations/**/replies/**',route=>route.fulfill({json:{state:'generating'}}));
+ await page.goto('/dev/chat-delivery');
+ const input=page.getByRole('textbox',{name:'Message Amara'});
+ await input.fill('Hello again.');await input.press('Enter');
+ await expect(page.locator('.typing-bubble')).toBeVisible();await input.fill('My next thought.');
+ await page.getByRole('button',{name:'Stop reply'}).click();
+ await expect(page.locator('.typing-bubble')).toHaveCount(0);
+ await expect(page.getByLabel('Saved',{exact:true})).toBeVisible();
+ await expect(input).toHaveValue('My next thought.');
+});

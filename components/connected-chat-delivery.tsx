@@ -8,15 +8,16 @@ import {MessageDelivery,TypingBubble} from './message-delivery';
 
 type Outgoing={clientId:string;text:string;time:string;messageId?:string;state:'sending'|'saved'|'failed';error?:string};
 type ReplyStatus={messageId:string;state:string;attempts:number};
-type Delivery={outgoing:Outgoing[];sending:boolean;typing:boolean;send:(text:string,item?:Outgoing)=>Promise<void>;watch:(messageId:string)=>void;stop:()=>Promise<void>};
+type Delivery={outgoing:Outgoing[];sending:boolean;typing:boolean;active:string[];send:(text:string,item?:Outgoing)=>Promise<void>;watch:(messageId:string)=>void;stop:()=>Promise<void>};
 const Context=createContext<Delivery|null>(null);
 function useDelivery(){const value=useContext(Context);if(!value)throw new Error('Missing conversation delivery boundary');return value;}
 export function useReplyDelivery(){return useContext(Context);}
 
-export function ConnectedChatDelivery({id,generation,replies,savedIds,savedClientIds=[],statuses,children,saveMessage=conversationAction}:{id:string;generation:number;replies:boolean;savedIds:string[];savedClientIds?:string[];statuses:ReplyStatus[];children:ReactNode;saveMessage?:typeof conversationAction}) {
+export function ConnectedChatDelivery({id,generation,replies,savedIds,savedClientIds=[],statuses,children,action=conversationAction}:{id:string;generation:number;replies:boolean;savedIds:string[];savedClientIds?:string[];statuses:ReplyStatus[];children:ReactNode;action?:typeof conversationAction}) {
  const router=useRouter();const [outgoing,setOutgoing]=useState<Outgoing[]>([]);const [sending,setSending]=useState(false);
  const [watching,setWatching]=useState<string[]>(()=>statuses.filter(s=>s.state==='generating').map(s=>s.messageId));
  const [notice,setNotice]=useState('');const locked=useRef(false);const mounted=useRef(true);
+ const latestStatuses=useRef(statuses);useEffect(()=>{latestStatuses.current=statuses;},[statuses]);
  useEffect(()=>{mounted.current=true;return()=>{mounted.current=false;};},[]);
  // Poll metadata only. The durable database job, not an optimistic bubble, owns reply state.
  useEffect(()=>{
@@ -37,6 +38,9 @@ export function ConnectedChatDelivery({id,generation,replies,savedIds,savedClien
       response=await fetch(url,{method:'POST',credentials:'same-origin',signal:AbortSignal.any([controller.signal,AbortSignal.timeout(30000)])});
       if(!response.ok)throw new Error('reply_unavailable');
       ({state}=await response.json());
+     }
+     if(state==='earlier_reply_pending'&&latestStatuses.current.some(item=>item.state==='failed'&&!watching.includes(item.messageId))){
+      finished.push(messageId);setNotice('Retry or skip the earlier reply to continue. Your messages are saved.');continue;
      }
      if(!['generating','earlier_reply_pending'].includes(state)){
       finished.push(messageId);
@@ -59,7 +63,7 @@ export function ConnectedChatDelivery({id,generation,replies,savedIds,savedClien
   setOutgoing(current=>previous?current.map(value=>value.clientId===item.clientId?{...item,state:'sending',error:undefined}:value):[...current,item]);
   const data=new FormData();data.set('id',id);data.set('operation','send');data.set('generation',String(generation));data.set('clientId',item.clientId);data.set('text',text);
   try{
-   const result=await saveMessage(data);
+   const result=await action(data);
    if(!mounted.current)return;
    if(result.error||!result.messageId)throw new Error(result.error??'Message not saved. Try again.');
    setOutgoing(current=>current.map(value=>value.clientId===item.clientId?{...value,state:'saved',messageId:result.messageId}:value));
@@ -70,12 +74,12 @@ export function ConnectedChatDelivery({id,generation,replies,savedIds,savedClien
  async function stop(){
   for(const messageId of watching){
    const data=new FormData();data.set('id',id);data.set('messageId',messageId);data.set('operation','skip');
-   const result=await conversationAction(data);
+   const result=await action(data);
    if(result.error){setNotice(result.error);return;}
   }
   setWatching([]);router.refresh();
  }
- const value={outgoing:outgoing.filter(item=>!savedClientIds.includes(item.clientId)&&(!item.messageId||!savedIds.includes(item.messageId))),sending,typing:watching.length>0,send,watch:(messageId:string)=>setWatching(current=>[...new Set([...current,messageId])]),stop};
+ const value={outgoing:outgoing.filter(item=>!savedClientIds.includes(item.clientId)&&(!item.messageId||!savedIds.includes(item.messageId))),sending,typing:watching.length>0,active:watching,send,watch:(messageId:string)=>setWatching(current=>[...new Set([...current,messageId])]),stop};
  return <Context.Provider value={value}>{children}{notice&&<p className="chat-delivery-notice caption" role="status">{notice}</p>}</Context.Provider>;
 }
 
