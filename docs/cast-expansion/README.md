@@ -8,7 +8,7 @@ The owner-requested [photography refresh](../character-photo-refresh/README.md) 
 
 | Character | Age | Role | Distinct appearance |
 | --- | --- | --- | --- |
-| Adaora | 25 | Upcoming singer-songwriter | Deep brown skin, short natural curls, mustard linen |
+| Tega | 25 | Upcoming singer-songwriter | Deep brown skin, short natural curls, mustard linen |
 | Raymond | 52 | Entrepreneur / sugar daddy personality | Broad square face, stocky build, salt-and-pepper hair and beard |
 | Vivian | 46 | Business owner / sugar mummy personality | Mature round face, fuller build, side-part wavy wig |
 | Chief Chukwudi | 64 | Chief and community patron | Long face, prominent nose, grey beard, traditional attire |
