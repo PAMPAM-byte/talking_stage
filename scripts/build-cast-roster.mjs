@@ -155,7 +155,7 @@ function reviewMarkdown(pack) {
             ...sampleNames.map(name => `| ${name} | ${c.personality.samples[name]} |`), '',
             `**Sincere attraction sample:** ${c.personality.relationship.attractionReply}`, '',
             `**Substantive discussion sample:** ${c.personality.relationship.thoughtfulReply}`, '',
-            '**Evaluation:** Pending native-speaker, owner and live-model review. Private backstory is fictional; it is not user memory.', '',
+            '**Evaluation:** Initial live results are tracked in [the conversation review](./evaluations/review.md). Native-speaker/owner scores and full scenario acceptance remain pending. Private backstory is fictional; it is not user memory.', '',
         );
     }
     return lines.join('\n');

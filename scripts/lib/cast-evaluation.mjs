@@ -44,6 +44,8 @@ export function reviewSignals(text) {
     return { words: words.length, questions: (text.match(/\?/g) ?? []).length,
         longForShortPrompt: words.length > 90,
         stockAssistantOpening: /^(?:as an ai|i understand how you feel|i'm here to (?:help|support)|it sounds like)/i.test(text),
+        assistantCheckout: /(?:anything else (?:you(?:'d| would) like|i can)|what would you like to talk about|(?:still )?happy to keep chatting)/i.test(text),
+        particleLiteralisation: /\b(?:jare|joor) is (?:a |the )?(?:good|fine|valid|great|nice) (?:place|answer)\b/i.test(text),
         listFormatting: /(?:^|\n)\s*(?:[-*]|\d+[.)])\s/.test(text),
         requiresHumanReview: true };
 }

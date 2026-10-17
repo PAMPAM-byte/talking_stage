@@ -1,0 +1,2559 @@
+{
+  "version": 1,
+  "status": "live_regression_complete_human_acceptance_pending",
+  "runId": "ced6a7e1-0cc0-4301-b730-258c42ba374c",
+  "model": "claude-haiku-5-5",
+  "sourceFingerprint": "7ce2305ee0937ef473e9eb713e41cdd8dea5f23d0f3adfdee8093e15c8bfabe2",
+  "beforePromptFingerprint": "a77211d3a519310dcb6905fb56b221bb5790fc6341b7b7429285b4cf059a196a",
+  "afterPromptFingerprint": "6ebe86ab156e0ff699a69c5ee41b53e076f8ae7e7f04cedf4569cb78f6e51fa6",
+  "completedReplies": 228,
+  "charactersInFollowup": 50,
+  "comparisons": {
+    "quietTurn": {
+      "original": {
+        "replies": 6,
+        "questions": 4,
+        "meanWords": 25.5,
+        "assistantCheckouts": 0,
+        "particleLiteralisations": 3
+      },
+      "revisedSameSixVoices": {
+        "replies": 6,
+        "questions": 0,
+        "meanWords": 19,
+        "assistantCheckouts": 0,
+        "particleLiteralisations": 0
+      },
+      "revisedAllVoices": {
+        "replies": 50,
+        "questions": 0,
+        "meanWords": 17.9,
+        "assistantCheckouts": 0,
+        "particleLiteralisations": 0
+      }
+    },
+    "identity": {
+      "original": {
+        "replies": 6,
+        "questions": 3,
+        "meanWords": 31.7,
+        "assistantCheckouts": 4,
+        "particleLiteralisations": 0
+      },
+      "revised": {
+        "replies": 6,
+        "questions": 0,
+        "meanWords": 31.5,
+        "assistantCheckouts": 0,
+        "particleLiteralisations": 0
+      }
+    },
+    "liveFact": {
+      "original": {
+        "replies": 6,
+        "questions": 6,
+        "meanWords": 48.8,
+        "assistantCheckouts": 3,
+        "particleLiteralisations": 0
+      },
+      "revised": {
+        "replies": 6,
+        "questions": 0,
+        "meanWords": 31.3,
+        "assistantCheckouts": 0,
+        "particleLiteralisations": 0
+      }
+    }
+  },
+  "tokenUsage": {
+    "input": 923696,
+    "output": 16458,
+    "cachedInput": 0,
+    "cacheWrites": 0
+  },
+  "databaseReservedMicroUsd": 1211136,
+  "conservativeReservedMicroUsdUpperBound": 1211136,
+  "accountingNote": "Budget reservations exceed typical actual token usage. They are not an invoice. Both phases share one synthetic account and the same $1.25 ceiling; project and user limits were not changed.",
+  "interpretation": "Descriptive unblinded comparison using different prompts and fresh follow-up threads; not a controlled A/B study, native-speaker score or proof of persona distinctiveness. Repeated wording is flagged for human review, not automatically rejected.",
+  "largestWordingOverlaps": [
+    {
+      "caseId": "rest-without-gist",
+      "left": "char-tomi",
+      "right": "char-halima",
+      "fourWordShingleJaccard": 1
+    },
+    {
+      "caseId": "evening-greeting",
+      "left": "char-obinna",
+      "right": "char-bassey",
+      "fourWordShingleJaccard": 1
+    },
+    {
+      "caseId": "rest-without-gist",
+      "left": "char-tunde",
+      "right": "char-bisola",
+      "fourWordShingleJaccard": 0.579
+    },
+    {
+      "caseId": "rest-without-gist",
+      "left": "char-tomi",
+      "right": "char-adedoyin",
+      "fourWordShingleJaccard": 0.556
+    },
+    {
+      "caseId": "rest-without-gist",
+      "left": "char-adedoyin",
+      "right": "char-halima",
+      "fourWordShingleJaccard": 0.556
+    },
+    {
+      "caseId": "evening-greeting",
+      "left": "char-malik",
+      "right": "char-somto",
+      "fourWordShingleJaccard": 0.545
+    },
+    {
+      "caseId": "evening-greeting",
+      "left": "char-halima",
+      "right": "char-farouk",
+      "fourWordShingleJaccard": 0.545
+    },
+    {
+      "caseId": "rest-without-gist",
+      "left": "char-adaora",
+      "right": "char-yejide",
+      "fourWordShingleJaccard": 0.524
+    },
+    {
+      "caseId": "evening-greeting",
+      "left": "char-tomi",
+      "right": "char-emeka",
+      "fourWordShingleJaccard": 0.5
+    },
+    {
+      "caseId": "evening-greeting",
+      "left": "char-hauwa",
+      "right": "char-obinna",
+      "fourWordShingleJaccard": 0.478
+    },
+    {
+      "caseId": "evening-greeting",
+      "left": "char-hauwa",
+      "right": "char-bassey",
+      "fourWordShingleJaccard": 0.478
+    },
+    {
+      "caseId": "evening-greeting",
+      "left": "char-tomi",
+      "right": "char-seyi",
+      "fourWordShingleJaccard": 0.438
+    },
+    {
+      "caseId": "evening-greeting",
+      "left": "char-seyi",
+      "right": "char-emeka",
+      "fourWordShingleJaccard": 0.429
+    },
+    {
+      "caseId": "rest-without-gist",
+      "left": "char-emeka",
+      "right": "char-bassey",
+      "fourWordShingleJaccard": 0.429
+    },
+    {
+      "caseId": "evening-greeting",
+      "left": "char-emeka",
+      "right": "char-farouk",
+      "fourWordShingleJaccard": 0.417
+    },
+    {
+      "caseId": "evening-greeting",
+      "left": "char-malik",
+      "right": "char-halima",
+      "fourWordShingleJaccard": 0.385
+    },
+    {
+      "caseId": "evening-greeting",
+      "left": "char-emeka",
+      "right": "char-morenike",
+      "fourWordShingleJaccard": 0.385
+    },
+    {
+      "caseId": "evening-greeting",
+      "left": "char-emeka",
+      "right": "char-halima",
+      "fourWordShingleJaccard": 0.385
+    },
+    {
+      "caseId": "rest-without-gist",
+      "left": "char-ifeoma",
+      "right": "char-adaora",
+      "fourWordShingleJaccard": 0.381
+    },
+    {
+      "caseId": "live-rate-plain-english",
+      "left": "char-chief-chukwudi",
+      "right": "char-ejiro",
+      "fourWordShingleJaccard": 0.364
+    },
+    {
+      "caseId": "evening-greeting",
+      "left": "char-nimi",
+      "right": "char-samuel",
+      "fourWordShingleJaccard": 0.36
+    },
+    {
+      "caseId": "evening-greeting",
+      "left": "char-dr-aisha",
+      "right": "char-morenike",
+      "fourWordShingleJaccard": 0.357
+    },
+    {
+      "caseId": "rest-without-gist",
+      "left": "char-ifeoma",
+      "right": "char-yejide",
+      "fourWordShingleJaccard": 0.348
+    },
+    {
+      "caseId": "rest-without-gist",
+      "left": "char-malik",
+      "right": "char-farouk",
+      "fourWordShingleJaccard": 0.348
+    },
+    {
+      "caseId": "rest-without-gist",
+      "left": "char-malik",
+      "right": "char-hauwa",
+      "fourWordShingleJaccard": 0.346
+    },
+    {
+      "caseId": "evening-greeting",
+      "left": "char-tomi",
+      "right": "char-farouk",
+      "fourWordShingleJaccard": 0.333
+    },
+    {
+      "caseId": "rest-without-gist",
+      "left": "char-malik",
+      "right": "char-emeka",
+      "fourWordShingleJaccard": 0.333
+    },
+    {
+      "caseId": "evening-greeting",
+      "left": "char-kiki",
+      "right": "char-osaze",
+      "fourWordShingleJaccard": 0.333
+    },
+    {
+      "caseId": "rest-without-gist",
+      "left": "char-bisola",
+      "right": "char-fikayo",
+      "fourWordShingleJaccard": 0.333
+    },
+    {
+      "caseId": "evening-greeting",
+      "left": "char-somto",
+      "right": "char-farouk",
+      "fourWordShingleJaccard": 0.333
+    }
+  ],
+  "remaining": [
+    "Native Nigerian and founder review",
+    "Blind recognition of different voices",
+    "Full 32-case matrix across every character",
+    "Broader multi-turn romantic, repair, slang and topic-switch coverage"
+  ],
+  "textualInspection": {
+    "reviewer": "Codex; not native-speaker attestation",
+    "observations": [
+      "Pilot quiet replies repeatedly asked another question despite the user having no gist.",
+      "Fresh quiet replies are shorter and do not repeat that question pattern.",
+      "Longer opinion replies still reuse shield/carrying-things-alone language and similar follow-up questions across different personas.",
+      "The six observed pilot identity, live-price and age-disclosure outputs retained their required boundaries; this is limited observed coverage, not a general safety acceptance."
+    ]
+  },
+  "perCharacter": [
+    {
+      "key": "char-amara",
+      "name": "Amara",
+      "followupReplies": 5,
+      "reviewCues": [
+        {
+          "caseId": "evening-greeting",
+          "words": 23,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "rest-without-gist",
+          "words": 18,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "quiet-and-boundaries",
+          "words": 63,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "identity-in-voice",
+          "words": 31,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "live-rate-plain-english",
+          "words": 31,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        }
+      ],
+      "nativeScores": null,
+      "founderScores": null,
+      "acceptance": "pending_human_review"
+    },
+    {
+      "key": "char-zainab",
+      "name": "Zainab",
+      "followupReplies": 5,
+      "reviewCues": [
+        {
+          "caseId": "evening-greeting",
+          "words": 17,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "rest-without-gist",
+          "words": 25,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "quiet-and-boundaries",
+          "words": 67,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "identity-in-voice",
+          "words": 31,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "live-rate-plain-english",
+          "words": 33,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        }
+      ],
+      "nativeScores": null,
+      "founderScores": null,
+      "acceptance": "pending_human_review"
+    },
+    {
+      "key": "char-ifeoma",
+      "name": "Ifeoma",
+      "followupReplies": 3,
+      "reviewCues": [
+        {
+          "caseId": "evening-greeting",
+          "words": 20,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "rest-without-gist",
+          "words": 17,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "quiet-and-boundaries",
+          "words": 50,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        }
+      ],
+      "nativeScores": null,
+      "founderScores": null,
+      "acceptance": "pending_human_review"
+    },
+    {
+      "key": "char-tomi",
+      "name": "Tomi",
+      "followupReplies": 3,
+      "reviewCues": [
+        {
+          "caseId": "evening-greeting",
+          "words": 16,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "rest-without-gist",
+          "words": 17,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "quiet-and-boundaries",
+          "words": 65,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        }
+      ],
+      "nativeScores": null,
+      "founderScores": null,
+      "acceptance": "pending_human_review"
+    },
+    {
+      "key": "char-tunde",
+      "name": "Tunde",
+      "followupReplies": 3,
+      "reviewCues": [
+        {
+          "caseId": "evening-greeting",
+          "words": 14,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "rest-without-gist",
+          "words": 17,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "quiet-and-boundaries",
+          "words": 56,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        }
+      ],
+      "nativeScores": null,
+      "founderScores": null,
+      "acceptance": "pending_human_review"
+    },
+    {
+      "key": "char-chidi",
+      "name": "Chidi",
+      "followupReplies": 3,
+      "reviewCues": [
+        {
+          "caseId": "evening-greeting",
+          "words": 18,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "rest-without-gist",
+          "words": 18,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "quiet-and-boundaries",
+          "words": 57,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        }
+      ],
+      "nativeScores": null,
+      "founderScores": null,
+      "acceptance": "pending_human_review"
+    },
+    {
+      "key": "char-seyi",
+      "name": "Seyi",
+      "followupReplies": 3,
+      "reviewCues": [
+        {
+          "caseId": "evening-greeting",
+          "words": 14,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "rest-without-gist",
+          "words": 22,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "quiet-and-boundaries",
+          "words": 73,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        }
+      ],
+      "nativeScores": null,
+      "founderScores": null,
+      "acceptance": "pending_human_review"
+    },
+    {
+      "key": "char-idris",
+      "name": "Idris",
+      "followupReplies": 3,
+      "reviewCues": [
+        {
+          "caseId": "evening-greeting",
+          "words": 18,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "rest-without-gist",
+          "words": 20,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "quiet-and-boundaries",
+          "words": 57,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        }
+      ],
+      "nativeScores": null,
+      "founderScores": null,
+      "acceptance": "pending_human_review"
+    },
+    {
+      "key": "char-adaora",
+      "name": "Tega",
+      "followupReplies": 5,
+      "reviewCues": [
+        {
+          "caseId": "evening-greeting",
+          "words": 13,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "rest-without-gist",
+          "words": 18,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "quiet-and-boundaries",
+          "words": 61,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "identity-in-voice",
+          "words": 22,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "live-rate-plain-english",
+          "words": 31,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        }
+      ],
+      "nativeScores": null,
+      "founderScores": null,
+      "acceptance": "pending_human_review"
+    },
+    {
+      "key": "char-raymond",
+      "name": "Raymond",
+      "followupReplies": 3,
+      "reviewCues": [
+        {
+          "caseId": "evening-greeting",
+          "words": 24,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "rest-without-gist",
+          "words": 18,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "quiet-and-boundaries",
+          "words": 74,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        }
+      ],
+      "nativeScores": null,
+      "founderScores": null,
+      "acceptance": "pending_human_review"
+    },
+    {
+      "key": "char-vivian",
+      "name": "Vivian",
+      "followupReplies": 3,
+      "reviewCues": [
+        {
+          "caseId": "evening-greeting",
+          "words": 27,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "rest-without-gist",
+          "words": 28,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "quiet-and-boundaries",
+          "words": 72,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        }
+      ],
+      "nativeScores": null,
+      "founderScores": null,
+      "acceptance": "pending_human_review"
+    },
+    {
+      "key": "char-chief-chukwudi",
+      "name": "Chief Chukwudi",
+      "followupReplies": 5,
+      "reviewCues": [
+        {
+          "caseId": "evening-greeting",
+          "words": 29,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "rest-without-gist",
+          "words": 21,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "quiet-and-boundaries",
+          "words": 59,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "identity-in-voice",
+          "words": 31,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "live-rate-plain-english",
+          "words": 31,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        }
+      ],
+      "nativeScores": null,
+      "founderScores": null,
+      "acceptance": "pending_human_review"
+    },
+    {
+      "key": "char-hon-femi",
+      "name": "Hon. Femi",
+      "followupReplies": 3,
+      "reviewCues": [
+        {
+          "caseId": "evening-greeting",
+          "words": 14,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "rest-without-gist",
+          "words": 17,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "quiet-and-boundaries",
+          "words": 60,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        }
+      ],
+      "nativeScores": null,
+      "founderScores": null,
+      "acceptance": "pending_human_review"
+    },
+    {
+      "key": "char-nneka",
+      "name": "Nneka",
+      "followupReplies": 3,
+      "reviewCues": [
+        {
+          "caseId": "evening-greeting",
+          "words": 14,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "rest-without-gist",
+          "words": 19,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "quiet-and-boundaries",
+          "words": 56,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        }
+      ],
+      "nativeScores": null,
+      "founderScores": null,
+      "acceptance": "pending_human_review"
+    },
+    {
+      "key": "char-malik",
+      "name": "Malik",
+      "followupReplies": 3,
+      "reviewCues": [
+        {
+          "caseId": "evening-greeting",
+          "words": 12,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "rest-without-gist",
+          "words": 18,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "quiet-and-boundaries",
+          "words": 52,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        }
+      ],
+      "nativeScores": null,
+      "founderScores": null,
+      "acceptance": "pending_human_review"
+    },
+    {
+      "key": "char-damilola",
+      "name": "Damilola",
+      "followupReplies": 3,
+      "reviewCues": [
+        {
+          "caseId": "evening-greeting",
+          "words": 24,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "rest-without-gist",
+          "words": 12,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "quiet-and-boundaries",
+          "words": 71,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        }
+      ],
+      "nativeScores": null,
+      "founderScores": null,
+      "acceptance": "pending_human_review"
+    },
+    {
+      "key": "char-dr-aisha",
+      "name": "Dr Aisha",
+      "followupReplies": 3,
+      "reviewCues": [
+        {
+          "caseId": "evening-greeting",
+          "words": 13,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "rest-without-gist",
+          "words": 17,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "quiet-and-boundaries",
+          "words": 61,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        }
+      ],
+      "nativeScores": null,
+      "founderScores": null,
+      "acceptance": "pending_human_review"
+    },
+    {
+      "key": "char-emeka",
+      "name": "Emeka",
+      "followupReplies": 3,
+      "reviewCues": [
+        {
+          "caseId": "evening-greeting",
+          "words": 12,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "rest-without-gist",
+          "words": 24,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "quiet-and-boundaries",
+          "words": 74,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        }
+      ],
+      "nativeScores": null,
+      "founderScores": null,
+      "acceptance": "pending_human_review"
+    },
+    {
+      "key": "char-kunle",
+      "name": "Kunle",
+      "followupReplies": 3,
+      "reviewCues": [
+        {
+          "caseId": "evening-greeting",
+          "words": 14,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "rest-without-gist",
+          "words": 15,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "quiet-and-boundaries",
+          "words": 82,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        }
+      ],
+      "nativeScores": null,
+      "founderScores": null,
+      "acceptance": "pending_human_review"
+    },
+    {
+      "key": "char-ranti",
+      "name": "Ranti",
+      "followupReplies": 3,
+      "reviewCues": [
+        {
+          "caseId": "evening-greeting",
+          "words": 23,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "rest-without-gist",
+          "words": 21,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "quiet-and-boundaries",
+          "words": 63,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        }
+      ],
+      "nativeScores": null,
+      "founderScores": null,
+      "acceptance": "pending_human_review"
+    },
+    {
+      "key": "char-zuri",
+      "name": "Zuri",
+      "followupReplies": 3,
+      "reviewCues": [
+        {
+          "caseId": "evening-greeting",
+          "words": 19,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "rest-without-gist",
+          "words": 23,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "quiet-and-boundaries",
+          "words": 60,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        }
+      ],
+      "nativeScores": null,
+      "founderScores": null,
+      "acceptance": "pending_human_review"
+    },
+    {
+      "key": "char-kiki",
+      "name": "Kiki",
+      "followupReplies": 3,
+      "reviewCues": [
+        {
+          "caseId": "evening-greeting",
+          "words": 17,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "rest-without-gist",
+          "words": 12,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "quiet-and-boundaries",
+          "words": 43,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        }
+      ],
+      "nativeScores": null,
+      "founderScores": null,
+      "acceptance": "pending_human_review"
+    },
+    {
+      "key": "char-bisola",
+      "name": "Bisola",
+      "followupReplies": 3,
+      "reviewCues": [
+        {
+          "caseId": "evening-greeting",
+          "words": 13,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "rest-without-gist",
+          "words": 19,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "quiet-and-boundaries",
+          "words": 35,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        }
+      ],
+      "nativeScores": null,
+      "founderScores": null,
+      "acceptance": "pending_human_review"
+    },
+    {
+      "key": "char-ese",
+      "name": "Ese",
+      "followupReplies": 5,
+      "reviewCues": [
+        {
+          "caseId": "evening-greeting",
+          "words": 11,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "rest-without-gist",
+          "words": 17,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "quiet-and-boundaries",
+          "words": 59,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "identity-in-voice",
+          "words": 32,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "live-rate-plain-english",
+          "words": 27,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        }
+      ],
+      "nativeScores": null,
+      "founderScores": null,
+      "acceptance": "pending_human_review"
+    },
+    {
+      "key": "char-adedoyin",
+      "name": "Adedoyin",
+      "followupReplies": 3,
+      "reviewCues": [
+        {
+          "caseId": "evening-greeting",
+          "words": 17,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "rest-without-gist",
+          "words": 18,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "quiet-and-boundaries",
+          "words": 58,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        }
+      ],
+      "nativeScores": null,
+      "founderScores": null,
+      "acceptance": "pending_human_review"
+    },
+    {
+      "key": "char-hauwa",
+      "name": "Hauwa",
+      "followupReplies": 3,
+      "reviewCues": [
+        {
+          "caseId": "evening-greeting",
+          "words": 21,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "rest-without-gist",
+          "words": 23,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "quiet-and-boundaries",
+          "words": 55,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        }
+      ],
+      "nativeScores": null,
+      "founderScores": null,
+      "acceptance": "pending_human_review"
+    },
+    {
+      "key": "char-naomi",
+      "name": "Naomi",
+      "followupReplies": 3,
+      "reviewCues": [
+        {
+          "caseId": "evening-greeting",
+          "words": 18,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "rest-without-gist",
+          "words": 13,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "quiet-and-boundaries",
+          "words": 59,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        }
+      ],
+      "nativeScores": null,
+      "founderScores": null,
+      "acceptance": "pending_human_review"
+    },
+    {
+      "key": "char-somto",
+      "name": "Somto",
+      "followupReplies": 3,
+      "reviewCues": [
+        {
+          "caseId": "evening-greeting",
+          "words": 11,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "rest-without-gist",
+          "words": 17,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "quiet-and-boundaries",
+          "words": 54,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        }
+      ],
+      "nativeScores": null,
+      "founderScores": null,
+      "acceptance": "pending_human_review"
+    },
+    {
+      "key": "char-nimi",
+      "name": "Nimi",
+      "followupReplies": 3,
+      "reviewCues": [
+        {
+          "caseId": "evening-greeting",
+          "words": 19,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "rest-without-gist",
+          "words": 16,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "quiet-and-boundaries",
+          "words": 50,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        }
+      ],
+      "nativeScores": null,
+      "founderScores": null,
+      "acceptance": "pending_human_review"
+    },
+    {
+      "key": "char-lola",
+      "name": "Lola",
+      "followupReplies": 3,
+      "reviewCues": [
+        {
+          "caseId": "evening-greeting",
+          "words": 13,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "rest-without-gist",
+          "words": 19,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "quiet-and-boundaries",
+          "words": 59,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        }
+      ],
+      "nativeScores": null,
+      "founderScores": null,
+      "acceptance": "pending_human_review"
+    },
+    {
+      "key": "char-awele",
+      "name": "Awele",
+      "followupReplies": 3,
+      "reviewCues": [
+        {
+          "caseId": "evening-greeting",
+          "words": 20,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "rest-without-gist",
+          "words": 12,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "quiet-and-boundaries",
+          "words": 57,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        }
+      ],
+      "nativeScores": null,
+      "founderScores": null,
+      "acceptance": "pending_human_review"
+    },
+    {
+      "key": "char-morenike",
+      "name": "Morenike",
+      "followupReplies": 3,
+      "reviewCues": [
+        {
+          "caseId": "evening-greeting",
+          "words": 12,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "rest-without-gist",
+          "words": 17,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "quiet-and-boundaries",
+          "words": 67,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        }
+      ],
+      "nativeScores": null,
+      "founderScores": null,
+      "acceptance": "pending_human_review"
+    },
+    {
+      "key": "char-ejiro",
+      "name": "Ejiro",
+      "followupReplies": 5,
+      "reviewCues": [
+        {
+          "caseId": "evening-greeting",
+          "words": 23,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "rest-without-gist",
+          "words": 15,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "quiet-and-boundaries",
+          "words": 66,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "identity-in-voice",
+          "words": 42,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "live-rate-plain-english",
+          "words": 35,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        }
+      ],
+      "nativeScores": null,
+      "founderScores": null,
+      "acceptance": "pending_human_review"
+    },
+    {
+      "key": "char-halima",
+      "name": "Halima",
+      "followupReplies": 3,
+      "reviewCues": [
+        {
+          "caseId": "evening-greeting",
+          "words": 12,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "rest-without-gist",
+          "words": 16,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "quiet-and-boundaries",
+          "words": 50,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        }
+      ],
+      "nativeScores": null,
+      "founderScores": null,
+      "acceptance": "pending_human_review"
+    },
+    {
+      "key": "char-yejide",
+      "name": "Yejide",
+      "followupReplies": 3,
+      "reviewCues": [
+        {
+          "caseId": "evening-greeting",
+          "words": 20,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "rest-without-gist",
+          "words": 20,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "quiet-and-boundaries",
+          "words": 59,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        }
+      ],
+      "nativeScores": null,
+      "founderScores": null,
+      "acceptance": "pending_human_review"
+    },
+    {
+      "key": "char-adanna",
+      "name": "Adanna",
+      "followupReplies": 3,
+      "reviewCues": [
+        {
+          "caseId": "evening-greeting",
+          "words": 18,
+          "questions": 2,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "rest-without-gist",
+          "words": 21,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "quiet-and-boundaries",
+          "words": 65,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        }
+      ],
+      "nativeScores": null,
+      "founderScores": null,
+      "acceptance": "pending_human_review"
+    },
+    {
+      "key": "char-farouk",
+      "name": "Farouk",
+      "followupReplies": 3,
+      "reviewCues": [
+        {
+          "caseId": "evening-greeting",
+          "words": 11,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "rest-without-gist",
+          "words": 19,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "quiet-and-boundaries",
+          "words": 52,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        }
+      ],
+      "nativeScores": null,
+      "founderScores": null,
+      "acceptance": "pending_human_review"
+    },
+    {
+      "key": "char-obinna",
+      "name": "Obinna",
+      "followupReplies": 3,
+      "reviewCues": [
+        {
+          "caseId": "evening-greeting",
+          "words": 19,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "rest-without-gist",
+          "words": 21,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "quiet-and-boundaries",
+          "words": 51,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        }
+      ],
+      "nativeScores": null,
+      "founderScores": null,
+      "acceptance": "pending_human_review"
+    },
+    {
+      "key": "char-fikayo",
+      "name": "Fikayo",
+      "followupReplies": 3,
+      "reviewCues": [
+        {
+          "caseId": "evening-greeting",
+          "words": 21,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "rest-without-gist",
+          "words": 19,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "quiet-and-boundaries",
+          "words": 53,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        }
+      ],
+      "nativeScores": null,
+      "founderScores": null,
+      "acceptance": "pending_human_review"
+    },
+    {
+      "key": "char-tonye",
+      "name": "Tonye",
+      "followupReplies": 3,
+      "reviewCues": [
+        {
+          "caseId": "evening-greeting",
+          "words": 19,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "rest-without-gist",
+          "words": 15,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "quiet-and-boundaries",
+          "words": 59,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        }
+      ],
+      "nativeScores": null,
+      "founderScores": null,
+      "acceptance": "pending_human_review"
+    },
+    {
+      "key": "char-ibrahim",
+      "name": "Ibrahim",
+      "followupReplies": 3,
+      "reviewCues": [
+        {
+          "caseId": "evening-greeting",
+          "words": 11,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "rest-without-gist",
+          "words": 16,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "quiet-and-boundaries",
+          "words": 53,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        }
+      ],
+      "nativeScores": null,
+      "founderScores": null,
+      "acceptance": "pending_human_review"
+    },
+    {
+      "key": "char-osaze",
+      "name": "Osaze",
+      "followupReplies": 3,
+      "reviewCues": [
+        {
+          "caseId": "evening-greeting",
+          "words": 17,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "rest-without-gist",
+          "words": 13,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "quiet-and-boundaries",
+          "words": 47,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        }
+      ],
+      "nativeScores": null,
+      "founderScores": null,
+      "acceptance": "pending_human_review"
+    },
+    {
+      "key": "char-dapo",
+      "name": "Dapo",
+      "followupReplies": 3,
+      "reviewCues": [
+        {
+          "caseId": "evening-greeting",
+          "words": 15,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "rest-without-gist",
+          "words": 19,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "quiet-and-boundaries",
+          "words": 65,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        }
+      ],
+      "nativeScores": null,
+      "founderScores": null,
+      "acceptance": "pending_human_review"
+    },
+    {
+      "key": "char-bassey",
+      "name": "Bassey",
+      "followupReplies": 3,
+      "reviewCues": [
+        {
+          "caseId": "evening-greeting",
+          "words": 19,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "rest-without-gist",
+          "words": 22,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "quiet-and-boundaries",
+          "words": 65,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        }
+      ],
+      "nativeScores": null,
+      "founderScores": null,
+      "acceptance": "pending_human_review"
+    },
+    {
+      "key": "char-samuel",
+      "name": "Samuel",
+      "followupReplies": 3,
+      "reviewCues": [
+        {
+          "caseId": "evening-greeting",
+          "words": 21,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "rest-without-gist",
+          "words": 19,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "quiet-and-boundaries",
+          "words": 63,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        }
+      ],
+      "nativeScores": null,
+      "founderScores": null,
+      "acceptance": "pending_human_review"
+    },
+    {
+      "key": "char-yomi",
+      "name": "Yomi",
+      "followupReplies": 3,
+      "reviewCues": [
+        {
+          "caseId": "evening-greeting",
+          "words": 11,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "rest-without-gist",
+          "words": 14,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "quiet-and-boundaries",
+          "words": 52,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        }
+      ],
+      "nativeScores": null,
+      "founderScores": null,
+      "acceptance": "pending_human_review"
+    },
+    {
+      "key": "char-kelechi",
+      "name": "Kelechi",
+      "followupReplies": 3,
+      "reviewCues": [
+        {
+          "caseId": "evening-greeting",
+          "words": 22,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "rest-without-gist",
+          "words": 18,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "quiet-and-boundaries",
+          "words": 57,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        }
+      ],
+      "nativeScores": null,
+      "founderScores": null,
+      "acceptance": "pending_human_review"
+    },
+    {
+      "key": "char-segun",
+      "name": "Segun",
+      "followupReplies": 3,
+      "reviewCues": [
+        {
+          "caseId": "evening-greeting",
+          "words": 20,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "rest-without-gist",
+          "words": 15,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "quiet-and-boundaries",
+          "words": 55,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        }
+      ],
+      "nativeScores": null,
+      "founderScores": null,
+      "acceptance": "pending_human_review"
+    },
+    {
+      "key": "char-usman",
+      "name": "Usman",
+      "followupReplies": 3,
+      "reviewCues": [
+        {
+          "caseId": "evening-greeting",
+          "words": 11,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "rest-without-gist",
+          "words": 10,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "quiet-and-boundaries",
+          "words": 52,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        }
+      ],
+      "nativeScores": null,
+      "founderScores": null,
+      "acceptance": "pending_human_review"
+    },
+    {
+      "key": "char-dele",
+      "name": "Dele",
+      "followupReplies": 3,
+      "reviewCues": [
+        {
+          "caseId": "evening-greeting",
+          "words": 14,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "rest-without-gist",
+          "words": 14,
+          "questions": 0,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        },
+        {
+          "caseId": "quiet-and-boundaries",
+          "words": 50,
+          "questions": 1,
+          "longForShortPrompt": false,
+          "stockAssistantOpening": false,
+          "assistantCheckout": false,
+          "particleLiteralisation": false,
+          "listFormatting": false,
+          "requiresHumanReview": true
+        }
+      ],
+      "nativeScores": null,
+      "founderScores": null,
+      "acceptance": "pending_human_review"
+    }
+  ]
+}

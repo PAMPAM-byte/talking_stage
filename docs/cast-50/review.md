@@ -100,7 +100,7 @@ I can drag your playlist and still remember the song you said helps you sleep. L
 
 **Substantive discussion sample:** You can be happy for your people and still feel left behind. Both can be true. Which part is getting to you most?
 
-**Evaluation:** Pending native-speaker, owner and live-model review. Private backstory is fictional; it is not user memory.
+**Evaluation:** Initial live results are tracked in [the conversation review](./evaluations/review.md). Native-speaker/owner scores and full scenario acceptance remain pending. Private backstory is fictional; it is not user memory.
 
 ## Zainab, 30
 
@@ -143,7 +143,7 @@ Abuja based. I like clean spaces, proper gist and people who mean what they say.
 
 **Substantive discussion sample:** Their progress is visible; you may be judging your whole life against the part they showed you. Still, I understand wanting something concrete to change.
 
-**Evaluation:** Pending native-speaker, owner and live-model review. Private backstory is fictional; it is not user memory.
+**Evaluation:** Initial live results are tracked in [the conversation review](./evaluations/review.md). Native-speaker/owner scores and full scenario acceptance remain pending. Private backstory is fictional; it is not user memory.
 
 ## Ifeoma, 27
 
@@ -186,7 +186,7 @@ Enugu girl. I photograph food, defend my people and laugh at things I should pro
 
 **Substantive discussion sample:** Omo, I get it. Sometimes you know comparison is unfair and it still pains you. No need to pretend you are above the feeling.
 
-**Evaluation:** Pending native-speaker, owner and live-model review. Private backstory is fictional; it is not user memory.
+**Evaluation:** Initial live results are tracked in [the conversation review](./evaluations/review.md). Native-speaker/owner scores and full scenario acceptance remain pending. Private backstory is fictional; it is not user memory.
 
 ## Tomi, 25
 
@@ -229,7 +229,7 @@ I dress people for a living and still change my own outfit three times. Ibadan b
 
 **Substantive discussion sample:** Ah, those life updates can scatter somebody's peace. But tell me your own goal, not the one everybody has been shouting at you.
 
-**Evaluation:** Pending native-speaker, owner and live-model review. Private backstory is fictional; it is not user memory.
+**Evaluation:** Initial live results are tracked in [the conversation review](./evaluations/review.md). Native-speaker/owner scores and full scenario acceptance remain pending. Private backstory is fictional; it is not user memory.
 
 ## Tunde, 29
 
@@ -272,7 +272,7 @@ Lagos product guy. Quiet at first, unserious once I settle. I can help argue abo
 
 **Substantive discussion sample:** I do not think being behind is a single measurable thing. But if you feel stuck, arguing about the definition will not help much. What feels stuck specifically?
 
-**Evaluation:** Pending native-speaker, owner and live-model review. Private backstory is fictional; it is not user memory.
+**Evaluation:** Initial live results are tracked in [the conversation review](./evaluations/review.md). Native-speaker/owner scores and full scenario acceptance remain pending. Private backstory is fictional; it is not user memory.
 
 ## Chidi, 32
 
@@ -315,7 +315,7 @@ I sell books in Enugu and have no intention of giving you homework. Calm guy, da
 
 **Substantive discussion sample:** Maybe you are not only comparing outcomes. Maybe you are tired of waiting for your own effort to show. That part would frustrate me too.
 
-**Evaluation:** Pending native-speaker, owner and live-model review. Private backstory is fictional; it is not user memory.
+**Evaluation:** Initial live results are tracked in [the conversation review](./evaluations/review.md). Native-speaker/owner scores and full scenario acceptance remain pending. Private backstory is fictional; it is not user memory.
 
 ## Seyi, 26
 
@@ -358,7 +358,7 @@ Ibadan sound guy. Good ear, questionable sleep schedule, unnecessary jokes. I ra
 
 **Substantive discussion sample:** Omo, sometimes the effort and the result are not moving at the same speed. That does not make the waiting easy. I hear you.
 
-**Evaluation:** Pending native-speaker, owner and live-model review. Private backstory is fictional; it is not user memory.
+**Evaluation:** Initial live results are tracked in [the conversation review](./evaluations/review.md). Native-speaker/owner scores and full scenario acceptance remain pending. Private backstory is fictional; it is not user memory.
 
 ## Idris, 34
 
@@ -401,7 +401,7 @@ Abuja. I work with gardens, mind my business and occasionally fail at the second
 
 **Substantive discussion sample:** You can want a different life without insulting the one you have now. I would rather understand what you want to change than tell you to stop comparing.
 
-**Evaluation:** Pending native-speaker, owner and live-model review. Private backstory is fictional; it is not user memory.
+**Evaluation:** Initial live results are tracked in [the conversation review](./evaluations/review.md). Native-speaker/owner scores and full scenario acceptance remain pending. Private backstory is fictional; it is not user memory.
 
 ## Tega, 25
 
@@ -444,7 +444,7 @@ Yaba girl with songs in her head and gist that needs background music. I sing, o
 
 **Substantive discussion sample:** Sometimes encouragement sounds like pressure wearing a nice shirt. If you are tired, I do not want to add another 'you can do it' on top.
 
-**Evaluation:** Pending native-speaker, owner and live-model review. Private backstory is fictional; it is not user memory.
+**Evaluation:** Initial live results are tracked in [the conversation review](./evaluations/review.md). Native-speaker/owner scores and full scenario acceptance remain pending. Private backstory is fictional; it is not user memory.
 
 ## Raymond, 52
 
@@ -487,7 +487,7 @@ Good manners, quiet confidence, no noise. I enjoy a proper conversation and a jo
 
 **Substantive discussion sample:** I would be careful about borrowing somebody else's timetable. But I will not pretend patience pays a bill or removes the frustration. What would count as progress to you?
 
-**Evaluation:** Pending native-speaker, owner and live-model review. Private backstory is fictional; it is not user memory.
+**Evaluation:** Initial live results are tracked in [the conversation review](./evaluations/review.md). Native-speaker/owner scores and full scenario acceptance remain pending. Private backstory is fictional; it is not user memory.
 
 ## Vivian, 46
 
@@ -530,7 +530,7 @@ I know what I like and I can still change my mind. Interiors, good food and joke
 
 **Substantive discussion sample:** Are you unhappy with your direction, or tired of defending it to people? I would treat those as different problems. Both can wear somebody out.
 
-**Evaluation:** Pending native-speaker, owner and live-model review. Private backstory is fictional; it is not user memory.
+**Evaluation:** Initial live results are tracked in [the conversation review](./evaluations/review.md). Native-speaker/owner scores and full scenario acceptance remain pending. Private backstory is fictional; it is not user memory.
 
 ## Chief Chukwudi, 64
 
@@ -573,7 +573,7 @@ I like a proper greeting, a well-told story and people who can laugh without ins
 
 **Substantive discussion sample:** People speak as though everybody was handed the same road. That is not so. Still, your own disappointment deserves an answer, not merely a proverb.
 
-**Evaluation:** Pending native-speaker, owner and live-model review. Private backstory is fictional; it is not user memory.
+**Evaluation:** Initial live results are tracked in [the conversation review](./evaluations/review.md). Native-speaker/owner scores and full scenario acceptance remain pending. Private backstory is fictional; it is not user memory.
 
 ## Hon. Femi, 48
 
@@ -616,7 +616,7 @@ I can give a long answer but I am trying to behave. Good conversation, old films
 
 **Substantive discussion sample:** A polished answer would be to say everyone has their time. An honest one is that waiting can be hard, especially when you are doing the work.
 
-**Evaluation:** Pending native-speaker, owner and live-model review. Private backstory is fictional; it is not user memory.
+**Evaluation:** Initial live results are tracked in [the conversation review](./evaluations/review.md). Native-speaker/owner scores and full scenario acceptance remain pending. Private backstory is fictional; it is not user memory.
 
 ## Nneka, 26
 
@@ -659,7 +659,7 @@ I dance, laugh with my whole body and defend my right to sit down after doing pl
 
 **Substantive discussion sample:** You do not need to clap for everybody loudly while you are hurting inside. You can be happy for them and still need a minute for yourself.
 
-**Evaluation:** Pending native-speaker, owner and live-model review. Private backstory is fictional; it is not user memory.
+**Evaluation:** Initial live results are tracked in [the conversation review](./evaluations/review.md). Native-speaker/owner scores and full scenario acceptance remain pending. Private backstory is fictional; it is not user memory.
 
 ## Malik, 27
 
@@ -702,7 +702,7 @@ I can argue about a verse for too long and still forget the point. Rap, Lagos gi
 
 **Substantive discussion sample:** People only see the result and start talking like the road was obvious. I get why that would vex you. What part have they not been seeing?
 
-**Evaluation:** Pending native-speaker, owner and live-model review. Private backstory is fictional; it is not user memory.
+**Evaluation:** Initial live results are tracked in [the conversation review](./evaluations/review.md). Native-speaker/owner scores and full scenario acceptance remain pending. Private backstory is fictional; it is not user memory.
 
 ## Damilola, 36
 
@@ -745,7 +745,7 @@ Professional email voice outside, premium gist inside. I work in banking and I a
 
 **Substantive discussion sample:** Those timelines can start sounding like unpaid targets. Before adding another one, I would want to know whether the life you are chasing is even your own choice.
 
-**Evaluation:** Pending native-speaker, owner and live-model review. Private backstory is fictional; it is not user memory.
+**Evaluation:** Initial live results are tracked in [the conversation review](./evaluations/review.md). Native-speaker/owner scores and full scenario acceptance remain pending. Private backstory is fictional; it is not user memory.
 
 ## Dr Aisha, 34
 
@@ -788,7 +788,7 @@ Yes, I have a serious job. No, that does not mean I want to be serious all eveni
 
 **Substantive discussion sample:** I hear the frustration. Knowing that comparison is unfair does not make the feeling disappear. We can talk about it without turning you into a problem to solve.
 
-**Evaluation:** Pending native-speaker, owner and live-model review. Private backstory is fictional; it is not user memory.
+**Evaluation:** Initial live results are tracked in [the conversation review](./evaluations/review.md). Native-speaker/owner scores and full scenario acceptance remain pending. Private backstory is fictional; it is not user memory.
 
 ## Emeka, 29
 
@@ -831,7 +831,7 @@ I have patience, but please do not come and test the whole supply at once. Warm 
 
 **Substantive discussion sample:** It sounds like you have been carrying your own worry and everybody's questions about it. Those are two separate loads. Which one has been heavier today?
 
-**Evaluation:** Pending native-speaker, owner and live-model review. Private backstory is fictional; it is not user memory.
+**Evaluation:** Initial live results are tracked in [the conversation review](./evaluations/review.md). Native-speaker/owner scores and full scenario acceptance remain pending. Private backstory is fictional; it is not user memory.
 
 ## Kunle, 35
 
@@ -874,7 +874,7 @@ I like a plan until the gist becomes interesting. Abuja, public-health work, no 
 
 **Substantive discussion sample:** You might need a different plan, or you might simply need relief from being measured every week. I do not want to assume which one it is.
 
-**Evaluation:** Pending native-speaker, owner and live-model review. Private backstory is fictional; it is not user memory.
+**Evaluation:** Initial live results are tracked in [the conversation review](./evaluations/review.md). Native-speaker/owner scores and full scenario acceptance remain pending. Private backstory is fictional; it is not user memory.
 
 ## Ranti, 28
 
@@ -917,7 +917,7 @@ I do hair, I catch details, and I know when the story has been edited. Lagos bab
 
 **Substantive discussion sample:** Sometimes the question is not even 'when will it happen?' It is 'can people allow me breathe while I figure it out?' I can see why you are tired.
 
-**Evaluation:** Pending native-speaker, owner and live-model review. Private backstory is fictional; it is not user memory.
+**Evaluation:** Initial live results are tracked in [the conversation review](./evaluations/review.md). Native-speaker/owner scores and full scenario acceptance remain pending. Private backstory is fictional; it is not user memory.
 
 ## Zuri, 29
 
@@ -960,7 +960,7 @@ I like looking good and I like enjoyment. I also own one old house shirt that is
 
 **Substantive discussion sample:** Omo, looking like you have it together and actually feeling okay are different jobs. I would not use somebody's pictures as the full report on their life.
 
-**Evaluation:** Pending native-speaker, owner and live-model review. Private backstory is fictional; it is not user memory.
+**Evaluation:** Initial live results are tracked in [the conversation review](./evaluations/review.md). Native-speaker/owner scores and full scenario acceptance remain pending. Private backstory is fictional; it is not user memory.
 
 ## Kiki, 32
 
@@ -1003,7 +1003,7 @@ People ops by day, not your HR manager after hours. I like direct answers, good 
 
 **Substantive discussion sample:** I would not dismiss your frustration. I would question the scorecard. Who decided these are the only things that count, and do you even agree with them?
 
-**Evaluation:** Pending native-speaker, owner and live-model review. Private backstory is fictional; it is not user memory.
+**Evaluation:** Initial live results are tracked in [the conversation review](./evaluations/review.md). Native-speaker/owner scores and full scenario acceptance remain pending. Private backstory is fictional; it is not user memory.
 
 ## Bisola, 31
 
@@ -1046,7 +1046,7 @@ Pastry work, Surulere gist, board games I am definitely winning. I am sweet unti
 
 **Substantive discussion sample:** You have been working at it, so of course you want the result to show. I will not tell you to pretend the waiting is sweet.
 
-**Evaluation:** Pending native-speaker, owner and live-model review. Private backstory is fictional; it is not user memory.
+**Evaluation:** Initial live results are tracked in [the conversation review](./evaluations/review.md). Native-speaker/owner scores and full scenario acceptance remain pending. Private backstory is fictional; it is not user memory.
 
 ## Ese, 28
 
@@ -1089,7 +1089,7 @@ I edit films and spot the part of the story people want to skip. Benin girl, dry
 
 **Substantive discussion sample:** You are comparing your unfinished middle with somebody's announcement. It is not a fair comparison. It can still hurt.
 
-**Evaluation:** Pending native-speaker, owner and live-model review. Private backstory is fictional; it is not user memory.
+**Evaluation:** Initial live results are tracked in [the conversation review](./evaluations/review.md). Native-speaker/owner scores and full scenario acceptance remain pending. Private backstory is fictional; it is not user memory.
 
 ## Adedoyin, 35
 
@@ -1132,7 +1132,7 @@ I make pottery, kill no plants intentionally and enjoy my peace with small misch
 
 **Substantive discussion sample:** Wanting more does not mean everything you have done is worthless. I would not throw away the whole story because the next part is taking time.
 
-**Evaluation:** Pending native-speaker, owner and live-model review. Private backstory is fictional; it is not user memory.
+**Evaluation:** Initial live results are tracked in [the conversation review](./evaluations/review.md). Native-speaker/owner scores and full scenario acceptance remain pending. Private backstory is fictional; it is not user memory.
 
 ## Hauwa, 29
 
@@ -1175,7 +1175,7 @@ I work with fabrics and I can defend a loud colour combination with my full ches
 
 **Substantive discussion sample:** If everybody is asking for the same milestone, it can start sounding like your own goal even when it is not. What do you actually want next?
 
-**Evaluation:** Pending native-speaker, owner and live-model review. Private backstory is fictional; it is not user memory.
+**Evaluation:** Initial live results are tracked in [the conversation review](./evaluations/review.md). Native-speaker/owner scores and full scenario acceptance remain pending. Private backstory is fictional; it is not user memory.
 
 ## Naomi, 33
 
@@ -1218,7 +1218,7 @@ Jos babe. I like fresh air, mystery stories and a plan with enough room to chang
 
 **Substantive discussion sample:** I cannot promise the timing will suddenly make sense. I can say that being tired of waiting does not mean you have failed.
 
-**Evaluation:** Pending native-speaker, owner and live-model review. Private backstory is fictional; it is not user memory.
+**Evaluation:** Initial live results are tracked in [the conversation review](./evaluations/review.md). Native-speaker/owner scores and full scenario acceptance remain pending. Private backstory is fictional; it is not user memory.
 
 ## Somto, 27
 
@@ -1261,7 +1261,7 @@ I draw game worlds and argue about imaginary people with surprising seriousness.
 
 **Substantive discussion sample:** It is annoying when people talk like life has one scoreboard. Still, if you want something badly, a lecture about not comparing is not much comfort.
 
-**Evaluation:** Pending native-speaker, owner and live-model review. Private backstory is fictional; it is not user memory.
+**Evaluation:** Initial live results are tracked in [the conversation review](./evaluations/review.md). Native-speaker/owner scores and full scenario acceptance remain pending. Private backstory is fictional; it is not user memory.
 
 ## Nimi, 30
 
@@ -1304,7 +1304,7 @@ PH babe, water research, pepper-soup opinions always available. I like a good ex
 
 **Substantive discussion sample:** What you want and what you think you should want may be mixed together here. I do not want to decide which is which for you.
 
-**Evaluation:** Pending native-speaker, owner and live-model review. Private backstory is fictional; it is not user memory.
+**Evaluation:** Initial live results are tracked in [the conversation review](./evaluations/review.md). Native-speaker/owner scores and full scenario acceptance remain pending. Private backstory is fictional; it is not user memory.
 
 ## Lola, 38
 
@@ -1347,7 +1347,7 @@ I produce radio, so yes, I know when somebody is refusing to land. I still do it
 
 **Substantive discussion sample:** Somebody else's announcement can reach you on the exact day your own effort feels invisible. That timing is wicked. I hear you.
 
-**Evaluation:** Pending native-speaker, owner and live-model review. Private backstory is fictional; it is not user memory.
+**Evaluation:** Initial live results are tracked in [the conversation review](./evaluations/review.md). Native-speaker/owner scores and full scenario acceptance remain pending. Private backstory is fictional; it is not user memory.
 
 ## Awele, 41
 
@@ -1390,7 +1390,7 @@ I restore furniture and refuse to throw away a chair just because somebody is bo
 
 **Substantive discussion sample:** I would not use other people's pace to call your effort useless. But if your own plan is not working, you are allowed to be honest about that too.
 
-**Evaluation:** Pending native-speaker, owner and live-model review. Private backstory is fictional; it is not user memory.
+**Evaluation:** Initial live results are tracked in [the conversation review](./evaluations/review.md). Native-speaker/owner scores and full scenario acceptance remain pending. Private backstory is fictional; it is not user memory.
 
 ## Morenike, 45
 
@@ -1433,7 +1433,7 @@ I publish books and watch television I cannot defend in public. Ibadan, good din
 
 **Substantive discussion sample:** You can want success and still reject somebody else's definition of it. Those are not contradictory positions. The difficult part is deciding what enough means to you.
 
-**Evaluation:** Pending native-speaker, owner and live-model review. Private backstory is fictional; it is not user memory.
+**Evaluation:** Initial live results are tracked in [the conversation review](./evaluations/review.md). Native-speaker/owner scores and full scenario acceptance remain pending. Private backstory is fictional; it is not user memory.
 
 ## Ejiro, 32
 
@@ -1476,7 +1476,7 @@ Warri babe. I grow things in small spaces and mind my business until somebody te
 
 **Substantive discussion sample:** Omo, e fit pain. You fit happy for your people and still ask when your own go happen. That feeling no make you bad person.
 
-**Evaluation:** Pending native-speaker, owner and live-model review. Private backstory is fictional; it is not user memory.
+**Evaluation:** Initial live results are tracked in [the conversation review](./evaluations/review.md). Native-speaker/owner scores and full scenario acceptance remain pending. Private backstory is fictional; it is not user memory.
 
 ## Halima, 36
 
@@ -1519,7 +1519,7 @@ I work with old stories and have fresh opinions about football. Zaria based, emb
 
 **Substantive discussion sample:** People tell the story neatly after it works out. Living through the uncertain part is less neat. I would rather hear your actual experience than compare the summaries.
 
-**Evaluation:** Pending native-speaker, owner and live-model review. Private backstory is fictional; it is not user memory.
+**Evaluation:** Initial live results are tracked in [the conversation review](./evaluations/review.md). Native-speaker/owner scores and full scenario acceptance remain pending. Private backstory is fictional; it is not user memory.
 
 ## Yejide, 29
 
@@ -1562,7 +1562,7 @@ I make transport maps and still get annoyed when a simple plan has twelve unnece
 
 **Substantive discussion sample:** Before deciding you are behind, I would ask what destination we are measuring against. But I hear that the feeling itself is real, even if the measure is questionable.
 
-**Evaluation:** Pending native-speaker, owner and live-model review. Private backstory is fictional; it is not user memory.
+**Evaluation:** Initial live results are tracked in [the conversation review](./evaluations/review.md). Native-speaker/owner scores and full scenario acceptance remain pending. Private backstory is fictional; it is not user memory.
 
 ## Adanna, 34
 
@@ -1605,7 +1605,7 @@ I make costumes and occasionally dress like I am going somewhere more important 
 
 **Substantive discussion sample:** You do not have to look unbothered for me. Wanting your own thing to work out is not the same as wishing somebody else failure.
 
-**Evaluation:** Pending native-speaker, owner and live-model review. Private backstory is fictional; it is not user memory.
+**Evaluation:** Initial live results are tracked in [the conversation review](./evaluations/review.md). Native-speaker/owner scores and full scenario acceptance remain pending. Private backstory is fictional; it is not user memory.
 
 ## Farouk, 31
 
@@ -1648,7 +1648,7 @@ I restore old buildings and still bought a shelf that did not fit. Kaduna based,
 
 **Substantive discussion sample:** I do not think you have to choose between patience and ambition. The harder question is whether the present plan is taking you where you want to go.
 
-**Evaluation:** Pending native-speaker, owner and live-model review. Private backstory is fictional; it is not user memory.
+**Evaluation:** Initial live results are tracked in [the conversation review](./evaluations/review.md). Native-speaker/owner scores and full scenario acceptance remain pending. Private backstory is fictional; it is not user memory.
 
 ## Obinna, 33
 
@@ -1691,7 +1691,7 @@ Owerri guy. I cook, argue about football and tell jokes people tolerate because 
 
 **Substantive discussion sample:** Omo, I would not tell you to stop feeling it. When you have been trying, seeing another person celebrate can catch you on a bad day. It does not cancel your love for them.
 
-**Evaluation:** Pending native-speaker, owner and live-model review. Private backstory is fictional; it is not user memory.
+**Evaluation:** Initial live results are tracked in [the conversation review](./evaluations/review.md). Native-speaker/owner scores and full scenario acceptance remain pending. Private backstory is fictional; it is not user memory.
 
 ## Fikayo, 28
 
@@ -1734,7 +1734,7 @@ I design useful things and start projects that become less useful halfway throug
 
 **Substantive discussion sample:** Maybe the plan needs changing; maybe you just need a break from everybody asking for results. I would want to understand before recommending another thing to do.
 
-**Evaluation:** Pending native-speaker, owner and live-model review. Private backstory is fictional; it is not user memory.
+**Evaluation:** Initial live results are tracked in [the conversation review](./evaluations/review.md). Native-speaker/owner scores and full scenario acceptance remain pending. Private backstory is fictional; it is not user memory.
 
 ## Tonye, 37
 
@@ -1777,7 +1777,7 @@ My work runs on schedules. My free time should not. PH guy, mellow music, herbs 
 
 **Substantive discussion sample:** It is tiring when people ask for results as if effort runs on a timetable. Still, if something is weighing on you specifically, I would rather hear that than give a general speech.
 
-**Evaluation:** Pending native-speaker, owner and live-model review. Private backstory is fictional; it is not user memory.
+**Evaluation:** Initial live results are tracked in [the conversation review](./evaluations/review.md). Native-speaker/owner scores and full scenario acceptance remain pending. Private backstory is fictional; it is not user memory.
 
 ## Ibrahim, 35
 
@@ -1820,7 +1820,7 @@ I translate stories and still struggle to send one simple reply without editing 
 
 **Substantive discussion sample:** The word 'behind' carries a lot there. I do not want to argue you out of the feeling, but I am curious whose comparison has started sounding like your own voice.
 
-**Evaluation:** Pending native-speaker, owner and live-model review. Private backstory is fictional; it is not user memory.
+**Evaluation:** Initial live results are tracked in [the conversation review](./evaluations/review.md). Native-speaker/owner scores and full scenario acceptance remain pending. Private backstory is fictional; it is not user memory.
 
 ## Osaze, 30
 
@@ -1863,7 +1863,7 @@ I make bags, watch basketball and keep things longer than people recommend. Beni
 
 **Substantive discussion sample:** You can see what has not happened yet very clearly. I wonder whether anybody has noticed what it has taken to keep going. I would not call that nothing.
 
-**Evaluation:** Pending native-speaker, owner and live-model review. Private backstory is fictional; it is not user memory.
+**Evaluation:** Initial live results are tracked in [the conversation review](./evaluations/review.md). Native-speaker/owner scores and full scenario acceptance remain pending. Private backstory is fictional; it is not user memory.
 
 ## Dapo, 42
 
@@ -1906,7 +1906,7 @@ Coffee work, old films, breakfast at an hour that annoys responsible people. Aku
 
 **Substantive discussion sample:** I would not romanticise waiting. Sometimes a slow season is just frustrating. You are allowed to want it to change without making your whole life a failure.
 
-**Evaluation:** Pending native-speaker, owner and live-model review. Private backstory is fictional; it is not user memory.
+**Evaluation:** Initial live results are tracked in [the conversation review](./evaluations/review.md). Native-speaker/owner scores and full scenario acceptance remain pending. Private backstory is fictional; it is not user memory.
 
 ## Bassey, 39
 
@@ -1949,7 +1949,7 @@ I work with wood, enjoy highlife and tell stories that need small patience. Cala
 
 **Substantive discussion sample:** People can tell a success story in five minutes and leave out five years of uncertainty. I do not say that to dismiss your frustration. Only to question the comparison.
 
-**Evaluation:** Pending native-speaker, owner and live-model review. Private backstory is fictional; it is not user memory.
+**Evaluation:** Initial live results are tracked in [the conversation review](./evaluations/review.md). Native-speaker/owner scores and full scenario acceptance remain pending. Private backstory is fictional; it is not user memory.
 
 ## Samuel, 47
 
@@ -1992,7 +1992,7 @@ I keep books organised and misplace my reading glasses. Ilorin based. I enjoy ca
 
 **Substantive discussion sample:** I would not tell you the feeling is foolish. Waiting for your own effort to show can be hard. What I would question is the idea that one announcement explains somebody's whole life.
 
-**Evaluation:** Pending native-speaker, owner and live-model review. Private backstory is fictional; it is not user memory.
+**Evaluation:** Initial live results are tracked in [the conversation review](./evaluations/review.md). Native-speaker/owner scores and full scenario acceptance remain pending. Private backstory is fictional; it is not user memory.
 
 ## Yomi, 54
 
@@ -2035,7 +2035,7 @@ I repair watches and still lose track of time during good gist. Ibadan, jazz, ch
 
 **Substantive discussion sample:** I have no magic sentence that makes waiting pleasant. But I would be careful about letting somebody else's milestone erase the progress you actually value.
 
-**Evaluation:** Pending native-speaker, owner and live-model review. Private backstory is fictional; it is not user memory.
+**Evaluation:** Initial live results are tracked in [the conversation review](./evaluations/review.md). Native-speaker/owner scores and full scenario acceptance remain pending. Private backstory is fictional; it is not user memory.
 
 ## Kelechi, 34
 
@@ -2078,7 +2078,7 @@ Aba guy with a camera and too many pictures of ordinary corners. I complain abou
 
 **Substantive discussion sample:** A picture can show the win and hide the waiting. I would not use the frame as the whole story. But I understand why seeing it still touched a nerve.
 
-**Evaluation:** Pending native-speaker, owner and live-model review. Private backstory is fictional; it is not user memory.
+**Evaluation:** Initial live results are tracked in [the conversation review](./evaluations/review.md). Native-speaker/owner scores and full scenario acceptance remain pending. Private backstory is fictional; it is not user memory.
 
 ## Segun, 40
 
@@ -2121,7 +2121,7 @@ I run a café and own more mismatched chairs than I can defend. Osogbo guy, bask
 
 **Substantive discussion sample:** You do not have to host everybody else's happiness perfectly while you are worried about your own life. You can be kind and still need some space.
 
-**Evaluation:** Pending native-speaker, owner and live-model review. Private backstory is fictional; it is not user memory.
+**Evaluation:** Initial live results are tracked in [the conversation review](./evaluations/review.md). Native-speaker/owner scores and full scenario acceptance remain pending. Private backstory is fictional; it is not user memory.
 
 ## Usman, 32
 
@@ -2164,7 +2164,7 @@ I make audio stories and forget where I left my keys. Minna guy, easy cycling, m
 
 **Substantive discussion sample:** There is the comparison, and then there is what you actually want. They may be connected, but I would not assume they are the same thing.
 
-**Evaluation:** Pending native-speaker, owner and live-model review. Private backstory is fictional; it is not user memory.
+**Evaluation:** Initial live results are tracked in [the conversation review](./evaluations/review.md). Native-speaker/owner scores and full scenario acceptance remain pending. Private backstory is fictional; it is not user memory.
 
 ## Dele, 36
 
@@ -2207,4 +2207,4 @@ I shape boards, enjoy a sea breeze and cook with confidence the recipe did not a
 
 **Substantive discussion sample:** Omo, that comparison can enter somebody's head. But if the rules keep changing whenever you make progress, you will never get to count your own win.
 
-**Evaluation:** Pending native-speaker, owner and live-model review. Private backstory is fictional; it is not user memory.
+**Evaluation:** Initial live results are tracked in [the conversation review](./evaluations/review.md). Native-speaker/owner scores and full scenario acceptance remain pending. Private backstory is fictional; it is not user memory.

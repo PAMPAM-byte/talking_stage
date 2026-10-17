@@ -77,6 +77,20 @@ async function save() {
     await writeFile(`docs/cast-50/evaluations/${phase}.json`, JSON.stringify(report, null, 2) + '\n');
 }
 await save();
+async function reconcileUsage() {
+    assert.match(state.actor, /^[a-f0-9-]{36}$/);
+    // Conversation resets may delete job-linked reservation rows. The usage
+    // ledger intentionally retains all charged reservations across those resets.
+    state.databaseReservedMicroUsd = Number((await sql(`select coalesce(sum(amount_micro_usd),0) as reserved from private.ai_daily_usage where scope='${state.actor}';`))[0].reserved);
+    assert(state.databaseReservedMicroUsd <= state.reservedUpperBound);
+    await save();
+}
+if (process.argv.includes('--reconcile')) {
+    await reconcileUsage();
+    const user = checked(await service.auth.admin.getUserById(state.actor), 'Synthetic login status');
+    assert(new Date(user.user.banned_until).getTime() > Date.now());
+    console.log(`Persistent usage ledger reconciled: $${(state.databaseReservedMicroUsd / 1_000_000).toFixed(6)}; synthetic login remains disabled. No provider calls.`);
+} else {
 let windowStart = 0, changes = 0;
 async function mutation(name, parameters) {
     if (!windowStart || Date.now() - windowStart >= 62000) { windowStart = Date.now(); changes = 0; }
@@ -161,12 +175,10 @@ try {
         }
     }
     if (phaseRecords().filter(r => r.finishedAt).length === total) state.completedAt = new Date().toISOString();
-    assert.match(state.actor, /^[a-f0-9-]{36}$/);
-    state.databaseReservedMicroUsd = Number((await sql(`select coalesce(sum(amount_micro_usd),0) as reserved from private.ai_reservations where actor_id='${state.actor}';`))[0].reserved);
-    assert(state.databaseReservedMicroUsd <= state.reservedUpperBound);
-    await save();
+    await reconcileUsage();
     console.log(`Evaluation checkpoint saved: ${phaseRecords().filter(r => r.state === 'completed').length} completed ${phase} replies; no native/owner acceptance claimed.`);
 } finally {
     if (state.actor) { checked(await service.auth.admin.updateUserById(state.actor, { ban_duration: '876000h' }), 'Disable synthetic evaluation login'); console.log('Synthetic evaluation login disabled; no administrative role was granted.'); }
     await member.auth.signOut();
+}
 }

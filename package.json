@@ -77,6 +77,8 @@
     "cast:eval:check": "node scripts/evaluate-cast-live.mjs --check",
     "cast:eval:pilot": "node scripts/evaluate-cast-live.mjs --pilot",
     "cast:eval:run": "node scripts/evaluate-cast-live.mjs --run",
+    "cast:eval:followup": "node scripts/evaluate-cast-live.mjs --followup",
+    "cast:eval:review": "node scripts/review-cast-evaluation.mjs",
     "test:cast-evaluation": "node scripts/test-cast-evaluation.mjs"
   },
   "dependencies": {

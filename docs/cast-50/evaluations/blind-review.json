@@ -1,0 +1,121 @@
+{
+  "version": 1,
+  "instructions": "Rate rhythm, directness, humour, warmth and recognisability from the actual outputs. Names and exact occupation labels are omitted. This six-voice packet is a review aid, not a validated blind experimental design. Compare style without relying on job clues.",
+  "runId": "ced6a7e1-0cc0-4301-b730-258c42ba374c",
+  "voices": [
+    {
+      "label": "A",
+      "turns": [
+        {
+          "user": "how you dey this evening?",
+          "character": "I dey o, quietly fine. How far with you this evening?"
+        },
+        {
+          "user": "nothing much joor. just lying down, no gist today",
+          "character": "Okay o. Lying down is a fine way to end the day. I'll leave the quiet be."
+        },
+        {
+          "user": "Sometimes I feel keeping quiet is the only way to stop people taking advantage of you. What do you think?",
+          "character": "Hmm, I get why it feels that way. Quiet can protect you, but it can also make people guess what you want, and that does not always work out well. I think being selective about who gets your gist is smarter than going silent with everyone. Who has been taking advantage of you, if you don't mind me asking?"
+        }
+      ],
+      "reviewerNotes": "",
+      "scores": null
+    },
+    {
+      "label": "B",
+      "turns": [
+        {
+          "user": "how you dey this evening?",
+          "character": "I dey fine o, thank you for asking. Evening don reach and I dey sit here like a man wey never rush anybody. How your own evening dey go?"
+        },
+        {
+          "user": "nothing much joor. just lying down, no gist today",
+          "character": "Ah, lying down is also a good way to end a day. No gist is fine with me, joor. Rest well."
+        },
+        {
+          "user": "Sometimes I feel keeping quiet is the only way to stop people taking advantage of you. What do you think?",
+          "character": "I understand why you would feel that way, especially if people have taken advantage of you before. Still, I think silence can protect you only so far. Sometimes a calm, clear word setting a limit does more than keeping quiet, because people often read silence as permission. Who has been pushing you lately, if you don't mind me asking?"
+        }
+      ],
+      "reviewerNotes": "",
+      "scores": null
+    },
+    {
+      "label": "C",
+      "turns": [
+        {
+          "user": "how you dey this evening?",
+          "character": "Evening o! I dey alright, just small. How about you, you don reach for gist or you just dey check on me? 😂"
+        },
+        {
+          "user": "nothing much joor. just lying down, no gist today",
+          "character": "Ah, lying down is a valid plan joor. We can keep it small, no interview tonight. Rest well."
+        },
+        {
+          "user": "Sometimes I feel keeping quiet is the only way to stop people taking advantage of you. What do you think?",
+          "character": "Hmm, that's a heavy one to bring up while you're lying down. I don't think keeping quiet is always the answer, though. Sometimes staying silent just means people assume they can keep doing it. Sometimes a short, clear line does more than a whole lot of quiet. Has someone been taking advantage of you lately, or is this more of a general feeling?"
+        }
+      ],
+      "reviewerNotes": "",
+      "scores": null
+    },
+    {
+      "label": "D",
+      "turns": [
+        {
+          "user": "how you dey this evening?",
+          "character": "Haffa o, I dey alright sha. Evening don come, so I just dey relax, dey sip small tea. How your own side dey?"
+        },
+        {
+          "user": "nothing much joor. just lying down, no gist today",
+          "character": "Ah, joor, lying down na good sometimes. No gist needed, we fit just chill small."
+        },
+        {
+          "user": "Sometimes I feel keeping quiet is the only way to stop people taking advantage of you. What do you think?",
+          "character": "Hmm, I get why you feel that way. Staying quiet can protect you sometimes, especially when you're not sure who's listening. But I think it can also leave you carrying things alone, and that gets heavy after a while. I'd say you can be careful about who you open up to without shutting everyone out. What's making you feel like you need that wall right now?"
+        }
+      ],
+      "reviewerNotes": "",
+      "scores": null
+    },
+    {
+      "label": "E",
+      "turns": [
+        {
+          "user": "how you dey this evening?",
+          "character": "I dey fine o, just dey settle down after the day. How about you, you dey alright?"
+        },
+        {
+          "user": "nothing much joor. just lying down, no gist today",
+          "character": "Ah, okay o. Lying down is a good way to end the day. No gist needed, we can just be quiet together for a bit."
+        },
+        {
+          "user": "Sometimes I feel keeping quiet is the only way to stop people taking advantage of you. What do you think?",
+          "character": "Hmm, I get why you'd feel that way, especially if people have pushed you before. But I don't think silence is the only shield. Being clear about what you want often protects you better, because people can't take advantage of what you've already said plainly. Quiet can also just leave them guessing. Has someone been pushing on you lately, or is this more of a general feeling?"
+        }
+      ],
+      "reviewerNotes": "",
+      "scores": null
+    },
+    {
+      "label": "F",
+      "turns": [
+        {
+          "user": "how you dey this evening?",
+          "character": "I dey fine o, just chilling after the day. How evening treat you?"
+        },
+        {
+          "user": "nothing much joor. just lying down, no gist today",
+          "character": "Ah, lying down is a valid plan joor. No gist needed, we can just vibe quietly for now."
+        },
+        {
+          "user": "Sometimes I feel keeping quiet is the only way to stop people taking advantage of you. What do you think?",
+          "character": "Hmm, that's a heavy one to drop on a quiet evening. I think staying quiet can protect you sometimes, especially when people don't deserve your full story yet. But if silence becomes the only way you feel safe, it can also keep you lonely in your own head. Who usually makes you feel like you have to guard yourself like that?"
+        }
+      ],
+      "reviewerNotes": "",
+      "scores": null
+    }
+  ]
+}

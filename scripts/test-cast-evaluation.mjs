@@ -19,4 +19,6 @@ assert.equal(reviewSignals('As an AI, I understand.').stockAssistantOpening, tru
 assert.equal(reviewSignals('I just dey here.').stockAssistantOpening, false);
 assert.equal(reviewSignals('Fine? Why?').questions, 2);
 assert.equal(reviewSignals('Fine.').requiresHumanReview, true);
-console.log('Evaluation checks passed: exact 50/198 coverage, six extended threads, conservative reservations, independent money/call ceilings and non-verdict review signals. No network calls.');
+assert.equal(reviewSignals('Jare is a good place to be.').particleLiteralisation, true);
+assert.equal(reviewSignals('Is there anything else you would like to talk about?').assistantCheckout, true);
+console.log('Evaluation checks passed: 50-character coverage, 198-turn initial plan and 162-turn fresh follow-up, conservative combined reservations, independent money/call ceilings and non-verdict review signals. No network calls.');
