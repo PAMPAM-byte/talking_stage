@@ -20,6 +20,13 @@ await assert.rejects(generateReply(context,settings,{fetcher:async()=>new Respon
 await assert.rejects(generateReply(context,settings,{fetcher:async()=>{throw new DOMException('Private request body','TimeoutError');}}),/^Error: timeout$/);
 assert.equal((await generateReply(context,settings,{fetcher:async()=>response([{type:'refusal',refusal:'Private provider explanation'}])})).refused,true);
 assert.throws(()=>buildInput({...context,maxInputTokens:1024}),/context_limit/);
+const pidginInput = buildInput(context);
+const englishInput = buildInput({...context,preferences:{...context.preferences,language:'english'}});
+assert(pidginInput[0].content.includes('The saved preference welcomes English and Nigerian Pidgin'));
+assert(englishInput[0].content.includes('Do not force Pidgin or slang'));
+assert(!englishInput[0].content.includes('The saved preference welcomes English and Nigerian Pidgin'));
+assert(pidginInput[0].content.includes('You have no live news tool'));
+assert.equal(pidginInput.at(-1).content,context.history.at(-1).text,'Untrusted user instructions remain outside the trusted style guide.');
 const large=response([{type:'output_text',text:'x'.repeat(270000)}]);await assert.rejects(generateReply(context,settings,{fetcher:async()=>large}),/invalid_output/);
 const controller=new AbortController();controller.abort();await assert.rejects(generateReply(context,settings,{signal:controller.signal,fetcher:async(_url,options)=>{options.signal.throwIfAborted();}}),/timeout/);
 const photo='00000000-0000-4000-8000-000000000099';const photoContext={...context,photos:[{id:photo,description:'Synthetic approved adult gallery photo'}]};

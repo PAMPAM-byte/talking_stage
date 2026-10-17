@@ -1,20 +1,40 @@
 import 'server-only';
-import {createClient} from '@supabase/supabase-js';
-import {supabaseConfig} from './config';
-import {providerSettings} from '@/lib/ai/provider.mjs';
-import {runReply} from '@/lib/ai/reply-pipeline.mjs';
-import {runSummary} from '@/lib/ai/summary-pipeline.mjs';
+import { supabaseConfig } from './config';
+import { trustedBackendClient } from './trusted-client';
+import { providerSettings } from '@/lib/ai/provider.mjs';
+import { runReply } from '@/lib/ai/reply-pipeline.mjs';
+import { runSummary } from '@/lib/ai/summary-pipeline.mjs';
 import { observeAI, emit } from '@/lib/monitoring/events.mjs';
-export function configuredReplyModel(){return providerSettings()?.model??null;}
-export async function processReply(messageId:string,actorId:string,signal?:AbortSignal):Promise<string> {
- const settings=providerSettings();const config=supabaseConfig();const key=process.env.SUPABASE_SERVICE_ROLE_KEY;
- if(!settings||!config||!key){emit('ai.reply', 'disabled');return 'blocked_provider';}
- const client=createClient(config.url,key,{auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false}});
- return observeAI('ai.reply', () => runReply(client,messageId,actorId,settings,{signal}));
+
+export function configuredReplyModel() {
+  return providerSettings()?.model ?? null;
 }
-export async function processSummary(messageId:string,actorId:string):Promise<string> {
- const settings=providerSettings();const config=supabaseConfig();const key=process.env.SUPABASE_SERVICE_ROLE_KEY;
- if(!settings||!config||!key){emit('ai.summary', 'disabled');return 'blocked_provider';}
- const client=createClient(config.url,key,{auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false}});
- return observeAI('ai.summary', () => runSummary(client,messageId,actorId,settings));
+
+function replyConfiguration() {
+  const settings = providerSettings();
+  if (!settings || !supabaseConfig() || !process.env.SUPABASE_SERVICE_ROLE_KEY) return null;
+  return { settings, client: trustedBackendClient() };
+}
+
+export async function processReply(messageId: string, actorId: string, signal?: AbortSignal): Promise<string> {
+  const configuration = replyConfiguration();
+  if (!configuration) {
+    emit('ai.reply', 'disabled');
+    return 'blocked_provider';
+  }
+
+  const { client, settings } = configuration;
+  // Claim and completion RPCs independently enforce ownership, leases and budgets.
+  return observeAI('ai.reply', () => runReply(client, messageId, actorId, settings, { signal }));
+}
+
+export async function processSummary(messageId: string, actorId: string): Promise<string> {
+  const configuration = replyConfiguration();
+  if (!configuration) {
+    emit('ai.summary', 'disabled');
+    return 'blocked_provider';
+  }
+
+  const { client, settings } = configuration;
+  return observeAI('ai.summary', () => runSummary(client, messageId, actorId, settings));
 }

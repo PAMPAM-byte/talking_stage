@@ -1,5 +1,17 @@
 # TalkingStage implementation plan
 
+17 October cast frontend delivery: all 50 profiles and 100 photos are now in the local frontend catalogue, including 56 newly generated, visually reviewed photos. Search, gender filters and progressive loading are implemented. Hosted completion is recorded separately in docs/cast-50/publication.json when verification succeeds. See [delivery review](./reviews/cast-50-publication.md). Earlier pending-photo statements below describe the prior draft stage. Native/live voice evaluation remains pending.
+
+17 October adult-chat intent: the founder explicitly requested expanding text chat beyond the previous non-explicit scope. [The decision record](./cast-50/adult-chat-scope.md) distinguishes that intent from implemented capability: the configured Anthropic provider prohibits erotic chats, so explicit generation is not enabled. The 50-character pack now includes individual romantic style/pace and substantive-conversation direction. A compatible provider and explicit-mode controls remain prerequisites; photo scope remains non-explicit.
+
+17 October character rework: the founder requested 50 distinct Nigerian personalities and rejected the generic international voice. All 50 now have proposed biographies/private voices, including a full voice rework of the existing 22 and 28 additional Nigerian adult identities. The research pack, curated cultural reference, 300 scripted examples, 400 fictional knowledge cards and held-out evaluation set are in [the cast review](./cast-50/README.md). Shared conversational-style guidance is wired into provider input. Individual directions are not applied or published; native/live voice evaluation and 56 new photos remain pending. The recorded hosted catalogue remains 22 profiles.
+
+17 October discovery controls: after web-reference research and founder feedback, Undo, Pass and Meet use separate circular icon surfaces with labels beneath. A compact amber rewind, neutral cross and larger red heart replace the rejected rectangular action bar. Mobile/tablet sizing reserves space above navigation. Swipe and conversation behavior remain unchanged. See [research and validation](./reviews/discovery-actions.md).
+
+16 October account-entry refinement: registration, sign-in and recovery now share a responsive editorial layout, portrait/conversation-clue panel, refined fields and local password visibility controls. This is presentation work on existing flows; launch gates and service behavior remain unchanged. See [review](./reviews/account-entry.md).
+
+16 October 2026 status reconciliation: see [current project status](./project-status.md) for the authoritative present-day index. Hosted publication now records 22 profiles/44 current photos and migration 015. Haiku activation with founder-approved finite daily budgets and a successful synthetic live reply is recorded on 15 October in [Claude configuration](./claude-haiku.md). Earlier statements below about absent keys, zero budgets, eight local characters or unavailable replies are historical. Stage 10 remains open for full live evaluation; payments, Stage 12 integration and release gates remain unfinished. Engineering hardening is tracked in [the review](./reviews/engineering-hardening.md).
+
 14 October 2026 cache audit: backend dependency requests explicitly bypass caches; cast, asset, and availability mutations refresh additional affected profile/message/payment routes. Existing private response headers and public/image optimization remain. No cache purge or business service was introduced. See [audit and limits](./reviews/cache-audit.md).
 
 Chat frontend refinement: shared room styling, portrait-led connected opening state, polished bubbles, and unified composer treatment. Existing chat, reply, photo, reporting, and lifecycle operations remain unchanged. See [review](./reviews/chat-refresh.md).
@@ -64,7 +76,7 @@ Update a stage to In progress when work begins. Mark it Complete only when its e
 | 7 | Frontend quality review and completion gate | 1–6 | Complete for backend handoff — [review](./reviews/stage-7.md); manual checks deferred before pilot |
 | 8 | Backend foundation, identity, and ownership | 7 | Complete for local handoff — real Auth/RLS/roles/throttling/restore verified; [evidence](./reviews/stage-8.md); hosted deployment checks remain Stage 13 |
 | 9 | Cast, assets, and administration backend | 8 | Complete for local backend handoff — [review](./reviews/stage-9.md) and [contracts](./stage-9-contracts.md) |
-| 10 | Conversations, AI, and memory backend | 9 | In progress — integration and request controls verified without keys; live evaluation pending; [review](./reviews/stage-10.md) |
+| 10 | Conversations, AI, and memory backend | 9 | In progress — hosted Haiku activated with finite budgets; basic live reply verified; broader live evaluation pending; [activation](./claude-haiku.md) and [review](./reviews/stage-10.md) |
 | 11 | Payments and reconciliation backend | 10 | Planned |
 | 12 | Privacy, reporting, monitoring, and full integration | 11 for full integration; 9–10 for independent reporting | In progress — independent reporting slice delivered locally; [review](./reviews/stage-12.md) |
 | 13 | Private pilot and public-launch readiness | 12 | Planned |
@@ -389,6 +401,8 @@ Use this template after each stage. Keep evidence in the repository under `docs/
 If integration exposes a contract mismatch, update the affected screen/adapter and repeat relevant checks. If it exposes an omitted launch screen, record the Stage 7 gap and correct it; do not relabel an incomplete frontend as previously complete.
 
 ## 9. Current project position
+
+**Current as of 16 October:** use [project status](./project-status.md). The dated entries below retain earlier handoff context. Fifteen migrations are checked in; hosted Haiku activation and the pre-activation reply recovery fix are recorded on 15 October. The current hosted cast record is 22 characters and 44 photos. This does not close Stage 10, Gate B or pilot/release acceptance.
 
 - Next.js scaffold exists.
 - Design-system tokens, reusable components, responsive shells, local mock foundation, and development-only preview are implemented.

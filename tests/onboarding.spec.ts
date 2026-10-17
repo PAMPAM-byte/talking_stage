@@ -27,9 +27,11 @@ test("adult onboarding, preferences, refresh, sign out and protected access", as
   await expect(page.getByText("Women and Men · English with Pidgin", { exact: true })).toBeVisible();
   await page.getByLabel("I understand I’m chatting with fictional AI characters.").check();
   await page.getByRole("button", { name: "Explore characters" }).click();
-  await expect(page.getByText("Welcome, Pampam.", { exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Find your spark.", exact: true })).toBeVisible();
+  await expect(page.getByText("Welcome, Pampam.", { exact: true })).toBeAttached();
   await page.reload();
-  await expect(page.getByText("Welcome, Pampam.", { exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Find your spark.", exact: true })).toBeVisible();
+  await expect(page.getByText("Welcome, Pampam.", { exact: true })).toBeAttached();
   const storage = await page.evaluate(() => sessionStorage.getItem("talkingstage:mock-onboarding:v1"));
   expect(storage).not.toContain("person@example.test");
   expect(storage).not.toContain("ExamplePassword123!");

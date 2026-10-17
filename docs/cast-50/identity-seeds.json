@@ -1,0 +1,622 @@
+{
+  "version": 1,
+  "status": "provisional_fictional_Nigerian_identity_and_photo_briefs",
+  "characters": [
+    {
+      "key": "char-bisola",
+      "name": "Bisola",
+      "age": 31,
+      "gender": "woman",
+      "fictionalLocation": "Surulere, Lagos",
+      "occupation": "Pastry chef",
+      "interests": [
+        "baking",
+        "board games",
+        "evening walks",
+        "highlife"
+      ],
+      "appearance": "Clearly adult Nigerian woman in her early thirties, deep brown skin, oval face, medium build, short tapered natural hair and a small gap between her front teeth.",
+      "portraitScene": "Waist-up portrait beside a café window, rust cotton shirt, relaxed smile, flour-free hands resting on a wooden table, soft morning light.",
+      "galleryScene": "Three-quarter candid at a board-game table, cream knit top and dark jeans, studying wooden game pieces, warmly lit sitting room; no other identifiable people.",
+      "personalityTags": [
+        "warm",
+        "competitive",
+        "practical"
+      ]
+    },
+    {
+      "key": "char-ese",
+      "name": "Ese",
+      "age": 28,
+      "gender": "woman",
+      "fictionalLocation": "GRA, Benin City",
+      "occupation": "Documentary editor",
+      "interests": [
+        "documentaries",
+        "vinyl records",
+        "sketching",
+        "indie cinema"
+      ],
+      "appearance": "Clearly adult Nigerian woman in her late twenties, dark brown skin, long narrow face, slim build, shoulder-length microbraids and round translucent glasses.",
+      "portraitScene": "Seated near an editing desk with no visible branded screens, olive overshirt over white tee, natural sidelight, direct relaxed gaze.",
+      "galleryScene": "Full-body candid browsing unbranded vinyl sleeves at a small record stall, cobalt jumpsuit and white trainers, shaded afternoon daylight.",
+      "personalityTags": [
+        "observant",
+        "dry-witted",
+        "curious"
+      ]
+    },
+    {
+      "key": "char-adedoyin",
+      "name": "Adedoyin",
+      "age": 35,
+      "gender": "woman",
+      "fictionalLocation": "Bodija, Ibadan",
+      "occupation": "Ceramic artist",
+      "interests": [
+        "pottery",
+        "crosswords",
+        "gardening",
+        "folk music"
+      ],
+      "appearance": "Clearly adult Nigerian woman in her mid-thirties, medium brown skin, broad cheekbones, fuller build, short natural afro with a subtle grey streak at one temple.",
+      "portraitScene": "Chest-up portrait outside a ceramics studio, indigo linen blouse, clay-free hands, soft overcast light, mature natural smile lines.",
+      "galleryScene": "Side-angle candid repotting a leafy plant on a small veranda, terracotta apron over a cream dress, visible soil and ordinary household pots, morning light.",
+      "personalityTags": [
+        "patient",
+        "mischievous",
+        "grounded"
+      ]
+    },
+    {
+      "key": "char-hauwa",
+      "name": "Hauwa",
+      "age": 29,
+      "gender": "woman",
+      "fictionalLocation": "Nassarawa GRA, Kano",
+      "occupation": "Textile designer",
+      "interests": [
+        "textile prints",
+        "jigsaw puzzles",
+        "family recipes",
+        "architecture walks"
+      ],
+      "appearance": "Clearly adult Nigerian woman in her late twenties, deep brown skin, heart-shaped face, average build, plum headwrap covering her hair, small silver stud earrings.",
+      "portraitScene": "Waist-up beside neatly stacked fabric in a daylight studio, ivory blouse and plum headwrap, relaxed posture, no printed text.",
+      "galleryScene": "Full-body candid arranging a large puzzle on a low table, teal long-sleeve dress and pale neutral headwrap, comfortable living room, evening lamplight.",
+      "personalityTags": [
+        "expressive",
+        "direct",
+        "inventive"
+      ]
+    },
+    {
+      "key": "char-naomi",
+      "name": "Naomi",
+      "age": 33,
+      "gender": "woman",
+      "fictionalLocation": "Rayfield, Jos",
+      "occupation": "Trail guide and outdoor educator",
+      "interests": [
+        "nature walks",
+        "birdwatching",
+        "mystery novels",
+        "landscape photography"
+      ],
+      "appearance": "Clearly adult Nigerian woman in her early thirties, dark skin with visible freckles across her cheeks, athletic broad-shouldered build, closely cropped coiled hair.",
+      "portraitScene": "Mid-length portrait beside a low stone garden wall, sage overshirt and plain black tee, cool daylight, no hiking equipment logos.",
+      "galleryScene": "Wide candid seated on a veranda reading a paperback, mustard cardigan and charcoal trousers, distant hills softly blurred, late afternoon.",
+      "personalityTags": [
+        "steady",
+        "adventurous",
+        "understated"
+      ]
+    },
+    {
+      "key": "char-somto",
+      "name": "Somto",
+      "age": 27,
+      "gender": "woman",
+      "fictionalLocation": "Independence Layout, Enugu",
+      "occupation": "Game illustrator",
+      "interests": [
+        "illustration",
+        "animation",
+        "table tennis",
+        "puzzle games"
+      ],
+      "appearance": "Clearly adult Nigerian woman in her late twenties, medium-dark skin, angular jaw, petite adult build, shoulder-length chunky twists with a single copper-coloured twist.",
+      "portraitScene": "Waist-up at a tidy drawing desk, aubergine tee and open checked shirt, tablet turned away, indirect window light.",
+      "galleryScene": "Three-quarter action candid holding a table-tennis paddle in a community recreation room, burnt-orange sports tee and navy trousers, no other people visible.",
+      "personalityTags": [
+        "imaginative",
+        "playful",
+        "self-aware"
+      ]
+    },
+    {
+      "key": "char-nimi",
+      "name": "Nimi",
+      "age": 30,
+      "gender": "woman",
+      "fictionalLocation": "Old GRA, Port Harcourt",
+      "occupation": "Marine researcher",
+      "interests": [
+        "coastal ecology",
+        "swimming",
+        "family photo albums",
+        "pepper soup"
+      ],
+      "appearance": "Clearly adult Nigerian woman around thirty, rich brown skin, long oval face, sturdy athletic build, neat shoulder-length locs pulled into a low tie.",
+      "portraitScene": "Chest-up on a shaded waterfront walkway, coral linen shirt, restrained smile, water softly blurred, no laboratory or official insignia.",
+      "galleryScene": "Candid at a home table sorting printed landscape photographs, cream cardigan and dark-green trousers, locs unchanged, warm indoor light.",
+      "personalityTags": [
+        "curious",
+        "candid",
+        "bold"
+      ]
+    },
+    {
+      "key": "char-lola",
+      "name": "Lola",
+      "age": 38,
+      "gender": "woman",
+      "fictionalLocation": "Ikeja, Lagos",
+      "occupation": "Radio producer",
+      "interests": [
+        "radio storytelling",
+        "highlife",
+        "market browsing",
+        "word games"
+      ],
+      "appearance": "Clearly adult Nigerian woman in her late thirties, dark brown skin, rounded square face, fuller build, chin-length straight bob with a visible side part and mature smile lines.",
+      "portraitScene": "Waist-up seated in a plain lounge chair, wine-coloured wrap blouse, small gold earrings, soft studio-window light, no microphone.",
+      "galleryScene": "Full-body candid choosing woven baskets at a covered market stall, patterned blue maxi dress and tan sandals, same bob haircut, diffuse daylight.",
+      "personalityTags": [
+        "witty",
+        "composed",
+        "sociable"
+      ]
+    },
+    {
+      "key": "char-awele",
+      "name": "Awele",
+      "age": 41,
+      "gender": "woman",
+      "fictionalLocation": "GRA, Asaba",
+      "occupation": "Furniture restorer",
+      "interests": [
+        "furniture restoration",
+        "short stories",
+        "draughts",
+        "old architecture"
+      ],
+      "appearance": "Clearly adult Nigerian woman in her early forties, medium brown skin, high cheekbones, strong broad build, short natural coils with a few silver strands and rectangular glasses.",
+      "portraitScene": "Three-quarter portrait outside a furniture workshop, olive cotton shirt with rolled sleeves, hands relaxed, visible mature skin texture, natural daylight.",
+      "galleryScene": "Seated candid reading a paperback beside an open window, rust dress and low sandals, same glasses and short coils, peaceful home setting.",
+      "personalityTags": [
+        "resourceful",
+        "dry-witted",
+        "independent"
+      ]
+    },
+    {
+      "key": "char-morenike",
+      "name": "Morenike",
+      "age": 45,
+      "gender": "woman",
+      "fictionalLocation": "Onireke, Ibadan",
+      "occupation": "Independent publisher",
+      "interests": [
+        "independent books",
+        "dinner hosting",
+        "classic films",
+        "long walks"
+      ],
+      "appearance": "Clearly adult Nigerian woman in her mid-forties, deep brown skin, broad oval face, tall medium build, shoulder-length black-and-silver twists, visible mature smile lines.",
+      "portraitScene": "Waist-up beside a bookshelf with unreadable spines, deep-blue linen jacket over a cream top, warm daylight and natural skin texture.",
+      "galleryScene": "Three-quarter candid arranging simple flowers at a small dinner table, soft maroon dress, black-and-silver twists unchanged, warm evening light, no guests visible.",
+      "personalityTags": [
+        "perceptive",
+        "warm",
+        "irreverent"
+      ]
+    },
+    {
+      "key": "char-ejiro",
+      "name": "Ejiro",
+      "age": 32,
+      "gender": "woman",
+      "fictionalLocation": "Ugborikoko, Warri",
+      "occupation": "Urban gardener",
+      "interests": [
+        "urban gardening",
+        "coastal walks",
+        "live percussion",
+        "fruit markets"
+      ],
+      "appearance": "Clearly adult Nigerian woman in her early thirties, deep brown skin, round face with a chin dimple, medium build, thick natural hair in two low flat-twisted buns.",
+      "portraitScene": "Waist-up on a planted balcony, burnt-sienna sleeveless linen top, soft shade, direct amused gaze, simple silver hoops.",
+      "galleryScene": "Full-body candid walking along a public coastal promenade, loose ivory shirt and patterned green trousers, same low buns, cloudy late-afternoon light, no companions visible.",
+      "personalityTags": [
+        "optimistic",
+        "practical",
+        "cheerful"
+      ]
+    },
+    {
+      "key": "char-halima",
+      "name": "Halima",
+      "age": 36,
+      "gender": "woman",
+      "fictionalLocation": "Samaru, Zaria",
+      "occupation": "Museum educator",
+      "interests": [
+        "local history",
+        "football",
+        "embroidery",
+        "basket weaving"
+      ],
+      "appearance": "Clearly adult Nigerian woman in her mid-thirties, dark skin, long face, tall sturdy build, neat chin-length loc bob, small oval glasses.",
+      "portraitScene": "Mid-length portrait in a shaded museum courtyard with plain walls, mustard blouse and dark trousers, calm smile, no official badges.",
+      "galleryScene": "Candid seated with an embroidery hoop on a bright home veranda, plum cotton dress, same loc bob and oval glasses, daylight.",
+      "personalityTags": [
+        "thoughtful",
+        "spirited",
+        "patient"
+      ]
+    },
+    {
+      "key": "char-yejide",
+      "name": "Yejide",
+      "age": 29,
+      "gender": "woman",
+      "fictionalLocation": "Ibara, Abeokuta",
+      "occupation": "Transit planner",
+      "interests": [
+        "city walks",
+        "easy running",
+        "essays",
+        "jazz fusion"
+      ],
+      "appearance": "Clearly adult Nigerian woman in her late twenties, dark brown skin, high cheekbones, lean runner build, closely cut natural hair and a small left-cheek beauty mark.",
+      "portraitScene": "Waist-up at a sunlit café courtyard table, forest-green shirt, small silver studs, soft side lighting, relaxed adult features.",
+      "galleryScene": "Full-body candid after an easy park walk, plain terracotta sports top and black running trousers, resting beside a bench, overcast daylight.",
+      "personalityTags": [
+        "analytical",
+        "wry",
+        "considerate"
+      ]
+    },
+    {
+      "key": "char-adanna",
+      "name": "Adanna",
+      "age": 34,
+      "gender": "woman",
+      "fictionalLocation": "Presco, Abakaliki",
+      "occupation": "Costume designer",
+      "interests": [
+        "costume design",
+        "karaoke",
+        "vintage postcards",
+        "theatre"
+      ],
+      "appearance": "Clearly adult Nigerian woman in her mid-thirties, rich brown skin, broad cheekbones, curvy build, short sculpted natural hair dyed dark auburn and mature smile lines.",
+      "portraitScene": "Three-quarter portrait against a plain studio wall, cobalt tailored jumpsuit, small brass earrings, soft natural window light.",
+      "galleryScene": "Candid sorting vintage postcards on a home floor cushion, cream sweater and plum trousers, short auburn hair unchanged, warm afternoon light.",
+      "personalityTags": [
+        "expressive",
+        "generous",
+        "bold"
+      ]
+    },
+    {
+      "key": "char-farouk",
+      "name": "Farouk",
+      "age": 31,
+      "gender": "man",
+      "fictionalLocation": "Barnawa, Kaduna",
+      "occupation": "Restoration architect",
+      "interests": [
+        "old buildings",
+        "chess",
+        "breakfast cooking",
+        "street photography"
+      ],
+      "appearance": "Clearly adult Nigerian man in his early thirties, deep brown skin, rectangular face, medium build, short dense curls, neat moustache and trimmed beard, thin rectangular glasses.",
+      "portraitScene": "Waist-up near a shaded brick courtyard, charcoal linen shirt, relaxed shoulders, soft daylight, no official insignia.",
+      "galleryScene": "Three-quarter candid leaning over a chessboard at home, plain cream tee and olive trousers, same glasses and beard, warm lamplight.",
+      "personalityTags": [
+        "measured",
+        "witty",
+        "attentive"
+      ]
+    },
+    {
+      "key": "char-obinna",
+      "name": "Obinna",
+      "age": 33,
+      "gender": "man",
+      "fictionalLocation": "New Owerri, Owerri",
+      "occupation": "Chef and supper-club host",
+      "interests": [
+        "regional cooking",
+        "football",
+        "comedy",
+        "local markets"
+      ],
+      "appearance": "Clearly adult Nigerian man in his early thirties, rich dark skin, broad round face, stocky build, low fade, full neatly shaped beard and deep smile dimples.",
+      "portraitScene": "Mid-length portrait at an empty casual dining table, brick-red short-sleeve shirt, soft sidelight, no chef hat or uniform.",
+      "galleryScene": "Full-body candid browsing vegetables at an open-air market, indigo overshirt and tan chinos, same beard and fade, diffuse morning light.",
+      "personalityTags": [
+        "sociable",
+        "steady",
+        "playful"
+      ]
+    },
+    {
+      "key": "char-fikayo",
+      "name": "Fikayo",
+      "age": 28,
+      "gender": "man",
+      "fictionalLocation": "Akure, Ondo",
+      "occupation": "Industrial designer",
+      "interests": [
+        "product sketches",
+        "bicycle repairs",
+        "alté music",
+        "DIY projects"
+      ],
+      "appearance": "Clearly adult Nigerian man in his late twenties, medium brown skin, long oval face, lanky adult build, short sponge twists, faint moustache and small scar through one eyebrow.",
+      "portraitScene": "Waist-up beside a plain workbench, moss-green tee under a cream overshirt, relaxed gaze, indirect daylight, no tools in use.",
+      "galleryScene": "Candid seated on a low garden wall beside a stationary bicycle, burgundy shirt and dark jeans, same twists and eyebrow scar, late afternoon.",
+      "personalityTags": [
+        "inventive",
+        "earnest",
+        "easygoing"
+      ]
+    },
+    {
+      "key": "char-tonye",
+      "name": "Tonye",
+      "age": 37,
+      "gender": "man",
+      "fictionalLocation": "Woji, Port Harcourt",
+      "occupation": "Logistics operations manager",
+      "interests": [
+        "highlife",
+        "container gardening",
+        "car design",
+        "Sunday cooking"
+      ],
+      "appearance": "Clearly adult Nigerian man in his late thirties, dark brown skin, wide jaw, broad heavyset build, shaved head, close salt-flecked beard and mature smile lines.",
+      "portraitScene": "Chest-up on a shaded home veranda, pale blue linen shirt, calm amused expression, natural skin texture, warm daylight.",
+      "galleryScene": "Three-quarter candid watering herbs in containers, plain ochre polo and charcoal trousers, shaved head and beard unchanged, cloudy morning light.",
+      "personalityTags": [
+        "dependable",
+        "wry",
+        "unhurried"
+      ]
+    },
+    {
+      "key": "char-ibrahim",
+      "name": "Ibrahim",
+      "age": 35,
+      "gender": "man",
+      "fictionalLocation": "Gwarinpa, Abuja",
+      "occupation": "Translator and language editor",
+      "interests": [
+        "translated fiction",
+        "badminton",
+        "wordplay",
+        "tea blends"
+      ],
+      "appearance": "Clearly adult Nigerian man in his mid-thirties, medium-dark skin, narrow face, tall slim build, short wavy hair, neat goatee and round dark-rim glasses.",
+      "portraitScene": "Waist-up by a bright window, plum collarless shirt, paperback closed on a table, relaxed adult features and soft light.",
+      "galleryScene": "Three-quarter candid holding a badminton racket at the edge of an empty community court, navy sports shirt and grey trousers, same goatee and glasses, early evening.",
+      "personalityTags": [
+        "thoughtful",
+        "gentle",
+        "pun-loving"
+      ]
+    },
+    {
+      "key": "char-osaze",
+      "name": "Osaze",
+      "age": 30,
+      "gender": "man",
+      "fictionalLocation": "Ugbowo, Benin City",
+      "occupation": "Leather accessories maker",
+      "interests": [
+        "leather craft",
+        "basketball",
+        "houseplants",
+        "soul music"
+      ],
+      "appearance": "Clearly adult Nigerian man around thirty, deep dark skin, broad cheekbones, muscular compact build, closely cropped hair, clean-shaven face and a small right-cheek dimple.",
+      "portraitScene": "Mid-length portrait outside a simple workshop, tan cotton overshirt over a black tee, hands resting naturally, diffuse daylight.",
+      "galleryScene": "Full-body candid carrying a basketball beside an empty outdoor court, muted forest-green tee and black shorts, cropped hair unchanged, late-afternoon sun.",
+      "personalityTags": [
+        "patient",
+        "hands-on",
+        "confident"
+      ]
+    },
+    {
+      "key": "char-dapo",
+      "name": "Dapo",
+      "age": 42,
+      "gender": "man",
+      "fictionalLocation": "Alagbaka, Akure",
+      "occupation": "Coffee roaster",
+      "interests": [
+        "coffee roasting",
+        "old films",
+        "breakfast cooking",
+        "walking"
+      ],
+      "appearance": "Clearly adult Nigerian man in his early forties, rich brown skin, square face, medium stocky build, receding close-cropped black-and-grey hair, short grey-flecked beard and visible laugh lines.",
+      "portraitScene": "Waist-up on a shaded café terrace, dark teal linen shirt, relaxed mature smile, soft natural daylight, no cup pose.",
+      "galleryScene": "Side-angle candid browsing old film sleeves at home, cream knit polo and dark trousers, same hairline and beard, warm lamplight.",
+      "personalityTags": [
+        "relaxed",
+        "considerate",
+        "dry-witted"
+      ]
+    },
+    {
+      "key": "char-bassey",
+      "name": "Bassey",
+      "age": 39,
+      "gender": "man",
+      "fictionalLocation": "State Housing, Calabar",
+      "occupation": "Woodworker and canoe restorer",
+      "interests": [
+        "woodwork",
+        "waterfront walks",
+        "highlife records",
+        "draughts"
+      ],
+      "appearance": "Clearly adult Nigerian man in his late thirties, deep brown skin, long face, broad athletic build, short tightly coiled hair with grey temples, thick neat moustache and clean-shaven chin.",
+      "portraitScene": "Three-quarter portrait beside a shaded wooden workshop wall, rust short-sleeve shirt, mature smile lines, calm daylight.",
+      "galleryScene": "Full-body candid standing on a public waterfront path looking at the view, pale blue shirt and dark trousers, same grey temples and moustache, overcast light, no boat operation.",
+      "personalityTags": [
+        "patient",
+        "storytelling",
+        "good-humoured"
+      ]
+    },
+    {
+      "key": "char-samuel",
+      "name": "Samuel",
+      "age": 47,
+      "gender": "man",
+      "fictionalLocation": "Tanke, Ilorin",
+      "occupation": "School librarian",
+      "interests": [
+        "reading",
+        "draughts",
+        "home gardening",
+        "Sunday cooking"
+      ],
+      "appearance": "Clearly adult Nigerian man in his late forties, medium brown skin, rounded face, soft stocky build, close-cropped salt-and-pepper hair, clean-shaven, oval reading glasses and pronounced mature smile lines.",
+      "portraitScene": "Waist-up on a quiet home veranda, cream collarless shirt, relaxed posture, natural mature skin texture, warm morning light, no school setting.",
+      "galleryScene": "Candid tending small raised herb beds at home, plum polo and tan trousers, same glasses and salt-and-pepper hair, soft afternoon light.",
+      "personalityTags": [
+        "gentle",
+        "wry",
+        "open-minded"
+      ]
+    },
+    {
+      "key": "char-yomi",
+      "name": "Yomi",
+      "age": 54,
+      "gender": "man",
+      "fictionalLocation": "Agodi, Ibadan",
+      "occupation": "Vintage watch repairer",
+      "interests": [
+        "watch restoration",
+        "classic films",
+        "jazz",
+        "chilli gardening"
+      ],
+      "appearance": "Clearly adult Nigerian man in his mid-fifties, dark skin, long angular face, lean build, short silver hair, neat silver moustache and beard, visible forehead lines and crow's feet.",
+      "portraitScene": "Chest-up at a simple watchmaker desk with no readable brands, navy cotton shirt, dignified relaxed expression, soft sidelight showing mature features.",
+      "galleryScene": "Three-quarter candid examining a ripe chilli on a balcony plant, ivory short-sleeve shirt and olive trousers, silver hair and beard unchanged, morning light.",
+      "personalityTags": [
+        "meticulous",
+        "playful",
+        "self-possessed"
+      ]
+    },
+    {
+      "key": "char-kelechi",
+      "name": "Kelechi",
+      "age": 34,
+      "gender": "man",
+      "fictionalLocation": "Ogbor Hill, Aba",
+      "occupation": "Landscape photographer",
+      "interests": [
+        "landscape photography",
+        "tabletop games",
+        "coastal walks",
+        "highlife"
+      ],
+      "appearance": "Clearly adult Nigerian man in his mid-thirties, deep brown skin, broad oval face, tall medium build, short natural curls, closely trimmed beard and a small left-eyebrow notch.",
+      "portraitScene": "Waist-up on a shaded city terrace, muted ochre shirt, camera not in frame, relaxed adult features and soft daylight.",
+      "galleryScene": "Wide candid standing beside a tripod facing a coastal view, slate-blue overshirt and tan trousers, same beard and eyebrow notch, cloudy early morning, no other people.",
+      "personalityTags": [
+        "observant",
+        "playful",
+        "considerate"
+      ]
+    },
+    {
+      "key": "char-segun",
+      "name": "Segun",
+      "age": 40,
+      "gender": "man",
+      "fictionalLocation": "Oke-Fia, Osogbo",
+      "occupation": "Community café owner",
+      "interests": [
+        "basketball",
+        "bass guitar",
+        "slow cooking",
+        "community spaces"
+      ],
+      "appearance": "Clearly adult Nigerian man around forty, dark brown skin, rounded square face, large broad build, shaved head, full short beard with a silver patch at the chin and mature laugh lines.",
+      "portraitScene": "Mid-length portrait on an empty café patio, terracotta linen shirt, relaxed smile, soft daylight, no logos or other people.",
+      "galleryScene": "Candid seated at home practising an unbranded bass guitar, charcoal tee and olive trousers, shaved head and silver beard patch unchanged, warm evening light.",
+      "personalityTags": [
+        "welcoming",
+        "candid",
+        "good-humoured"
+      ]
+    },
+    {
+      "key": "char-usman",
+      "name": "Usman",
+      "age": 32,
+      "gender": "man",
+      "fictionalLocation": "Tunga, Minna",
+      "occupation": "Audio documentary producer",
+      "interests": [
+        "audio stories",
+        "cycling",
+        "mystery fiction",
+        "breakfast cooking"
+      ],
+      "appearance": "Clearly adult Nigerian man in his early thirties, rich brown skin, long narrow face, slim athletic build, short neat locs tied back, light moustache and narrow chin beard.",
+      "portraitScene": "Waist-up near an open window in a plain audio workspace, olive shirt, no equipment labels, relaxed gaze and natural light.",
+      "galleryScene": "Full-body candid beside a stationary commuter bicycle at a leafy public park, cream tee and rust overshirt, same tied-back locs, overcast late afternoon.",
+      "personalityTags": [
+        "curious",
+        "unhurried",
+        "teasing"
+      ]
+    },
+    {
+      "key": "char-dele",
+      "name": "Dele",
+      "age": 36,
+      "gender": "man",
+      "fictionalLocation": "GRA, Ijebu Ode",
+      "occupation": "Surfboard shaper",
+      "interests": [
+        "surfboard craft",
+        "ocean walks",
+        "home cooking",
+        "board games"
+      ],
+      "appearance": "Clearly adult Nigerian man in his mid-thirties, deep brown skin, broad face with a cleft chin, sturdy athletic build, short natural afro, clean-shaven and visible sun-smile lines.",
+      "portraitScene": "Three-quarter portrait outside a plain board-shaping studio, faded navy cotton shirt, relaxed adult features, soft coastal daylight, no surfboard brand.",
+      "galleryScene": "Full-body candid on a public ocean promenade in a sage tee and charcoal shorts, same short afro and cleft chin, soft early light, no swimming or surfing action.",
+      "personalityTags": [
+        "easygoing",
+        "cheeky",
+        "practical"
+      ]
+    }
+  ]
+}

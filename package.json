@@ -6,7 +6,7 @@
     "dev": "next dev --hostname 0.0.0.0",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint",
+    "lint": "eslint app components lib scripts tests tests-auth tests-hosted \"*.{ts,mjs}\" --max-warnings=0",
     "typecheck": "tsc --noEmit",
     "test": "playwright test",
     "check:production": "node scripts/check-production.mjs",
@@ -61,7 +61,16 @@
     "test:hosted-backup-crypto": "node scripts/test-hosted-backup-crypto.mjs",
     "test:hosted-privacy-restore": "node scripts/test-hosted-privacy-restore.mjs",
     "health:hosted": "node scripts/check-hosted-health.mjs",
-    "test:hosted-health": "node scripts/test-hosted-health.mjs"
+    "test:hosted-health": "node scripts/test-hosted-health.mjs",
+    "test:reply-recovery": "node scripts/test-reply-recovery.mjs",
+    "test:reply-boundaries": "node --experimental-vm-modules scripts/test-reply-boundaries.mjs",
+    "cast:build": "node scripts/build-cast-roster.mjs",
+    "cast:check": "node scripts/build-cast-roster.mjs --check",
+    "test:cast-roster": "node scripts/test-cast-roster.mjs",
+    "test:core": "node scripts/test-core.mjs",
+    "check:engineering": "npm run lint && npm run typecheck && npm run test:core",
+    "cast:frontend": "node scripts/build-cast-frontend.mjs",
+    "cast:frontend:check": "node scripts/build-cast-frontend.mjs --check"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",

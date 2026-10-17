@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { AccountPage, AccountIntro, AccountPasswordField } from "./account-presentation";
 import { useRouter } from "next/navigation";
 import { useRef, useState, useTransition, type FormEvent } from "react";
 import { resetOnboardingDraft, submitAccount } from "@/lib/backend/account-actions";
@@ -10,7 +11,7 @@ import { Button, Checkbox, Chip, Notice, SelectField, TextField } from "./ui/pri
 export type AccountProfile = { display_name: string; genders: string[]; language: string; requests_enabled: boolean; version: number };
 const titles: Record<FlowStep, [string, string]> = {
   age: ["A little chemistry starts here.", "TalkingStage is a fictional AI dating experience for adults 18 and over."],
-  register: ["Make room for a good conversation.", "Create your account to find a personality you connect with."],
+  register: ["Create your account.", "Create your account to find a personality you connect with."],
   "sign-in": ["Good to see you again.", "Pick up where your conversation left off."],
   recover: ["Let’s get you back in.", "Enter your email to request an access recovery link."],
   "recovery-complete": ["A fresh start.", "Choose a new password for your account."],
@@ -76,8 +77,8 @@ export function RealAccountForm({ step, configured, profile, expired = false, lo
       finally { setPendingAction(null); }
     });
   }
-  return <div className={settings ? "space-page stack settings-preferences" : "account-page"}>{!settings && <header className="container account-header"><Brand /><Link className="button button--quiet" href="/support">Help</Link></header>}<Content id={settings ? undefined : 'main-content'} className={settings ? "stack" : "account-main"}>
-    {settings ? <Link className="profile-back" href="/settings">Back to settings</Link> : <Link className="account-back" href="/" aria-disabled={busy} onNavigate={event => { event.preventDefault(); leaveOnboarding(); }}>Back to TalkingStage</Link>}<h1 className="display page-title">{settings ? "Preferences" : titles[step][0]}</h1><p className="account-description muted">{settings ? "Choose who you want to meet and how you like to chat." : titles[step][1]}</p>
+  return <AccountPage step={step} settings={settings} header={!settings && <header className="container account-header"><Brand /><Link className="button button--quiet" href="/support">Help</Link></header>}><Content id={settings ? undefined : 'main-content'} className={settings ? "stack" : "account-main"}>
+    {settings ? <Link className="profile-back" href="/settings">Back to settings</Link> : <Link className="account-back" href="/" aria-disabled={busy} onNavigate={event => { event.preventDefault(); leaveOnboarding(); }}>Back to TalkingStage</Link>}<AccountIntro step={settings ? "preferences" : step}/><h1 className="display page-title">{settings ? "Preferences" : titles[step][0]}</h1><p className="account-description muted">{settings ? "Choose who you want to meet and how you like to chat." : titles[step][1]}</p>
     {!configured && <Notice title="Account services are unavailable" tone="warning">Please try again later.</Notice>}
     {expired && <Notice title="Sign in to continue">Your session has expired.</Notice>}
     {error && <Notice title={error} tone="danger" live />}{message && <Notice title={message} tone="success" live />}
@@ -85,8 +86,8 @@ export function RealAccountForm({ step, configured, profile, expired = false, lo
       <input type="hidden" name="version" value={profile?.version ?? 0} />
       {step === "sign-in" && localTestAccount && <Notice title="Testing locally"><p>Use the sample account to explore TalkingStage.</p><p className="caption">Email: {localTestAccount.email}<br />Password: {localTestAccount.password}</p><Button variant="secondary" disabled={busy} onClick={fillTestAccount}>Use test account</Button></Notice>}
       {step === "age" && <><Checkbox name="adult" label="I am 18 or older" checked={adult} disabled={busy} onChange={e => setAdult(e.target.checked)} required aria-describedby="adult-hint" /><p id="adult-hint" className="caption muted">This is your declaration, not independent age verification.</p></>}
-      {["register", "sign-in", "recover"].includes(step) && <TextField label="Email address" name="email" type="email" autoComplete="email" maxLength={254} required />}
-      {["register", "sign-in", "recovery-complete"].includes(step) && <TextField label="Password" name="password" type="password" autoComplete={step === "sign-in" ? "current-password" : "new-password"} minLength={step === "sign-in" ? 1 : 12} maxLength={128} hint={step !== "sign-in" ? "Use at least 12 characters." : undefined} required />}
+      {["register", "sign-in", "recover"].includes(step) && <TextField label="Email address" name="email" type="email" placeholder="you@example.com" autoComplete="email" maxLength={254} required />}
+      {["register", "sign-in"].includes(step) && <AccountPasswordField label="Password" name="password" autoComplete={step === "sign-in" ? "current-password" : "new-password"} minLength={step === "sign-in" ? 1 : 12} maxLength={128} placeholder={step === "register" ? "Create a strong password" : "Enter your password"} hint={step === "register" ? "Use at least 12 characters." : undefined} required />}{step === "recovery-complete" && <TextField label="Password" name="password" type="password" autoComplete="new-password" minLength={12} maxLength={128} hint="Use at least 12 characters." required />}
       {step === "recovery-complete" && <TextField label="Confirm password" name="confirmPassword" type="password" autoComplete="new-password" minLength={12} maxLength={128} required />}
       {step === "register" && <><Checkbox name="consent" label="I accept the terms and understand I’ll talk with fictional AI characters." required /><p className="caption"><Link href="/terms">Terms</Link> · <Link href="/privacy">Privacy</Link></p></>}
       {step === "preferences" && <>
@@ -102,5 +103,5 @@ export function RealAccountForm({ step, configured, profile, expired = false, lo
       {step === "sign-in" && <Link href="/recover">Forgot your password?</Link>}
     </form>}
     {!settings && <p className="account-footer supporting"><Link href={step === "sign-in" ? "/onboarding/age" : "/sign-in"}>{step === "sign-in" ? "Create an account" : "Already have an account? Sign in"}</Link></p>}
-  </Content></div>;
+  </Content></AccountPage>;
 }

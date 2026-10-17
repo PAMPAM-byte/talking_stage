@@ -1,43 +1,6 @@
 @import "tailwindcss";
+@import "./styles/tokens.css";
 
-:root {
-  color-scheme: light;
-  --canvas: #faf8fa;
-  --surface: #ffffff;
-  --ink: #241c23;
-  --text-secondary: #716570;
-  --brand: #682447;
-  --brand-soft: #f5eaf0;
-  --brand-hover: #541b39;
-  --brand-pressed: #44152d;
-  --focus: #682447;
-  --disabled-text: #716570;
-  --border: #e8dfe6;
-  --border-control: #8f7e8a;
-  --success: #267052;
-  --success-soft: #eaf5ee;
-  --warning: #835b19;
-  --warning-soft: #fff6e6;
-  --danger: #a63a50;
-  --danger-soft: #fceff2;
-  --disabled-surface: #eee9ed;
-  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
-  --space-5: 20px; --space-6: 24px; --space-8: 32px; --space-10: 40px;
-  --space-12: 48px; --space-16: 64px; --space-20: 80px;
-  --radius-control: 12px; --radius-card: 20px; --radius-message: 18px;
-  --radius-sheet: 24px; --radius-pill: 999px;
-  --shadow-floating: 0 8px 32px rgb(36 28 35 / 10%);
-  --motion-fast: 120ms; --motion-message: 160ms; --motion-overlay: 200ms;
-  --type-hero: 40px; --type-hero-leading: 44px;
-  --type-page: 30px; --type-page-leading: 36px;
-  --type-profile: 32px; --type-profile-leading: 38px;
-  --type-section: 20px; --type-section-leading: 28px;
-  --type-card: 20px; --type-card-leading: 26px;
-  --type-body: 16px; --type-body-leading: 24px;
-  --type-control: 15px; --type-control-leading: 20px;
-  --type-supporting: 14px; --type-supporting-leading: 20px;
-  --type-caption: 12px; --type-caption-leading: 16px;
-}
 @theme inline {
   --color-background: var(--canvas); --color-foreground: var(--ink);
   --color-brand: var(--brand); --font-sans: var(--font-interface); --font-serif: var(--font-display);
@@ -167,7 +130,6 @@ textarea.field__control { resize: vertical; min-height: 104px; }
 .foundation-home__clue { margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--border); }
 .foundation-home__clue blockquote { margin: 8px 0; font-size: 24px; line-height: 32px; color: var(--brand); }
 @media (min-width: 900px) {
-  :root { --type-hero: 64px; --type-hero-leading: 68px; --type-page: 40px; --type-page-leading: 46px; --type-profile: 40px; --type-profile-leading: 46px; --type-section: 24px; --type-section-leading: 32px; }
   .shell--user, .shell--admin { padding-left: 220px; }
   .shell--user .shell__navigation, .shell--admin .shell__navigation { position: fixed; top: 0; bottom: 0; left: 0; right: auto; width: 220px; flex-direction: column; justify-content: flex-start; gap: 8px; padding: 108px 16px 24px; border-top: 0; border-right: 1px solid var(--border); }
   .shell--user .shell__nav-item, .shell--admin .shell__nav-item { flex: none; flex-direction: row; justify-content: flex-start; font-size: 14px; gap: 12px; padding: 12px 16px; }

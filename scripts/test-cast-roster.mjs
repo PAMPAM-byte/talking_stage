@@ -1,0 +1,52 @@
+import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
+import { PGlite } from '@electric-sql/pglite';
+import { loadRoster } from './build-cast-roster.mjs';
+
+// Validate real compiled content against the actual PostgreSQL draft contract.
+// This database is in memory. No environment files, providers or services used.
+const pack = await loadRoster();
+const db = new PGlite();
+const admins = ['00000000-0000-4000-8000-000000000001', '00000000-0000-4000-8000-000000000002'];
+const member = '00000000-0000-4000-8000-000000000003';
+try {
+    await db.exec(`create role anon; create role authenticated; create schema auth;
+        create table auth.users(id uuid primary key, raw_user_meta_data jsonb not null default '{}');
+        create function auth.uid() returns uuid language sql stable as $$ select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid $$;
+        grant usage on schema auth,public to authenticated,anon;
+        grant execute on function auth.uid() to authenticated,anon;`);
+    for (const migration of ['202610080001_foundation.sql', '202610080002_cast_drafts.sql']) {
+        await db.exec(await readFile(new URL(`../supabase/migrations/${migration}`, import.meta.url), 'utf8'));
+    }
+    for (const actor of [...admins, member]) {
+        await db.query('insert into auth.users values ($1,$2)', [actor, JSON.stringify({ adult_declaration: '18-plus-v1' })]);
+        await db.query("update public.profiles set display_name='Synthetic roster reviewer',genders=array['woman','man'],ai_consent_at=now(),onboarding_complete=true where id=$1", [actor]);
+    }
+    for (const actor of admins) await db.query("insert into private.user_roles(user_id,role) values ($1,'admin')", [actor]);
+    const saved = [];
+    for (let index = 0; index < pack.characters.length; index++) {
+        // Two synthetic admins save 25 each, staying within the real 30/min cap.
+        await db.exec('reset role; set role authenticated');
+        await db.query("select set_config('request.jwt.claim.sub',$1,false)", [admins[Math.floor(index / 25)]]);
+        const c = pack.characters[index];
+        const result = await db.query('select public.admin_save_cast(null,0,$1,$2) as id', [JSON.stringify(c.profile), c.direction]);
+        saved.push({ ...c, id: result.rows[0].id });
+    }
+    await db.exec('reset role');
+    const stored = (await db.query('select character_id,profile,direction,instruction_version from private.cast_drafts')).rows;
+    assert.equal(stored.length, 50);
+    for (const c of saved) {
+        const row = stored.find(r => r.character_id === c.id);
+        assert.deepEqual(row.profile, c.profile, `${c.key}: saved profile round trip`);
+        assert.equal(row.direction, c.direction, `${c.key}: saved private voice round trip`);
+        assert.equal(row.instruction_version, 1);
+    }
+    await db.exec('set role authenticated');
+    await db.query("select set_config('request.jwt.claim.sub',$1,false)", [member]);
+    assert.equal((await db.query('select * from public.characters')).rows.length, 0, 'Unpublished drafts must not appear to customers.');
+    await assert.rejects(db.query('select * from private.cast_drafts'), /permission denied/);
+    await assert.rejects(db.query('select public.admin_list_cast()'), /forbidden/);
+    console.log('All 50 compiled adult profiles/private directions passed real PostgreSQL draft validation and round-trip checks. Unpublished profiles and directions remain inaccessible to members. This is not a live voice-quality evaluation.');
+} finally {
+    await db.close();
+}

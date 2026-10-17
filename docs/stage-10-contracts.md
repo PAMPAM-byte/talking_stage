@@ -1,5 +1,7 @@
 # Stage 10 conversations, AI and memory
 
+Current-status note, 16 October 2026: disabled-provider and missing-key descriptions below document the original implementation. [Haiku activation](./claude-haiku.md) records subsequent hosted activation, finite budgets, basic live verification and migration 015. [Current project status](./project-status.md) separates delivered functionality from remaining acceptance. The composer now clears into an in-memory outbox on send; failed delivery retains text and its client ID in that bubble. Generation starts after acknowledgement with bounded client recovery; see [chat delivery](./reviews/chat-delivery.md).
+
 9 October 2026 · In progress. Stage 9's approved cast is published locally.
 
 ## Conversation persistence batch

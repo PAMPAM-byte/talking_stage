@@ -23,6 +23,9 @@
       }
     ],
     "paths": {
+      "@talkingstage/chat-delivery-preview": [
+        "./app/dev/chat-delivery/preview.tsx"
+      ],
       "@talkingstage/preview": [
         "./app/dev/design-system/preview.tsx"
       ],
@@ -50,6 +53,13 @@
     ".next-preview/dev/types/**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    ".next-auth-stalled-*",
+    ".local-services",
+    ".local-backups",
+    "test-results",
+    "test-results-auth",
+    "test-results-hosted",
+    "playwright-report"
   ]
 }

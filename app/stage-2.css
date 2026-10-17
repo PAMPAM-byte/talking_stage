@@ -24,6 +24,8 @@
 .landing-bottom { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px; }
 .landing-footer { padding-block: 24px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
 .account-page { min-height: 100dvh; }
+.account-page--centered { display: flex; flex-direction: column; }
+.account-page--centered > .account-main { width: 100%; margin-block: auto; padding-block: 32px; }
 .account-header { min-height: 88px; display: flex; align-items: center; justify-content: space-between; gap: 12px; border-bottom: 1px solid var(--border); }
 .account-main { max-width: 480px; margin: 0 auto; padding: 32px 20px 48px; }
 .account-back { display: inline-flex; gap: 8px; align-items: center; min-height: 44px; text-decoration: none; font-size: 14px; margin-bottom: 24px; }

@@ -1,0 +1,19 @@
+{
+  "version":1,
+  "decisionDate":"2026-10-17",
+  "requestedScope":"explicit_adult_text_chat",
+  "decisionSource":"Founder explicitly selected a change to adult chat in this session, superseding the prior non-explicit product intent for future scope.",
+  "implementedScope":"non_explicit_romance_and_substantive_conversation",
+  "explicitGenerationEnabled":false,
+  "blocker":"The configured provider is Anthropic Claude Haiku. The applicable provider usage policy prohibits erotic chats and sexually explicit generation.",
+  "providerPolicy":{
+    "checkedOn":"2026-10-17",
+    "applicableVersion":"2025-09-15",
+    "url":"https://www.anthropic.com/legal/archive/22742366-2ef0-4c7a-a833-6523f10d3944",
+    "announcedNextVersion":"2026-11-12",
+    "nextVersionUrl":"https://www.anthropic.com/legal/aup",
+    "note":"Both inspected versions retain this prohibition; do not confuse the announced November effective date with the date of this decision."
+  },
+  "photoScope":"Existing non-explicit photo scope is unchanged; no explicit image feature was requested or implemented.",
+  "implementationState":"No provider switch, explicit generation, new age/consent control, public scope announcement or hosted publication has been performed. The existing adult declaration does not constitute a newly implemented explicit-mode opt-in."
+}

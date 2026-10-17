@@ -1,0 +1,90 @@
+/* Owned by AccountPage. All rules are scoped to account entry and adult declaration. */
+.auth-page { display: flex; flex-direction: column; gap: 24px; background: var(--surface); }
+.auth-header { width: min(1200px, 100%); min-height: 88px; padding: 20px 32px; margin-inline: auto; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex: none; }
+.auth-help { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-size: 13px; color: var(--text-secondary); text-decoration: none; }
+.auth-help .icon { width: 17px; }
+.auth-layout { display: grid; grid-template-columns: .95fr 1.05fr; width: min(1080px, calc(100% - 64px)); margin: auto; flex: none; border: 1px solid var(--border); border-radius: 28px; background: white; box-shadow: 0 12px 64px rgb(74 24 38 / 4%); overflow: hidden; }
+.auth-story { display: flex; flex-direction: column; padding: 32px; margin: 8px; border-radius: 21px; background: var(--brand-soft); min-width: 0; }
+.auth-eyebrow { font-size: 10px; line-height: 1.5; font-weight: 750; letter-spacing: .13em; text-transform: uppercase; color: var(--brand); }
+.auth-story h2 { font-size: clamp(34px, 3.5vw, 44px); line-height: 1.12; font-weight: 750; letter-spacing: -1.7px; margin: 16px 0; }
+.auth-story h2 em { font-family: var(--font-display), Georgia, serif; font-weight: 400; color: var(--brand); }
+.auth-story-heading > p { font-size: 13px; line-height: 1.8; color: var(--text-secondary); }
+.auth-portrait { position: relative; height: 240px; min-height: 200px; margin-top: 28px; border-radius: 16px; overflow: hidden; background: #f0dfe3; }
+.auth-portrait img { object-fit: cover; object-position: center 30%; }
+.auth-portrait-label { position: absolute; bottom: 12px; left: 12px; right: 12px; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 11px 14px; border-radius: 9px; background: white; font-size: 12px; font-weight: 750; }
+.auth-portrait-label > span { font-size: 10px; font-weight: 500; color: var(--text-secondary); }
+.auth-photo-fallback { height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; gap: 12px; font-size: 13px; text-align: center; color: var(--text-secondary); }
+.auth-clue { position: relative; padding: 22px 0 0 26px; margin-top: auto; }
+.auth-clue > span { position: absolute; left: 0; top: 14px; font-size: 40px; font-family: var(--font-display), Georgia, serif; color: var(--brand); }
+.auth-clue blockquote { font-family: var(--font-display), Georgia, serif; font-size: 22px; line-height: 1.4; margin: 0; max-width: 25ch; }
+.auth-clue p { font-size: 10px; margin-top: 8px; color: var(--text-secondary); }
+.auth-image-disclosure { margin-top: 22px; font-size: 11px; line-height: 1.7; color: var(--text-secondary); }
+.auth-layout > .account-main { width: 100%; max-width: none; align-self: center; padding: 36px 52px; margin: 0; min-width: 0; }
+.auth-page .account-back { min-height: 32px; margin-bottom: 22px; font-size: 11px; color: var(--text-secondary); }
+.auth-page .account-back::before { content: '←'; margin-right: 4px; }
+.auth-page .account-back:has(svg)::before { display: none; }
+.auth-intro { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
+.auth-intro-icon { display: grid; place-items: center; width: 36px; height: 36px; border: 1px solid #f2dce2; border-radius: 11px; background: var(--brand-soft); color: var(--brand); }
+.auth-intro-icon .icon { width: 17px; height: 17px; }
+.auth-age-mark { font-size: 12px; font-weight: 800; letter-spacing: -.5px; }
+.auth-layout--age .account-form > .choice { align-items: center; min-height: 76px; padding: 18px; border: 1px solid var(--border-control); border-radius: 14px; background: #fdfcfd; transition: background-color 160ms ease, border-color 160ms ease; }
+.auth-layout--age .account-form > .choice:has(input:checked) { border-color: var(--brand); background: var(--brand-soft); }
+.auth-layout--age .account-form > .choice:focus-within { outline: 2px solid var(--focus); outline-offset: 3px; }
+.auth-layout--age .account-form > .choice .supporting { font-size: 14px; font-weight: 700; }
+.auth-layout--age .account-form > .choice input { width: 20px; height: 20px; margin-top: 0; }
+.auth-layout--age .account-form > .caption, .auth-layout--age .account-form > .supporting { font-size: 12px; line-height: 1.85; margin-top: -4px; }
+.auth-layout--age .account-form > .button--quiet { order: 2; font-size: 12px; min-height: 44px; color: var(--text-secondary); }
+.auth-page .page-title { font-size: 32px; line-height: 1.18; letter-spacing: -1.2px; font-weight: 750; }
+.auth-page .account-description { font-size: 13px; line-height: 1.85; margin: 12px 0 26px; max-width: 38ch; }
+.auth-page .account-form { gap: 20px; margin-top: 22px; }
+.auth-page .field { gap: 8px; }
+.auth-page .field__label { font-size: 12px; font-weight: 700; }
+.auth-page .field__control { min-height: 52px; background: #fdfcfd; border-color: var(--border-control); border-radius: 11px; font-size: 16px; transition: border-color 160ms ease, box-shadow 160ms ease; }
+.auth-page .field__control::placeholder { font-size: 13px; color: var(--text-secondary); }
+.auth-page .field__control:focus { border-color: var(--brand); outline: 2px solid var(--brand-soft); outline-offset: 2px; box-shadow: 0 0 0 3px var(--brand-soft); }
+.auth-page .field__control[aria-invalid="true"] { border-color: var(--danger); }
+.auth-page .field__hint { font-size: 11px; line-height: 1.7; }
+.auth-password-field { display: grid; grid-template-columns: minmax(0, 1fr) 48px; row-gap: 8px; }
+.auth-password-field > .field { display: contents; }
+.auth-password-field .field__label, .auth-password-field .field__hint, .auth-password-field .field__error { grid-column: 1 / -1; }
+.auth-password-field .field__control { grid-column: 1 / -1; grid-row: 2; padding-right: 56px; }
+.auth-password-toggle { grid-column: 2; grid-row: 2; align-self: center; justify-self: end; margin-right: 4px; width: 44px; height: 44px; display: grid; place-items: center; padding: 12px; border: 0; border-radius: 8px; background: transparent; color: var(--text-secondary); cursor: pointer; }
+.auth-password-toggle .icon { width: 20px; height: 20px; }
+.auth-password-toggle:hover:not(:disabled) { background: var(--brand-soft); color: var(--brand); }
+.auth-password-toggle:focus-visible { outline: 2px solid var(--focus); outline-offset: -2px; }
+.auth-password-toggle:disabled { opacity: .5; cursor: default; }
+.auth-page .choice { gap: 10px; min-height: 0; }
+.auth-page .choice .supporting { font-size: 12px; line-height: 1.8; }
+.auth-page .choice input { width: 17px; height: 17px; margin-top: 2px; }
+.auth-page .account-form > .button--primary { min-height: 52px; border-radius: 11px; font-size: 13px; box-shadow: 0 4px 12px rgb(207 36 69 / 10%); }
+.auth-page .account-form > .button--primary:disabled { box-shadow: none; }
+.auth-page .account-form > a[href="/recover"] { font-size: 12px; text-align: center; min-height: 24px; }
+.auth-page .account-footer { border-top: 1px solid var(--border); padding-top: 22px; margin-top: 26px; font-size: 12px; line-height: 1.8; }
+.auth-page .account-footer a { text-underline-offset: 4px; }
+.auth-page .account-form > .caption { font-size: 11px; margin-top: -10px; }
+.auth-page .notice { border-radius: 12px; padding: 14px; }
+.auth-page .notice .supporting { font-size: 11px; line-height: 1.7; }
+.auth-page .demo-details { font-size: 11px; }
+.auth-page .demo-details summary { font-size: 11px; }
+.auth-page-footer { display: flex; align-items: center; justify-content: space-between; gap: 16px; width: min(1200px, 100%); padding: 20px 32px 24px; margin-inline: auto; font-size: 10px; color: var(--text-secondary); flex: none; }
+.auth-page-footer nav { display: flex; gap: 22px; }
+.auth-page-footer a { color: inherit; text-decoration: none; min-height: 24px; display: inline-flex; align-items: center; }
+@media (max-width: 899px) {
+  .auth-page { gap: 0; }
+  .auth-header { min-height: 88px; padding-inline: 24px; border-bottom: 1px solid var(--border); }
+  .auth-help { font-size: 12px; }
+  .auth-story { display: none; }
+  .auth-layout { display: block; width: min(480px, 100%); border: 0; border-radius: 0; box-shadow: none; overflow: visible; }
+  .auth-layout > .account-main { padding: 32px 28px; }
+  .auth-page .page-title { font-size: 34px; }
+  .auth-page-footer { padding: 20px 28px; gap: 8px; flex-wrap: wrap; font-size: 9px; }
+  .auth-page-footer nav { gap: 18px; }
+}
+@media (max-width: 359px) {
+  .auth-header { padding-inline: 20px; }
+  .auth-header .brand-mark { font-size: 19px; }
+  .auth-help { font-size: 11px; gap: 5px; }
+  .auth-layout > .account-main { padding-inline: 22px; }
+  .auth-page .page-title { font-size: 30px; }
+}
+@media (prefers-reduced-motion: reduce) { .auth-page .field__control { transition: none; } }

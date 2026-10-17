@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { AccountPage, AccountIntro, AccountPasswordField, isAccountEntry } from "./account-presentation";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, type FormEvent } from "react";
 import { useMockAccount } from "./account-provider";
@@ -13,7 +14,7 @@ import type { Gender, Language } from "@/lib/contracts";
 export type FlowStep = "age" | "register" | "sign-in" | "recover" | "recovery-complete" | "preferences" | "complete";
 const titles: Record<FlowStep, [string, string]> = {
   age: ["A little chemistry starts here.", "TalkingStage is a fictional AI dating experience for adults 18 and over."],
-  register: ["Make room for a good conversation.", "Create your account to find a personality you connect with."],
+  register: ["Create your account.", "Create your account to find a personality you connect with."],
   "sign-in": ["Good to see you again.", "Pick up where your conversation left off."],
   recover: ["Let’s get you back in.", "Enter your email to request an access recovery link."],
   "recovery-complete": ["A fresh start.", "Choose a new password for your account."],
@@ -73,15 +74,15 @@ export function AccountFlow({ step, expired = false }: { step: FlowStep; expired
   const blocked = step === "age" && account.age === "blocked";
   const [title, description] = titles[step];
   const back = step === "register" ? "/onboarding/age" : step === "preferences" ? "/register" : step === "complete" ? "/onboarding/preferences" : "/";
-  return <div className="account-page"><header className="container account-header"><Brand /><Link href={step === "sign-in" ? "/onboarding/age" : "/sign-in"} className="button button--quiet">{step === "sign-in" ? "Get started" : "Sign in"}</Link></header><main id="main-content" className="account-main">
-    <Link href={back} className="account-back"><Icon name="back" />Back</Link><div className="account-step supporting muted">{["age", "preferences", "complete"].includes(step) ? "Getting to know you" : "Your TalkingStage account"}</div>
-    <h1 className="display page-title">{blocked ? "TalkingStage is for adults." : title}</h1><p className="muted account-description">{blocked ? "You need to be 18 or older to use this experience. You can’t continue with an under-18 declaration." : description}</p>
+  return <AccountPage step={step} header={<header className="container account-header"><Brand /><Link href={step === "sign-in" ? "/onboarding/age" : "/sign-in"} className="button button--quiet">{step === "sign-in" ? "Get started" : "Sign in"}</Link></header>}><main id="main-content" className="account-main">
+    <Link href={back} className="account-back"><Icon name="back" />Back</Link><div hidden={isAccountEntry(step)} className="account-step supporting muted">{["age", "preferences", "complete"].includes(step) ? "Getting to know you" : "Your TalkingStage account"}</div>
+    <AccountIntro step={step}/><h1 className="display page-title">{blocked ? "TalkingStage is for adults." : title}</h1><p className="muted account-description">{blocked ? "You need to be 18 or older to use this experience. You can’t continue with an under-18 declaration." : description}</p>
     <Notice title="Frontend preview" tone="warning">No real account is created, and no email is sent. Use fictional details and a sample password.</Notice>
     {notice && <div style={{ marginTop: 16 }}><Notice title={notice} tone="danger" live /></div>}
     {blocked ? <div className="stack account-form"><Link href="/" className="button button--secondary">Back to home</Link></div> : done ? <div className="stack account-form"><Notice title={step === "recover" ? "Check your inbox" : "Password reset preview complete"} tone="success" live>{step === "recover" ? "If an account exists for this address, it would receive a recovery link. This preview sends no email." : "No real password was changed. You can review the sign-in flow."}</Notice>{step === "recover" && process.env.NODE_ENV === "development" && <Link href="/recover/complete?reference=demo-valid" className="button button--secondary">Preview recovery link</Link>}<Link href="/sign-in" className="button button--primary">Back to sign in</Link></div> : <form className="stack account-form" noValidate onSubmit={submit}>
       {step === "age" && <><Checkbox label="I am 18 or older" checked={ageChoice === "adult"} onChange={event => setAgeChoice(event.target.checked ? "adult" : "")} aria-invalid={!!errors.age || undefined} aria-describedby={errors.age ? "age-error" : "age-hint"} /><p id="age-hint" className="supporting muted">By checking this box, you declare that you are at least 18. This is a self-declaration, not independent age verification.</p>{errors.age && <p id="age-error" className="field__error" role="alert">{errors.age}</p>}<Button variant="quiet" onClick={() => declareAdult(false)}>I am under 18</Button><p className="supporting muted">Every character is fictional and clearly adult. This isn’t human-to-human dating.</p></>}
-      {["register", "sign-in", "recover"].includes(step) && <TextField label="Email address" type="email" autoComplete="email" inputMode="email" value={email} onChange={(event) => setEmail(event.target.value)} error={errors.email} />}
-      {["register", "sign-in", "recovery-complete"].includes(step) && <TextField label={step === "recovery-complete" ? "New password" : "Password"} type="password" autoComplete={step === "sign-in" ? "current-password" : "new-password"} value={password} onChange={(event) => setPassword(event.target.value)} error={errors.password} hint={step === "sign-in" ? undefined : "Use a sample password with at least 12 characters."} />}
+      {["register", "sign-in", "recover"].includes(step) && <TextField label="Email address" type="email" placeholder="you@example.com" autoComplete="email" inputMode="email" value={email} onChange={(event) => setEmail(event.target.value)} error={errors.email} />}
+      {["register", "sign-in"].includes(step) && <AccountPasswordField label="Password" autoComplete={step === "sign-in" ? "current-password" : "new-password"} value={password} onChange={(event) => setPassword(event.target.value)} error={errors.password} placeholder={step === "register" ? "Create a strong password" : "Enter your password"} hint={step === "register" ? "Use a sample password with at least 12 characters." : undefined} />}{step === "recovery-complete" && <TextField label="New password" type="password" autoComplete="new-password" value={password} onChange={(event) => setPassword(event.target.value)} error={errors.password} hint="Use a sample password with at least 12 characters." />}
       {step === "recovery-complete" && <><TextField label="Confirm new password" type="password" autoComplete="new-password" value={confirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} error={errors.confirm} /><Link href="/recover" className="supporting">Request a new recovery link</Link></>}
       {step === "register" && <><Checkbox label="I understand the characters are fictional AI and agree to the draft terms." checked={consent} onChange={(event) => setConsent(event.target.checked)} />{errors.consent && <p className="field__error" role="alert">{errors.consent}</p>}<p className="supporting muted">Read the <Link href="/terms">terms</Link> and <Link href="/privacy">privacy information</Link>.</p></>}
       {step === "sign-in" && <><Link href="/recover" className="supporting">Forgot your password?</Link>{process.env.NODE_ENV === "development" && <details className="demo-details"><summary>Demo sign-in details</summary><p className="supporting">Email: demo@talkingstage.example<br />Password: TalkingStage123!<br />Use pending@talkingstage.example to review incomplete onboarding.</p></details>}</>}
@@ -91,5 +92,5 @@ export function AccountFlow({ step, expired = false }: { step: FlowStep; expired
       {process.env.NODE_ENV === "development" && !["age", "complete"].includes(step) && <details className="demo-details"><summary>Preview response controls</summary><SelectField label="Simulated response" value={scenario} disabled={busy} onChange={(event) => setScenario(event.target.value as AccountScenario)}><option value="ready">Ready</option><option value="offline">Offline</option><option value="failure">Service failure</option></SelectField></details>}
     </form>}
     <p className="account-footer supporting muted">18+ · Fictional AI characters · <Link href="/privacy">Your privacy</Link></p>
-  </main></div>;
+  </main></AccountPage>;
 }

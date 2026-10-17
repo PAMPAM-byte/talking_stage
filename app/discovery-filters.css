@@ -1,3 +1,5 @@
+.discovery-page--swipe .discovery-toolbar > .button > .icon,
+.discovery-page--swipe .connected-filter-trigger > .button > .icon { width: 22px; height: 22px; flex: none; stroke-width: 1.8; }
 .discovery-filter-dialog { width: min(600px, calc(100% - 32px)); padding: 28px; border-radius: 24px; }
 .discovery-filter-dialog .overlay__header { align-items: flex-start; gap: 20px; }
 .discovery-filter-dialog .overlay__header .button--icon { width: 44px; height: 44px; min-height: 44px; padding: 12px; border-radius: 12px; }

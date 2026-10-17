@@ -1,0 +1,32 @@
+# Current project status
+
+17 October cast frontend delivery: all 50 profiles and 100 photos are now in the local frontend catalogue, including 56 newly generated, visually reviewed photos. Search, gender filters and progressive loading are implemented. Hosted completion is recorded separately in docs/cast-50/publication.json when verification succeeds. See [delivery review](./reviews/cast-50-publication.md). Earlier pending-photo statements below describe the prior draft stage. Native/live voice evaluation remains pending.
+
+17 October relationship amendment: the founder requested explicitly adult text chat. [The scope decision](./cast-50/adult-chat-scope.md) records the new intent and the verified Anthropic provider incompatibility. Explicit generation remains disabled. All 50 draft voices now include distinct romantic pacing and substantive-conversation guidance; shared runtime style improves continuity, reciprocal non-explicit flirting and de-escalation. This does not apply the individual draft directions or change photo scope.
+
+17 October cast work: [50 Nigerian personality drafts](./cast-50/README.md) are prepared for review, covering all 22 existing voices plus 28 proposed additions. Shared runtime conversational style is updated, but the individual draft directions are not applied. Native-speaker/live evaluation and 56 new photos remain pending. This does not change the recorded hosted count of 22 or grant publication/release approval.
+
+16 October 2026. This is the current status index. Stage contracts and dated reviews preserve implementation history; later evidence supersedes earlier descriptions of configuration or availability. This document records repository evidence, not a fresh inspection of hosted services.
+
+| Area | Delivered and recorded | Still required |
+| --- | --- | --- |
+| Frontend | Stages 0–7 accepted for backend handoff. Shared red/white/blush identity, swipe discovery, direct Meet-to-chat, public information pages, settings and admin screens. | Physical Android/iPhone, keyboard, text enlargement, TalkBack and VoiceOver evidence before pilot admission. |
+| Accounts | Supabase Auth, 18+ self-declaration, onboarding, ownership/RLS, roles and local recovery tests. Hosted signup/sign-in and selected ownership checks recorded. | Hosted recovery email/SMTP, deployed redirects, quotas and trusted client-IP acceptance. |
+| Cast and photos | 22 approved hosted profiles and 44 current photos; private image delivery. Fifteen versioned database migrations are checked in. | Final release approval and deployed regression. Historical eight-character local evidence remains historical. |
+| Conversations and AI | Durable messages, idempotency, reply leases, explicit retry/skip, approved-photo selection, consented memories and extractive-summary pipeline. Haiku activation and recovery migration recorded on 15 October. | Broader live safety/voice/Pidgin/refusal/photo/summary/cost evaluation; deployed reply execution and interruption acceptance. Stage 10 remains in progress. |
+| Payments | Accepted frontend scenarios and request-control foundations. | Stage 11 gateway, confirmation binding, verified events, reconciliation, history and ledger integration. No real checkout is implemented. |
+| Privacy and operations | Reporting, ordinary-account deletion implementation, restore suppression, encrypted hosted exports to this machine, retention scripts, health probes and runbooks. | General-user hosted deletion remains gated; independent off-site backup/erasure-ledger/key recovery, alert delivery, retention/support decisions and remaining Stage 12 integration. |
+| Release | Gate A passed for backend work. | Gate B, pilot admission and public-release gates remain open. |
+
+## Environment distinctions
+
+- Development without Supabase mode uses labelled synthetic fixtures. Production requires real Supabase configuration and identity.
+- The working application was switched to hosted Supabase. The prior Docker configuration is preserved separately. Local-only scripts intentionally reject hosted targets.
+- According to the [15 October activation record](./claude-haiku.md), the application environment enables Anthropic Haiku with approved **$20 project-wide and $2 per-user daily limits** enforced by private database configuration. The operational hosted-test environment remains separately AI-disabled. Configuration files and credentials are ignored and must remain private.
+- A successful synthetic live reply establishes basic integration, not comprehensive live-model acceptance. No status document grants new spending, deployment or publication permission.
+
+## Evidence and next work
+
+Use the [implementation plan](./implementation-plan.md) for stage dependencies, [Haiku record](./claude-haiku.md) for activation, [hosted handoff](./hosted-setup.md) for cast/environment history, and [manual checklist](./pre-pilot-manual-review.md) for pilot admission.
+
+Engineering hardening precedes new product work: reliable checks, readable reply boundaries, bounded recoverable delivery, a single source of shared theme tokens and a documented stylesheet order. Record fresh results and remaining hosting dependencies in the [engineering review](./reviews/engineering-hardening.md).

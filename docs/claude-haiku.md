@@ -1,5 +1,7 @@
 # Claude Haiku configuration
 
+Current recorded status, 16 October 2026: **hosted Haiku activation completed on 15 October**, with approved $20 project-wide/$2 per-user daily limits and a successful synthetic live reply. See the activation and recovery sections below. Earlier disabled/blocked statements are retained as history; broader live acceptance remains open. No hosted state was re-probed during documentation reconciliation.
+
 Earlier 15 October activation status: the key and Haiku 5.5 model access were verified through the read-only Models API. `.env.local` enables AI, but the hosted database remains disabled with zero budgets. The founder requested no daily caps. An explicit NULL-budget migration and offline tests were prepared; automatic approval review rejected deploying uncapped paid generation because external charges would be unbounded. No hosted SQL executed. Activation is pending the founder's approval of finite daily limits.
 
 The founder selected Claude and requested Haiku only. Runtime provider selection now requires `anthropic` and an allowed Haiku model; Sonnet, Opus, and OpenAI settings disable generation rather than silently switching provider. Both replies and summary generation use the same adapter. The legacy OpenAI transport remains solely for existing offline adapter contracts; runtime settings cannot select it.
@@ -18,7 +20,7 @@ Implementation follows [Claude model documentation](https://platform.claude.com/
 
 Validation: `node scripts/test-anthropic-provider.mjs`, existing offline provider checks, and TypeScript. Live model access and responses are unverified until a key and private budget configuration are available.
 
-## Activation completed ? 15 October 2026
+## Activation completed — 15 October 2026
 
 The founder subsequently approved $20 project-wide and $2 per-user daily limits. Hosted `private.ai_configuration` is enabled for `claude-haiku-5-5` with those finite limits, the existing 48,000 input/1,024 output token limits, and pricing rates of 100,000/500,000 micro-USD per million input/output tokens. The unused uncapped migration was removed without deployment.
 

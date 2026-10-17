@@ -44,8 +44,8 @@ test('discovery, profiles, chat, settings and administration use the shared red 
     await page.goto('/discover');
     await expect(page.locator('.shell__navigation [aria-current="page"]')).toHaveCSS('background-color', 'rgb(207, 36, 69)');
     await expect(page.locator('.shell__header')).toHaveCSS('background-color', 'rgb(255, 255, 255)');
-    await expect(page.locator('.deck-action--meet')).toHaveCSS('color', 'rgb(255, 255, 255)');
-    await expect(page.locator('.deck-action--meet')).toHaveCSS('background-color', 'rgb(207, 36, 69)');
+    await expect(page.locator('.deck-action--meet .deck-action__icon')).toHaveCSS('color', 'rgb(207, 36, 69)');
+    await expect(page.locator('.deck-action--meet .deck-action__icon')).toHaveCSS('background-color', 'rgb(255, 241, 243)');
     await page.screenshot({ path: `docs/reviews/discovery-red-${width}.png`, fullPage: true });
     for (const route of ['/characters/char-amara', '/messages', '/settings', '/settings/preferences']) {
       await page.goto(route);
@@ -56,7 +56,8 @@ test('discovery, profiles, chat, settings and administration use the shared red 
   await page.goto('/discover');
   await page.getByRole('button', { name: /^Meet / }).click();
   await expect(page).toHaveURL(/\/messages\/preview-/);
-  await expect(page.locator('.chat-shell')).toHaveCSS('background-color', 'rgb(255, 255, 255)');
+  // The accepted 14–15 October chat refinement uses a rose conversation canvas.
+  await expect(page.locator('.chat-shell')).toHaveCSS('background-color', 'rgb(251, 242, 244)');
   await page.goto('/admin/access');
   await page.getByLabel('Preview role').selectOption('admin');
   await page.getByRole('button', { name: 'Open selected preview' }).click();

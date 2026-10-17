@@ -25,13 +25,33 @@
 .discovery-deck__verdict { position: absolute; top: 70px; padding: 8px 18px; border: 3px solid currentColor; border-radius: 12px; font-size: 28px; font-weight: 800; text-transform: uppercase; background: rgb(20 12 37 / 80%); }
 .discovery-deck__verdict.is-meet { left: 24px; transform: rotate(-12deg); color: var(--lime); }
 .discovery-deck__verdict.is-pass { right: 24px; transform: rotate(12deg); color: #fff; }
-.discovery-deck__actions { display: flex; align-items: center; justify-content: center; gap: 24px; padding-top: 20px; }
-.deck-action { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px; flex: none; width: 66px; height: 66px; border-radius: 50%; border: 1px solid var(--border); background: var(--surface); color: var(--brand); text-decoration: none; font-size: 10px; line-height: 12px; font-weight: 750; transition: background-color 120ms ease; }
-.deck-action svg { width: 24px; height: 24px; }
-.deck-action--undo { width: 54px; height: 54px; }
-.deck-action--pass { color: var(--brand); }
-.deck-action--meet { background: var(--lime); color: #342063; border-color: var(--lime); width: 74px; height: 74px; }
-.deck-action:disabled { opacity: .45; }
+.discovery-deck__actions { display: flex; align-items: flex-end; justify-content: center; gap: 28px; padding-top: 18px; }
+.deck-action { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 10px; flex: none; width: 76px; padding: 0; border: 0; border-radius: 0; background: transparent; color: var(--ink); font-family: inherit; cursor: pointer; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+.deck-action__icon { display: grid; place-items: center; width: 64px; height: 64px; flex: none; border: 1px solid #e8dfe3; border-radius: 50%; background: var(--surface); box-shadow: 0 5px 16px rgb(65 26 40 / 8%), 0 1px 3px rgb(65 26 40 / 3%); transition: transform 160ms ease, box-shadow 160ms ease, background-color 160ms ease, border-color 160ms ease; }
+.deck-action__label { min-height: 14px; font-size: 11px; line-height: 14px; font-weight: 700; letter-spacing: .04em; color: var(--text-secondary); }
+.deck-action svg { width: 30px; height: 30px; stroke-linecap: round; stroke-linejoin: round; }
+.deck-action--undo { width: 56px; }
+.deck-action--undo .deck-action__icon { width: 48px; height: 48px; background: #fff9ed; border-color: #f0dfbb; color: #aa7016; box-shadow: 0 3px 12px rgb(116 76 20 / 8%); }
+.deck-action--undo svg { width: 23px; height: 23px; stroke-width: 2; }
+.deck-action--pass .deck-action__icon { background: #fff9df; border-color: #f2e4aa; color: #ad780e; }
+.deck-action--pass svg { stroke-width: 2.2; }
+.deck-action--meet { width: 84px; }
+.deck-action--meet .deck-action__icon { width: 76px; height: 76px; background: var(--brand-soft); border: 5px solid #f8dce3; color: var(--brand); box-shadow: 0 6px 20px rgb(207 36 69 / 16%); }
+.deck-action--meet svg { width: 31px; height: 31px; }
+.deck-action--undo:not(:disabled) .deck-action__label { color: #966016; }
+.deck-action--pass:not(:disabled) .deck-action__label { color: #956a12; }
+.deck-action--meet .deck-action__label { color: var(--brand); }
+.deck-action:focus-visible { outline: none; }
+.deck-action:focus-visible .deck-action__icon { outline: 2px solid var(--focus); outline-offset: 4px; }
+.deck-action:active:not(:disabled) .deck-action__icon { transform: scale(.94); box-shadow: none; }
+.deck-action:disabled { cursor: default; }
+.deck-action:disabled .deck-action__icon { color: #b7acb1; border-color: #ece7e9; background: #faf8f9; box-shadow: none; }
+.deck-action:disabled .deck-action__label { color: #aa9ea4; }
+.deck-action--undo:disabled .deck-action__icon { color: #c3aa7c; border-color: #f0e8da; background: #fcfaf6; }
+.deck-action--meet[aria-busy="true"] { cursor: progress; }
+.deck-action--meet[aria-busy="true"] .deck-action__icon { background: var(--brand-soft); border-color: #f8dce3; color: var(--brand); }
+.deck-action--meet[aria-busy="true"] .deck-action__label { color: var(--brand); }
+.deck-action .spinner { width: 24px; height: 24px; }
 .discovery-deck__hint { text-align: center; margin-top: 12px; }
 .discovery-deck__details { padding: 20px; border: 1px solid var(--border); border-radius: 24px; background: var(--surface); }
 .discovery-deck__details blockquote { margin: 12px 0 0; font-family: var(--font-display), Georgia, serif; font-size: 26px; line-height: 1.4; color: var(--brand); }
@@ -52,7 +72,6 @@
   .discovery-page--swipe .discovery-toolbar .chip { padding-inline: 10px; font-size: 12px; }
   .discovery-page--swipe .discovery-toolbar > .button { width: 44px; min-width: 44px; padding: 10px; font-size: 0; gap: 0; }
   .discovery-deck__card.character-card { height: clamp(280px, calc(100svh - 460px), 440px); }
-  .discovery-deck__actions { padding-top: 14px; }
 }
 @media (min-width: 1000px) {
   .discovery-deck__layout { grid-template-columns: minmax(0, 420px) minmax(0, 1fr); align-items: center; gap: 40px; }
@@ -62,4 +81,11 @@
 }
 @media (max-width: 359px) { .discovery-deck__meta { font-size: 11px; } .discovery-deck__identity h2 { font-size: 28px; } .discovery-deck__actions { gap: 20px; } }
 @media (prefers-reduced-motion: reduce) { .discovery-deck__card.character-card { transition: none; } .discovery-deck__card.is-exiting-pass, .discovery-deck__card.is-exiting-meet { transform: none; } }
-@media (hover: hover) { .deck-action:hover:not(:disabled) { background: var(--brand-soft); } .deck-action--meet:hover { background: #d5f577; } }
+@media (hover: hover) {
+  .deck-action:hover:not(:disabled) .deck-action__icon { transform: translateY(-3px); }
+  .deck-action--undo:hover:not(:disabled) .deck-action__icon { background: #fff9ed; border-color: #d8b36e; }
+  .deck-action--pass:hover:not(:disabled) .deck-action__icon { background: #fff1b9; border-color: #e4cc72; box-shadow: 0 8px 20px rgb(173 120 14 / 14%); }
+  .deck-action--meet:hover:not(:disabled) .deck-action__icon { background: #ffe3e9; border-color: #f2c7d2; box-shadow: 0 9px 24px rgb(207 36 69 / 22%); }
+  .deck-action:active:not(:disabled) .deck-action__icon { transform: scale(.94); }
+}
+@media (prefers-reduced-motion: reduce) { .deck-action__icon { transition: none; } .deck-action:hover:not(:disabled) .deck-action__icon, .deck-action:active:not(:disabled) .deck-action__icon { transform: none; } }

@@ -1,15 +1,4 @@
 /* Landing identity shared by public, account, user, chat, and admin screens. */
-:root {
-  --canvas: #ffffff; --surface: #ffffff;
-  --ink: #242126; --text-secondary: #6c666e;
-  --brand: #cf2445; --brand-hover: #b91c3a; --brand-pressed: #9c1630;
-  --brand-soft: #fff1f3; --focus: #b91c3a;
-  --border: #ece7e9; --border-control: #9b8d92;
-  --disabled-text: #6c666e; --disabled-surface: #f2eff0;
-  --lavender: #ffe2e8; --lime: #fff1f3;
-  --radius-control: 12px; --radius-card: 24px;
-  --shadow-floating: 0 12px 40px rgb(94 22 40 / 10%);
-}
 .brand-mark { color: var(--ink); letter-spacing: -.9px; font-weight: 750; }
 .brand-symbol { background: var(--brand); color: white; border-radius: 12px 12px 12px 4px; font-family: var(--font-display), Georgia, serif; font-size: 30px; padding-top: 8px; }
 .button { border-radius: 12px; }
@@ -33,7 +22,6 @@
 .discovery-deck__identity p { color: #fff1f3; }
 .discovery-deck__verdict { background: rgb(24 16 21 / 80%); }
 .discovery-deck__verdict.is-meet { color: white; }
-.deck-action--meet { background: var(--brand); border-color: var(--brand); color: white; }
 .discovery-deck__profile:focus-visible { outline-color: white; }
 @media (min-width: 900px) {
   .shell--user .shell__navigation { background: white; border: 0; border-right: 1px solid var(--border); box-shadow: none; }
@@ -41,7 +29,6 @@
   .shell--user .shell__nav-item[aria-current="page"] { background: var(--brand); color: white; }
   .shell--user .shell__header { background: white; }
 }
-@media (hover: hover) { .deck-action--meet:hover:not(:disabled) { background: var(--brand-hover); color: white; } }
 @media (prefers-reduced-motion: no-preference) {
   .button, .shell__nav-item { transition: background-color 180ms ease, color 180ms ease, border-color 180ms ease; }
 }

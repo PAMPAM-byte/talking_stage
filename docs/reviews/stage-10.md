@@ -1,5 +1,7 @@
 # Stage 10 review
 
+16 October status note: this file preserves dated implementation evidence. Missing-key/disabled-provider statements describe those earlier batches. Subsequent [15 October Haiku activation](../claude-haiku.md) records finite daily budgets, a successful live reply and hosted migration 015. Stage 10 remains in progress for broader live acceptance. See [current project status](../project-status.md).
+
 8 October 2026 · **In progress; not complete.**
 
 The initial persistence batch implements owned conversations, stable ordered user messages, active/archived list pagination, bounded thread history, archive/restore and confirmed reset/delete. A stable client UUID prevents duplicate saved input; generation checks reject retries from reset/deleted threads. User-confirmed memory retention defaults are preserved, with an explicit clear option. Direct message writes stay revoked, and private reply jobs remain inaccessible to clients.

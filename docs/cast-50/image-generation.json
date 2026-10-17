@@ -1,0 +1,1398 @@
+{
+  "version": 1,
+  "tool": "built-in image_gen",
+  "photos": {
+    "char-bisola-portrait": {
+      "key": "char-bisola",
+      "slot": "portrait",
+      "original": "docs/cast-50/assets/char-bisola-portrait.png",
+      "publicPath": "public/images/characters/char-bisola-portrait.webp",
+      "sourceHash": "4f706be76f641de9fabe7463caa82be3659bea6f5ef235cd88b3b767ef273382",
+      "width": 1086,
+      "height": 1448,
+      "prompt": "Create one realistic photograph of a wholly fictional Nigerian adult aged 31. Clearly adult Nigerian woman in her early thirties, deep brown skin, oval face, medium build, short tapered natural hair and a small gap between her front teeth. Waist-up portrait beside a café window, rust cotton shirt, relaxed smile, flour-free hands resting on a wooden table, soft morning light. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people.",
+      "reference": null,
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection during generation",
+        "date": "2026-10-17",
+        "criteria": [
+          "Clearly adult fictional subject",
+          "Fully clothed non-explicit scene",
+          "Identity continuity between portrait and gallery",
+          "Distinct gallery outfit and composition",
+          "Usable face, anatomy and responsive framing"
+        ],
+        "reviewedSourceHash": "4f706be76f641de9fabe7463caa82be3659bea6f5ef235cd88b3b767ef273382"
+      }
+    },
+    "char-bisola-gallery": {
+      "key": "char-bisola",
+      "slot": "gallery",
+      "original": "docs/cast-50/assets/char-bisola-gallery.png",
+      "publicPath": "public/images/characters/char-bisola-gallery.webp",
+      "sourceHash": "646edd152e5874d8fae72439af7842f9e621a002afd6aa0f16a8fcb7f677c34a",
+      "width": 1086,
+      "height": 1448,
+      "prompt": "Create one realistic photograph of a wholly fictional Nigerian adult aged 31. Clearly adult Nigerian woman in her early thirties, deep brown skin, oval face, medium build, short tapered natural hair and a small gap between her front teeth. Three-quarter candid at a board-game table, cream knit top and dark jeans, studying wooden game pieces, warmly lit sitting room; no other identifiable people. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people.",
+      "reference": "docs/cast-50/assets/char-bisola-portrait.png",
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection during generation",
+        "date": "2026-10-17",
+        "criteria": [
+          "Clearly adult fictional subject",
+          "Fully clothed non-explicit scene",
+          "Identity continuity between portrait and gallery",
+          "Distinct gallery outfit and composition",
+          "Usable face, anatomy and responsive framing"
+        ],
+        "reviewedSourceHash": "646edd152e5874d8fae72439af7842f9e621a002afd6aa0f16a8fcb7f677c34a"
+      }
+    },
+    "char-ese-portrait": {
+      "key": "char-ese",
+      "slot": "portrait",
+      "original": "docs/cast-50/assets/char-ese-portrait.png",
+      "publicPath": "public/images/characters/char-ese-portrait.webp",
+      "sourceHash": "51ce99879aa1f1bd658df02d7c6a3f0b41292d76f334d0ab15b9c8fa30f9c7d3",
+      "width": 1086,
+      "height": 1448,
+      "prompt": "Create one realistic photograph of a wholly fictional Nigerian adult aged 28. Clearly adult Nigerian woman in her late twenties, dark brown skin, long narrow face, slim build, shoulder-length microbraids and round translucent glasses. Seated near an editing desk with no visible branded screens, olive overshirt over white tee, natural sidelight, direct relaxed gaze. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people.",
+      "reference": null,
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection during generation",
+        "date": "2026-10-17",
+        "criteria": [
+          "Clearly adult fictional subject",
+          "Fully clothed non-explicit scene",
+          "Identity continuity between portrait and gallery",
+          "Distinct gallery outfit and composition",
+          "Usable face, anatomy and responsive framing"
+        ],
+        "reviewedSourceHash": "51ce99879aa1f1bd658df02d7c6a3f0b41292d76f334d0ab15b9c8fa30f9c7d3"
+      }
+    },
+    "char-adedoyin-portrait": {
+      "key": "char-adedoyin",
+      "slot": "portrait",
+      "original": "docs/cast-50/assets/char-adedoyin-portrait.png",
+      "publicPath": "public/images/characters/char-adedoyin-portrait.webp",
+      "sourceHash": "1942973285fd35f9ac45f5e4551bdbc34cca475cd89d00f6d36df1c8f96428ad",
+      "width": 1086,
+      "height": 1448,
+      "prompt": "Create one realistic photograph of a wholly fictional Nigerian adult aged 35. Clearly adult Nigerian woman in her mid-thirties, medium brown skin, broad cheekbones, fuller build, short natural afro with a subtle grey streak at one temple. Chest-up portrait outside a ceramics studio, indigo linen blouse, clay-free hands, soft overcast light, mature natural smile lines. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people.",
+      "reference": null,
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection during generation",
+        "date": "2026-10-17",
+        "criteria": [
+          "Clearly adult fictional subject",
+          "Fully clothed non-explicit scene",
+          "Identity continuity between portrait and gallery",
+          "Distinct gallery outfit and composition",
+          "Usable face, anatomy and responsive framing"
+        ],
+        "reviewedSourceHash": "1942973285fd35f9ac45f5e4551bdbc34cca475cd89d00f6d36df1c8f96428ad"
+      }
+    },
+    "char-hauwa-portrait": {
+      "key": "char-hauwa",
+      "slot": "portrait",
+      "original": "docs/cast-50/assets/char-hauwa-portrait.png",
+      "publicPath": "public/images/characters/char-hauwa-portrait.webp",
+      "sourceHash": "11202d1ab0729dd8435c581cde08d188a4c0e54aa174b93f331ae7636c7fbcc2",
+      "width": 1086,
+      "height": 1448,
+      "prompt": "Create one realistic photograph of a wholly fictional Nigerian adult aged 29. Clearly adult Nigerian woman in her late twenties, deep brown skin, heart-shaped face, average build, plum headwrap covering her hair, small silver stud earrings. Waist-up beside neatly stacked fabric in a daylight studio, ivory blouse and plum headwrap, relaxed posture, no printed text. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people.",
+      "reference": null,
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection during generation",
+        "date": "2026-10-17",
+        "criteria": [
+          "Clearly adult fictional subject",
+          "Fully clothed non-explicit scene",
+          "Identity continuity between portrait and gallery",
+          "Distinct gallery outfit and composition",
+          "Usable face, anatomy and responsive framing"
+        ],
+        "reviewedSourceHash": "11202d1ab0729dd8435c581cde08d188a4c0e54aa174b93f331ae7636c7fbcc2"
+      }
+    },
+    "char-ese-gallery": {
+      "key": "char-ese",
+      "slot": "gallery",
+      "original": "docs/cast-50/assets/char-ese-gallery.png",
+      "publicPath": "public/images/characters/char-ese-gallery.webp",
+      "sourceHash": "04cb708cc89d7c255e01057e8bbe70702ae024860d81c3c805789581afe8eab7",
+      "width": 1086,
+      "height": 1448,
+      "prompt": "Create one realistic photograph of a wholly fictional Nigerian adult aged 28. Clearly adult Nigerian woman in her late twenties, dark brown skin, long narrow face, slim build, shoulder-length microbraids and round translucent glasses. Full-body candid browsing unbranded vinyl sleeves at a small record stall, cobalt jumpsuit and white trainers, shaded afternoon daylight. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people.",
+      "reference": "docs/cast-50/assets/char-ese-portrait.png",
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection during generation",
+        "date": "2026-10-17",
+        "criteria": [
+          "Clearly adult fictional subject",
+          "Fully clothed non-explicit scene",
+          "Identity continuity between portrait and gallery",
+          "Distinct gallery outfit and composition",
+          "Usable face, anatomy and responsive framing"
+        ],
+        "reviewedSourceHash": "04cb708cc89d7c255e01057e8bbe70702ae024860d81c3c805789581afe8eab7"
+      }
+    },
+    "char-adedoyin-gallery": {
+      "key": "char-adedoyin",
+      "slot": "gallery",
+      "original": "docs/cast-50/assets/char-adedoyin-gallery.png",
+      "publicPath": "public/images/characters/char-adedoyin-gallery.webp",
+      "sourceHash": "59c9f8051acc5a0f44352ba66ef6328f6259b3f65e963dc37af82dc311e50614",
+      "width": 1086,
+      "height": 1448,
+      "prompt": "Create one realistic photograph of a wholly fictional Nigerian adult aged 35. Clearly adult Nigerian woman in her mid-thirties, medium brown skin, broad cheekbones, fuller build, short natural afro with a subtle grey streak at one temple. Side-angle candid repotting a leafy plant on a small veranda, terracotta apron over a cream dress, visible soil and ordinary household pots, morning light. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people.",
+      "reference": "docs/cast-50/assets/char-adedoyin-portrait.png",
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection during generation",
+        "date": "2026-10-17",
+        "criteria": [
+          "Clearly adult fictional subject",
+          "Fully clothed non-explicit scene",
+          "Identity continuity between portrait and gallery",
+          "Distinct gallery outfit and composition",
+          "Usable face, anatomy and responsive framing"
+        ],
+        "reviewedSourceHash": "59c9f8051acc5a0f44352ba66ef6328f6259b3f65e963dc37af82dc311e50614"
+      }
+    },
+    "char-hauwa-gallery": {
+      "key": "char-hauwa",
+      "slot": "gallery",
+      "original": "docs/cast-50/assets/char-hauwa-gallery.png",
+      "publicPath": "public/images/characters/char-hauwa-gallery.webp",
+      "sourceHash": "71d255e8003b8fd30e8b1e0a1cf9bfdc43ae2838bcc8c172f584a5fff43c07b6",
+      "width": 1086,
+      "height": 1448,
+      "prompt": "Create one realistic photograph of a wholly fictional Nigerian adult aged 29. Clearly adult Nigerian woman in her late twenties, deep brown skin, heart-shaped face, average build, plum headwrap covering her hair, small silver stud earrings. Full-body candid arranging a large puzzle on a low table, teal long-sleeve dress and pale neutral headwrap, comfortable living room, evening lamplight. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people.",
+      "reference": "docs/cast-50/assets/char-hauwa-portrait.png",
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection during generation",
+        "date": "2026-10-17",
+        "criteria": [
+          "Clearly adult fictional subject",
+          "Fully clothed non-explicit scene",
+          "Identity continuity between portrait and gallery",
+          "Distinct gallery outfit and composition",
+          "Usable face, anatomy and responsive framing"
+        ],
+        "reviewedSourceHash": "71d255e8003b8fd30e8b1e0a1cf9bfdc43ae2838bcc8c172f584a5fff43c07b6"
+      }
+    },
+    "char-naomi-portrait": {
+      "key": "char-naomi",
+      "slot": "portrait",
+      "original": "docs/cast-50/assets/char-naomi-portrait.png",
+      "publicPath": "public/images/characters/char-naomi-portrait.webp",
+      "sourceHash": "84996bab3aaafa295d477aa0cf7d4afa411d27aad94ba57affbf5007e757874d",
+      "width": 1086,
+      "height": 1448,
+      "prompt": "Create one realistic photograph of a wholly fictional Nigerian adult aged 33. Clearly adult Nigerian woman in her early thirties, dark skin with visible freckles across her cheeks, athletic broad-shouldered build, closely cropped coiled hair. Mid-length portrait beside a low stone garden wall, sage overshirt and plain black tee, cool daylight, no hiking equipment logos. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people.",
+      "generationPrompt": "Use case: photorealistic-natural. Generate ONE vertical 3:4 lifestyle portrait. Create one realistic photograph of a wholly fictional Nigerian adult aged 33. Clearly adult Nigerian woman in her early thirties, dark skin with visible freckles across her cheeks, athletic broad-shouldered build, closely cropped coiled hair. Mid-length portrait beside a low stone garden wall, sage overshirt and plain black tee, cool daylight, no hiking equipment logos. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people. Natural realistic photography, credible Nigerian everyday surroundings, mature natural skin texture, no beauty-filter look or generic studio glamour. Keep headroom for responsive cropping; no collage.",
+      "reference": null,
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection during generation",
+        "date": "2026-10-17",
+        "criteria": [
+          "Clearly adult fictional subject",
+          "Fully clothed non-explicit scene",
+          "Identity continuity between portrait and gallery",
+          "Distinct gallery outfit and composition",
+          "Usable face, anatomy and responsive framing"
+        ],
+        "reviewedSourceHash": "84996bab3aaafa295d477aa0cf7d4afa411d27aad94ba57affbf5007e757874d"
+      }
+    },
+    "char-somto-portrait": {
+      "key": "char-somto",
+      "slot": "portrait",
+      "original": "docs/cast-50/assets/char-somto-portrait.png",
+      "publicPath": "public/images/characters/char-somto-portrait.webp",
+      "sourceHash": "39be96217815a9c39807404011c497899f1e8e84c1f0b8b42649e0dd37948ecc",
+      "width": 1086,
+      "height": 1448,
+      "prompt": "Create one realistic photograph of a wholly fictional Nigerian adult aged 27. Clearly adult Nigerian woman in her late twenties, medium-dark skin, angular jaw, petite adult build, shoulder-length chunky twists with a single copper-coloured twist. Waist-up at a tidy drawing desk, aubergine tee and open checked shirt, tablet turned away, indirect window light. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people.",
+      "generationPrompt": "Use case: photorealistic-natural. Generate ONE vertical 3:4 lifestyle portrait. Create one realistic photograph of a wholly fictional Nigerian adult aged 27. Clearly adult Nigerian woman in her late twenties, medium-dark skin, angular jaw, petite adult build, shoulder-length chunky twists with a single copper-coloured twist. Waist-up at a tidy drawing desk, aubergine tee and open checked shirt, tablet turned away, indirect window light. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people. Natural realistic photography, credible Nigerian everyday surroundings, mature natural skin texture, no beauty-filter look or generic studio glamour. Keep headroom for responsive cropping; no collage.",
+      "reference": null,
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection during generation",
+        "date": "2026-10-17",
+        "criteria": [
+          "Clearly adult fictional subject",
+          "Fully clothed non-explicit scene",
+          "Identity continuity between portrait and gallery",
+          "Distinct gallery outfit and composition",
+          "Usable face, anatomy and responsive framing"
+        ],
+        "reviewedSourceHash": "39be96217815a9c39807404011c497899f1e8e84c1f0b8b42649e0dd37948ecc"
+      }
+    },
+    "char-nimi-portrait": {
+      "key": "char-nimi",
+      "slot": "portrait",
+      "original": "docs/cast-50/assets/char-nimi-portrait.png",
+      "publicPath": "public/images/characters/char-nimi-portrait.webp",
+      "sourceHash": "f38c8fe65aed132f27b575f442c6e1d9cbf0e84a4adb4bb8a1dda64d4131752e",
+      "width": 1086,
+      "height": 1448,
+      "prompt": "Create one realistic photograph of a wholly fictional Nigerian adult aged 30. Clearly adult Nigerian woman around thirty, rich brown skin, long oval face, sturdy athletic build, neat shoulder-length locs pulled into a low tie. Chest-up on a shaded waterfront walkway, coral linen shirt, restrained smile, water softly blurred, no laboratory or official insignia. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people.",
+      "generationPrompt": "Use case: photorealistic-natural. Generate ONE vertical 3:4 lifestyle portrait. Create one realistic photograph of a wholly fictional Nigerian adult aged 30. Clearly adult Nigerian woman around thirty, rich brown skin, long oval face, sturdy athletic build, neat shoulder-length locs pulled into a low tie. Chest-up on a shaded waterfront walkway, coral linen shirt, restrained smile, water softly blurred, no laboratory or official insignia. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people. Natural realistic photography, credible Nigerian everyday surroundings, mature natural skin texture, no beauty-filter look or generic studio glamour. Keep headroom for responsive cropping; no collage.",
+      "reference": null,
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection during generation",
+        "date": "2026-10-17",
+        "criteria": [
+          "Clearly adult fictional subject",
+          "Fully clothed non-explicit scene",
+          "Identity continuity between portrait and gallery",
+          "Distinct gallery outfit and composition",
+          "Usable face, anatomy and responsive framing"
+        ],
+        "reviewedSourceHash": "f38c8fe65aed132f27b575f442c6e1d9cbf0e84a4adb4bb8a1dda64d4131752e"
+      }
+    },
+    "char-lola-portrait": {
+      "key": "char-lola",
+      "slot": "portrait",
+      "original": "docs/cast-50/assets/char-lola-portrait.png",
+      "publicPath": "public/images/characters/char-lola-portrait.webp",
+      "sourceHash": "92493eb70a925888c398af8545285c486822c7692447bd84b992adbc0c8af5c0",
+      "width": 1086,
+      "height": 1448,
+      "prompt": "Create one realistic photograph of a wholly fictional Nigerian adult aged 38. Clearly adult Nigerian woman in her late thirties, dark brown skin, rounded square face, fuller build, chin-length straight bob with a visible side part and mature smile lines. Waist-up seated in a plain lounge chair, wine-coloured wrap blouse, small gold earrings, soft studio-window light, no microphone. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people.",
+      "generationPrompt": "Use case: photorealistic-natural. Generate ONE vertical 3:4 lifestyle portrait. Create one realistic photograph of a wholly fictional Nigerian adult aged 38. Clearly adult Nigerian woman in her late thirties, dark brown skin, rounded square face, fuller build, chin-length straight bob with a visible side part and mature smile lines. Waist-up seated in a plain lounge chair, wine-coloured wrap blouse, small gold earrings, soft studio-window light, no microphone. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people. Natural realistic photography, credible Nigerian everyday surroundings, mature natural skin texture, no beauty-filter look or generic studio glamour. Keep headroom for responsive cropping; no collage.",
+      "reference": null,
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection during generation",
+        "date": "2026-10-17",
+        "criteria": [
+          "Clearly adult fictional subject",
+          "Fully clothed non-explicit scene",
+          "Identity continuity between portrait and gallery",
+          "Distinct gallery outfit and composition",
+          "Usable face, anatomy and responsive framing"
+        ],
+        "reviewedSourceHash": "92493eb70a925888c398af8545285c486822c7692447bd84b992adbc0c8af5c0"
+      }
+    },
+    "char-naomi-gallery": {
+      "key": "char-naomi",
+      "slot": "gallery",
+      "original": "docs/cast-50/assets/char-naomi-gallery.png",
+      "publicPath": "public/images/characters/char-naomi-gallery.webp",
+      "sourceHash": "3bdba69e35de5a9b8062737a71f46390421900cb4e7fc403aae128fbc8f17ebd",
+      "width": 1086,
+      "height": 1448,
+      "prompt": "Create one realistic photograph of a wholly fictional Nigerian adult aged 33. Clearly adult Nigerian woman in her early thirties, dark skin with visible freckles across her cheeks, athletic broad-shouldered build, closely cropped coiled hair. Wide candid seated on a veranda reading a paperback, mustard cardigan and charcoal trousers, distant hills softly blurred, late afternoon. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people.",
+      "generationPrompt": "Use case: identity-preserve. The reference locks the fictional adult face and body identity; change the scene, clothing, pose and camera position. Generate ONE vertical 3:4 candid gallery photograph. Create one realistic photograph of a wholly fictional Nigerian adult aged 33. Clearly adult Nigerian woman in her early thirties, dark skin with visible freckles across her cheeks, athletic broad-shouldered build, closely cropped coiled hair. Wide candid seated on a veranda reading a paperback, mustard cardigan and charcoal trousers, distant hills softly blurred, late afternoon. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people. Natural realistic photography, credible Nigerian everyday surroundings, mature natural skin texture, no beauty-filter look or generic studio glamour. Keep headroom for responsive cropping; no collage.",
+      "reference": "docs/cast-50/assets/char-naomi-portrait.png",
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection during generation",
+        "date": "2026-10-17",
+        "criteria": [
+          "Clearly adult fictional subject",
+          "Fully clothed non-explicit scene",
+          "Identity continuity between portrait and gallery",
+          "Distinct gallery outfit and composition",
+          "Usable face, anatomy and responsive framing"
+        ],
+        "reviewedSourceHash": "3bdba69e35de5a9b8062737a71f46390421900cb4e7fc403aae128fbc8f17ebd"
+      }
+    },
+    "char-somto-gallery": {
+      "key": "char-somto",
+      "slot": "gallery",
+      "original": "docs/cast-50/assets/char-somto-gallery.png",
+      "publicPath": "public/images/characters/char-somto-gallery.webp",
+      "sourceHash": "9ad4ae9e393c3a72eb8f15a695ae1ef76c70d8558f0d7e35540126fc7152840a",
+      "width": 1086,
+      "height": 1448,
+      "prompt": "Create one realistic photograph of a wholly fictional Nigerian adult aged 27. Clearly adult Nigerian woman in her late twenties, medium-dark skin, angular jaw, petite adult build, shoulder-length chunky twists with a single copper-coloured twist. Three-quarter action candid holding a table-tennis paddle in a community recreation room, burnt-orange sports tee and navy trousers, no other people visible. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people.",
+      "generationPrompt": "Use case: identity-preserve. The reference locks the fictional adult face and body identity; change the scene, clothing, pose and camera position. Generate ONE vertical 3:4 candid gallery photograph. Create one realistic photograph of a wholly fictional Nigerian adult aged 27. Clearly adult Nigerian woman in her late twenties, medium-dark skin, angular jaw, petite adult build, shoulder-length chunky twists with a single copper-coloured twist. Three-quarter action candid holding a table-tennis paddle in a community recreation room, burnt-orange sports tee and navy trousers, no other people visible. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people. Natural realistic photography, credible Nigerian everyday surroundings, mature natural skin texture, no beauty-filter look or generic studio glamour. Keep headroom for responsive cropping; no collage.",
+      "reference": "docs/cast-50/assets/char-somto-portrait.png",
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection during generation",
+        "date": "2026-10-17",
+        "criteria": [
+          "Clearly adult fictional subject",
+          "Fully clothed non-explicit scene",
+          "Identity continuity between portrait and gallery",
+          "Distinct gallery outfit and composition",
+          "Usable face, anatomy and responsive framing"
+        ],
+        "reviewedSourceHash": "9ad4ae9e393c3a72eb8f15a695ae1ef76c70d8558f0d7e35540126fc7152840a"
+      }
+    },
+    "char-nimi-gallery": {
+      "key": "char-nimi",
+      "slot": "gallery",
+      "original": "docs/cast-50/assets/char-nimi-gallery.png",
+      "publicPath": "public/images/characters/char-nimi-gallery.webp",
+      "sourceHash": "7cad90e904f68ff61fae5652e97b1900bba63b8f50cf346fd0518e6f57293fe1",
+      "width": 1086,
+      "height": 1448,
+      "prompt": "Create one realistic photograph of a wholly fictional Nigerian adult aged 30. Clearly adult Nigerian woman around thirty, rich brown skin, long oval face, sturdy athletic build, neat shoulder-length locs pulled into a low tie. Candid at a home table sorting printed landscape photographs, cream cardigan and dark-green trousers, locs unchanged, warm indoor light. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people.",
+      "generationPrompt": "Use case: identity-preserve. The reference locks the fictional adult face and body identity; change the scene, clothing, pose and camera position. Generate ONE vertical 3:4 candid gallery photograph. Create one realistic photograph of a wholly fictional Nigerian adult aged 30. Clearly adult Nigerian woman around thirty, rich brown skin, long oval face, sturdy athletic build, neat shoulder-length locs pulled into a low tie. Candid at a home table sorting printed landscape photographs, cream cardigan and dark-green trousers, locs unchanged, warm indoor light. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people. Natural realistic photography, credible Nigerian everyday surroundings, mature natural skin texture, no beauty-filter look or generic studio glamour. Keep headroom for responsive cropping; no collage.",
+      "reference": "docs/cast-50/assets/char-nimi-portrait.png",
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection during generation",
+        "date": "2026-10-17",
+        "criteria": [
+          "Clearly adult fictional subject",
+          "Fully clothed non-explicit scene",
+          "Identity continuity between portrait and gallery",
+          "Distinct gallery outfit and composition",
+          "Usable face, anatomy and responsive framing"
+        ],
+        "reviewedSourceHash": "7cad90e904f68ff61fae5652e97b1900bba63b8f50cf346fd0518e6f57293fe1"
+      }
+    },
+    "char-lola-gallery": {
+      "key": "char-lola",
+      "slot": "gallery",
+      "original": "docs/cast-50/assets/char-lola-gallery.png",
+      "publicPath": "public/images/characters/char-lola-gallery.webp",
+      "sourceHash": "2603769acdfbb1f0ed78cf430466dbcad01d384ce1dc02d31f1b39648f68a750",
+      "width": 1086,
+      "height": 1448,
+      "prompt": "Create one realistic photograph of a wholly fictional Nigerian adult aged 38. Clearly adult Nigerian woman in her late thirties, dark brown skin, rounded square face, fuller build, chin-length straight bob with a visible side part and mature smile lines. Full-body candid choosing woven baskets at a covered market stall, patterned blue maxi dress and tan sandals, same bob haircut, diffuse daylight. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people.",
+      "generationPrompt": "Use case: identity-preserve. The reference locks the fictional adult face and body identity; change the scene, clothing, pose and camera position. Generate ONE vertical 3:4 candid gallery photograph. Create one realistic photograph of a wholly fictional Nigerian adult aged 38. Clearly adult Nigerian woman in her late thirties, dark brown skin, rounded square face, fuller build, chin-length straight bob with a visible side part and mature smile lines. Full-body candid choosing woven baskets at a covered market stall, patterned blue maxi dress and tan sandals, same bob haircut, diffuse daylight. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people. Natural realistic photography, credible Nigerian everyday surroundings, mature natural skin texture, no beauty-filter look or generic studio glamour. Keep headroom for responsive cropping; no collage.",
+      "reference": "docs/cast-50/assets/char-lola-portrait.png",
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection during generation",
+        "date": "2026-10-17",
+        "criteria": [
+          "Clearly adult fictional subject",
+          "Fully clothed non-explicit scene",
+          "Identity continuity between portrait and gallery",
+          "Distinct gallery outfit and composition",
+          "Usable face, anatomy and responsive framing"
+        ],
+        "reviewedSourceHash": "2603769acdfbb1f0ed78cf430466dbcad01d384ce1dc02d31f1b39648f68a750"
+      }
+    },
+    "char-awele-portrait": {
+      "key": "char-awele",
+      "slot": "portrait",
+      "original": "docs/cast-50/assets/char-awele-portrait.png",
+      "publicPath": "public/images/characters/char-awele-portrait.webp",
+      "sourceHash": "a40545ee05198bca1b0c7ed958f87495b137366d1f9797d6fba204ab36c602e6",
+      "width": 1086,
+      "height": 1448,
+      "prompt": "Create one realistic photograph of a wholly fictional Nigerian adult aged 41. Clearly adult Nigerian woman in her early forties, medium brown skin, high cheekbones, strong broad build, short natural coils with a few silver strands and rectangular glasses. Three-quarter portrait outside a furniture workshop, olive cotton shirt with rolled sleeves, hands relaxed, visible mature skin texture, natural daylight. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people.",
+      "generationPrompt": "Use case: photorealistic-natural. Generate ONE vertical 3:4 lifestyle portrait. Create one realistic photograph of a wholly fictional Nigerian adult aged 41. Clearly adult Nigerian woman in her early forties, medium brown skin, high cheekbones, strong broad build, short natural coils with a few silver strands and rectangular glasses. Three-quarter portrait outside a furniture workshop, olive cotton shirt with rolled sleeves, hands relaxed, visible mature skin texture, natural daylight. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people. Natural realistic photography, credible Nigerian everyday surroundings, mature natural skin texture, no beauty-filter look or generic studio glamour. Keep headroom for responsive cropping; no collage.",
+      "reference": null,
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection during generation",
+        "date": "2026-10-17",
+        "criteria": [
+          "Clearly adult fictional subject",
+          "Fully clothed non-explicit scene",
+          "Identity continuity between portrait and gallery",
+          "Distinct gallery outfit and composition",
+          "Usable face, anatomy and responsive framing"
+        ],
+        "reviewedSourceHash": "a40545ee05198bca1b0c7ed958f87495b137366d1f9797d6fba204ab36c602e6"
+      }
+    },
+    "char-morenike-portrait": {
+      "key": "char-morenike",
+      "slot": "portrait",
+      "original": "docs/cast-50/assets/char-morenike-portrait.png",
+      "publicPath": "public/images/characters/char-morenike-portrait.webp",
+      "sourceHash": "5a5fe195615daf92a332620281eeaf7e4d6faec9a5f7a7be8769d32f7a3883d1",
+      "width": 1086,
+      "height": 1448,
+      "prompt": "Create one realistic photograph of a wholly fictional Nigerian adult aged 45. Clearly adult Nigerian woman in her mid-forties, deep brown skin, broad oval face, tall medium build, shoulder-length black-and-silver twists, visible mature smile lines. Waist-up beside a bookshelf with unreadable spines, deep-blue linen jacket over a cream top, warm daylight and natural skin texture. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people.",
+      "generationPrompt": "Use case: photorealistic-natural. Generate ONE vertical 3:4 lifestyle portrait. Create one realistic photograph of a wholly fictional Nigerian adult aged 45. Clearly adult Nigerian woman in her mid-forties, deep brown skin, broad oval face, tall medium build, shoulder-length black-and-silver twists, visible mature smile lines. Waist-up beside a bookshelf with unreadable spines, deep-blue linen jacket over a cream top, warm daylight and natural skin texture. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people. Natural realistic photography, credible Nigerian everyday surroundings, mature natural skin texture, no beauty-filter look or generic studio glamour. Keep headroom for responsive cropping; no collage.",
+      "reference": null,
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection during generation",
+        "date": "2026-10-17",
+        "criteria": [
+          "Clearly adult fictional subject",
+          "Fully clothed non-explicit scene",
+          "Identity continuity between portrait and gallery",
+          "Distinct gallery outfit and composition",
+          "Usable face, anatomy and responsive framing"
+        ],
+        "reviewedSourceHash": "5a5fe195615daf92a332620281eeaf7e4d6faec9a5f7a7be8769d32f7a3883d1"
+      }
+    },
+    "char-ejiro-portrait": {
+      "key": "char-ejiro",
+      "slot": "portrait",
+      "original": "docs/cast-50/assets/char-ejiro-portrait.png",
+      "publicPath": "public/images/characters/char-ejiro-portrait.webp",
+      "sourceHash": "725fab79b24ece64b64f51a43658f5cbf9f2ac6125cecc1bcfe6c39060a5e90a",
+      "width": 1086,
+      "height": 1448,
+      "prompt": "Create one realistic photograph of a wholly fictional Nigerian adult aged 32. Clearly adult Nigerian woman in her early thirties, deep brown skin, round face with a chin dimple, medium build, thick natural hair in two low flat-twisted buns. Waist-up on a planted balcony, burnt-sienna sleeveless linen top, soft shade, direct amused gaze, simple silver hoops. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people.",
+      "generationPrompt": "Use case: photorealistic-natural. Generate ONE vertical 3:4 lifestyle portrait. Create one realistic photograph of a wholly fictional Nigerian adult aged 32. Clearly adult Nigerian woman in her early thirties, deep brown skin, round face with a chin dimple, medium build, thick natural hair in two low flat-twisted buns. Waist-up on a planted balcony, burnt-sienna sleeveless linen top, soft shade, direct amused gaze, simple silver hoops. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people. Natural realistic photography, credible Nigerian everyday surroundings, mature natural skin texture, no beauty-filter look or generic studio glamour. Keep headroom for responsive cropping; no collage.",
+      "reference": null,
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection during generation",
+        "date": "2026-10-17",
+        "criteria": [
+          "Clearly adult fictional subject",
+          "Fully clothed non-explicit scene",
+          "Identity continuity between portrait and gallery",
+          "Distinct gallery outfit and composition",
+          "Usable face, anatomy and responsive framing"
+        ],
+        "reviewedSourceHash": "725fab79b24ece64b64f51a43658f5cbf9f2ac6125cecc1bcfe6c39060a5e90a"
+      }
+    },
+    "char-halima-portrait": {
+      "key": "char-halima",
+      "slot": "portrait",
+      "original": "docs/cast-50/assets/char-halima-portrait.png",
+      "publicPath": "public/images/characters/char-halima-portrait.webp",
+      "sourceHash": "62e5d2cff8e9e637a3b45d99ef182266d9380dcaa1a0cdf3f4d71cf5eddcda59",
+      "width": 1086,
+      "height": 1448,
+      "prompt": "Create one realistic photograph of a wholly fictional Nigerian adult aged 36. Clearly adult Nigerian woman in her mid-thirties, dark skin, long face, tall sturdy build, neat chin-length loc bob, small oval glasses. Mid-length portrait in a shaded museum courtyard with plain walls, mustard blouse and dark trousers, calm smile, no official badges. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people.",
+      "generationPrompt": "Use case: photorealistic-natural. Generate ONE vertical 3:4 lifestyle portrait. Create one realistic photograph of a wholly fictional Nigerian adult aged 36. Clearly adult Nigerian woman in her mid-thirties, dark skin, long face, tall sturdy build, neat chin-length loc bob, small oval glasses. Mid-length portrait in a shaded museum courtyard with plain walls, mustard blouse and dark trousers, calm smile, no official badges. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people. Natural realistic photography, credible Nigerian everyday surroundings, mature natural skin texture, no beauty-filter look or generic studio glamour. Keep headroom for responsive cropping; no collage.",
+      "reference": null,
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection during generation",
+        "date": "2026-10-17",
+        "criteria": [
+          "Clearly adult fictional subject",
+          "Fully clothed non-explicit scene",
+          "Identity continuity between portrait and gallery",
+          "Distinct gallery outfit and composition",
+          "Usable face, anatomy and responsive framing"
+        ],
+        "reviewedSourceHash": "62e5d2cff8e9e637a3b45d99ef182266d9380dcaa1a0cdf3f4d71cf5eddcda59"
+      }
+    },
+    "char-yejide-portrait": {
+      "key": "char-yejide",
+      "slot": "portrait",
+      "original": "docs/cast-50/assets/char-yejide-portrait.png",
+      "publicPath": "public/images/characters/char-yejide-portrait.webp",
+      "sourceHash": "3872338be588072b25484956b74a5d8609215402f26dd0f19a5b36e9db12eeaa",
+      "width": 1086,
+      "height": 1448,
+      "prompt": "Create one realistic photograph of a wholly fictional Nigerian adult aged 29. Clearly adult Nigerian woman in her late twenties, dark brown skin, high cheekbones, lean runner build, closely cut natural hair and a small left-cheek beauty mark. Waist-up at a sunlit café courtyard table, forest-green shirt, small silver studs, soft side lighting, relaxed adult features. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people.",
+      "generationPrompt": "Use case: photorealistic-natural. Generate ONE vertical 3:4 lifestyle portrait. Create one realistic photograph of a wholly fictional Nigerian adult aged 29. Clearly adult Nigerian woman in her late twenties, dark brown skin, high cheekbones, lean runner build, closely cut natural hair and a small left-cheek beauty mark. Waist-up at a sunlit café courtyard table, forest-green shirt, small silver studs, soft side lighting, relaxed adult features. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people. Natural realistic photography, credible Nigerian everyday surroundings, mature natural skin texture, no beauty-filter look or generic studio glamour. Keep headroom for responsive cropping; no collage.",
+      "reference": null,
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection during generation",
+        "date": "2026-10-17",
+        "criteria": [
+          "Clearly adult fictional subject",
+          "Fully clothed non-explicit scene",
+          "Identity continuity between portrait and gallery",
+          "Distinct gallery outfit and composition",
+          "Usable face, anatomy and responsive framing"
+        ],
+        "reviewedSourceHash": "3872338be588072b25484956b74a5d8609215402f26dd0f19a5b36e9db12eeaa"
+      }
+    },
+    "char-adanna-portrait": {
+      "key": "char-adanna",
+      "slot": "portrait",
+      "original": "docs/cast-50/assets/char-adanna-portrait.png",
+      "publicPath": "public/images/characters/char-adanna-portrait.webp",
+      "sourceHash": "ae3f3ef4e806ed1dff480dd675ea7175571d77e307a185dff6c8c714c41c9ede",
+      "width": 1086,
+      "height": 1448,
+      "prompt": "Create one realistic photograph of a wholly fictional Nigerian adult aged 34. Clearly adult Nigerian woman in her mid-thirties, rich brown skin, broad cheekbones, curvy build, short sculpted natural hair dyed dark auburn and mature smile lines. Three-quarter portrait against a plain studio wall, cobalt tailored jumpsuit, small brass earrings, soft natural window light. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people.",
+      "generationPrompt": "Use case: photorealistic-natural. Generate ONE vertical 3:4 lifestyle portrait. Create one realistic photograph of a wholly fictional Nigerian adult aged 34. Clearly adult Nigerian woman in her mid-thirties, rich brown skin, broad cheekbones, curvy build, short sculpted natural hair dyed dark auburn and mature smile lines. Three-quarter portrait against a plain studio wall, cobalt tailored jumpsuit, small brass earrings, soft natural window light. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people. Natural realistic photography, credible Nigerian everyday surroundings, mature natural skin texture, no beauty-filter look or generic studio glamour. Keep headroom for responsive cropping; no collage.",
+      "reference": null,
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection during generation",
+        "date": "2026-10-17",
+        "criteria": [
+          "Clearly adult fictional subject",
+          "Fully clothed non-explicit scene",
+          "Identity continuity between portrait and gallery",
+          "Distinct gallery outfit and composition",
+          "Usable face, anatomy and responsive framing"
+        ],
+        "reviewedSourceHash": "ae3f3ef4e806ed1dff480dd675ea7175571d77e307a185dff6c8c714c41c9ede"
+      }
+    },
+    "char-awele-gallery": {
+      "key": "char-awele",
+      "slot": "gallery",
+      "original": "docs/cast-50/assets/char-awele-gallery.png",
+      "publicPath": "public/images/characters/char-awele-gallery.webp",
+      "sourceHash": "bd58baf6f3a0444db9874a99f89af14fc9c0c3b0721b09855d0aa528c1cfce6c",
+      "width": 1086,
+      "height": 1448,
+      "prompt": "Create one realistic photograph of a wholly fictional Nigerian adult aged 41. Clearly adult Nigerian woman in her early forties, medium brown skin, high cheekbones, strong broad build, short natural coils with a few silver strands and rectangular glasses. Seated candid reading a paperback beside an open window, rust dress and low sandals, same glasses and short coils, peaceful home setting. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people.",
+      "generationPrompt": "Use case: identity-preserve. The reference locks the fictional adult face and body identity; change the scene, clothing, pose and camera position. Generate ONE vertical 3:4 candid gallery photograph. Create one realistic photograph of a wholly fictional Nigerian adult aged 41. Clearly adult Nigerian woman in her early forties, medium brown skin, high cheekbones, strong broad build, short natural coils with a few silver strands and rectangular glasses. Seated candid reading a paperback beside an open window, rust dress and low sandals, same glasses and short coils, peaceful home setting. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people. Natural realistic photography, credible Nigerian everyday surroundings, mature natural skin texture, no beauty-filter look or generic studio glamour. Keep headroom for responsive cropping; no collage.",
+      "reference": "docs/cast-50/assets/char-awele-portrait.png",
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection during generation",
+        "date": "2026-10-17",
+        "criteria": [
+          "Clearly adult fictional subject",
+          "Fully clothed non-explicit scene",
+          "Identity continuity between portrait and gallery",
+          "Distinct gallery outfit and composition",
+          "Usable face, anatomy and responsive framing"
+        ],
+        "reviewedSourceHash": "bd58baf6f3a0444db9874a99f89af14fc9c0c3b0721b09855d0aa528c1cfce6c"
+      }
+    },
+    "char-morenike-gallery": {
+      "key": "char-morenike",
+      "slot": "gallery",
+      "original": "docs/cast-50/assets/char-morenike-gallery.png",
+      "publicPath": "public/images/characters/char-morenike-gallery.webp",
+      "sourceHash": "8d76659c597e0bd5979112737735cb095707aed2a876993e8023eb66aba1eff1",
+      "width": 1086,
+      "height": 1448,
+      "prompt": "Create one realistic photograph of a wholly fictional Nigerian adult aged 45. Clearly adult Nigerian woman in her mid-forties, deep brown skin, broad oval face, tall medium build, shoulder-length black-and-silver twists, visible mature smile lines. Three-quarter candid arranging simple flowers at a small dinner table, soft maroon dress, black-and-silver twists unchanged, warm evening light, no guests visible. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people.",
+      "generationPrompt": "Use case: identity-preserve. The reference locks the fictional adult face and body identity; change the scene, clothing, pose and camera position. Generate ONE vertical 3:4 candid gallery photograph. Create one realistic photograph of a wholly fictional Nigerian adult aged 45. Clearly adult Nigerian woman in her mid-forties, deep brown skin, broad oval face, tall medium build, shoulder-length black-and-silver twists, visible mature smile lines. Three-quarter candid arranging simple flowers at a small dinner table, soft maroon dress, black-and-silver twists unchanged, warm evening light, no guests visible. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people. Natural realistic photography, credible Nigerian everyday surroundings, mature natural skin texture, no beauty-filter look or generic studio glamour. Keep headroom for responsive cropping; no collage.",
+      "reference": "docs/cast-50/assets/char-morenike-portrait.png",
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection during generation",
+        "date": "2026-10-17",
+        "criteria": [
+          "Clearly adult fictional subject",
+          "Fully clothed non-explicit scene",
+          "Identity continuity between portrait and gallery",
+          "Distinct gallery outfit and composition",
+          "Usable face, anatomy and responsive framing"
+        ],
+        "reviewedSourceHash": "8d76659c597e0bd5979112737735cb095707aed2a876993e8023eb66aba1eff1"
+      }
+    },
+    "char-ejiro-gallery": {
+      "key": "char-ejiro",
+      "slot": "gallery",
+      "original": "docs/cast-50/assets/char-ejiro-gallery.png",
+      "publicPath": "public/images/characters/char-ejiro-gallery.webp",
+      "sourceHash": "c427a38a3d3583df96aba69a2896ae020c44eca0d5151ffa77a5840e4295fbf1",
+      "width": 1086,
+      "height": 1448,
+      "prompt": "Create one realistic photograph of a wholly fictional Nigerian adult aged 32. Clearly adult Nigerian woman in her early thirties, deep brown skin, round face with a chin dimple, medium build, thick natural hair in two low flat-twisted buns. Full-body candid walking along a public coastal promenade, loose ivory shirt and patterned green trousers, same low buns, cloudy late-afternoon light, no companions visible. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people.",
+      "generationPrompt": "Use case: identity-preserve. The reference locks the fictional adult face and body identity; change the scene, clothing, pose and camera position. Generate ONE vertical 3:4 candid gallery photograph. Create one realistic photograph of a wholly fictional Nigerian adult aged 32. Clearly adult Nigerian woman in her early thirties, deep brown skin, round face with a chin dimple, medium build, thick natural hair in two low flat-twisted buns. Full-body candid walking along a public coastal promenade, loose ivory shirt and patterned green trousers, same low buns, cloudy late-afternoon light, no companions visible. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people. Natural realistic photography, credible Nigerian everyday surroundings, mature natural skin texture, no beauty-filter look or generic studio glamour. Keep headroom for responsive cropping; no collage.",
+      "reference": "docs/cast-50/assets/char-ejiro-portrait.png",
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection during generation",
+        "date": "2026-10-17",
+        "criteria": [
+          "Clearly adult fictional subject",
+          "Fully clothed non-explicit scene",
+          "Identity continuity between portrait and gallery",
+          "Distinct gallery outfit and composition",
+          "Usable face, anatomy and responsive framing"
+        ],
+        "reviewedSourceHash": "c427a38a3d3583df96aba69a2896ae020c44eca0d5151ffa77a5840e4295fbf1"
+      }
+    },
+    "char-halima-gallery": {
+      "key": "char-halima",
+      "slot": "gallery",
+      "original": "docs/cast-50/assets/char-halima-gallery.png",
+      "publicPath": "public/images/characters/char-halima-gallery.webp",
+      "sourceHash": "409edb970306e90c8538aa3c14a4991b98a0f187ede31fa8af7222026d7493c8",
+      "width": 1086,
+      "height": 1448,
+      "prompt": "Create one realistic photograph of a wholly fictional Nigerian adult aged 36. Clearly adult Nigerian woman in her mid-thirties, dark skin, long face, tall sturdy build, neat chin-length loc bob, small oval glasses. Candid seated with an embroidery hoop on a bright home veranda, plum cotton dress, same loc bob and oval glasses, daylight. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people.",
+      "generationPrompt": "Use case: identity-preserve. The reference locks the fictional adult face and body identity; change the scene, clothing, pose and camera position. Generate ONE vertical 3:4 candid gallery photograph. Create one realistic photograph of a wholly fictional Nigerian adult aged 36. Clearly adult Nigerian woman in her mid-thirties, dark skin, long face, tall sturdy build, neat chin-length loc bob, small oval glasses. Candid seated with an embroidery hoop on a bright home veranda, plum cotton dress, same loc bob and oval glasses, daylight. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people. Natural realistic photography, credible Nigerian everyday surroundings, mature natural skin texture, no beauty-filter look or generic studio glamour. Keep headroom for responsive cropping; no collage.",
+      "reference": "docs/cast-50/assets/char-halima-portrait.png",
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection during generation",
+        "date": "2026-10-17",
+        "criteria": [
+          "Clearly adult fictional subject",
+          "Fully clothed non-explicit scene",
+          "Identity continuity between portrait and gallery",
+          "Distinct gallery outfit and composition",
+          "Usable face, anatomy and responsive framing"
+        ],
+        "reviewedSourceHash": "409edb970306e90c8538aa3c14a4991b98a0f187ede31fa8af7222026d7493c8"
+      }
+    },
+    "char-yejide-gallery": {
+      "key": "char-yejide",
+      "slot": "gallery",
+      "original": "docs/cast-50/assets/char-yejide-gallery.png",
+      "publicPath": "public/images/characters/char-yejide-gallery.webp",
+      "sourceHash": "c0d0d83ea29c288bf74fade865003dbe5f65432e2ff2cd5490c992a7523c702c",
+      "width": 1086,
+      "height": 1448,
+      "prompt": "Create one realistic photograph of a wholly fictional Nigerian adult aged 29. Clearly adult Nigerian woman in her late twenties, dark brown skin, high cheekbones, lean runner build, closely cut natural hair and a small left-cheek beauty mark. Full-body candid after an easy park walk, plain terracotta sports top and black running trousers, resting beside a bench, overcast daylight. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people.",
+      "generationPrompt": "Use case: identity-preserve. The reference locks the fictional adult face and body identity; change the scene, clothing, pose and camera position. Generate ONE vertical 3:4 candid gallery photograph. Create one realistic photograph of a wholly fictional Nigerian adult aged 29. Clearly adult Nigerian woman in her late twenties, dark brown skin, high cheekbones, lean runner build, closely cut natural hair and a small left-cheek beauty mark. Full-body candid after an easy park walk, plain terracotta sports top and black running trousers, resting beside a bench, overcast daylight. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people. Natural realistic photography, credible Nigerian everyday surroundings, mature natural skin texture, no beauty-filter look or generic studio glamour. Keep headroom for responsive cropping; no collage.",
+      "reference": "docs/cast-50/assets/char-yejide-portrait.png",
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection during generation",
+        "date": "2026-10-17",
+        "criteria": [
+          "Clearly adult fictional subject",
+          "Fully clothed non-explicit scene",
+          "Identity continuity between portrait and gallery",
+          "Distinct gallery outfit and composition",
+          "Usable face, anatomy and responsive framing"
+        ],
+        "reviewedSourceHash": "c0d0d83ea29c288bf74fade865003dbe5f65432e2ff2cd5490c992a7523c702c"
+      }
+    },
+    "char-adanna-gallery": {
+      "key": "char-adanna",
+      "slot": "gallery",
+      "original": "docs/cast-50/assets/char-adanna-gallery.png",
+      "publicPath": "public/images/characters/char-adanna-gallery.webp",
+      "sourceHash": "03c6ecbcaf6703048090318e0af65da3a9260fa719164a91b1ae74b2a7b58f28",
+      "width": 1086,
+      "height": 1448,
+      "prompt": "Create one realistic photograph of a wholly fictional Nigerian adult aged 34. Clearly adult Nigerian woman in her mid-thirties, rich brown skin, broad cheekbones, curvy build, short sculpted natural hair dyed dark auburn and mature smile lines. Candid sorting vintage postcards on a home floor cushion, cream sweater and plum trousers, short auburn hair unchanged, warm afternoon light. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people.",
+      "generationPrompt": "Use case: identity-preserve. The reference locks the fictional adult face and body identity; change the scene, clothing, pose and camera position. Generate ONE vertical 3:4 candid gallery photograph. Create one realistic photograph of a wholly fictional Nigerian adult aged 34. Clearly adult Nigerian woman in her mid-thirties, rich brown skin, broad cheekbones, curvy build, short sculpted natural hair dyed dark auburn and mature smile lines. Candid sorting vintage postcards on a home floor cushion, cream sweater and plum trousers, short auburn hair unchanged, warm afternoon light. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people. Natural realistic photography, credible Nigerian everyday surroundings, mature natural skin texture, no beauty-filter look or generic studio glamour. Keep headroom for responsive cropping; no collage.",
+      "reference": "docs/cast-50/assets/char-adanna-portrait.png",
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection during generation",
+        "date": "2026-10-17",
+        "criteria": [
+          "Clearly adult fictional subject",
+          "Fully clothed non-explicit scene",
+          "Identity continuity between portrait and gallery",
+          "Distinct gallery outfit and composition",
+          "Usable face, anatomy and responsive framing"
+        ],
+        "reviewedSourceHash": "03c6ecbcaf6703048090318e0af65da3a9260fa719164a91b1ae74b2a7b58f28"
+      }
+    },
+    "char-farouk-portrait": {
+      "key": "char-farouk",
+      "slot": "portrait",
+      "original": "docs/cast-50/assets/char-farouk-portrait.png",
+      "publicPath": "public/images/characters/char-farouk-portrait.webp",
+      "sourceHash": "fd507e363aa0d863fd4bdfbe15233f1ae9c241744e72e647008a7d6c3ef37134",
+      "width": 1086,
+      "height": 1448,
+      "prompt": "Create one realistic photograph of a wholly fictional Nigerian adult aged 31. Clearly adult Nigerian man in his early thirties, deep brown skin, rectangular face, medium build, short dense curls, neat moustache and trimmed beard, thin rectangular glasses. Waist-up near a shaded brick courtyard, charcoal linen shirt, relaxed shoulders, soft daylight, no official insignia. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people.",
+      "generationPrompt": "Use case: photorealistic-natural. Generate ONE vertical 3:4 lifestyle portrait. Create one realistic photograph of a wholly fictional Nigerian adult aged 31. Clearly adult Nigerian man in his early thirties, deep brown skin, rectangular face, medium build, short dense curls, neat moustache and trimmed beard, thin rectangular glasses. Waist-up near a shaded brick courtyard, charcoal linen shirt, relaxed shoulders, soft daylight, no official insignia. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people. Natural realistic photography, credible Nigerian everyday surroundings, mature natural skin texture, no beauty-filter look or generic studio glamour. Keep headroom for responsive cropping; no collage.",
+      "reference": null,
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection during generation",
+        "date": "2026-10-17",
+        "criteria": [
+          "Clearly adult fictional subject",
+          "Fully clothed non-explicit scene",
+          "Identity continuity between portrait and gallery",
+          "Distinct gallery outfit and composition",
+          "Usable face, anatomy and responsive framing"
+        ],
+        "reviewedSourceHash": "fd507e363aa0d863fd4bdfbe15233f1ae9c241744e72e647008a7d6c3ef37134"
+      }
+    },
+    "char-obinna-portrait": {
+      "key": "char-obinna",
+      "slot": "portrait",
+      "original": "docs/cast-50/assets/char-obinna-portrait.png",
+      "publicPath": "public/images/characters/char-obinna-portrait.webp",
+      "sourceHash": "63c5884ed1b543563aa04c078fa683bb802761254b08c5ffd686a14a0e751f9c",
+      "width": 1086,
+      "height": 1448,
+      "prompt": "Create one realistic photograph of a wholly fictional Nigerian adult aged 33. Clearly adult Nigerian man in his early thirties, rich dark skin, broad round face, stocky build, low fade, full neatly shaped beard and deep smile dimples. Mid-length portrait at an empty casual dining table, brick-red short-sleeve shirt, soft sidelight, no chef hat or uniform. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people.",
+      "generationPrompt": "Use case: photorealistic-natural. Generate ONE vertical 3:4 lifestyle portrait. Create one realistic photograph of a wholly fictional Nigerian adult aged 33. Clearly adult Nigerian man in his early thirties, rich dark skin, broad round face, stocky build, low fade, full neatly shaped beard and deep smile dimples. Mid-length portrait at an empty casual dining table, brick-red short-sleeve shirt, soft sidelight, no chef hat or uniform. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people. Natural realistic photography, credible Nigerian everyday surroundings, mature natural skin texture, no beauty-filter look or generic studio glamour. Keep headroom for responsive cropping; no collage.",
+      "reference": null,
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection during generation",
+        "date": "2026-10-17",
+        "criteria": [
+          "Clearly adult fictional subject",
+          "Fully clothed non-explicit scene",
+          "Identity continuity between portrait and gallery",
+          "Distinct gallery outfit and composition",
+          "Usable face, anatomy and responsive framing"
+        ],
+        "reviewedSourceHash": "63c5884ed1b543563aa04c078fa683bb802761254b08c5ffd686a14a0e751f9c"
+      }
+    },
+    "char-fikayo-portrait": {
+      "key": "char-fikayo",
+      "slot": "portrait",
+      "original": "docs/cast-50/assets/char-fikayo-portrait.png",
+      "publicPath": "public/images/characters/char-fikayo-portrait.webp",
+      "sourceHash": "dc83b57b129bf069af6ec39d34ae31c5b1d26391ddef51a1c2b6e31d0ebbd4ef",
+      "width": 1086,
+      "height": 1448,
+      "prompt": "Create one realistic photograph of a wholly fictional Nigerian adult aged 28. Clearly adult Nigerian man in his late twenties, medium brown skin, long oval face, lanky adult build, short sponge twists, faint moustache and small scar through one eyebrow. Waist-up beside a plain workbench, moss-green tee under a cream overshirt, relaxed gaze, indirect daylight, no tools in use. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people.",
+      "generationPrompt": "Use case: photorealistic-natural. Generate ONE vertical 3:4 lifestyle portrait. Create one realistic photograph of a wholly fictional Nigerian adult aged 28. Clearly adult Nigerian man in his late twenties, medium brown skin, long oval face, lanky adult build, short sponge twists, faint moustache and small scar through one eyebrow. Waist-up beside a plain workbench, moss-green tee under a cream overshirt, relaxed gaze, indirect daylight, no tools in use. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people. Natural realistic photography, credible Nigerian everyday surroundings, mature natural skin texture, no beauty-filter look or generic studio glamour. Keep headroom for responsive cropping; no collage.",
+      "reference": null,
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection during generation",
+        "date": "2026-10-17",
+        "criteria": [
+          "Clearly adult fictional subject",
+          "Fully clothed non-explicit scene",
+          "Identity continuity between portrait and gallery",
+          "Distinct gallery outfit and composition",
+          "Usable face, anatomy and responsive framing"
+        ],
+        "reviewedSourceHash": "dc83b57b129bf069af6ec39d34ae31c5b1d26391ddef51a1c2b6e31d0ebbd4ef"
+      }
+    },
+    "char-tonye-portrait": {
+      "key": "char-tonye",
+      "slot": "portrait",
+      "original": "docs/cast-50/assets/char-tonye-portrait.png",
+      "publicPath": "public/images/characters/char-tonye-portrait.webp",
+      "sourceHash": "8c1f4ba90172a7647d877d93dfcc095506972c80a0a7638c6a67f5f0a33b95af",
+      "width": 1086,
+      "height": 1448,
+      "prompt": "Create one realistic photograph of a wholly fictional Nigerian adult aged 37. Clearly adult Nigerian man in his late thirties, dark brown skin, wide jaw, broad heavyset build, shaved head, close salt-flecked beard and mature smile lines. Chest-up on a shaded home veranda, pale blue linen shirt, calm amused expression, natural skin texture, warm daylight. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people.",
+      "generationPrompt": "Use case: photorealistic-natural. Generate ONE vertical 3:4 lifestyle portrait. Create one realistic photograph of a wholly fictional Nigerian adult aged 37. Clearly adult Nigerian man in his late thirties, dark brown skin, wide jaw, broad heavyset build, shaved head, close salt-flecked beard and mature smile lines. Chest-up on a shaded home veranda, pale blue linen shirt, calm amused expression, natural skin texture, warm daylight. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people. Natural realistic photography, credible Nigerian everyday surroundings, mature natural skin texture, no beauty-filter look or generic studio glamour. Keep headroom for responsive cropping; no collage.",
+      "reference": null,
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection during generation",
+        "date": "2026-10-17",
+        "criteria": [
+          "Clearly adult fictional subject",
+          "Fully clothed non-explicit scene",
+          "Identity continuity between portrait and gallery",
+          "Distinct gallery outfit and composition",
+          "Usable face, anatomy and responsive framing"
+        ],
+        "reviewedSourceHash": "8c1f4ba90172a7647d877d93dfcc095506972c80a0a7638c6a67f5f0a33b95af"
+      }
+    },
+    "char-ibrahim-portrait": {
+      "key": "char-ibrahim",
+      "slot": "portrait",
+      "original": "docs/cast-50/assets/char-ibrahim-portrait.png",
+      "publicPath": "public/images/characters/char-ibrahim-portrait.webp",
+      "sourceHash": "3d0c15bbcc74c45abd49da84f2fd441dd6c6a9bb740042c3395f99215422b686",
+      "width": 1086,
+      "height": 1448,
+      "prompt": "Create one realistic photograph of a wholly fictional Nigerian adult aged 35. Clearly adult Nigerian man in his mid-thirties, medium-dark skin, narrow face, tall slim build, short wavy hair, neat goatee and round dark-rim glasses. Waist-up by a bright window, plum collarless shirt, paperback closed on a table, relaxed adult features and soft light. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people.",
+      "generationPrompt": "Use case: photorealistic-natural. Generate ONE vertical 3:4 lifestyle portrait. Create one realistic photograph of a wholly fictional Nigerian adult aged 35. Clearly adult Nigerian man in his mid-thirties, medium-dark skin, narrow face, tall slim build, short wavy hair, neat goatee and round dark-rim glasses. Waist-up by a bright window, plum collarless shirt, paperback closed on a table, relaxed adult features and soft light. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people. Natural realistic photography, credible Nigerian everyday surroundings, mature natural skin texture, no beauty-filter look or generic studio glamour. Keep headroom for responsive cropping; no collage.",
+      "reference": null,
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection during generation",
+        "date": "2026-10-17",
+        "criteria": [
+          "Clearly adult fictional subject",
+          "Fully clothed non-explicit scene",
+          "Identity continuity between portrait and gallery",
+          "Distinct gallery outfit and composition",
+          "Usable face, anatomy and responsive framing"
+        ],
+        "reviewedSourceHash": "3d0c15bbcc74c45abd49da84f2fd441dd6c6a9bb740042c3395f99215422b686"
+      }
+    },
+    "char-osaze-portrait": {
+      "key": "char-osaze",
+      "slot": "portrait",
+      "original": "docs/cast-50/assets/char-osaze-portrait.png",
+      "publicPath": "public/images/characters/char-osaze-portrait.webp",
+      "sourceHash": "9be862aaab7902aa49e9a56de086174d16fa15284f70780226723b889da80f55",
+      "width": 1086,
+      "height": 1448,
+      "prompt": "Create one realistic photograph of a wholly fictional Nigerian adult aged 30. Clearly adult Nigerian man around thirty, deep dark skin, broad cheekbones, muscular compact build, closely cropped hair, clean-shaven face and a small right-cheek dimple. Mid-length portrait outside a simple workshop, tan cotton overshirt over a black tee, hands resting naturally, diffuse daylight. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people.",
+      "generationPrompt": "Use case: photorealistic-natural. Generate ONE vertical 3:4 lifestyle portrait. Create one realistic photograph of a wholly fictional Nigerian adult aged 30. Clearly adult Nigerian man around thirty, deep dark skin, broad cheekbones, muscular compact build, closely cropped hair, clean-shaven face and a small right-cheek dimple. Mid-length portrait outside a simple workshop, tan cotton overshirt over a black tee, hands resting naturally, diffuse daylight. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people. Natural realistic photography, credible Nigerian everyday surroundings, mature natural skin texture, no beauty-filter look or generic studio glamour. Keep headroom for responsive cropping; no collage.",
+      "reference": null,
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection during generation",
+        "date": "2026-10-17",
+        "criteria": [
+          "Clearly adult fictional subject",
+          "Fully clothed non-explicit scene",
+          "Identity continuity between portrait and gallery",
+          "Distinct gallery outfit and composition",
+          "Usable face, anatomy and responsive framing"
+        ],
+        "reviewedSourceHash": "9be862aaab7902aa49e9a56de086174d16fa15284f70780226723b889da80f55"
+      }
+    },
+    "char-farouk-gallery": {
+      "key": "char-farouk",
+      "slot": "gallery",
+      "original": "docs/cast-50/assets/char-farouk-gallery.png",
+      "publicPath": "public/images/characters/char-farouk-gallery.webp",
+      "sourceHash": "9dbe46086cec0201ffdafe8d891fd3bac37222ee2dc8b9cfe3a5ce2ec7df845f",
+      "width": 1086,
+      "height": 1448,
+      "prompt": "Create one realistic photograph of a wholly fictional Nigerian adult aged 31. Clearly adult Nigerian man in his early thirties, deep brown skin, rectangular face, medium build, short dense curls, neat moustache and trimmed beard, thin rectangular glasses. Three-quarter candid leaning over a chessboard at home, plain cream tee and olive trousers, same glasses and beard, warm lamplight. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people.",
+      "generationPrompt": "Use case: identity-preserve. The reference locks the fictional adult face and body identity; change the scene, clothing, pose and camera position. Generate ONE vertical 3:4 candid gallery photograph. Create one realistic photograph of a wholly fictional Nigerian adult aged 31. Clearly adult Nigerian man in his early thirties, deep brown skin, rectangular face, medium build, short dense curls, neat moustache and trimmed beard, thin rectangular glasses. Three-quarter candid leaning over a chessboard at home, plain cream tee and olive trousers, same glasses and beard, warm lamplight. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people. Natural realistic photography, credible Nigerian everyday surroundings, mature natural skin texture, no beauty-filter look or generic studio glamour. Keep headroom for responsive cropping; no collage.",
+      "reference": "docs/cast-50/assets/char-farouk-portrait.png",
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection during generation",
+        "date": "2026-10-17",
+        "criteria": [
+          "Clearly adult fictional subject",
+          "Fully clothed non-explicit scene",
+          "Identity continuity between portrait and gallery",
+          "Distinct gallery outfit and composition",
+          "Usable face, anatomy and responsive framing"
+        ],
+        "reviewedSourceHash": "9dbe46086cec0201ffdafe8d891fd3bac37222ee2dc8b9cfe3a5ce2ec7df845f"
+      }
+    },
+    "char-obinna-gallery": {
+      "key": "char-obinna",
+      "slot": "gallery",
+      "original": "docs/cast-50/assets/char-obinna-gallery.png",
+      "publicPath": "public/images/characters/char-obinna-gallery.webp",
+      "sourceHash": "e452f0e36800fd7ab15f31f94c4c2bb510f5cd58f36e05d95be012c150026c04",
+      "width": 1086,
+      "height": 1448,
+      "prompt": "Create one realistic photograph of a wholly fictional Nigerian adult aged 33. Clearly adult Nigerian man in his early thirties, rich dark skin, broad round face, stocky build, low fade, full neatly shaped beard and deep smile dimples. Full-body candid browsing vegetables at an open-air market, indigo overshirt and tan chinos, same beard and fade, diffuse morning light. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people.",
+      "generationPrompt": "Use case: identity-preserve. The reference locks the fictional adult face and body identity; change the scene, clothing, pose and camera position. Generate ONE vertical 3:4 candid gallery photograph. Create one realistic photograph of a wholly fictional Nigerian adult aged 33. Clearly adult Nigerian man in his early thirties, rich dark skin, broad round face, stocky build, low fade, full neatly shaped beard and deep smile dimples. Full-body candid browsing vegetables at an open-air market, indigo overshirt and tan chinos, same beard and fade, diffuse morning light. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people. Natural realistic photography, credible Nigerian everyday surroundings, mature natural skin texture, no beauty-filter look or generic studio glamour. Keep headroom for responsive cropping; no collage.",
+      "reference": "docs/cast-50/assets/char-obinna-portrait.png",
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection during generation",
+        "date": "2026-10-17",
+        "criteria": [
+          "Clearly adult fictional subject",
+          "Fully clothed non-explicit scene",
+          "Identity continuity between portrait and gallery",
+          "Distinct gallery outfit and composition",
+          "Usable face, anatomy and responsive framing"
+        ],
+        "reviewedSourceHash": "e452f0e36800fd7ab15f31f94c4c2bb510f5cd58f36e05d95be012c150026c04"
+      }
+    },
+    "char-fikayo-gallery": {
+      "key": "char-fikayo",
+      "slot": "gallery",
+      "original": "docs/cast-50/assets/char-fikayo-gallery.png",
+      "publicPath": "public/images/characters/char-fikayo-gallery.webp",
+      "sourceHash": "6b6e713473688d602b2b596d6de67c4e47c0b5658dd3291cacba8fc2459f26f2",
+      "width": 1086,
+      "height": 1448,
+      "prompt": "Create one realistic photograph of a wholly fictional Nigerian adult aged 28. Clearly adult Nigerian man in his late twenties, medium brown skin, long oval face, lanky adult build, short sponge twists, faint moustache and small scar through one eyebrow. Candid seated on a low garden wall beside a stationary bicycle, burgundy shirt and dark jeans, same twists and eyebrow scar, late afternoon. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people.",
+      "generationPrompt": "Use case: identity-preserve. The reference locks the fictional adult face and body identity; change the scene, clothing, pose and camera position. Generate ONE vertical 3:4 candid gallery photograph. Create one realistic photograph of a wholly fictional Nigerian adult aged 28. Clearly adult Nigerian man in his late twenties, medium brown skin, long oval face, lanky adult build, short sponge twists, faint moustache and small scar through one eyebrow. Candid seated on a low garden wall beside a stationary bicycle, burgundy shirt and dark jeans, same twists and eyebrow scar, late afternoon. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people. Natural realistic photography, credible Nigerian everyday surroundings, mature natural skin texture, no beauty-filter look or generic studio glamour. Keep headroom for responsive cropping; no collage.",
+      "reference": "docs/cast-50/assets/char-fikayo-portrait.png",
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection during generation",
+        "date": "2026-10-17",
+        "criteria": [
+          "Clearly adult fictional subject",
+          "Fully clothed non-explicit scene",
+          "Identity continuity between portrait and gallery",
+          "Distinct gallery outfit and composition",
+          "Usable face, anatomy and responsive framing"
+        ],
+        "reviewedSourceHash": "6b6e713473688d602b2b596d6de67c4e47c0b5658dd3291cacba8fc2459f26f2"
+      }
+    },
+    "char-tonye-gallery": {
+      "key": "char-tonye",
+      "slot": "gallery",
+      "original": "docs/cast-50/assets/char-tonye-gallery.png",
+      "publicPath": "public/images/characters/char-tonye-gallery.webp",
+      "sourceHash": "a1e02596fbe191c833f9997ee086da61c27b2be008f3ffc3a4f2e1c781090713",
+      "width": 1086,
+      "height": 1448,
+      "prompt": "Create one realistic photograph of a wholly fictional Nigerian adult aged 37. Clearly adult Nigerian man in his late thirties, dark brown skin, wide jaw, broad heavyset build, shaved head, close salt-flecked beard and mature smile lines. Three-quarter candid watering herbs in containers, plain ochre polo and charcoal trousers, shaved head and beard unchanged, cloudy morning light. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people.",
+      "generationPrompt": "Use case: identity-preserve. The reference locks the fictional adult face and body identity; change the scene, clothing, pose and camera position. Generate ONE vertical 3:4 candid gallery photograph. Create one realistic photograph of a wholly fictional Nigerian adult aged 37. Clearly adult Nigerian man in his late thirties, dark brown skin, wide jaw, broad heavyset build, shaved head, close salt-flecked beard and mature smile lines. Three-quarter candid watering herbs in containers, plain ochre polo and charcoal trousers, shaved head and beard unchanged, cloudy morning light. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people. Natural realistic photography, credible Nigerian everyday surroundings, mature natural skin texture, no beauty-filter look or generic studio glamour. Keep headroom for responsive cropping; no collage.",
+      "reference": "docs/cast-50/assets/char-tonye-portrait.png",
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection during generation",
+        "date": "2026-10-17",
+        "criteria": [
+          "Clearly adult fictional subject",
+          "Fully clothed non-explicit scene",
+          "Identity continuity between portrait and gallery",
+          "Distinct gallery outfit and composition",
+          "Usable face, anatomy and responsive framing"
+        ],
+        "reviewedSourceHash": "a1e02596fbe191c833f9997ee086da61c27b2be008f3ffc3a4f2e1c781090713"
+      }
+    },
+    "char-ibrahim-gallery": {
+      "key": "char-ibrahim",
+      "slot": "gallery",
+      "original": "docs/cast-50/assets/char-ibrahim-gallery.png",
+      "publicPath": "public/images/characters/char-ibrahim-gallery.webp",
+      "sourceHash": "7659d37e88c4d0c4332334f31e1371811d2019ac484deafb0498e3cdeb7d2d7e",
+      "width": 1086,
+      "height": 1448,
+      "prompt": "Create one realistic photograph of a wholly fictional Nigerian adult aged 35. Clearly adult Nigerian man in his mid-thirties, medium-dark skin, narrow face, tall slim build, short wavy hair, neat goatee and round dark-rim glasses. Three-quarter candid holding a badminton racket at the edge of an empty community court, navy sports shirt and grey trousers, same goatee and glasses, early evening. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people.",
+      "generationPrompt": "Use case: identity-preserve. The reference locks the fictional adult face and body identity; change the scene, clothing, pose and camera position. Generate ONE vertical 3:4 candid gallery photograph. Create one realistic photograph of a wholly fictional Nigerian adult aged 35. Clearly adult Nigerian man in his mid-thirties, medium-dark skin, narrow face, tall slim build, short wavy hair, neat goatee and round dark-rim glasses. Three-quarter candid holding a badminton racket at the edge of an empty community court, navy sports shirt and grey trousers, same goatee and glasses, early evening. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people. Natural realistic photography, credible Nigerian everyday surroundings, mature natural skin texture, no beauty-filter look or generic studio glamour. Keep headroom for responsive cropping; no collage.",
+      "reference": "docs/cast-50/assets/char-ibrahim-portrait.png",
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection during generation",
+        "date": "2026-10-17",
+        "criteria": [
+          "Clearly adult fictional subject",
+          "Fully clothed non-explicit scene",
+          "Identity continuity between portrait and gallery",
+          "Distinct gallery outfit and composition",
+          "Usable face, anatomy and responsive framing"
+        ],
+        "reviewedSourceHash": "7659d37e88c4d0c4332334f31e1371811d2019ac484deafb0498e3cdeb7d2d7e"
+      }
+    },
+    "char-osaze-gallery": {
+      "key": "char-osaze",
+      "slot": "gallery",
+      "original": "docs/cast-50/assets/char-osaze-gallery.png",
+      "publicPath": "public/images/characters/char-osaze-gallery.webp",
+      "sourceHash": "1bab128be07b552a96d913ca3fc8ab1cbefc577412e357f0ee5e677b087d8812",
+      "width": 1086,
+      "height": 1448,
+      "prompt": "Create one realistic photograph of a wholly fictional Nigerian adult aged 30. Clearly adult Nigerian man around thirty, deep dark skin, broad cheekbones, muscular compact build, closely cropped hair, clean-shaven face and a small right-cheek dimple. Full-body candid carrying a basketball beside an empty outdoor court, muted forest-green tee and black shorts, cropped hair unchanged, late-afternoon sun. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people.",
+      "generationPrompt": "Use case: identity-preserve. The reference locks the fictional adult face and body identity; change the scene, clothing, pose and camera position. Generate ONE vertical 3:4 candid gallery photograph. Create one realistic photograph of a wholly fictional Nigerian adult aged 30. Clearly adult Nigerian man around thirty, deep dark skin, broad cheekbones, muscular compact build, closely cropped hair, clean-shaven face and a small right-cheek dimple. Full-body candid carrying a basketball beside an empty outdoor court, muted forest-green tee and black shorts, cropped hair unchanged, late-afternoon sun. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people. Natural realistic photography, credible Nigerian everyday surroundings, mature natural skin texture, no beauty-filter look or generic studio glamour. Keep headroom for responsive cropping; no collage.",
+      "reference": "docs/cast-50/assets/char-osaze-portrait.png",
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection during generation",
+        "date": "2026-10-17",
+        "criteria": [
+          "Clearly adult fictional subject",
+          "Fully clothed non-explicit scene",
+          "Identity continuity between portrait and gallery",
+          "Distinct gallery outfit and composition",
+          "Usable face, anatomy and responsive framing"
+        ],
+        "reviewedSourceHash": "1bab128be07b552a96d913ca3fc8ab1cbefc577412e357f0ee5e677b087d8812"
+      }
+    },
+    "char-dapo-portrait": {
+      "key": "char-dapo",
+      "slot": "portrait",
+      "original": "docs/cast-50/assets/char-dapo-portrait.png",
+      "publicPath": "public/images/characters/char-dapo-portrait.webp",
+      "sourceHash": "ebd050b7b68e7b026fda81dd04834ca4aa3fa34896192afac92d85802e06f7a3",
+      "width": 1086,
+      "height": 1448,
+      "prompt": "Create one realistic photograph of a wholly fictional Nigerian adult aged 42. Clearly adult Nigerian man in his early forties, rich brown skin, square face, medium stocky build, receding close-cropped black-and-grey hair, short grey-flecked beard and visible laugh lines. Waist-up on a shaded café terrace, dark teal linen shirt, relaxed mature smile, soft natural daylight, no cup pose. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people.",
+      "generationPrompt": "Use case: photorealistic-natural. Generate ONE vertical 3:4 lifestyle portrait. Create one realistic photograph of a wholly fictional Nigerian adult aged 42. Clearly adult Nigerian man in his early forties, rich brown skin, square face, medium stocky build, receding close-cropped black-and-grey hair, short grey-flecked beard and visible laugh lines. Waist-up on a shaded café terrace, dark teal linen shirt, relaxed mature smile, soft natural daylight, no cup pose. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people. Natural realistic photography, credible Nigerian everyday surroundings, mature natural skin texture, no beauty-filter look or generic studio glamour. Keep headroom for responsive cropping; no collage.",
+      "reference": null,
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection during generation",
+        "date": "2026-10-17",
+        "criteria": [
+          "Clearly adult fictional subject",
+          "Fully clothed non-explicit scene",
+          "Identity continuity between portrait and gallery",
+          "Distinct gallery outfit and composition",
+          "Usable face, anatomy and responsive framing"
+        ],
+        "reviewedSourceHash": "ebd050b7b68e7b026fda81dd04834ca4aa3fa34896192afac92d85802e06f7a3"
+      }
+    },
+    "char-bassey-portrait": {
+      "key": "char-bassey",
+      "slot": "portrait",
+      "original": "docs/cast-50/assets/char-bassey-portrait.png",
+      "publicPath": "public/images/characters/char-bassey-portrait.webp",
+      "sourceHash": "bd554c11e80ed6fe80a9f29657245276ee26c16c5a965657e0dece69fc28a119",
+      "width": 1086,
+      "height": 1448,
+      "prompt": "Create one realistic photograph of a wholly fictional Nigerian adult aged 39. Clearly adult Nigerian man in his late thirties, deep brown skin, long face, broad athletic build, short tightly coiled hair with grey temples, thick neat moustache and clean-shaven chin. Three-quarter portrait beside a shaded wooden workshop wall, rust short-sleeve shirt, mature smile lines, calm daylight. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people.",
+      "generationPrompt": "Use case: photorealistic-natural. Generate ONE vertical 3:4 lifestyle portrait. Create one realistic photograph of a wholly fictional Nigerian adult aged 39. Clearly adult Nigerian man in his late thirties, deep brown skin, long face, broad athletic build, short tightly coiled hair with grey temples, thick neat moustache and clean-shaven chin. Three-quarter portrait beside a shaded wooden workshop wall, rust short-sleeve shirt, mature smile lines, calm daylight. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people. Natural realistic photography, credible Nigerian everyday surroundings, mature natural skin texture, no beauty-filter look or generic studio glamour. Keep headroom for responsive cropping; no collage.",
+      "reference": null,
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection during generation",
+        "date": "2026-10-17",
+        "criteria": [
+          "Clearly adult fictional subject",
+          "Fully clothed non-explicit scene",
+          "Identity continuity between portrait and gallery",
+          "Distinct gallery outfit and composition",
+          "Usable face, anatomy and responsive framing"
+        ],
+        "reviewedSourceHash": "bd554c11e80ed6fe80a9f29657245276ee26c16c5a965657e0dece69fc28a119"
+      }
+    },
+    "char-samuel-portrait": {
+      "key": "char-samuel",
+      "slot": "portrait",
+      "original": "docs/cast-50/assets/char-samuel-portrait.png",
+      "publicPath": "public/images/characters/char-samuel-portrait.webp",
+      "sourceHash": "18944a5bd1e0fa799057a7bc49e67450894df805a271fb575a4f614801e7c30c",
+      "width": 1086,
+      "height": 1448,
+      "prompt": "Create one realistic photograph of a wholly fictional Nigerian adult aged 47. Clearly adult Nigerian man in his late forties, medium brown skin, rounded face, soft stocky build, close-cropped salt-and-pepper hair, clean-shaven, oval reading glasses and pronounced mature smile lines. Waist-up on a quiet home veranda, cream collarless shirt, relaxed posture, natural mature skin texture, warm morning light, no school setting. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people.",
+      "generationPrompt": "Use case: photorealistic-natural. Generate ONE vertical 3:4 lifestyle portrait. Create one realistic photograph of a wholly fictional Nigerian adult aged 47. Clearly adult Nigerian man in his late forties, medium brown skin, rounded face, soft stocky build, close-cropped salt-and-pepper hair, clean-shaven, oval reading glasses and pronounced mature smile lines. Waist-up on a quiet home veranda, cream collarless shirt, relaxed posture, natural mature skin texture, warm morning light, no school setting. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people. Natural realistic photography, credible Nigerian everyday surroundings, mature natural skin texture, no beauty-filter look or generic studio glamour. Keep headroom for responsive cropping; no collage.",
+      "reference": null,
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection during generation",
+        "date": "2026-10-17",
+        "criteria": [
+          "Clearly adult fictional subject",
+          "Fully clothed non-explicit scene",
+          "Identity continuity between portrait and gallery",
+          "Distinct gallery outfit and composition",
+          "Usable face, anatomy and responsive framing"
+        ],
+        "reviewedSourceHash": "18944a5bd1e0fa799057a7bc49e67450894df805a271fb575a4f614801e7c30c"
+      }
+    },
+    "char-yomi-portrait": {
+      "key": "char-yomi",
+      "slot": "portrait",
+      "original": "docs/cast-50/assets/char-yomi-portrait.png",
+      "publicPath": "public/images/characters/char-yomi-portrait.webp",
+      "sourceHash": "6f0bc896083185f8a1e8c95cabf4e441f80ec2428d3c4405e4177faa116dc8e7",
+      "width": 1086,
+      "height": 1448,
+      "prompt": "Create one realistic photograph of a wholly fictional Nigerian adult aged 54. Clearly adult Nigerian man in his mid-fifties, dark skin, long angular face, lean build, short silver hair, neat silver moustache and beard, visible forehead lines and crow's feet. Chest-up at a simple watchmaker desk with no readable brands, navy cotton shirt, dignified relaxed expression, soft sidelight showing mature features. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people.",
+      "generationPrompt": "Use case: photorealistic-natural. Generate ONE vertical 3:4 lifestyle portrait. Create one realistic photograph of a wholly fictional Nigerian adult aged 54. Clearly adult Nigerian man in his mid-fifties, dark skin, long angular face, lean build, short silver hair, neat silver moustache and beard, visible forehead lines and crow's feet. Chest-up at a simple watchmaker desk with no readable brands, navy cotton shirt, dignified relaxed expression, soft sidelight showing mature features. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people. Natural realistic photography, credible Nigerian everyday surroundings, mature natural skin texture, no beauty-filter look or generic studio glamour. Keep headroom for responsive cropping; no collage.",
+      "reference": null,
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection during generation",
+        "date": "2026-10-17",
+        "criteria": [
+          "Clearly adult fictional subject",
+          "Fully clothed non-explicit scene",
+          "Identity continuity between portrait and gallery",
+          "Distinct gallery outfit and composition",
+          "Usable face, anatomy and responsive framing"
+        ],
+        "reviewedSourceHash": "6f0bc896083185f8a1e8c95cabf4e441f80ec2428d3c4405e4177faa116dc8e7"
+      }
+    },
+    "char-kelechi-portrait": {
+      "key": "char-kelechi",
+      "slot": "portrait",
+      "original": "docs/cast-50/assets/char-kelechi-portrait.png",
+      "publicPath": "public/images/characters/char-kelechi-portrait.webp",
+      "sourceHash": "92a93356144c443373ea3a16d3b970ca040a1bdeb38fa03f8ca3be85ce05eee0",
+      "width": 1086,
+      "height": 1448,
+      "prompt": "Create one realistic photograph of a wholly fictional Nigerian adult aged 34. Clearly adult Nigerian man in his mid-thirties, deep brown skin, broad oval face, tall medium build, short natural curls, closely trimmed beard and a small left-eyebrow notch. Waist-up on a shaded city terrace, muted ochre shirt, camera not in frame, relaxed adult features and soft daylight. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people.",
+      "generationPrompt": "Use case: photorealistic-natural. Generate ONE vertical 3:4 lifestyle portrait. Create one realistic photograph of a wholly fictional Nigerian adult aged 34. Clearly adult Nigerian man in his mid-thirties, deep brown skin, broad oval face, tall medium build, short natural curls, closely trimmed beard and a small left-eyebrow notch. Waist-up on a shaded city terrace, muted ochre shirt, camera not in frame, relaxed adult features and soft daylight. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people. Natural realistic photography, credible Nigerian everyday surroundings, mature natural skin texture, no beauty-filter look or generic studio glamour. Keep headroom for responsive cropping; no collage.",
+      "reference": null,
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection during generation",
+        "date": "2026-10-17",
+        "criteria": [
+          "Clearly adult fictional subject",
+          "Fully clothed non-explicit scene",
+          "Identity continuity between portrait and gallery",
+          "Distinct gallery outfit and composition",
+          "Usable face, anatomy and responsive framing"
+        ],
+        "reviewedSourceHash": "92a93356144c443373ea3a16d3b970ca040a1bdeb38fa03f8ca3be85ce05eee0"
+      }
+    },
+    "char-segun-portrait": {
+      "key": "char-segun",
+      "slot": "portrait",
+      "original": "docs/cast-50/assets/char-segun-portrait.png",
+      "publicPath": "public/images/characters/char-segun-portrait.webp",
+      "sourceHash": "7071cce1229ab575804bbf075a5f7b069540e3cb9fa8698f9dc463e4444c98b8",
+      "width": 1086,
+      "height": 1448,
+      "prompt": "Create one realistic photograph of a wholly fictional Nigerian adult aged 40. Clearly adult Nigerian man around forty, dark brown skin, rounded square face, large broad build, shaved head, full short beard with a silver patch at the chin and mature laugh lines. Mid-length portrait on an empty café patio, terracotta linen shirt, relaxed smile, soft daylight, no logos or other people. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people.",
+      "generationPrompt": "Use case: photorealistic-natural. Generate ONE vertical 3:4 lifestyle portrait. Create one realistic photograph of a wholly fictional Nigerian adult aged 40. Clearly adult Nigerian man around forty, dark brown skin, rounded square face, large broad build, shaved head, full short beard with a silver patch at the chin and mature laugh lines. Mid-length portrait on an empty café patio, terracotta linen shirt, relaxed smile, soft daylight, no logos or other people. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people. Natural realistic photography, credible Nigerian everyday surroundings, mature natural skin texture, no beauty-filter look or generic studio glamour. Keep headroom for responsive cropping; no collage.",
+      "reference": null,
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection during generation",
+        "date": "2026-10-17",
+        "criteria": [
+          "Clearly adult fictional subject",
+          "Fully clothed non-explicit scene",
+          "Identity continuity between portrait and gallery",
+          "Distinct gallery outfit and composition",
+          "Usable face, anatomy and responsive framing"
+        ],
+        "reviewedSourceHash": "7071cce1229ab575804bbf075a5f7b069540e3cb9fa8698f9dc463e4444c98b8"
+      }
+    },
+    "char-usman-portrait": {
+      "key": "char-usman",
+      "slot": "portrait",
+      "original": "docs/cast-50/assets/char-usman-portrait.png",
+      "publicPath": "public/images/characters/char-usman-portrait.webp",
+      "sourceHash": "92430a67167cbf61826436d53bde510cdadd1f2f772adde647ce38edb8e8c81a",
+      "width": 1086,
+      "height": 1448,
+      "prompt": "Create one realistic photograph of a wholly fictional Nigerian adult aged 32. Clearly adult Nigerian man in his early thirties, rich brown skin, long narrow face, slim athletic build, short neat locs tied back, light moustache and narrow chin beard. Waist-up near an open window in a plain audio workspace, olive shirt, no equipment labels, relaxed gaze and natural light. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people.",
+      "generationPrompt": "Use case: photorealistic-natural. Generate ONE vertical 3:4 lifestyle portrait. Create one realistic photograph of a wholly fictional Nigerian adult aged 32. Clearly adult Nigerian man in his early thirties, rich brown skin, long narrow face, slim athletic build, short neat locs tied back, light moustache and narrow chin beard. Waist-up near an open window in a plain audio workspace, olive shirt, no equipment labels, relaxed gaze and natural light. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people. Natural realistic photography, credible Nigerian everyday surroundings, mature natural skin texture, no beauty-filter look or generic studio glamour. Keep headroom for responsive cropping; no collage.",
+      "reference": null,
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection during generation",
+        "date": "2026-10-17",
+        "criteria": [
+          "Clearly adult fictional subject",
+          "Fully clothed non-explicit scene",
+          "Identity continuity between portrait and gallery",
+          "Distinct gallery outfit and composition",
+          "Usable face, anatomy and responsive framing"
+        ],
+        "reviewedSourceHash": "92430a67167cbf61826436d53bde510cdadd1f2f772adde647ce38edb8e8c81a"
+      }
+    },
+    "char-dele-portrait": {
+      "key": "char-dele",
+      "slot": "portrait",
+      "original": "docs/cast-50/assets/char-dele-portrait.png",
+      "publicPath": "public/images/characters/char-dele-portrait.webp",
+      "sourceHash": "dd0338480bbd83c333ee105ea255c62b9dab4693802111073fb613032922b93b",
+      "width": 1086,
+      "height": 1448,
+      "prompt": "Create one realistic photograph of a wholly fictional Nigerian adult aged 36. Clearly adult Nigerian man in his mid-thirties, deep brown skin, broad face with a cleft chin, sturdy athletic build, short natural afro, clean-shaven and visible sun-smile lines. Three-quarter portrait outside a plain board-shaping studio, faded navy cotton shirt, relaxed adult features, soft coastal daylight, no surfboard brand. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people.",
+      "generationPrompt": "Use case: photorealistic-natural. Generate ONE vertical 3:4 lifestyle portrait. Create one realistic photograph of a wholly fictional Nigerian adult aged 36. Clearly adult Nigerian man in his mid-thirties, deep brown skin, broad face with a cleft chin, sturdy athletic build, short natural afro, clean-shaven and visible sun-smile lines. Three-quarter portrait outside a plain board-shaping studio, faded navy cotton shirt, relaxed adult features, soft coastal daylight, no surfboard brand. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people. Natural realistic photography, credible Nigerian everyday surroundings, mature natural skin texture, no beauty-filter look or generic studio glamour. Keep headroom for responsive cropping; no collage.",
+      "reference": null,
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection during generation",
+        "date": "2026-10-17",
+        "criteria": [
+          "Clearly adult fictional subject",
+          "Fully clothed non-explicit scene",
+          "Identity continuity between portrait and gallery",
+          "Distinct gallery outfit and composition",
+          "Usable face, anatomy and responsive framing"
+        ],
+        "reviewedSourceHash": "dd0338480bbd83c333ee105ea255c62b9dab4693802111073fb613032922b93b"
+      }
+    },
+    "char-dapo-gallery": {
+      "key": "char-dapo",
+      "slot": "gallery",
+      "original": "docs/cast-50/assets/char-dapo-gallery.png",
+      "publicPath": "public/images/characters/char-dapo-gallery.webp",
+      "sourceHash": "5acae7d52c3556392a013273144822dba73a6a664ad850a51431fd91ebc398b9",
+      "width": 1086,
+      "height": 1448,
+      "prompt": "Create one realistic photograph of a wholly fictional Nigerian adult aged 42. Clearly adult Nigerian man in his early forties, rich brown skin, square face, medium stocky build, receding close-cropped black-and-grey hair, short grey-flecked beard and visible laugh lines. Side-angle candid browsing old film sleeves at home, cream knit polo and dark trousers, same hairline and beard, warm lamplight. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people.",
+      "generationPrompt": "Use case: identity-preserve. The reference locks the fictional adult face and body identity; change the scene, clothing, pose and camera position. Generate ONE vertical 3:4 candid gallery photograph. Create one realistic photograph of a wholly fictional Nigerian adult aged 42. Clearly adult Nigerian man in his early forties, rich brown skin, square face, medium stocky build, receding close-cropped black-and-grey hair, short grey-flecked beard and visible laugh lines. Side-angle candid browsing old film sleeves at home, cream knit polo and dark trousers, same hairline and beard, warm lamplight. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people. Natural realistic photography, credible Nigerian everyday surroundings, mature natural skin texture, no beauty-filter look or generic studio glamour. Keep headroom for responsive cropping; no collage.",
+      "reference": "docs/cast-50/assets/char-dapo-portrait.png",
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection during generation",
+        "date": "2026-10-17",
+        "criteria": [
+          "Clearly adult fictional subject",
+          "Fully clothed non-explicit scene",
+          "Identity continuity between portrait and gallery",
+          "Distinct gallery outfit and composition",
+          "Usable face, anatomy and responsive framing"
+        ],
+        "reviewedSourceHash": "5acae7d52c3556392a013273144822dba73a6a664ad850a51431fd91ebc398b9"
+      }
+    },
+    "char-bassey-gallery": {
+      "key": "char-bassey",
+      "slot": "gallery",
+      "original": "docs/cast-50/assets/char-bassey-gallery.png",
+      "publicPath": "public/images/characters/char-bassey-gallery.webp",
+      "sourceHash": "632c8f075c0b1d05b3711a3e37ebdc2aa4c42b55c550cbc754e9a4745bcc221f",
+      "width": 1086,
+      "height": 1448,
+      "prompt": "Create one realistic photograph of a wholly fictional Nigerian adult aged 39. Clearly adult Nigerian man in his late thirties, deep brown skin, long face, broad athletic build, short tightly coiled hair with grey temples, thick neat moustache and clean-shaven chin. Full-body candid standing on a public waterfront path looking at the view, pale blue shirt and dark trousers, same grey temples and moustache, overcast light, no boat operation. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people.",
+      "generationPrompt": "Use case: identity-preserve. The reference locks the fictional adult face and body identity; change the scene, clothing, pose and camera position. Generate ONE vertical 3:4 candid gallery photograph. Create one realistic photograph of a wholly fictional Nigerian adult aged 39. Clearly adult Nigerian man in his late thirties, deep brown skin, long face, broad athletic build, short tightly coiled hair with grey temples, thick neat moustache and clean-shaven chin. Full-body candid standing on a public waterfront path looking at the view, pale blue shirt and dark trousers, same grey temples and moustache, overcast light, no boat operation. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people. Natural realistic photography, credible Nigerian everyday surroundings, mature natural skin texture, no beauty-filter look or generic studio glamour. Keep headroom for responsive cropping; no collage.",
+      "reference": "docs/cast-50/assets/char-bassey-portrait.png",
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection during generation",
+        "date": "2026-10-17",
+        "criteria": [
+          "Clearly adult fictional subject",
+          "Fully clothed non-explicit scene",
+          "Identity continuity between portrait and gallery",
+          "Distinct gallery outfit and composition",
+          "Usable face, anatomy and responsive framing"
+        ],
+        "reviewedSourceHash": "632c8f075c0b1d05b3711a3e37ebdc2aa4c42b55c550cbc754e9a4745bcc221f"
+      }
+    },
+    "char-samuel-gallery": {
+      "key": "char-samuel",
+      "slot": "gallery",
+      "original": "docs/cast-50/assets/char-samuel-gallery.png",
+      "publicPath": "public/images/characters/char-samuel-gallery.webp",
+      "sourceHash": "b890893f703f071a8a8df040b8cec049e5519553bc35d70a11019205b3317fd8",
+      "width": 1086,
+      "height": 1448,
+      "prompt": "Create one realistic photograph of a wholly fictional Nigerian adult aged 47. Clearly adult Nigerian man in his late forties, medium brown skin, rounded face, soft stocky build, close-cropped salt-and-pepper hair, clean-shaven, oval reading glasses and pronounced mature smile lines. Candid tending small raised herb beds at home, plum polo and tan trousers, same glasses and salt-and-pepper hair, soft afternoon light. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people.",
+      "generationPrompt": "Use case: identity-preserve. The reference locks the fictional adult face and body identity; change the scene, clothing, pose and camera position. Generate ONE vertical 3:4 candid gallery photograph. Create one realistic photograph of a wholly fictional Nigerian adult aged 47. Clearly adult Nigerian man in his late forties, medium brown skin, rounded face, soft stocky build, close-cropped salt-and-pepper hair, clean-shaven, oval reading glasses and pronounced mature smile lines. Candid tending small raised herb beds at home, plum polo and tan trousers, same glasses and salt-and-pepper hair, soft afternoon light. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people. Natural realistic photography, credible Nigerian everyday surroundings, mature natural skin texture, no beauty-filter look or generic studio glamour. Keep headroom for responsive cropping; no collage.",
+      "reference": "docs/cast-50/assets/char-samuel-portrait.png",
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection during generation",
+        "date": "2026-10-17",
+        "criteria": [
+          "Clearly adult fictional subject",
+          "Fully clothed non-explicit scene",
+          "Identity continuity between portrait and gallery",
+          "Distinct gallery outfit and composition",
+          "Usable face, anatomy and responsive framing"
+        ],
+        "reviewedSourceHash": "b890893f703f071a8a8df040b8cec049e5519553bc35d70a11019205b3317fd8"
+      }
+    },
+    "char-yomi-gallery": {
+      "key": "char-yomi",
+      "slot": "gallery",
+      "original": "docs/cast-50/assets/char-yomi-gallery.png",
+      "publicPath": "public/images/characters/char-yomi-gallery.webp",
+      "sourceHash": "94f99f218d02c0128914fb095f1846c313159a9793ecc3c266da72b7ab1a2cc5",
+      "width": 1086,
+      "height": 1448,
+      "prompt": "Create one realistic photograph of a wholly fictional Nigerian adult aged 54. Clearly adult Nigerian man in his mid-fifties, dark skin, long angular face, lean build, short silver hair, neat silver moustache and beard, visible forehead lines and crow's feet. Three-quarter candid examining a ripe chilli on a balcony plant, ivory short-sleeve shirt and olive trousers, silver hair and beard unchanged, morning light. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people.",
+      "generationPrompt": "Use case: identity-preserve. The reference locks the fictional adult face and body identity; change the scene, clothing, pose and camera position. Generate ONE vertical 3:4 candid gallery photograph. Create one realistic photograph of a wholly fictional Nigerian adult aged 54. Clearly adult Nigerian man in his mid-fifties, dark skin, long angular face, lean build, short silver hair, neat silver moustache and beard, visible forehead lines and crow's feet. Three-quarter candid examining a ripe chilli on a balcony plant, ivory short-sleeve shirt and olive trousers, silver hair and beard unchanged, morning light. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people. Natural realistic photography, credible Nigerian everyday surroundings, mature natural skin texture, no beauty-filter look or generic studio glamour. Keep headroom for responsive cropping; no collage.",
+      "reference": "docs/cast-50/assets/char-yomi-portrait.png",
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection during generation",
+        "date": "2026-10-17",
+        "criteria": [
+          "Clearly adult fictional subject",
+          "Fully clothed non-explicit scene",
+          "Identity continuity between portrait and gallery",
+          "Distinct gallery outfit and composition",
+          "Usable face, anatomy and responsive framing"
+        ],
+        "reviewedSourceHash": "94f99f218d02c0128914fb095f1846c313159a9793ecc3c266da72b7ab1a2cc5"
+      }
+    },
+    "char-kelechi-gallery": {
+      "key": "char-kelechi",
+      "slot": "gallery",
+      "original": "docs/cast-50/assets/char-kelechi-gallery.png",
+      "publicPath": "public/images/characters/char-kelechi-gallery.webp",
+      "sourceHash": "88782a34140dc477de9814196c887bf0f1835b6812fb37956e1d7e923dfe2e1e",
+      "width": 1086,
+      "height": 1448,
+      "prompt": "Create one realistic photograph of a wholly fictional Nigerian adult aged 34. Clearly adult Nigerian man in his mid-thirties, deep brown skin, broad oval face, tall medium build, short natural curls, closely trimmed beard and a small left-eyebrow notch. Wide candid standing beside a tripod facing a coastal view, slate-blue overshirt and tan trousers, same beard and eyebrow notch, cloudy early morning, no other people. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people.",
+      "generationPrompt": "Use case: identity-preserve. The reference locks the fictional adult face and body identity; change the scene, clothing, pose and camera position. Generate ONE vertical 3:4 candid gallery photograph. Create one realistic photograph of a wholly fictional Nigerian adult aged 34. Clearly adult Nigerian man in his mid-thirties, deep brown skin, broad oval face, tall medium build, short natural curls, closely trimmed beard and a small left-eyebrow notch. Wide candid standing beside a tripod facing a coastal view, slate-blue overshirt and tan trousers, same beard and eyebrow notch, cloudy early morning, no other people. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people. Natural realistic photography, credible Nigerian everyday surroundings, mature natural skin texture, no beauty-filter look or generic studio glamour. Keep headroom for responsive cropping; no collage.",
+      "reference": "docs/cast-50/assets/char-kelechi-portrait.png",
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection during generation",
+        "date": "2026-10-17",
+        "criteria": [
+          "Clearly adult fictional subject",
+          "Fully clothed non-explicit scene",
+          "Identity continuity between portrait and gallery",
+          "Distinct gallery outfit and composition",
+          "Usable face, anatomy and responsive framing"
+        ],
+        "reviewedSourceHash": "88782a34140dc477de9814196c887bf0f1835b6812fb37956e1d7e923dfe2e1e"
+      }
+    },
+    "char-segun-gallery": {
+      "key": "char-segun",
+      "slot": "gallery",
+      "original": "docs/cast-50/assets/char-segun-gallery.png",
+      "publicPath": "public/images/characters/char-segun-gallery.webp",
+      "sourceHash": "9bed81b6f063d4b38a1d22a779ba758ad7bc7c95be204ebeeaa1379cf6fbd175",
+      "width": 1086,
+      "height": 1448,
+      "prompt": "Create one realistic photograph of a wholly fictional Nigerian adult aged 40. Clearly adult Nigerian man around forty, dark brown skin, rounded square face, large broad build, shaved head, full short beard with a silver patch at the chin and mature laugh lines. Candid seated at home practising an unbranded bass guitar, charcoal tee and olive trousers, shaved head and silver beard patch unchanged, warm evening light. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people.",
+      "generationPrompt": "Use case: identity-preserve. The reference locks the fictional adult face and body identity; change the scene, clothing, pose and camera position. Generate ONE vertical 3:4 candid gallery photograph. Create one realistic photograph of a wholly fictional Nigerian adult aged 40. Clearly adult Nigerian man around forty, dark brown skin, rounded square face, large broad build, shaved head, full short beard with a silver patch at the chin and mature laugh lines. Candid seated at home practising an unbranded bass guitar, charcoal tee and olive trousers, shaved head and silver beard patch unchanged, warm evening light. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people. Natural realistic photography, credible Nigerian everyday surroundings, mature natural skin texture, no beauty-filter look or generic studio glamour. Keep headroom for responsive cropping; no collage.",
+      "reference": "docs/cast-50/assets/char-segun-portrait.png",
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection during generation",
+        "date": "2026-10-17",
+        "criteria": [
+          "Clearly adult fictional subject",
+          "Fully clothed non-explicit scene",
+          "Identity continuity between portrait and gallery",
+          "Distinct gallery outfit and composition",
+          "Usable face, anatomy and responsive framing"
+        ],
+        "reviewedSourceHash": "9bed81b6f063d4b38a1d22a779ba758ad7bc7c95be204ebeeaa1379cf6fbd175"
+      }
+    },
+    "char-usman-gallery": {
+      "key": "char-usman",
+      "slot": "gallery",
+      "original": "docs/cast-50/assets/char-usman-gallery.png",
+      "publicPath": "public/images/characters/char-usman-gallery.webp",
+      "sourceHash": "8321ab4904bb612659fe5740960fda950e2a60f078f77ea4c184f6f7c4416d2e",
+      "width": 1086,
+      "height": 1448,
+      "prompt": "Create one realistic photograph of a wholly fictional Nigerian adult aged 32. Clearly adult Nigerian man in his early thirties, rich brown skin, long narrow face, slim athletic build, short neat locs tied back, light moustache and narrow chin beard. Full-body candid beside a stationary commuter bicycle at a leafy public park, cream tee and rust overshirt, same tied-back locs, overcast late afternoon. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people.",
+      "generationPrompt": "Use case: identity-preserve. The reference locks the fictional adult face and body identity; change the scene, clothing, pose and camera position. Generate ONE vertical 3:4 candid gallery photograph. Create one realistic photograph of a wholly fictional Nigerian adult aged 32. Clearly adult Nigerian man in his early thirties, rich brown skin, long narrow face, slim athletic build, short neat locs tied back, light moustache and narrow chin beard. Full-body candid beside a stationary commuter bicycle at a leafy public park, cream tee and rust overshirt, same tied-back locs, overcast late afternoon. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people. Natural realistic photography, credible Nigerian everyday surroundings, mature natural skin texture, no beauty-filter look or generic studio glamour. Keep headroom for responsive cropping; no collage.",
+      "reference": "docs/cast-50/assets/char-usman-portrait.png",
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection during generation",
+        "date": "2026-10-17",
+        "criteria": [
+          "Clearly adult fictional subject",
+          "Fully clothed non-explicit scene",
+          "Identity continuity between portrait and gallery",
+          "Distinct gallery outfit and composition",
+          "Usable face, anatomy and responsive framing"
+        ],
+        "reviewedSourceHash": "8321ab4904bb612659fe5740960fda950e2a60f078f77ea4c184f6f7c4416d2e"
+      }
+    },
+    "char-dele-gallery": {
+      "key": "char-dele",
+      "slot": "gallery",
+      "original": "docs/cast-50/assets/char-dele-gallery.png",
+      "publicPath": "public/images/characters/char-dele-gallery.webp",
+      "sourceHash": "808b4dd82515995780d5a0e96f66cebcab29f297d2386be1cfa3142d57c42ff5",
+      "width": 1086,
+      "height": 1448,
+      "prompt": "Create one realistic photograph of a wholly fictional Nigerian adult aged 36. Clearly adult Nigerian man in his mid-thirties, deep brown skin, broad face with a cleft chin, sturdy athletic build, short natural afro, clean-shaven and visible sun-smile lines. Full-body candid on a public ocean promenade in a sage tee and charcoal shorts, same short afro and cleft chin, soft early light, no swimming or surfing action. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people.",
+      "generationPrompt": "Use case: identity-preserve. The reference locks the fictional adult face and body identity; change the scene, clothing, pose and camera position. Generate ONE vertical 3:4 candid gallery photograph. Create one realistic photograph of a wholly fictional Nigerian adult aged 36. Clearly adult Nigerian man in his mid-thirties, deep brown skin, broad face with a cleft chin, sturdy athletic build, short natural afro, clean-shaven and visible sun-smile lines. Full-body candid on a public ocean promenade in a sage tee and charcoal shorts, same short afro and cleft chin, soft early light, no swimming or surfing action. Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people. Natural realistic photography, credible Nigerian everyday surroundings, mature natural skin texture, no beauty-filter look or generic studio glamour. Keep headroom for responsive cropping; no collage.",
+      "reference": "docs/cast-50/assets/char-dele-portrait.png",
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection during generation",
+        "date": "2026-10-17",
+        "criteria": [
+          "Clearly adult fictional subject",
+          "Fully clothed non-explicit scene",
+          "Identity continuity between portrait and gallery",
+          "Distinct gallery outfit and composition",
+          "Usable face, anatomy and responsive framing"
+        ],
+        "reviewedSourceHash": "808b4dd82515995780d5a0e96f66cebcab29f297d2386be1cfa3142d57c42ff5"
+      }
+    }
+  }
+}

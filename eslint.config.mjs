@@ -10,11 +10,14 @@ const eslintConfig = defineConfig([
     // Default ignores of eslint-config-next:
     ".next/**",
     ".next-auth/**",
+    ".next-auth-stalled-*/**",
     ".next-preview/**",
     ".local-services/**",
     ".local-backups/**",
     "out/**",
     "build/**",
+    "test-results*/**",
+    "playwright-report/**",
     "next-env.d.ts",
   ]),
 ]);

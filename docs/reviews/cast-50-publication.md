@@ -1,0 +1,15 @@
+# Fifty-character frontend and photo delivery
+
+17 October 2026. The owner requested profiles and images for the full roster to appear in the frontend. All 50 biographies, conversation clues, interests and tags are compiled into the public catalogue. Existing 22 identities and their 44 photos are retained. The 28 additions have 56 original generated photos: one portrait and one lifestyle image each. Gallery generation used that character's exact portrait as the identity reference.
+
+Original PNGs are in `docs/cast-50/assets/`; browser WebPs are in `public/images/characters/`. `docs/cast-50/image-generation.json` records prompt briefs, available exact prompts, references, paths, source hashes and agent visual review. The review checked adult appearance, non-explicit presentation, identity continuity and usable composition. It does not claim founder visual approval or live voice evaluation.
+
+The public personalities page presents 12 cards initially, with search by name/city/occupation/interests/tags, gender selection, progressive loading through all 50, a result count and clearable empty state. It retains the established white/red/blush palette, portrait cards, serif conversation clues, fictional-AI disclosures and keyboard biographies. Public data is projected separately from private character directions. Development admin fixtures cover the same 50.
+
+`npm run cast:build` compiles the editorial pack. `npm run cast:frontend` builds the public DTOs and validates all 100 local WebPs by decoding them. Their `:check` equivalents detect stale output. The original 22 identity records are frozen independently, so rebuilding from the expanded public catalogue cannot duplicate the additions.
+
+Hosted publication uses `scripts/publish-cast-50.mjs`: encrypted backup first, preserve existing UUIDs, optimistic draft versions, audited commands, private owned uploads, sanitised image variants, approval/publication, resumable checkpoints and existing mutation limits. A temporary maintenance role is removed and its login disabled afterward. `docs/cast-50/publication.json` is written only after verifying 50 published profiles, 100 approved photos and all five discovery pages using an ordinary adult account. Its absence means hosted completion has not been established.
+
+Verification: production build, TypeScript and repository-wide ESLint passed. Production browser bundles were checked for private character directions and soft-spot text; none was present. All 15 offline core suites passed, including 50-profile PostgreSQL draft validation, round trips and private-direction access checks. Five discovery browser tests and all three catalogue browser tests passed. Catalogue checks cover 320/390/768/1440px widths, all 50 loaded portraits, filtering, empty-state recovery and keyboard biographies. Screenshots are in `docs/reviews/cast-50/`.
+
+Native Nigerian review and live conversation evaluation remain pending. The current provider and non-explicit runtime boundaries remain in force. This delivery does not establish public-release readiness.

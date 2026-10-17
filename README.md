@@ -1,6 +1,8 @@
 # TalkingStage
 
-A mobile-first Nigerian AI dating experience for adults, built with Next.js and TypeScript. The frontend is accepted and Stages 8–9 are complete for local backend handoff. The approved eight-character cast is published locally; Stage 10 conversation persistence is in progress, with live AI replies still unavailable.
+A mobile-first Nigerian AI companionship experience for adults, built with Next.js and TypeScript. The accepted frontend connects to Supabase Auth, Postgres and private Storage. Hosted publication of 22 characters and 44 current photos is recorded; Claude Haiku activation and a successful live reply are recorded on 15 October 2026. Stage 10 evaluation and the integration/release gates remain open.
+
+Start with [current project status](docs/project-status.md). It distinguishes current configuration, historical acceptance evidence and unfinished launch work.
 
 ## Development
 
@@ -10,11 +12,14 @@ The [design-system preview](http://localhost:3000/dev/design-system) is availabl
 
 The [administration preview](http://localhost:3000/admin/access) is also development-only in mock mode. Select the synthetic admin role to review cast, assets, reports, ledger, capability switches, analytics and audit. In Supabase mode, administrator access requires a server-provisioned role and completed adult onboarding.
 
-To connect authentication, follow [Stage 8 setup](docs/stage-8-setup.md) and configure an ignored `.env.local` from `.env.example`. Development without the Supabase mode flag retains the frontend preview. Production always requires real Supabase authentication and fails closed when configuration is missing. Cast editing, image review/publication, discovery, conversation persistence and explicit saved memories now use real local services. The [optional AI integration](docs/stage-10-ai-setup.md) is wired but disabled without keys, a selected model and approved private spending configuration. Payments and full privacy integration remain pending.
+For a new local environment, follow [Stage 8 setup](docs/stage-8-setup.md) and configure an ignored `.env.local` from `.env.example`. The existing application was switched to hosted services; see [hosted setup](docs/hosted-setup.md) before using operational commands. Development without the Supabase mode flag retains the frontend preview. Production always requires real Supabase authentication and fails closed when configuration is missing. Cast editing, image publication, discovery, conversations, explicit memories and reporting have connected implementations. Runtime AI is restricted to Anthropic Haiku and requires both server configuration and approved database budgets; see [current activation](docs/claude-haiku.md). Payments and remaining privacy/operational acceptance are pending.
 
 ## Checks
 
+- `npm run check:engineering` — Fail-fast lint, TypeScript and 14 offline core suites. Requires no service credentials, Docker or paid AI calls. Browser/build acceptance remains separate.
+- `npm run test:reply-recovery` / `test:reply-boundaries` — Recovery policy and actual server entry points with injected framework/Auth/provider failures.
 - `npm run lint` — ESLint.
+  On Windows PowerShell with script execution disabled, use `npm.cmd` for these commands.
 - `npm run backend:start` / `backend:configure` / `backend:stop` — Start, configure and stop this project's local Supabase stack; stopping preserves its database.
 - `npm run backend:limits` — Idempotently enable the pinned local Auth version's native IP limits. `backend:start` runs this automatically; use the wrapper instead of bare `supabase start`.
 - `npm run test:auth` — Real local Auth, captured-email, ownership, role, session, recovery, outage and isolated restore checks on localhost:3102. Requires Docker and removes only its own synthetic records.
@@ -37,6 +42,9 @@ To connect authentication, follow [Stage 8 setup](docs/stage-8-setup.md) and con
 ## Working documents
 
 - [Implementation roadmap](docs/implementation-plan.md)
+- [Current status and remaining gates](docs/project-status.md)
+- [Engineering hardening and verification](docs/reviews/engineering-hardening.md)
+- [Stylesheet ownership and cascade](docs/styles.md)
 - [Design system](docs/design-system.md)
 - [Stage 0 planning/contracts](docs/stage-0/README.md)
 - [Stage 1 review](docs/reviews/stage-1.md)
@@ -66,4 +74,4 @@ Use the frontend-design skill for every frontend design implementation. See `AGE
 
 ## Boundaries
 
-Supabase authentication, the database and private image Storage are connected locally; real account, ownership, role, throttling, outage, database restore, synthetic Storage restore and approved-cast publication checks passed. Eight owner-approved profiles and sixteen inspected photos are published locally. Hosted SMTP, deployed quotas/client-IP handling and production recovery objectives require separate pre-pilot verification. AI, payments and full privacy integration remain later stages. Development mock data is synthetic and disposable; mock chat uses character-specific scripted samples. Free-form mock text stays in memory and becomes a visible placeholder on refresh; only offered sample messages persist verbatim. The two self-hosted fonts and their licences are in `app/fonts/`.
+Local integration evidence covers accounts, ownership, roles, throttling, outages and restore. Later hosted records cover cast/photo publication, selected two-account/browser checks, encrypted backups to this machine and basic live Haiku integration. These records do not establish deployed-site acceptance or complete Stage 10. Hosted recovery delivery, off-site protection, alerts, enabled general-user deletion, payments, live-model evaluation and manual accessibility/device gates remain open. Development mock data is synthetic and disposable; mock chat uses character-specific scripted samples. Free-form mock text stays in memory and becomes a visible placeholder on refresh; only offered sample messages persist verbatim. The two self-hosted fonts and their licences are in `app/fonts/`.

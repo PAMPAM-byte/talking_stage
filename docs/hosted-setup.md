@@ -1,5 +1,7 @@
 # Hosted Supabase preparation
 
+Current-status note, 16 October 2026: this is the 11 October handoff record. AI-disabled/fourteen-migration descriptions below are historical. [15 October activation](./claude-haiku.md) records enabled Haiku with approved finite budgets and migration 015. See [current project status](./project-status.md) for remaining gates. The operational hosted-test environment remains separately AI-disabled.
+
 11 October 2026. Project reference: `hoxeembcwureucdsssct`.
 
 The owner saved the hosted server credential directly in ignored `.env.hosted.local` and authenticated the Supabase CLI. CLI 2.120.0 is linked to this project. The hosted preparation file is not automatically loaded by Next.js; the working .env.local now uses the hosted credentials after the core browser check passed. The previous complete Docker configuration is preserved in ignored .env.docker.local. Credentials and account records were not printed.

@@ -1,0 +1,67 @@
+/* Shared TalkingStage tokens. Latest approved identity; see docs/design-system.md. */
+:root {
+  color-scheme: light;
+  --canvas: #ffffff;
+  --surface: #ffffff;
+  --ink: #242126;
+  --text-secondary: #6c666e;
+  --brand: #cf2445;
+  --brand-soft: #fff1f3;
+  --brand-hover: #b91c3a;
+  --brand-pressed: #9c1630;
+  --focus: #b91c3a;
+  --disabled-text: #6c666e;
+  --border: #ece7e9;
+  --border-control: #9b8d92;
+  --success: #267052;
+  --success-soft: #eaf5ee;
+  --warning: #835b19;
+  --warning-soft: #fff6e6;
+  --danger: #a63a50;
+  --danger-soft: #fceff2;
+  --disabled-surface: #f2eff0;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --radius-control: 12px;
+  --radius-card: 24px;
+  --radius-message: 18px;
+  --radius-sheet: 24px;
+  --radius-pill: 999px;
+  --shadow-floating: 0 12px 40px rgb(94 22 40 / 10%);
+  --motion-fast: 120ms;
+  --motion-message: 160ms;
+  --motion-overlay: 200ms;
+  --type-hero: 40px;
+  --type-hero-leading: 44px;
+  --type-page: 30px;
+  --type-page-leading: 36px;
+  --type-profile: 32px;
+  --type-profile-leading: 38px;
+  --type-section: 20px;
+  --type-section-leading: 28px;
+  --type-card: 20px;
+  --type-card-leading: 26px;
+  --type-body: 16px;
+  --type-body-leading: 24px;
+  --type-control: 15px;
+  --type-control-leading: 20px;
+  --type-supporting: 14px;
+  --type-supporting-leading: 20px;
+  --type-caption: 12px;
+  --type-caption-leading: 16px;
+  --lavender: #ffe2e8;
+  --lime: #fff1f3;
+}
+
+@media (min-width: 900px) {
+  :root { --type-hero: 64px; --type-hero-leading: 68px; --type-page: 40px; --type-page-leading: 46px; --type-profile: 40px; --type-profile-leading: 46px; --type-section: 24px; --type-section-leading: 32px; }
+}

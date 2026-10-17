@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { readFile, writeFile, mkdir, unlink, readdir, lstat, realpath } from 'node:fs/promises';
+import { readFile, writeFile, mkdir, unlink, readdir, lstat, realpath, copyFile } from 'node:fs/promises';
 import { resolve, join, sep } from 'node:path';
 import { parseEnv } from 'node:util';
 import { fileURLToPath } from 'node:url';
@@ -21,6 +21,14 @@ const stage = resolve('.local-services/hosted-backup-stage');
 await mkdir(stage, { recursive: true });
 assert(!(await lstat(stage)).isSymbolicLink());
 assert.equal((await realpath(stage)).toLowerCase(), stage.toLowerCase());
+// The current CLI parses the app's .env.local differently from Node/Next.
+// Keep its linked-project context isolated without changing app credentials.
+const cliRoot = join(stage, 'cli');
+await mkdir(join(cliRoot, 'supabase', '.temp'), { recursive: true });
+await copyFile('supabase/config.toml', join(cliRoot, 'supabase', 'config.toml'));
+await mkdir(join(cliRoot, 'supabase', 'templates'), { recursive: true });
+for (const name of ['confirmation.html', 'recovery.html']) await copyFile(`supabase/templates/${name}`, join(cliRoot, 'supabase', 'templates', name));
+for (const name of ['project-ref', 'pooler-url']) await copyFile(`supabase/.temp/${name}`, join(cliRoot, 'supabase', '.temp', name));
 async function encryptionKey(create = false) {
   try { const key = await readFile(keyPath); assert.equal(key.length, 32); return key; }
   catch (error) {
@@ -59,8 +67,12 @@ export async function syncLedger() {
   return store.syncLedger(() => http('/rest/v1/rpc/erasure_manifest', { method: 'POST', body: {} }));
 }
 function cli(args) {
-  try { return execFileSync(process.execPath, ['node_modules/supabase/dist/supabase.js', ...args], { encoding: 'utf8', stdio: ['pipe', 'pipe', 'pipe'], windowsHide: true, timeout: 180000, maxBuffer: 8 * 1024 * 1024 }); }
-  catch { throw new Error('Hosted database export failed; raw connection diagnostics remain suppressed.'); }
+  try { return execFileSync(process.execPath, ['node_modules/supabase/dist/supabase.js', ...args, '--workdir', cliRoot], { encoding: 'utf8', stdio: ['pipe', 'pipe', 'pipe'], windowsHide: true, timeout: 180000, maxBuffer: 8 * 1024 * 1024 }); }
+  catch (error) {
+    const diagnostic = String(error.stderr ?? '');
+    const code = /docker|daemon|pipe/i.test(diagnostic) ? 'DOCKER_UNAVAILABLE' : /password|authentication/i.test(diagnostic) ? 'CLI_AUTHENTICATION' : /connect|network|resolve|timeout/i.test(diagnostic) ? 'CLI_CONNECTION' : 'CLI_EXPORT';
+    throw Object.assign(new Error('Hosted database export failed; raw connection diagnostics remain suppressed.'), { code });
+  }
 }
 export async function query(sql) {
   const path = join(stage, `${randomUUID()}.sql`);
@@ -82,7 +94,7 @@ async function dumpThroughPooler() {
   // IPv4 session pooler rather than the direct IPv6 endpoint on this computer.
   const plan = cli(['db', 'dump', '--linked', '--schema', 'auth,public,private', '--dry-run']);
   const password = /^export PGPASSWORD="([A-Za-z0-9_-]{20,})"/m.exec(plan)?.[1];
-  assert(password, 'Unable to obtain the temporary export credential privately.');
+  if (!password) throw Object.assign(new Error('Unable to obtain the temporary export credential privately.'), { code: 'TEMPORARY_EXPORT_CREDENTIAL' });
   const args = ['--host', pooler.hostname, '--port', '5432', '--username', `cli_login_postgres.${project}`, '--dbname', 'postgres', '--role', 'postgres', '--schema', 'auth', '--schema', 'public', '--schema', 'private'];
   const containerCertificate = `/tmp/hosted-backup-ca-${randomUUID()}.crt`;
   docker(['sh', '-c', 'umask 077; cat > "$1"', 'hosted-backup', containerCertificate], certificate);
@@ -92,7 +104,7 @@ async function dumpThroughPooler() {
     } catch (error) {
       const diagnostic = String(error.stderr ?? '');
       const reason = /certificate/i.test(diagnostic) ? 'TLS certificate validation' : /permission|role/i.test(diagnostic) ? 'database export access' : /connect|network|resolve/i.test(diagnostic) ? 'pooler connection' : 'database export';
-      throw new Error(`Hosted ${reason} failed; credentials and records were not logged.`);
+      throw Object.assign(new Error(`Hosted ${reason} failed; credentials and records were not logged.`), { code: `EXPORT_${reason.toUpperCase().replaceAll(' ', '_')}` });
     }
   }
   try { return { schemaSql: dump(['--schema-only']), dataSql: dump(['--data-only', '--exclude-table', 'auth.schema_migrations']) }; }
@@ -120,7 +132,7 @@ function checkBundle(bundle) {
 }
 function docker(args, input) {
   try { return execFileSync('docker', ['exec', ...(input ? ['-i'] : []), 'supabase_db_talking_stage', ...args], { input, windowsHide: true, stdio: ['pipe', 'pipe', 'pipe'], maxBuffer: 256 * 1024 * 1024, timeout: 120000 }); }
-  catch { throw new Error('Isolated hosted restore database operation failed; live hosted services were not modified.'); }
+  catch { throw Object.assign(new Error('Isolated hosted restore database operation failed; live hosted services were not modified.'), { code: 'DOCKER_DATABASE_OPERATION' }); }
 }
 function copyCount(sql, schema, table) {
   const header = new RegExp(`^COPY "?${schema}"?\\."?${table}"? \\([^\\n]+\\) FROM stdin;\\r?$`, 'm').exec(sql);
@@ -185,33 +197,37 @@ async function restorePhotos(bundle) {
     check(await client.storage.deleteBucket(bucket));
   }
 }
+let backupPhase = 'initialisation';
 export async function create() {
+  backupPhase = 'acquire-lock';
   const lock = join(store.state, 'create.lock'); await writeFile(lock, 'locked', { flag: 'wx', mode: 0o600 });
   const files = [];
   try {
-    await syncLedger(); const before = await inventory();
+    backupPhase = 'privacy-ledger'; await syncLedger();
+    backupPhase = 'inventory'; const before = await inventory();
     assert(before.bucket && !before.bucket.public && before.bucket.fileSizeLimit === 5242880);
     const migrations = (await readdir('supabase/migrations')).filter(file => file.endsWith('.sql')).sort();
     const version = before.migrations.at(-1), schemaVersion = migrations.find(file => file.startsWith(`${version}_`)); assert(schemaVersion, 'Unknown migration version.');
-    const { schemaSql, dataSql } = await dumpThroughPooler();
+    backupPhase = 'database-export'; const { schemaSql, dataSql } = await dumpThroughPooler();
     console.log('Hosted database exported over verified TLS; downloading registered private photos.');
-    const objects = [];
+    backupPhase = 'photo-download'; const objects = [];
     for (const asset of before.assets) {
       assert.equal(asset.storage_path, `${asset.character_id}/${asset.id}/original.webp`);
-      for (const width of ['original', '320', '640', '1280']) {
+      const downloaded = await Promise.all(['original', '320', '640', '1280'].map(async width => {
         const path = asset.storage_path.replace('original.webp', `${width}.webp`), bytes = await http(`/storage/v1/object/authenticated/cast-private/${path}`);
         assert(bytes.length > 0 && bytes.length <= 5242880);
         if (width === 'original') assert.equal(sha(bytes), asset.source_hash, 'Photo differs from its registered immutable hash.');
-        objects.push({ path, size: bytes.length, sha256: sha(bytes), bytes: bytes.toString('base64') });
-        if (objects.length % 32 === 0) console.log(`Verified ${objects.length} photo objects so far.`);
-      }
+        return { path, size: bytes.length, sha256: sha(bytes), bytes: bytes.toString('base64') };
+      }));
+      objects.push(...downloaded);
+      if (objects.length % 32 === 0) console.log(`Verified ${objects.length} photo objects so far.`);
     }
-    assert.deepEqual(await inventory(), before, 'Cast or schema changed during export; retry after administrator writes stop.');
+    backupPhase = 'consistency-check'; assert.deepEqual(await inventory(), before, 'Cast or schema changed during export; retry after administrator writes stop.');
     await syncLedger();
     const bundle = { version: 1, project, createdAt: new Date().toISOString(), inventory: before, schemaSql, dataSql, objects };
     checkBundle(bundle);
-    const encrypted = encryptBundle(bundle, await encryptionKey(true), project);
-    const body = await store.save(encrypted, schemaVersion, { format: 'aes-gcm-json-gzip-v1' });
+    backupPhase = 'encryption'; const encrypted = encryptBundle(bundle, await encryptionKey(true), project);
+    backupPhase = 'save-and-verify'; const body = await store.save(encrypted, schemaVersion, { format: 'aes-gcm-json-gzip-v1' });
     const saved = await store.load(body.id); checkBundle(decryptBundle(saved.bytes, await encryptionKey(), project));
     await store.configure(7); await store.expire();
     console.log(`Encrypted hosted backup verified: ${body.id}; ${objects.length} photo objects. Seven-day local-copy retention enabled.`);
@@ -236,8 +252,10 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
     else if (operation === 'expire') { const result = await store.expire({ dryRun: process.argv.includes('--dry-run') }); console.log(`Hosted local-copy retention: ${result.count} expired managed backup(s).`); }
     else if (operation === 'restore-check') await restoreCheck(process.argv[3]);
     else throw new Error('Use create, verify UUID, restore-check UUID, sync or expire [--dry-run].');
-  } catch {
+  } catch (error) {
     console.error('Hosted backup operation failed. Check certificate, CLI login, Docker and signed backup integrity. No new successful operation is claimed; sensitive diagnostics suppressed.');
+    const code = typeof error.code === 'string' && /^[A-Z_0-9]+$/.test(error.code) ? error.code : 'UNCLASSIFIED';
+    console.error(`Failure phase: ${backupPhase}; code: ${code}.`);
     process.exitCode = 1;
   }
 }
