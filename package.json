@@ -70,7 +70,10 @@
     "test:core": "node scripts/test-core.mjs",
     "check:engineering": "npm run lint && npm run typecheck && npm run test:core",
     "cast:frontend": "node scripts/build-cast-frontend.mjs",
-    "cast:frontend:check": "node scripts/build-cast-frontend.mjs --check"
+    "cast:frontend:check": "node scripts/build-cast-frontend.mjs --check",
+    "cast:hosted:check": "node scripts/publish-cast-50.mjs --check",
+    "cast:hosted:publish": "node scripts/publish-cast-50.mjs --publish",
+    "test:cast-hosted": "playwright test --config playwright.hosted.config.ts tests-hosted/cast-50.spec.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",

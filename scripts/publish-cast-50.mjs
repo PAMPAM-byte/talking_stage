@@ -61,6 +61,19 @@ if (!state) {
     await save();
 }
 assert.equal(state.target, target); assert.equal(state.version, 1);
+async function cleanupMaintenance() {
+    if (!state.maintenanceActors.length) return;
+    for (const id of state.maintenanceActors) uuid(id);
+    const actors = state.maintenanceActors.map(id => `'${id}'`).join(',');
+    const sql = `begin;delete from private.user_roles where user_id in (${actors});update auth.users set banned_until=now()+interval '100 years' where id in (${actors}) and email like 'cast50-publisher-%@example.test';commit;select count(*) as n from private.user_roles where user_id in (${actors});`;
+    // This exact cleanup is idempotent and may safely recover a lost response.
+    for (let attempt = 0; ; attempt++) {
+        try { const rows = await trustedSql(sql); assert.equal(Number(rows[0].n), 0); break; }
+        catch (error) { if (attempt === 2) throw error; await new Promise(resolve => setTimeout(resolve, 5000)); }
+    }
+    console.log('Recorded maintenance administrator roles removed and logins disabled.');
+}
+if (process.argv.includes('--cleanup')) { await cleanupMaintenance(); process.exit(0); }
 if (process.argv.includes('--snapshot')) {
     console.log('Read-only baseline saved for the 22 existing hosted IDs, private drafts and current photo ownership. No hosted writes.');
     process.exit(0);
@@ -93,6 +106,7 @@ if (!state.backupCompletedAt) {
     execFileSync(process.execPath, ['scripts/hosted-backups.mjs', 'create'], { windowsHide: true, stdio: 'inherit', timeout: 1800000 });
     state.backupCompletedAt = new Date().toISOString(); await save();
 }
+await cleanupMaintenance();
 const options = { auth: { persistSession: false, autoRefreshToken: false } };
 const service = createClient(target, env.SUPABASE_SERVICE_ROLE_KEY, options);
 const admin = createClient(target, env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY, options);
@@ -102,7 +116,9 @@ function checked(result, label) {
         const safeReason = ['conflict', 'conflict_or_uninspected', 'conflict_or_unapproved', 'invalid_cast', 'review_required', 'approved_assets_required', 'rate_limited', 'character_not_found', 'invalid_change'].includes(reason) ? reason : 'transport_or_access';
         const status = Number.isInteger(result.error?.status) ? result.error.status : 'unknown';
         const authCode = ['unexpected_failure', 'over_email_send_rate_limit', 'over_request_rate_limit', 'user_already_exists', 'email_exists'].includes(result.error?.code) ? result.error.code : 'unspecified';
-        throw new Error(`${label} failed (${safeReason}; HTTP ${status}; ${authCode}); inspect the private audit/state. No automatic mutation retry.`);
+        const message = `${label} failed (${safeReason}; HTTP ${status}; ${authCode}); inspect the private audit/state. No automatic mutation retry.`;
+        console.error(message);
+        throw new Error(message);
     }
     return result.data;
 }
@@ -202,9 +218,6 @@ try {
     console.log('Hosted verification complete: 50 profiles, 100 approved photos; all five discovery pages visible to an ordinary adult.');
 } finally {
     if (actor) {
-        uuid(actor);
-        const rows = await trustedSql(`begin;delete from private.user_roles where user_id='${actor}';update auth.users set banned_until=now()+interval '100 years' where id='${actor}' and email like 'cast50-publisher-%@example.test';commit;select count(*) as n from private.user_roles where user_id='${actor}';`);
-        assert.equal(Number(rows[0].n), 0);
-        console.log('Maintenance administrator role removed and login disabled.');
+        await cleanupMaintenance();
     }
 }

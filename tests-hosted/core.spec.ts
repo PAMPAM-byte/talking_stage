@@ -17,7 +17,7 @@ async function api<T>(path: string, body?: object, token?: string, service = fal
   return await response.json().catch(() => null) as T;
 }
 
-test('hosted registration, gender discovery, 44 photos, chat persistence, isolation and settings', async ({ page, browser }) => {
+test('hosted registration, gender discovery, 100 photos, chat persistence, isolation and settings', async ({ page, browser }) => {
   const run = randomUUID(), email = `hosted-browser-${run}@example.test`, secondEmail = `hosted-other-${run}@example.test`;
   const password = `Ts!${randomUUID()}Aa9`;
   const actors = new Set<string>();
@@ -45,7 +45,7 @@ test('hosted registration, gender discovery, 44 photos, chat persistence, isolat
       await page.getByRole('navigation', { name: 'Character gender' }).getByRole('link', { name: label, exact: true }).click();
       const data = await api<Discovery>('/rest/v1/rpc/discover_cast', { p_page: 1, p_gender: gender }, session.access_token);
       if (gender) expect(data.characters.every(character => character.gender === gender)).toBe(true);
-      else expect(data.total).toBe(22);
+      else expect(data.total).toBe(50);
       await expect(page.locator('.discovery-deck')).toHaveAttribute('data-selection-size', String(data.characters.length));
       for (const character of data.characters) {
         await expect(page.locator('.character-card')).toHaveCount(1);
@@ -55,7 +55,7 @@ test('hosted registration, gender discovery, 44 photos, chat persistence, isolat
     }
     const state = JSON.parse(readFileSync('.local-services/hosted-cast/state.json', 'utf8'));
     const assets = await api<Asset[]>('/rest/v1/character_assets?select=id,character_id,slot,storage_path', undefined, session.access_token, false, 'GET');
-    expect(assets).toHaveLength(44);
+    expect(assets).toHaveLength(100);
     for (const asset of assets) {
       const response = await page.request.get(`/api/cast-assets/${asset.id}?w=320`);
       expect(response.status()).toBe(200);
@@ -71,11 +71,14 @@ test('hosted registration, gender discovery, 44 photos, chat persistence, isolat
     } finally { await anonymous.close(); }
     await page.goto('/discover?gender=woman');
     await page.getByRole('button', { name: 'Browse again', exact: true }).click();
+    for (let passed = 0; passed < 12 && !await page.getByRole('heading', { name: 'Amara, 28', exact: true }).count(); passed++) await page.getByRole('button', { name: /^Pass / }).click();
     await expect(page.getByRole('heading', { name: 'Amara, 28', exact: true })).toBeVisible();
     await page.getByRole('link', { name: 'View profile', exact: true }).click();
     await expect(page).toHaveURL(new RegExp(`/characters/${state.characters['char-amara'].id}\\?gender=woman$`));
-    const photos = page.locator('.profile-photo-open'); await expect(photos).toHaveCount(2);
-    for (const photo of await photos.all()) {
+    await expect(page.locator('.gallery-thumbnails button')).toHaveCount(2);
+    for (const number of [1, 2]) {
+      await page.getByRole('button', { name: `Show photo ${number} of Amara`, exact: true }).click();
+      const photo = page.locator('.profile-photo-open');
       await expect.poll(() => photo.locator('img').evaluate(image => (image as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);
       await photo.press('Enter'); await expect(page.getByRole('dialog')).toBeVisible();
       await page.keyboard.press('Escape'); await expect(photo).toBeFocused();
