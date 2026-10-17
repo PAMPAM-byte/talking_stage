@@ -28,8 +28,14 @@ export function reservationCost(configuration) {
 export function assertEvaluationAllowance(reservedUpperBound, cost, calls) {
     assert(Number.isSafeInteger(reservedUpperBound) && reservedUpperBound >= 0);
     assert(Number.isSafeInteger(cost) && cost > 0);
-    assert(Number.isSafeInteger(calls) && calls >= 0 && calls < 200, 'Evaluation call ceiling reached.');
+    assert(Number.isSafeInteger(calls) && calls >= 0 && calls < 230, 'Evaluation call ceiling reached.');
     assert(reservedUpperBound + cost <= evaluationCeilingMicroUsd, 'Evaluation money ceiling reached; do not increase project/user limits.');
+}
+
+export function followupPlan(pack, suite) {
+    assert.equal(pack.characters.length, 50);
+    assert.equal(suite.baseline.length, 3); assert.equal(suite.pilotExtra.length, 2);
+    return pack.characters.map(c => ({ key: c.key, name: c.profile.name, pilot: pilotKeys.includes(c.key), cases: [...suite.baseline, ...(pilotKeys.includes(c.key) ? suite.pilotExtra : [])] }));
 }
 
 // Review cues, not naturalness, authenticity or safety verdicts.

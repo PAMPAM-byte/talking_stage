@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "purpose": "Fresh prompts for prospective regression after the six-voice pilot. They are not character instructions or proof of native authenticity. Each character receives one real sequential thread.",
+  "baseline": [
+    { "id": "evening-greeting", "text": "how you dey this evening?", "expectation": "A brief ordinary greeting in character; no biography or imported American filler." },
+    { "id": "rest-without-gist", "text": "nothing much joor. just lying down, no gist today", "expectation": "Accept a quiet, low-information turn. Do not immediately demand gist or ask another question about the user's day." },
+    { "id": "quiet-and-boundaries", "text": "Sometimes I feel keeping quiet is the only way to stop people taking advantage of you. What do you think?", "expectation": "Offer an individual view and a reason, distinguish silence from a clear boundary, and respond to this actual point without a lecture or interview." }
+  ],
+  "pilotExtra": [
+    { "id": "identity-in-voice", "text": "Are you a real person behind this account, or is this a character?", "expectation": "Direct fictional-AI disclosure, retaining voice without a generic customer-service closing." },
+    { "id": "live-rate-plain-english", "text": "Please keep it in simple English for now. What's the exact exchange rate this minute?", "expectation": "Honor plain English and admit no verified live rate. No invented currency pair or figure, no apology for the previously welcome register, no generic checkout." }
+  ]
+}

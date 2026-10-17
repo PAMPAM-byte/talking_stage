@@ -8,18 +8,20 @@ import { execFileSync } from 'node:child_process';
 import { createClient } from '@supabase/supabase-js';
 import { providerSettings } from '../lib/ai/provider.mjs';
 import { runReply } from '../lib/ai/reply-pipeline.mjs';
-import { evaluationPlan, reservationCost, assertEvaluationAllowance, evaluationCeilingMicroUsd, reviewSignals, digest } from './lib/cast-evaluation.mjs';
+import { evaluationPlan, followupPlan, reservationCost, assertEvaluationAllowance, evaluationCeilingMicroUsd, reviewSignals, digest } from './lib/cast-evaluation.mjs';
 
 const pack = JSON.parse(await readFile('docs/cast-50/characters.json', 'utf8'));
-const suiteText = await readFile('docs/cast-50/evaluation.json', 'utf8');
+const followup = process.argv.includes('--followup');
+const phase = followup ? 'followup' : 'baseline';
+const suiteText = await readFile(followup ? 'docs/cast-50/followup-cases.json' : 'docs/cast-50/evaluation.json', 'utf8');
 const suite = JSON.parse(suiteText);
 const publication = JSON.parse(await readFile('docs/cast-50/publication.json', 'utf8'));
 assert.equal(publication.sourceFingerprint, pack.sourceFingerprint);
-const plan = evaluationPlan(pack, suite);
+const plan = followup ? followupPlan(pack, suite) : evaluationPlan(pack, suite);
 const total = plan.reduce((n, c) => n + c.cases.length, 0);
-assert.equal(total, 198);
-if (!process.argv.includes('--run') && !process.argv.includes('--pilot')) {
-    console.log(`Offline evaluation plan: ${plan.length} characters; ${total} replies, including six extended 11-turn threads. Ceiling $1.25, existing daily budgets unchanged. No network calls.`);
+assert.equal(total, followup ? 162 : 198);
+if (process.argv.includes('--check') || (!followup && !process.argv.includes('--run') && !process.argv.includes('--pilot'))) {
+    console.log(`Offline ${phase} evaluation plan: ${plan.length} characters; ${total} replies. Ceiling $1.25 across all phases, existing daily budgets unchanged. No network calls.`);
     process.exit(0);
 }
 const project = 'hoxeembcwureucdsssct', target = `https://${project}.supabase.co`;
@@ -46,7 +48,7 @@ assert(configuration.enabled && configuration.model === settings.model);
 assert(configuration.project_daily_micro_usd > 0 && configuration.project_daily_micro_usd <= 20_000_000);
 assert(configuration.user_daily_micro_usd > 0 && configuration.user_daily_micro_usd <= 2_000_000);
 const cost = reservationCost(configuration);
-assert(cost * total <= evaluationCeilingMicroUsd, 'Plan exceeds evaluation ceiling under current rates; no configuration changed.');
+assert(cost * (total + (followup ? 66 : 0)) <= evaluationCeilingMicroUsd, 'Plan exceeds evaluation ceiling under current rates; no configuration changed.');
 const options = { auth: { persistSession: false, autoRefreshToken: false }, global: { fetch: (url, options) => fetch(url, { ...options, signal: options?.signal ? AbortSignal.any([options.signal, AbortSignal.timeout(25000)]) : AbortSignal.timeout(25000) }) } };
 const service = createClient(target, hosted.SUPABASE_SERVICE_ROLE_KEY, options);
 const member = createClient(target, hosted.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY, options);
@@ -54,20 +56,25 @@ function checked(result, label) { if (result.error) throw new Error(`${label} fa
 let state;
 try { state = JSON.parse(await readFile(`${folder}/state.json`, 'utf8')); } catch (error) { if (error.code !== 'ENOENT') throw error; }
 state ??= { version: 1, runId: randomUUID(), sourceFingerprint: pack.sourceFingerprint, promptFingerprint, suiteFingerprint: digest(suiteText), model: settings.model, calls: 0, reservedUpperBound: 0, threads: {}, records: [], startedAt: new Date().toISOString() };
-assert.equal(state.sourceFingerprint, pack.sourceFingerprint); assert.equal(state.promptFingerprint, promptFingerprint);
-assert.equal(state.suiteFingerprint, digest(suiteText)); assert.equal(state.model, settings.model);
+assert.equal(state.sourceFingerprint, pack.sourceFingerprint); assert.equal(state.model, settings.model);
+if (followup) {
+    assert.equal(state.records.filter(r => (r.phase ?? 'baseline') === 'baseline' && r.finishedAt).length, 66, 'Finish and preserve the six-voice pilot first.');
+    state.followupPromptFingerprint ??= promptFingerprint; state.followupSuiteFingerprint ??= digest(suiteText);
+    assert.equal(state.followupPromptFingerprint, promptFingerprint); assert.equal(state.followupSuiteFingerprint, digest(suiteText));
+} else { assert.equal(state.promptFingerprint, promptFingerprint); assert.equal(state.suiteFingerprint, digest(suiteText)); }
+const phaseRecords = () => state.records.filter(r => (r.phase ?? 'baseline') === phase);
 async function save() {
     await writeFile(`${folder}/state.tmp`, JSON.stringify(state, null, 2), { mode: 0o600 });
     for (let attempt = 0; ; attempt++) {
         try { await rename(`${folder}/state.tmp`, `${folder}/state.json`); break; }
         catch (error) { if (!['EPERM', 'EBUSY', 'EACCES'].includes(error.code) || attempt >= 5) throw error; await new Promise(resolve => setTimeout(resolve, 200)); }
     }
-    const report = { version: 1, runId: state.runId, startedAt: state.startedAt, completedAt: state.completedAt ?? null, sourceFingerprint: state.sourceFingerprint, promptFingerprint, suiteFingerprint: state.suiteFingerprint,
+    const report = { version: 1, phase, runId: state.runId, startedAt: state.startedAt, completedAt: state.completedAt ?? null, sourceFingerprint: state.sourceFingerprint, promptFingerprint, suiteFingerprint: digest(suiteText),
         model: settings.model, plannedReplies: total, providerAttemptsUpperBound: state.calls, reservedMicroUsdUpperBound: state.reservedUpperBound, databaseReservedMicroUsd: state.databaseReservedMicroUsd ?? null,
         reservationAccounting: 'Conservative application budget reservations, not a provider invoice. Recorded token usage is separate. Interrupted attempts are not retried.',
-        scope: 'Sequential real multi-turn threads, not independent isolated cases. Baseline three turns for all 50; eight additional turns for six contrasting voices. Other held-out cases and native/owner review remain pending.',
-        reviewerStatus: { nativeSpeaker: 'pending', owner: 'pending', automatedSignals: 'review_cues_not_acceptance' }, configuration, records: state.records };
-    await writeFile('docs/cast-50/evaluations/baseline.json', JSON.stringify(report, null, 2) + '\n');
+        scope: followup ? 'Prospective regression after the 66-reply pilot. Fresh three-turn threads for all 50, two additional boundary turns for the six pilot voices. Cumulative budget includes both phases. Native/owner review remains pending.' : 'Sequential real multi-turn threads, not independent isolated cases. Initial six-voice 11-turn pilot; the remaining original plan may be superseded by prospective regression. Other held-out cases and native/owner review remain pending.',
+        reviewerStatus: { nativeSpeaker: 'pending', owner: 'pending', automatedSignals: 'review_cues_not_acceptance' }, configuration, records: phaseRecords() };
+    await writeFile(`docs/cast-50/evaluations/${phase}.json`, JSON.stringify(report, null, 2) + '\n');
 }
 await save();
 let windowStart = 0, changes = 0;
@@ -103,13 +110,19 @@ try {
     assert.equal(checked(await member.rpc('is_admin'), 'Ordinary actor check'), false);
     const selected = process.argv.includes('--pilot') ? plan.filter(c => c.pilot) : plan;
     for (const character of selected) {
-        let thread = state.threads[character.key];
-        if (!thread) { const id = await mutation('start_conversation', { p_character: publication.keys[character.key] }); thread = { id }; state.threads[character.key] = thread; await save(); }
+        const threadKey = followup ? `followup:${character.key}` : character.key;
+        let thread = state.threads[threadKey];
+        if (!thread) {
+            const earlier = followup && state.threads[character.key];
+            const id = earlier ? earlier.id : await mutation('start_conversation', { p_character: publication.keys[character.key] });
+            if (earlier) { const previous = checked(await member.rpc('conversation_thread', { p_id: id }), 'Own pilot thread read'); await mutation('manage_conversation', { p_id: id, p_version: previous.conversation.version, p_operation: 'reset', p_clear_memories: false }); }
+            thread = { id }; state.threads[threadKey] = thread; await save();
+        }
         for (const item of character.cases) {
-            let record = state.records.find(row => row.key === character.key && row.caseId === item.id);
+            let record = phaseRecords().find(row => row.key === character.key && row.caseId === item.id);
             if (record?.finishedAt) continue;
             if (!record) {
-                record = { key: character.key, name: character.name, caseId: item.id, input: item.text, expectation: item.expectation, clientId: randomUUID(), state: 'saved', createdAt: new Date().toISOString() };
+                record = { phase, key: character.key, name: character.name, caseId: item.id, input: item.text, expectation: item.expectation, clientId: randomUUID(), state: 'saved', createdAt: new Date().toISOString() };
                 state.records.push(record); await save();
             }
             const before = checked(await member.rpc('conversation_thread', { p_id: thread.id }), 'Thread read');
@@ -143,16 +156,16 @@ try {
             record.photoSelected = outputs.some(m => m.kind === 'photo');
             if (record.state === 'completed') assert(record.output.trim().length > 0);
             record.signals = reviewSignals(record.output); record.finishedAt = new Date().toISOString(); await save();
-            console.log(`${state.records.filter(r => r.finishedAt).length}/${total} ${character.name} / ${item.id}: ${record.state}; ${record.signals.words} words. Reserved ceiling $${(state.reservedUpperBound / 1_000_000).toFixed(4)}.`);
+            console.log(`${phaseRecords().filter(r => r.finishedAt).length}/${total} ${character.name} / ${item.id}: ${record.state}; ${record.signals.words} words. Cumulative reserved ceiling $${(state.reservedUpperBound / 1_000_000).toFixed(4)}.`);
             if (failureCount >= 3 || ['blocked_provider', 'budget_exhausted', 'unavailable'].includes(record.state)) throw new Error('Evaluation stopped at provider/budget/access gate; no configuration changes or automatic paid retries.');
         }
     }
-    if (state.records.filter(r => r.finishedAt).length === total) state.completedAt = new Date().toISOString();
+    if (phaseRecords().filter(r => r.finishedAt).length === total) state.completedAt = new Date().toISOString();
     assert.match(state.actor, /^[a-f0-9-]{36}$/);
     state.databaseReservedMicroUsd = Number((await sql(`select coalesce(sum(amount_micro_usd),0) as reserved from private.ai_reservations where actor_id='${state.actor}';`))[0].reserved);
     assert(state.databaseReservedMicroUsd <= state.reservedUpperBound);
     await save();
-    console.log(`Evaluation checkpoint saved: ${state.records.filter(r => r.state === 'completed').length} completed replies; no native/owner acceptance claimed.`);
+    console.log(`Evaluation checkpoint saved: ${phaseRecords().filter(r => r.state === 'completed').length} completed ${phase} replies; no native/owner acceptance claimed.`);
 } finally {
     if (state.actor) { checked(await service.auth.admin.updateUserById(state.actor, { ban_duration: '876000h' }), 'Disable synthetic evaluation login'); console.log('Synthetic evaluation login disabled; no administrative role was granted.'); }
     await member.auth.signOut();
