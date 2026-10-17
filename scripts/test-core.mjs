@@ -8,6 +8,7 @@ const checks = [
   ['--experimental-vm-modules', 'test-reply-boundaries.mjs'],
   ['test-ai-provider.mjs'],
   ['test-cast-roster.mjs'],
+  ['test-cast-evaluation.mjs'],
   ['test-anthropic-provider.mjs'],
   ['test-dependency-fetch.mjs'],
   ['test-monitoring.mjs'],

@@ -1,0 +1,18 @@
+import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
+import { evaluationPlan, reservationCost, assertEvaluationAllowance, reviewSignals } from './lib/cast-evaluation.mjs';
+const pack = JSON.parse(await readFile('docs/cast-50/characters.json', 'utf8'));
+const suite = JSON.parse(await readFile('docs/cast-50/evaluation.json', 'utf8'));
+const plan = evaluationPlan(pack, suite);
+assert.equal(plan.length, 50); assert.equal(new Set(plan.map(c => c.key)).size, 50);
+assert.equal(plan.filter(c => c.pilot && c.cases.length === 11).length, 6);
+assert.equal(plan.reduce((n, c) => n + c.cases.length, 0), 198);
+const cost = reservationCost({ max_input_tokens: 48000, max_output_tokens: 1024, input_micro_usd_per_million: 100000, output_micro_usd_per_million: 500000 });
+assert.equal(cost, 5312); assertEvaluationAllowance(197 * cost, cost, 197);
+for (const args of [[1_249_999, cost, 1], [0, cost, 200], [-1, cost, 1], [0, -1, 1]]) assert.throws(() => assertEvaluationAllowance(...args));
+assert.throws(() => reservationCost({}));
+assert.equal(reviewSignals('As an AI, I understand.').stockAssistantOpening, true);
+assert.equal(reviewSignals('I just dey here.').stockAssistantOpening, false);
+assert.equal(reviewSignals('Fine? Why?').questions, 2);
+assert.equal(reviewSignals('Fine.').requiresHumanReview, true);
+console.log('Evaluation checks passed: exact 50/198 coverage, six extended threads, conservative reservations, independent money/call ceilings and non-verdict review signals. No network calls.');

@@ -42,12 +42,15 @@ test('published fifty-character cast renders profiles and all private photos wit
     for (const [key, name] of [['char-bisola', 'Bisola'], ['char-farouk', 'Farouk'], ['char-dele', 'Dele']]) {
       await page.goto(`/characters/${receipt.keys[key]}`);
       await expect(page.getByRole('heading', { name: new RegExp(`^${name},`) })).toBeVisible();
+      await expect(page.locator('.profile-facts')).toContainText('· Fictional setting');
+      await expect(page.locator('.profile-clue p')).toHaveText(/^“.+”$/);
       for (const number of [1, 2]) {
         await page.getByRole('button', { name: `Show photo ${number} of ${name}`, exact: true }).click();
         await expect.poll(() => page.locator('.profile-photo-open img').evaluate(image => (image as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);
       }
       if (key === 'char-bisola') for (const width of [390, 1440]) {
         await page.setViewportSize({ width, height: 900 });
+        await page.getByRole('heading', { name: /^Bisola,/ }).click();
         expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
         await page.screenshot({ path: `docs/reviews/cast-50/hosted-bisola-${width}.png`, fullPage: true });
       }

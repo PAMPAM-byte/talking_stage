@@ -73,7 +73,11 @@
     "cast:frontend:check": "node scripts/build-cast-frontend.mjs --check",
     "cast:hosted:check": "node scripts/publish-cast-50.mjs --check",
     "cast:hosted:publish": "node scripts/publish-cast-50.mjs --publish",
-    "test:cast-hosted": "playwright test --config playwright.hosted.config.ts tests-hosted/cast-50.spec.ts"
+    "test:cast-hosted": "playwright test --config playwright.hosted.config.ts tests-hosted/cast-50.spec.ts",
+    "cast:eval:check": "node scripts/evaluate-cast-live.mjs --check",
+    "cast:eval:pilot": "node scripts/evaluate-cast-live.mjs --pilot",
+    "cast:eval:run": "node scripts/evaluate-cast-live.mjs --run",
+    "test:cast-evaluation": "node scripts/test-cast-evaluation.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
