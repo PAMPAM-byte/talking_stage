@@ -31,7 +31,12 @@ async function trustedSql(query) {
     await writeFile(file, query);
     let output;
     try { output = execFileSync(process.execPath, ['node_modules/supabase/dist/supabase.js', 'db', 'query', '--workdir', resolve(`${folder}/cli`), '--linked', '--project-ref', project, '--output', 'json', '--file', resolve(file)], { encoding: 'utf8', windowsHide: true, timeout: 60000, maxBuffer: 8 * 1024 * 1024, stdio: ['pipe', 'pipe', 'pipe'] }); }
-    catch { throw new Error('Hosted trusted SQL operation failed; credentials and private snapshots are not logged.'); }
+    catch (error) {
+        const diagnostic = String(error.stderr ?? '');
+        const reason = error.code === 'ETIMEDOUT' ? 'TIMEOUT' : /password|authentication/i.test(diagnostic) ? 'AUTHENTICATION' : /connect|network|resolve|timeout/i.test(diagnostic) ? 'CONNECTION' : 'CLI_SQL';
+        console.error(`Hosted trusted SQL failed: ${reason}; raw diagnostics suppressed.`);
+        throw new Error('Hosted trusted SQL operation failed; credentials and private snapshots are not logged.');
+    }
     return JSON.parse(output.slice(output.indexOf('{'))).rows;
 }
 let state;
@@ -216,6 +221,11 @@ try {
     state.completedAt = new Date().toISOString(); await save();
     await writeFile('docs/cast-50/publication.json', JSON.stringify({ version: 1, target, completedAt: state.completedAt, sourceFingerprint: pack.sourceFingerprint, profiles: 50, photos: 100, ordinaryAdultPaginationVerified: true, keys: Object.fromEntries(Object.entries(state.characters).map(([key, entry]) => [key, entry.id])) }, null, 2) + '\n');
     console.log('Hosted verification complete: 50 profiles, 100 approved photos; all five discovery pages visible to an ordinary adult.');
+} catch (error) {
+    // Log a bounded operational category before cleanup can itself fail.
+    const kind = ['TimeoutError', 'AbortError', 'AssertionError', 'TypeError'].includes(error.name) ? error.name : 'OPERATION_FAILED';
+    console.error(`Publication stopped: ${kind}; checkpoint retained.`);
+    throw error;
 } finally {
     if (actor) {
         await cleanupMaintenance();
