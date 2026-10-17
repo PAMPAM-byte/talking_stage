@@ -97,13 +97,19 @@ const options = { auth: { persistSession: false, autoRefreshToken: false } };
 const service = createClient(target, env.SUPABASE_SERVICE_ROLE_KEY, options);
 const admin = createClient(target, env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY, options);
 function checked(result, label) {
-    if (result.error || result.data?.error) throw new Error(`${label} failed; inspect the private audit/state. No automatic mutation retry.`);
+    if (result.error || result.data?.error) {
+        const reason = result.data?.error;
+        const safeReason = ['conflict', 'conflict_or_uninspected', 'conflict_or_unapproved', 'invalid_cast', 'review_required', 'approved_assets_required', 'rate_limited', 'character_not_found', 'invalid_change'].includes(reason) ? reason : 'transport_or_access';
+        const status = Number.isInteger(result.error?.status) ? result.error.status : 'unknown';
+        const authCode = ['unexpected_failure', 'over_email_send_rate_limit', 'over_request_rate_limit', 'user_already_exists', 'email_exists'].includes(result.error?.code) ? result.error.code : 'unspecified';
+        throw new Error(`${label} failed (${safeReason}; HTTP ${status}; ${authCode}); inspect the private audit/state. No automatic mutation retry.`);
+    }
     return result.data;
 }
 const rpc = async (name, args, privileged = false) => checked(await (privileged ? service : admin).rpc(name, args), name);
-let windowStart = Date.now(), mutations = 0;
+let windowStart = 0, mutations = 0;
 async function command(operation, args) {
-    if (Date.now() - windowStart >= 62000) { windowStart = Date.now(); mutations = 0; }
+    if (!windowStart || Date.now() - windowStart >= 62000) { windowStart = Date.now(); mutations = 0; }
     if (mutations >= 26) {
         const remaining = Math.max(0, 62000 - (Date.now() - windowStart));
         console.log('Pausing for the existing administrator mutation limit; publication is checkpointed.');
