@@ -125,6 +125,11 @@ export async function loadRoster() {
         counts: { total: 50, existing: 22, additions: 28, women: characters.filter(c => c.profile.gender === 'woman').length, men: characters.filter(c => c.profile.gender === 'man').length, newPhotosRequired: 56 },
         characters,
     };
+    const publication = await read('docs/cast-50/publication.json').catch(error => { if (error.code === 'ENOENT') return null; throw error; });
+    if (publication?.sourceFingerprint === pack.sourceFingerprint && publication.profiles === 50 && publication.photos === 100 && publication.ordinaryAdultPaginationVerified === true) {
+        pack.status = 'hosted_published_voice_evaluation_pending';
+        for (const c of characters) c.readiness.publication = 'hosted_published';
+    }
     validateRoster(pack);
     return pack;
 }

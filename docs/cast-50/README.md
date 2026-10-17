@@ -1,6 +1,6 @@
 # Fifty Nigerian personalities
 
-17 October 2026. **All 50 profiles and 100 photos are available in the local frontend catalogue.** This includes a full editorial rework of all 50 voices, 56 newly generated photos and 44 retained photos. Hosted completion is established only by `publication.json`; see [delivery and verification](../reviews/cast-50-publication.md). The roster contains 26 women and 24 men, all fictional adults aged 25–64.
+17 October 2026. **All 50 profiles and 100 photos are published to hosted Discover and available in the public frontend catalogue.** This includes a full editorial rework of all 50 voices, 56 newly generated photos and 44 retained photos. [The publication receipt](./publication.json) records successful ordinary-adult pagination and hosted counts; see [delivery and verification](../reviews/cast-50-publication.md). The roster contains 26 women and 24 men, all fictional adults aged 25–64.
 
 The current 22 character keys, names, adult ages and photo identities are retained so this work can revise their voices without silently replacing identities or breaking conversations. Their biographies and private personalities are fully proposed again. Another 28 Nigerian identities bring the proposed total to 50. Names, occupations, regional mix and traits of these additions remain editorial proposals for founder review. The founder subsequently requested explicit adult text chat; [the scope decision](./adult-chat-scope.md) records that intent and the current Anthropic provider blocker. Explicit generation is not enabled. No new financial, meeting or matching feature is introduced.
 
@@ -39,7 +39,7 @@ Two native Nigerian reviewers with different regional/age experience are recomme
 
 The 22 existing characters keep their recorded current photos. The 28 additions now have **56 generated and agent-reviewed original photos**. `image-generation.json` records their hashes, paths, prompt briefs and identity references; exact prompts where retained are in `prompts/`. Originals are in `assets/`, and browser WebPs are in `public/images/characters/`. Gallery generation used the corresponding portrait. This visual inspection does not claim founder approval.
 
-The public catalogue and local preview contain all 50. `scripts/publish-cast-50.mjs` applies the hosted profiles, private directions and owned photos through audited operations after an encrypted backup. It preserves existing IDs and conversations. `publication.json` is produced only after ordinary-adult discovery pagination and hosted counts pass. Native-speaker and live voice evaluation remain pending.
+The public catalogue, local preview and hosted Discover contain all 50. `scripts/publish-cast-50.mjs` applied the hosted profiles, private directions and owned photos through audited operations after an encrypted backup. Existing IDs and conversations were preserved. `publication.json` records passing ordinary-adult discovery pagination and hosted counts. Native-speaker and live voice evaluation remain pending.
 
 ## Verification
 

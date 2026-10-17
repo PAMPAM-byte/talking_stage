@@ -155,6 +155,11 @@ try {
         const desired = { profile: c.profile, direction: c.direction };
         const desiredHash = fingerprint(desired);
         let entry = state.characters[c.key];
+        if (entry?.completed) {
+            assert.equal(entry.desiredHash, desiredHash, 'Completed source changed.');
+            completed++; console.log(`${completed}/50 ${c.profile.name}: completed checkpoint retained; final whole-cast validation follows.`);
+            continue;
+        }
         if (!entry) {
             const all = await rpc('admin_list_cast', {});
             const matching = all.filter(row => fingerprint({ profile: row.profile, direction: row.direction }) === desiredHash);
@@ -204,6 +209,14 @@ try {
         if (!entry.completed) await command('cast.publish', { p_id: entry.id, p_version: draft.version, p_attested: true });
         entry.completed = true; entry.desiredHash = desiredHash; await save();
         completed++; console.log(`${completed}/50 ${c.profile.name}: profile, private voice and two owned photos available.`);
+    }
+    // One complete draft read checks resumed entries too, without repeating
+    // per-character network reads and preview audit writes on every restart.
+    const finalDrafts = await rpc('admin_list_cast', {});
+    for (const c of pack.characters) {
+        const draft = finalDrafts.find(row => row.id === state.characters[c.key].id);
+        assert(draft && draft.status === 'published');
+        assert.equal(fingerprint({ profile: draft.profile, direction: draft.direction }), fingerprint({ profile: c.profile, direction: c.direction }), 'Final draft differs from the prepared cast.');
     }
     // Verify using an ordinary adult identity, not an administrator bypass.
     await trustedSql(`delete from private.user_roles where user_id='${actor}';select count(*) as n from private.user_roles where user_id='${actor}';`);
