@@ -25,12 +25,20 @@ export async function backendClient() {
   });
 }
 
-export async function currentAccount() {
+export async function currentAccount({ failOnUnavailable = false }: { failOnUnavailable?: boolean } = {}) {
   const client = await backendClient();
   if (!client) return null;
   const { data, error } = await observe('auth.identity', () => client.auth.getUser());
-  if (error || !data.user) return null;
+  if (error || !data.user) {
+    // API callers must distinguish an unavailable identity service from a
+    // signed-out session. Network/rate-limit failures should be retryable 503s.
+    if (failOnUnavailable && error && ![400, 401, 403].includes(error.status ?? 0)) throw new Error('Identity service unavailable');
+    return null;
+  }
   const profile = await observe('account.profile', () => client.from("profiles").select("id,display_name,genders,language,requests_enabled,onboarding_complete,adult_declared_at,version").eq("id", data.user.id).single());
-  if (profile.error || !profile.data) return null;
+  if (profile.error || !profile.data) {
+    if (failOnUnavailable && (profile.status === 0 || profile.status === 429 || profile.status >= 500)) throw new Error('Account service unavailable');
+    return null;
+  }
   return { client, user: data.user, profile: profile.data };
 }

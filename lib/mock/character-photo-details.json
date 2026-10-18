@@ -1,90 +1,90 @@
 {
   "char-seyi-portrait-v2": {
-    "altText": "Seyi, 26, a fictional adult AI character, in the doorway of his recording studio",
+    "altText": "Seyi, 26, a fictional adult AI character in a portrait.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.3
     }
   },
   "char-tunde-portrait-v2": {
-    "altText": "Tunde, 29, a fictional adult AI character, against a sunlit blue wall in Lagos",
+    "altText": "Tunde, 28, a fictional adult AI character in a portrait.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.3
     }
   },
   "char-amara-gallery-v2": {
-    "altText": "Amara, 28, a fictional adult AI character, browsing vinyl records at a Lagos market",
+    "altText": "Amara, 27, a fictional adult AI character in a lifestyle photograph.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.5
     }
   },
   "char-zainab-gallery-v2": {
-    "altText": "Zainab, 30, a fictional adult AI character, examining architectural drawings on an Abuja site visit",
+    "altText": "Zainab, 28, a fictional adult AI character in a lifestyle photograph.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.5
     }
   },
   "char-ifeoma-gallery-v2": {
-    "altText": "Ifeoma, 27, a fictional adult AI character, holding her camera while photographing food at an Enugu market",
+    "altText": "Ifeoma, 25, a fictional adult AI character in a lifestyle photograph.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.5
     }
   },
   "char-tomi-gallery-v2": {
-    "altText": "Tomi, 25, a fictional adult AI character, comparing colourful fabric at an Ibadan market",
+    "altText": "Tomi, 24, a fictional adult AI character in a lifestyle photograph.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.5
     }
   },
   "char-tunde-gallery-v2": {
-    "altText": "Tunde, 29, a fictional adult AI character, looking across the lagoon on a Lagos waterfront walk",
+    "altText": "Tunde, 28, a fictional adult AI character in a lifestyle photograph.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.5
     }
   },
   "char-chidi-gallery-v2": {
-    "altText": "Chidi, 32, a fictional adult AI character, reaching for a book in his Enugu bookshop",
+    "altText": "Chidi, 29, a fictional adult AI character in a lifestyle photograph.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.5
     }
   },
   "char-seyi-gallery-v2": {
-    "altText": "Seyi, 26, a fictional adult AI character, adjusting an audio mixing desk during an outdoor soundcheck",
+    "altText": "Seyi, 26, a fictional adult AI character in a lifestyle photograph.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.5
     }
   },
   "char-idris-gallery-v2": {
-    "altText": "Idris, 34, a fictional adult AI character, examining a plant at an Abuja nursery",
+    "altText": "Idris, 31, a fictional adult AI character in a lifestyle photograph.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.5
     }
   },
   "char-adaora-gallery-v2": {
-    "altText": "Tega, 25, a fictional adult AI character, singing into a microphone during an acoustic open-mic evening",
+    "altText": "Tega, 23, a fictional adult AI character in a lifestyle photograph.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.5
     }
   },
   "char-raymond-gallery-v2": {
-    "altText": "Raymond, 52, a fictional adult AI character, looking across the water from a sailboat deck",
+    "altText": "Raymond, 48, a fictional adult AI character in a lifestyle photograph.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.5
     }
   },
   "char-vivian-gallery-v2": {
-    "altText": "Vivian, 46, a fictional adult AI character, examining ceramics at an outdoor art market in an amber patterned kaftan",
+    "altText": "Vivian, 46, a fictional adult AI character in a lifestyle photograph.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.5
@@ -98,21 +98,21 @@
     }
   },
   "char-hon-femi-gallery-v2": {
-    "altText": "Hon. Femi, 48, a fictional adult AI character, walking beside a public garden pond in a burgundy shirt",
+    "altText": "Hon. Femi, 48, a fictional adult AI character in a lifestyle photograph.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.5
     }
   },
   "char-nneka-gallery-v2": {
-    "altText": "Nneka, 26, a fictional adult AI character, mid-step during an outdoor dance rehearsal",
+    "altText": "Nneka, 25, a fictional adult AI character in a lifestyle photograph.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.5
     }
   },
   "char-malik-gallery-v2": {
-    "altText": "Malik, 27, a fictional adult AI character, performing into a handheld microphone on a small stage",
+    "altText": "Malik, 27, a fictional adult AI character in a lifestyle photograph.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.5
@@ -126,21 +126,21 @@
     }
   },
   "char-dr-aisha-gallery-v2": {
-    "altText": "Dr Aisha, 34, a fictional adult AI character, sketching courtyard arches in a dusty-blue hijab",
+    "altText": "Dr Aisha, 30, a fictional adult AI character in a lifestyle photograph.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.5
     }
   },
   "char-emeka-gallery-v2": {
-    "altText": "Emeka, 29, a fictional adult AI character, tying his trainers at a football pitch",
+    "altText": "Emeka, 28, a fictional adult AI character in a lifestyle photograph.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.5
     }
   },
   "char-kunle-gallery-v2": {
-    "altText": "Kunle, 35, a fictional adult AI character, walking through a fruit market carrying a woven bag",
+    "altText": "Kunle, 30, a fictional adult AI character in a lifestyle photograph.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.5
@@ -154,21 +154,21 @@
     }
   },
   "char-zuri-gallery-v2": {
-    "altText": "Zuri, 29, a fictional adult AI character, walking along the beach in blue swimwear and a white wrap, holding coconut water",
+    "altText": "Zuri, 25, a fictional adult AI character in a lifestyle photograph.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.5
     }
   },
   "char-kiki-gallery-v2": {
-    "altText": "Kiki, 32, a fictional adult AI character, examining a handmade mug at an outdoor pottery fair",
+    "altText": "Kiki, 28, a fictional adult AI character in a lifestyle photograph.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.5
     }
   },
   "char-damilola-gallery-v3": {
-    "altText": "Damilola, 36, a fictional adult AI character, wearing tennis sportswear and a white cap, holding a racket and giving a peace sign on a tennis court.",
+    "altText": "Damilola, 29, a fictional adult AI character in a lifestyle photograph.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.5
@@ -182,63 +182,63 @@
     }
   },
   "char-ranti-gallery-v4": {
-    "altText": "Ranti, 28, a fictional adult AI character, standing comfortably beside her salon door beneath the Ranti Locs Studio sign.",
+    "altText": "Ranti, 26, a fictional adult AI character in a lifestyle photograph.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.5
     }
   },
   "char-amara-portrait": {
-    "altText": "Amara, 28, a fictional adult AI character in a portrait.",
+    "altText": "Amara, 27, a fictional adult AI character in a portrait.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.32
     }
   },
   "char-zainab-portrait": {
-    "altText": "Zainab, 30, a fictional adult AI character in a portrait.",
+    "altText": "Zainab, 28, a fictional adult AI character in a portrait.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.32
     }
   },
   "char-ifeoma-portrait": {
-    "altText": "Ifeoma, 27, a fictional adult AI character in a portrait.",
+    "altText": "Ifeoma, 25, a fictional adult AI character in a portrait.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.32
     }
   },
   "char-tomi-portrait": {
-    "altText": "Tomi, 25, a fictional adult AI character in a portrait.",
+    "altText": "Tomi, 24, a fictional adult AI character in a portrait.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.32
     }
   },
   "char-chidi-portrait": {
-    "altText": "Chidi, 32, a fictional adult AI character in a portrait.",
+    "altText": "Chidi, 29, a fictional adult AI character in a portrait.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.32
     }
   },
   "char-idris-portrait": {
-    "altText": "Idris, 34, a fictional adult AI character in a portrait.",
+    "altText": "Idris, 31, a fictional adult AI character in a portrait.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.32
     }
   },
   "char-adaora-portrait": {
-    "altText": "Tega, 25, a fictional adult AI character in a portrait.",
+    "altText": "Tega, 23, a fictional adult AI character in a portrait.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.32
     }
   },
   "char-raymond-portrait": {
-    "altText": "Raymond, 52, a fictional adult AI character in a portrait.",
+    "altText": "Raymond, 48, a fictional adult AI character in a portrait.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.32
@@ -266,7 +266,7 @@
     }
   },
   "char-nneka-portrait": {
-    "altText": "Nneka, 26, a fictional adult AI character in a portrait.",
+    "altText": "Nneka, 25, a fictional adult AI character in a portrait.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.32
@@ -280,77 +280,77 @@
     }
   },
   "char-damilola-portrait": {
-    "altText": "Damilola, 36, a fictional adult AI character in a portrait.",
+    "altText": "Damilola, 29, a fictional adult AI character in a portrait.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.32
     }
   },
   "char-dr-aisha-portrait": {
-    "altText": "Dr Aisha, 34, a fictional adult AI character in a portrait.",
+    "altText": "Dr Aisha, 30, a fictional adult AI character in a portrait.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.32
     }
   },
   "char-emeka-portrait": {
-    "altText": "Emeka, 29, a fictional adult AI character in a portrait.",
+    "altText": "Emeka, 28, a fictional adult AI character in a portrait.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.32
     }
   },
   "char-kunle-portrait": {
-    "altText": "Kunle, 35, a fictional adult AI character in a portrait.",
+    "altText": "Kunle, 30, a fictional adult AI character in a portrait.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.32
     }
   },
   "char-ranti-portrait": {
-    "altText": "Ranti, 28, a fictional adult AI character in a portrait.",
+    "altText": "Ranti, 26, a fictional adult AI character in a portrait.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.32
     }
   },
   "char-zuri-portrait": {
-    "altText": "Zuri, 29, a fictional adult AI character in a portrait.",
+    "altText": "Zuri, 25, a fictional adult AI character in a portrait.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.32
     }
   },
   "char-kiki-portrait": {
-    "altText": "Kiki, 32, a fictional adult AI character in a portrait.",
+    "altText": "Kiki, 28, a fictional adult AI character in a portrait.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.32
     }
   },
   "char-bisola-portrait": {
-    "altText": "Bisola, 31, a fictional adult AI character in a portrait.",
+    "altText": "Bisola, 27, a fictional adult AI character in a portrait.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.32
     }
   },
   "char-bisola-gallery": {
-    "altText": "Bisola, 31, a fictional adult AI character in a lifestyle photograph.",
+    "altText": "Bisola, 27, a fictional adult AI character in a lifestyle photograph.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.4
     }
   },
   "char-ese-portrait": {
-    "altText": "Ese, 28, a fictional adult AI character in a portrait.",
+    "altText": "Ese, 26, a fictional adult AI character in a portrait.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.32
     }
   },
   "char-ese-gallery": {
-    "altText": "Ese, 28, a fictional adult AI character in a lifestyle photograph.",
+    "altText": "Ese, 26, a fictional adult AI character in a lifestyle photograph.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.4
@@ -371,56 +371,56 @@
     }
   },
   "char-hauwa-portrait": {
-    "altText": "Hauwa, 29, a fictional adult AI character in a portrait.",
+    "altText": "Hauwa, 26, a fictional adult AI character in a portrait.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.32
     }
   },
   "char-hauwa-gallery": {
-    "altText": "Hauwa, 29, a fictional adult AI character in a lifestyle photograph.",
+    "altText": "Hauwa, 26, a fictional adult AI character in a lifestyle photograph.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.4
     }
   },
   "char-naomi-portrait": {
-    "altText": "Naomi, 33, a fictional adult AI character in a portrait.",
+    "altText": "Naomi, 27, a fictional adult AI character in a portrait.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.32
     }
   },
   "char-naomi-gallery": {
-    "altText": "Naomi, 33, a fictional adult AI character in a lifestyle photograph.",
+    "altText": "Naomi, 27, a fictional adult AI character in a lifestyle photograph.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.4
     }
   },
   "char-somto-portrait": {
-    "altText": "Somto, 27, a fictional adult AI character in a portrait.",
+    "altText": "Somto, 23, a fictional adult AI character in a portrait.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.32
     }
   },
   "char-somto-gallery": {
-    "altText": "Somto, 27, a fictional adult AI character in a lifestyle photograph.",
+    "altText": "Somto, 23, a fictional adult AI character in a lifestyle photograph.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.4
     }
   },
   "char-nimi-portrait": {
-    "altText": "Nimi, 30, a fictional adult AI character in a portrait.",
+    "altText": "Nimi, 27, a fictional adult AI character in a portrait.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.32
     }
   },
   "char-nimi-gallery": {
-    "altText": "Nimi, 30, a fictional adult AI character in a lifestyle photograph.",
+    "altText": "Nimi, 27, a fictional adult AI character in a lifestyle photograph.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.4
@@ -469,98 +469,98 @@
     }
   },
   "char-ejiro-portrait": {
-    "altText": "Ejiro, 32, a fictional adult AI character in a portrait.",
+    "altText": "Ejiro, 27, a fictional adult AI character in a portrait.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.32
     }
   },
   "char-ejiro-gallery": {
-    "altText": "Ejiro, 32, a fictional adult AI character in a lifestyle photograph.",
+    "altText": "Ejiro, 27, a fictional adult AI character in a lifestyle photograph.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.4
     }
   },
   "char-halima-portrait": {
-    "altText": "Halima, 36, a fictional adult AI character in a portrait.",
+    "altText": "Halima, 27, a fictional adult AI character in a portrait.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.32
     }
   },
   "char-halima-gallery": {
-    "altText": "Halima, 36, a fictional adult AI character in a lifestyle photograph.",
+    "altText": "Halima, 27, a fictional adult AI character in a lifestyle photograph.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.4
     }
   },
   "char-yejide-portrait": {
-    "altText": "Yejide, 29, a fictional adult AI character in a portrait.",
+    "altText": "Yejide, 26, a fictional adult AI character in a portrait.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.32
     }
   },
   "char-yejide-gallery": {
-    "altText": "Yejide, 29, a fictional adult AI character in a lifestyle photograph.",
+    "altText": "Yejide, 26, a fictional adult AI character in a lifestyle photograph.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.4
     }
   },
   "char-adanna-portrait": {
-    "altText": "Adanna, 34, a fictional adult AI character in a portrait.",
+    "altText": "Adanna, 28, a fictional adult AI character in a portrait.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.32
     }
   },
   "char-adanna-gallery": {
-    "altText": "Adanna, 34, a fictional adult AI character in a lifestyle photograph.",
+    "altText": "Adanna, 28, a fictional adult AI character in a lifestyle photograph.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.4
     }
   },
   "char-farouk-portrait": {
-    "altText": "Farouk, 31, a fictional adult AI character in a portrait.",
+    "altText": "Farouk, 29, a fictional adult AI character in a portrait.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.32
     }
   },
   "char-farouk-gallery": {
-    "altText": "Farouk, 31, a fictional adult AI character in a lifestyle photograph.",
+    "altText": "Farouk, 29, a fictional adult AI character in a lifestyle photograph.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.4
     }
   },
   "char-obinna-portrait": {
-    "altText": "Obinna, 33, a fictional adult AI character in a portrait.",
+    "altText": "Obinna, 29, a fictional adult AI character in a portrait.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.32
     }
   },
   "char-obinna-gallery": {
-    "altText": "Obinna, 33, a fictional adult AI character in a lifestyle photograph.",
+    "altText": "Obinna, 29, a fictional adult AI character in a lifestyle photograph.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.4
     }
   },
   "char-fikayo-portrait": {
-    "altText": "Fikayo, 28, a fictional adult AI character in a portrait.",
+    "altText": "Fikayo, 26, a fictional adult AI character in a portrait.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.32
     }
   },
   "char-fikayo-gallery": {
-    "altText": "Fikayo, 28, a fictional adult AI character in a lifestyle photograph.",
+    "altText": "Fikayo, 26, a fictional adult AI character in a lifestyle photograph.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.4
@@ -581,28 +581,28 @@
     }
   },
   "char-ibrahim-portrait": {
-    "altText": "Ibrahim, 35, a fictional adult AI character in a portrait.",
+    "altText": "Ibrahim, 29, a fictional adult AI character in a portrait.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.32
     }
   },
   "char-ibrahim-gallery": {
-    "altText": "Ibrahim, 35, a fictional adult AI character in a lifestyle photograph.",
+    "altText": "Ibrahim, 29, a fictional adult AI character in a lifestyle photograph.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.4
     }
   },
   "char-osaze-portrait": {
-    "altText": "Osaze, 30, a fictional adult AI character in a portrait.",
+    "altText": "Osaze, 27, a fictional adult AI character in a portrait.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.32
     }
   },
   "char-osaze-gallery": {
-    "altText": "Osaze, 30, a fictional adult AI character in a lifestyle photograph.",
+    "altText": "Osaze, 27, a fictional adult AI character in a lifestyle photograph.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.4
@@ -665,14 +665,14 @@
     }
   },
   "char-kelechi-portrait": {
-    "altText": "Kelechi, 34, a fictional adult AI character in a portrait.",
+    "altText": "Kelechi, 28, a fictional adult AI character in a portrait.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.32
     }
   },
   "char-kelechi-gallery": {
-    "altText": "Kelechi, 34, a fictional adult AI character in a lifestyle photograph.",
+    "altText": "Kelechi, 28, a fictional adult AI character in a lifestyle photograph.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.4
@@ -693,28 +693,168 @@
     }
   },
   "char-usman-portrait": {
-    "altText": "Usman, 32, a fictional adult AI character in a portrait.",
+    "altText": "Usman, 28, a fictional adult AI character in a portrait.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.32
     }
   },
   "char-usman-gallery": {
-    "altText": "Usman, 32, a fictional adult AI character in a lifestyle photograph.",
+    "altText": "Usman, 28, a fictional adult AI character in a lifestyle photograph.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.4
     }
   },
   "char-dele-portrait": {
-    "altText": "Dele, 36, a fictional adult AI character in a portrait.",
+    "altText": "Dele, 27, a fictional adult AI character in a portrait.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.32
     }
   },
   "char-dele-gallery": {
-    "altText": "Dele, 36, a fictional adult AI character in a lifestyle photograph.",
+    "altText": "Dele, 27, a fictional adult AI character in a lifestyle photograph.",
+    "focalPoint": {
+      "x": 0.5,
+      "y": 0.4
+    }
+  },
+  "char-chief-chukwudi-portrait-youth-v1": {
+    "altText": "Chuka, 30, a fictional adult AI character in a portrait.",
+    "focalPoint": {
+      "x": 0.5,
+      "y": 0.32
+    }
+  },
+  "char-chief-chukwudi-gallery-youth-v1": {
+    "altText": "Chuka, 30, a fictional adult AI character in a lifestyle photograph.",
+    "focalPoint": {
+      "x": 0.5,
+      "y": 0.4
+    }
+  },
+  "char-adedoyin-portrait-youth-v1": {
+    "altText": "Adedoyin, 27, a fictional adult AI character in a portrait.",
+    "focalPoint": {
+      "x": 0.5,
+      "y": 0.32
+    }
+  },
+  "char-adedoyin-gallery-youth-v1": {
+    "altText": "Adedoyin, 27, a fictional adult AI character in a lifestyle photograph.",
+    "focalPoint": {
+      "x": 0.5,
+      "y": 0.4
+    }
+  },
+  "char-lola-portrait-youth-v1": {
+    "altText": "Lola, 28, a fictional adult AI character in a portrait.",
+    "focalPoint": {
+      "x": 0.5,
+      "y": 0.32
+    }
+  },
+  "char-lola-gallery-youth-v1": {
+    "altText": "Lola, 28, a fictional adult AI character in a lifestyle photograph.",
+    "focalPoint": {
+      "x": 0.5,
+      "y": 0.4
+    }
+  },
+  "char-awele-portrait-youth-v1": {
+    "altText": "Awele, 29, a fictional adult AI character in a portrait.",
+    "focalPoint": {
+      "x": 0.5,
+      "y": 0.32
+    }
+  },
+  "char-awele-gallery-youth-v1": {
+    "altText": "Awele, 29, a fictional adult AI character in a lifestyle photograph.",
+    "focalPoint": {
+      "x": 0.5,
+      "y": 0.4
+    }
+  },
+  "char-tonye-portrait-youth-v1": {
+    "altText": "Tonye, 30, a fictional adult AI character in a portrait.",
+    "focalPoint": {
+      "x": 0.5,
+      "y": 0.32
+    }
+  },
+  "char-tonye-gallery-youth-v1": {
+    "altText": "Tonye, 30, a fictional adult AI character in a lifestyle photograph.",
+    "focalPoint": {
+      "x": 0.5,
+      "y": 0.4
+    }
+  },
+  "char-dapo-portrait-youth-v1": {
+    "altText": "Dapo, 28, a fictional adult AI character in a portrait.",
+    "focalPoint": {
+      "x": 0.5,
+      "y": 0.32
+    }
+  },
+  "char-dapo-gallery-youth-v1": {
+    "altText": "Dapo, 28, a fictional adult AI character in a lifestyle photograph.",
+    "focalPoint": {
+      "x": 0.5,
+      "y": 0.4
+    }
+  },
+  "char-bassey-portrait-youth-v1": {
+    "altText": "Bassey, 29, a fictional adult AI character in a portrait.",
+    "focalPoint": {
+      "x": 0.5,
+      "y": 0.32
+    }
+  },
+  "char-bassey-gallery-youth-v1": {
+    "altText": "Bassey, 29, a fictional adult AI character in a lifestyle photograph.",
+    "focalPoint": {
+      "x": 0.5,
+      "y": 0.4
+    }
+  },
+  "char-samuel-portrait-youth-v1": {
+    "altText": "Samuel, 28, a fictional adult AI character in a portrait.",
+    "focalPoint": {
+      "x": 0.5,
+      "y": 0.32
+    }
+  },
+  "char-samuel-gallery-youth-v1": {
+    "altText": "Samuel, 28, a fictional adult AI character in a lifestyle photograph.",
+    "focalPoint": {
+      "x": 0.5,
+      "y": 0.4
+    }
+  },
+  "char-yomi-portrait-youth-v1": {
+    "altText": "Yomi, 31, a fictional adult AI character in a portrait.",
+    "focalPoint": {
+      "x": 0.5,
+      "y": 0.32
+    }
+  },
+  "char-yomi-gallery-youth-v1": {
+    "altText": "Yomi, 31, a fictional adult AI character in a lifestyle photograph.",
+    "focalPoint": {
+      "x": 0.5,
+      "y": 0.4
+    }
+  },
+  "char-segun-portrait-youth-v1": {
+    "altText": "Segun, 28, a fictional adult AI character in a portrait.",
+    "focalPoint": {
+      "x": 0.5,
+      "y": 0.32
+    }
+  },
+  "char-segun-gallery-youth-v1": {
+    "altText": "Segun, 28, a fictional adult AI character in a lifestyle photograph.",
     "focalPoint": {
       "x": 0.5,
       "y": 0.4

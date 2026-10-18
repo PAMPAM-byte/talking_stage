@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "completedAt": "2026-10-18T16:07:21.186Z",
+  "sourceFingerprint": "4d50dbce822e3bc3b16bd2d40353f71f402d0a86bd7e12e16f30dcf20102d66c",
+  "profiles": 50,
+  "personalFacts": 250,
+  "youngerAdults": 46,
+  "olderAdults": 4,
+  "replacedPhotos": 20,
+  "preservedCharacterIds": true,
+  "oldPhotosRetainedUnpublished": true,
+  "encryptedBaselineVerified": true,
+  "publishedDirectionsVerified": true
+}

@@ -6,15 +6,17 @@ import { loadRoster } from './build-cast-roster.mjs';
 const pack = await loadRoster();
 const existing = JSON.parse(await readFile('docs/cast-50/existing-identities.json', 'utf8'));
 const images = JSON.parse(await readFile('docs/cast-50/image-generation.json', 'utf8'));
+const youthImages = JSON.parse(await readFile('docs/cast-50/youth-images.json', 'utf8'));
 const details = JSON.parse(await readFile('lib/mock/character-photo-details.json', 'utf8'));
 const cast = [];
 for (const c of pack.characters) {
     const previous = existing.find(row => row.id === c.key);
-    const portraitAssetId = previous?.portraitAssetId ?? `${c.key}-portrait`;
-    const galleryAssetIds = previous?.galleryAssetIds ?? [`${c.key}-gallery`];
+    const replacement = youthImages.photos[`${c.key}-portrait`];
+    const portraitAssetId = replacement?.publicAssetId ?? previous?.portraitAssetId ?? `${c.key}-portrait`;
+    const galleryAssetIds = replacement ? [youthImages.photos[`${c.key}-gallery`]?.publicAssetId] : previous?.galleryAssetIds ?? [`${c.key}-gallery`];
     for (const [index, id] of [portraitAssetId, ...galleryAssetIds].entries()) {
-        if (c.origin === 'new_draft') {
-            const record = images.photos[id];
+        if (replacement || c.origin === 'new_draft') {
+            const record = replacement ? Object.values(youthImages.photos).find(photo => photo.publicAssetId === id) : images.photos[id];
             assert(record?.key === c.key && record.visualReview === 'passed', `${id}: visual review required before frontend inclusion.`);
         }
         const file = `public/images/characters/${id}.webp`;
@@ -23,7 +25,7 @@ for (const c of pack.characters) {
         assert.equal(metadata.format, 'webp');
         assert(metadata.width >= 256 && metadata.height >= 256);
         await sharp(bytes).raw().toBuffer();
-        details[id] ??= { altText: `${c.profile.name}, ${c.profile.age}, a fictional adult AI character in a ${index === 0 ? 'portrait' : 'lifestyle photograph'}.`, focalPoint: { x: 0.5, y: index === 0 ? 0.32 : 0.4 } };
+        details[id] = { altText: `${c.profile.name}, ${c.profile.age}, a fictional adult AI character in a ${index === 0 ? 'portrait' : 'lifestyle photograph'}.`, focalPoint: details[id]?.focalPoint ?? { x: 0.5, y: index === 0 ? 0.32 : 0.4 } };
     }
     // Explicit public DTO projection: private voice/relationship/backstory data
     // must never enter the browser catalogue or the marketing page bundle.

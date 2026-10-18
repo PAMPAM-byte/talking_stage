@@ -7,6 +7,7 @@ import { CharacterInterests } from './character-interests';
 import { currentAccount } from '@/lib/backend/server';
 import { Badge, EmptyState, Notice } from './ui/primitives';
 import { ConnectedDiscoveryDeck } from './connected-discovery-deck';
+import { Pagination } from './ui/pagination';
 import {ConversationControl} from './connected-conversation-forms';
 import {configuredReplyModel} from '@/lib/backend/reply-worker';
 type Filters={gender?:string;interest?:string;personality?:string;page?:string};
@@ -35,6 +36,8 @@ export async function ConnectedDiscovery({ filters:requestedFilters }: {filters:
  return <div className="discovery-page discovery-page--swipe stack"><header className="discovery-heading"><div className="stack"><p className="supporting muted">Welcome, {data.account.profile.display_name}.</p><h1 className="display discovery-title">Find your spark.</h1><p className="muted">Meet fictional AI characters with a personality of their own.</p></div><div className="discovery-disclosure">Every character is AI.<br/>Every story is fictional.</div></header>
  <nav className="row" aria-label="Character gender">{[['all','Everyone'],['woman','Women'],['man','Men']].map(([gender,label])=><Link key={gender} className="chip" href={genderHref(gender)} aria-current={filters.gender===gender?'page':undefined}>{label}</Link>)}</nav>
  <ConnectedDiscoveryFilters filters={filters} interests={data.collection.interests} personalities={data.collection.personalities} />
+ <p className="caption muted" role="status">{data.collection.total} characters match your preferences. Showing {rows.length} in this batch.</p>
+ <Pagination page={data.collection.page} total={data.collection.total} href={pageHref}/>
  {rows.length ? <ConnectedDiscoveryDeck key={JSON.stringify(filters)} scope={`${data.account.profile.id}:${JSON.stringify(filters)}`} nextHref={data.collection.page * 12 < data.collection.total ? pageHref(data.collection.page + 1) : undefined} cards={rows.map(c => {
    const photo = data.assets.find(a => a.character_id === c.id && a.slot === 'portrait');
    return { id: c.id, name: c.name, age: c.age, location: c.fictional_location, occupation: c.occupation, clue: c.conversation_clue, bio: c.bio, interests: c.interests, href: characterHref(c.id, filters), photo: photo ?

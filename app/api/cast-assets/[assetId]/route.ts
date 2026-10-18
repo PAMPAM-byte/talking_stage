@@ -5,7 +5,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ asse
   try {
     const { assetId } = await params;
     if (!/^[a-f0-9-]{36}$/i.test(assetId)) return deny(404);
-    const account = await currentAccount();
+    const account = await currentAccount({ failOnUnavailable: true });
     if (!account) return deny(401);
     if (!account.profile.onboarding_complete || !account.profile.adult_declared_at) return deny(403);
     const role = await account.client.rpc('is_admin');

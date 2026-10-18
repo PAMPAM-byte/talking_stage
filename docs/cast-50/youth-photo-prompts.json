@@ -1,0 +1,306 @@
+{
+  "version": 1,
+  "tool": "built-in image_gen",
+  "photos": {
+    "char-chief-chukwudi-portrait": {
+      "prompt": "Create ONE photorealistic dating-profile portrait of a wholly fictional Nigerian adult: Chuka, age 30. Identity: Clearly adult Nigerian man aged 30, very deep dark brown skin, long narrow face, prominent nose, high cheekbones, black eyebrows, neat short black beard, tall broad-shouldered frame. No grey beard, no elderly features.. Wardrobe and mood: Contemporary fitted deep-blue kaftan, subtle wristwatch, neat black beard, youthful adult big-boy confidence.. Waist-up, attractive naturally confident warm expression, looking toward camera. Environment: a tasteful rooftop terrace at golden hour in Ikoyi, Lagos. Nigerian young-adult social-life style, not a corporate headshot. Real natural skin texture, believable hands, one subject only, fully clothed, no visible brands, no text, watermark, collage, celebrities or real-person likeness. Clearly adult, portrait orientation. Distinct facial structure specified above; do not homogenize the faces.",
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection of individual full images",
+        "date": "2026-10-18",
+        "criteria": [
+          "Clearly adult fictional subject matching revised age range",
+          "Same identity across paired portrait and gallery",
+          "Fully clothed non-explicit styling",
+          "Natural anatomy and no visible text, watermark or logos",
+          "Confident contemporary Nigerian adult style"
+        ]
+      }
+    },
+    "char-chief-chukwudi-gallery": {
+      "prompt": "Create ONE new photorealistic lifestyle photograph using the attached portrait strictly as the fictional adult identity reference. Preserve this exact adult person's face, skin tone, hair, build and age 30. Clearly adult Nigerian man aged 30, very deep dark brown skin, long narrow face, prominent nose, high cheekbones, black eyebrows, neat short black beard, tall broad-shouldered frame. No grey beard, no elderly features.. Show the SAME PERSON in a DIFFERENT fashionable, fully clothed outfit: cream short-sleeve linen shirt and tailored dark trousers. Scene: sunlit stylish indoor cafe with textured walls in Ikoyi, Lagos. Relaxed candid three-quarter pose, smiling while looking slightly away from camera. Clearly adult fashionable Nigerian dating-profile style, credible natural light and skin texture. No elderly styling or grey hair. One person, no other identifiable people. No logos, readable text, watermark or collage. NOT the same rooftop sunset setting as the reference. This is a fictional adult.",
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection of individual full images",
+        "date": "2026-10-18",
+        "criteria": [
+          "Clearly adult fictional subject matching revised age range",
+          "Same identity across paired portrait and gallery",
+          "Fully clothed non-explicit styling",
+          "Natural anatomy and no visible text, watermark or logos",
+          "Confident contemporary Nigerian adult style"
+        ]
+      }
+    },
+    "char-adedoyin-portrait": {
+      "prompt": "Create ONE photorealistic dating-profile portrait of a wholly fictional Nigerian adult: adedoyin, age 27. Identity: Clearly adult Nigerian woman aged 27, medium brown skin, broad cheekbones, fuller build and a short full natural BLACK afro. Youthful adult face, no silver hair.. Wardrobe and mood: Statement jewellery, sculptural fashionable blouse and contemporary natural afro, all-black hair.. Waist-up, attractive naturally confident warm expression, looking toward camera. Environment: a tasteful contemporary restaurant terrace with greenery in Ikeja, Lagos. Nigerian young-adult social-life style, not a corporate headshot. Real natural skin texture, believable hands, one subject only, fully clothed, no visible brands, no text, watermark, collage, celebrities or real-person likeness. Clearly adult, portrait orientation. Distinct facial structure specified above; do not homogenize the faces.",
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection of individual full images",
+        "date": "2026-10-18",
+        "criteria": [
+          "Clearly adult fictional subject matching revised age range",
+          "Same identity across paired portrait and gallery",
+          "Fully clothed non-explicit styling",
+          "Natural anatomy and no visible text, watermark or logos",
+          "Confident contemporary Nigerian adult style"
+        ]
+      }
+    },
+    "char-adedoyin-gallery": {
+      "prompt": "Create ONE new photorealistic lifestyle photograph using the attached portrait strictly as the fictional adult identity reference. Preserve this exact adult person's face, skin tone, hair, build and age 27. Clearly adult Nigerian woman aged 27, medium brown skin, broad cheekbones, fuller build and a short full natural BLACK afro. Youthful adult face, no silver hair.. Show the SAME PERSON in a DIFFERENT fashionable, fully clothed outfit: rich rust contemporary blouse, tailored cream trousers and sculptural earrings. Scene: tasteful outdoor weekend garden restaurant in Ikeja, Lagos. Relaxed candid three-quarter pose, genuine warm smile toward camera. Clearly adult fashionable Nigerian dating-profile style, credible natural light and skin texture. No elderly styling or grey hair. One person, no other identifiable people. No logos, readable text, watermark or collage. NOT the same rooftop sunset setting as the reference. This is a fictional adult.",
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection of individual full images",
+        "date": "2026-10-18",
+        "criteria": [
+          "Clearly adult fictional subject matching revised age range",
+          "Same identity across paired portrait and gallery",
+          "Fully clothed non-explicit styling",
+          "Natural anatomy and no visible text, watermark or logos",
+          "Confident contemporary Nigerian adult style"
+        ]
+      }
+    },
+    "char-lola-portrait": {
+      "prompt": "Create one natural photorealistic fashion portrait of a wholly fictional Nigerian adult woman aged 28 named Lola. Dark brown skin, rounded square face, fuller build, sleek chin-length black side-part bob. A confident friendly smile, fashionable gold earrings. Wear a completely opaque, high-neck, long-sleeved cobalt-blue blouse with tailored dark trousers. Seated upright at a bright contemporary Ikeja cafe with window light and greenery. Waist-up portrait, natural adult skin texture, one person only, professional lifestyle photography. Fully clothed, no low neckline, no nudity, no text, watermark or visible brand. Clearly a 28-year-old adult, not a teen.",
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection of individual full images",
+        "date": "2026-10-18",
+        "criteria": [
+          "Clearly adult fictional subject matching revised age range",
+          "Same identity across paired portrait and gallery",
+          "Fully clothed non-explicit styling",
+          "Natural anatomy and no visible text, watermark or logos",
+          "Confident contemporary Nigerian adult style"
+        ]
+      }
+    },
+    "char-lola-gallery": {
+      "prompt": "Create ONE new photorealistic fashion lifestyle photograph of the EXACT same wholly fictional Nigerian adult woman in the attached portrait reference, Lola age 28. Preserve the same face, dark brown skin, fuller build, sleek chin-length black side-part bob and adult age. A completely different, fully opaque outfit: an elegant long-sleeved emerald-green high-neck blouse with tailored cream trousers, gold earrings. Standing relaxed in a bright modern art-gallery courtyard in Ikeja, Lagos, soft daylight, waist-up to three-quarter framing, natural friendly smile and believable hands. One adult person, no other identifiable people, natural skin texture. No low neckline, nudity, logos, readable text, watermark or collage. Stylish contemporary young adult Nigerian social-life photography.",
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection of individual full images",
+        "date": "2026-10-18",
+        "criteria": [
+          "Clearly adult fictional subject matching revised age range",
+          "Same identity across paired portrait and gallery",
+          "Fully clothed non-explicit styling",
+          "Natural anatomy and no visible text, watermark or logos",
+          "Confident contemporary Nigerian adult style"
+        ]
+      }
+    },
+    "char-awele-portrait": {
+      "prompt": "Create ONE photorealistic dating-profile portrait of a wholly fictional Nigerian adult: awele, age 29. Identity: Clearly adult Nigerian woman aged 29, medium brown skin, high cheekbones, strong broad build, short natural BLACK coils and stylish rectangular glasses. No silver strands.. Wardrobe and mood: Contemporary sculpted blouse, elegant trousers, gold hoops and stylish clear-frame glasses.. Waist-up, attractive naturally confident warm expression, looking toward camera. Environment: a tasteful rooftop terrace at golden hour in Lekki, Lagos. Nigerian young-adult social-life style, not a corporate headshot. Real natural skin texture, believable hands, one subject only, fully clothed, no visible brands, no text, watermark, collage, celebrities or real-person likeness. Clearly adult, portrait orientation. Distinct facial structure specified above; do not homogenize the faces.",
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection of individual full images",
+        "date": "2026-10-18",
+        "criteria": [
+          "Clearly adult fictional subject matching revised age range",
+          "Same identity across paired portrait and gallery",
+          "Fully clothed non-explicit styling",
+          "Natural anatomy and no visible text, watermark or logos",
+          "Confident contemporary Nigerian adult style"
+        ]
+      }
+    },
+    "char-awele-gallery": {
+      "prompt": "Create ONE new photorealistic lifestyle photograph using the attached portrait strictly as the fictional adult identity reference. Preserve this exact adult person's face, skin tone, hair, build and age 29. Clearly adult Nigerian woman aged 29, medium brown skin, high cheekbones, strong broad build, short natural BLACK coils and stylish rectangular glasses. No silver strands.. Show the SAME PERSON in a DIFFERENT fashionable, fully clothed outfit: elegant emerald blouse and high-waisted dark trousers, keep her glasses. Scene: contemporary waterfront promenade at soft late-afternoon light in Lekki, Lagos. Relaxed candid three-quarter pose, smiling while looking slightly away from camera. Clearly adult fashionable Nigerian dating-profile style, credible natural light and skin texture. No elderly styling or grey hair. One person, no other identifiable people. No logos, readable text, watermark or collage. NOT the same rooftop sunset setting as the reference. This is a fictional adult.",
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection of individual full images",
+        "date": "2026-10-18",
+        "criteria": [
+          "Clearly adult fictional subject matching revised age range",
+          "Same identity across paired portrait and gallery",
+          "Fully clothed non-explicit styling",
+          "Natural anatomy and no visible text, watermark or logos",
+          "Confident contemporary Nigerian adult style"
+        ]
+      }
+    },
+    "char-tonye-portrait": {
+      "prompt": "Create ONE photorealistic dating-profile portrait of a wholly fictional Nigerian adult: tonye, age 30. Identity: Clearly adult Nigerian man aged 30, dark brown skin, wide jaw, broad heavyset build, shaved head and close neatly trimmed BLACK beard. Natural adult smile lines, no salt-and-pepper hair.. Wardrobe and mood: Sharp contemporary native tailoring, neat BLACK beard and a subtle watch.. Waist-up, attractive naturally confident warm expression, looking toward camera. Environment: a tasteful contemporary restaurant terrace with greenery in Old GRA, Port Harcourt. Nigerian young-adult social-life style, not a corporate headshot. Real natural skin texture, believable hands, one subject only, fully clothed, no visible brands, no text, watermark, collage, celebrities or real-person likeness. Clearly adult, portrait orientation. Distinct facial structure specified above; do not homogenize the faces.",
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection of individual full images",
+        "date": "2026-10-18",
+        "criteria": [
+          "Clearly adult fictional subject matching revised age range",
+          "Same identity across paired portrait and gallery",
+          "Fully clothed non-explicit styling",
+          "Natural anatomy and no visible text, watermark or logos",
+          "Confident contemporary Nigerian adult style"
+        ]
+      }
+    },
+    "char-tonye-gallery": {
+      "prompt": "Create ONE new photorealistic lifestyle photograph using the attached portrait strictly as the fictional adult identity reference. Preserve this exact adult person's face, skin tone, hair, build and age 30. Clearly adult Nigerian man aged 30, dark brown skin, wide jaw, broad heavyset build, shaved head and close neatly trimmed BLACK beard. Natural adult smile lines, no salt-and-pepper hair.. Show the SAME PERSON in a DIFFERENT fashionable, fully clothed outfit: tasteful patterned resort shirt and dark trousers. Scene: bright late-morning modern art gallery courtyard in Old GRA, Port Harcourt. Relaxed candid three-quarter pose, genuine warm smile toward camera. Clearly adult fashionable Nigerian dating-profile style, credible natural light and skin texture. No elderly styling or grey hair. One person, no other identifiable people. No logos, readable text, watermark or collage. NOT the same rooftop sunset setting as the reference. This is a fictional adult.",
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection of individual full images",
+        "date": "2026-10-18",
+        "criteria": [
+          "Clearly adult fictional subject matching revised age range",
+          "Same identity across paired portrait and gallery",
+          "Fully clothed non-explicit styling",
+          "Natural anatomy and no visible text, watermark or logos",
+          "Confident contemporary Nigerian adult style"
+        ]
+      }
+    },
+    "char-dapo-portrait": {
+      "prompt": "Create ONE photorealistic dating-profile portrait of a wholly fictional Nigerian adult: dapo, age 28. Identity: Clearly adult Nigerian man aged 28, rich brown skin, square face, medium stocky build, short neat BLACK hair and neatly trimmed BLACK beard. No greying hair or mature wrinkles.. Wardrobe and mood: Stylish premium camp-collar shirt, fine chain and tasteful contemporary watch.. Waist-up, attractive naturally confident warm expression, looking toward camera. Environment: a tasteful boutique design-hotel lounge with soft daylight in Lekki, Lagos. Nigerian young-adult social-life style, not a corporate headshot. Real natural skin texture, believable hands, one subject only, fully clothed, no visible brands, no text, watermark, collage, celebrities or real-person likeness. Clearly adult, portrait orientation. Distinct facial structure specified above; do not homogenize the faces.",
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection of individual full images",
+        "date": "2026-10-18",
+        "criteria": [
+          "Clearly adult fictional subject matching revised age range",
+          "Same identity across paired portrait and gallery",
+          "Fully clothed non-explicit styling",
+          "Natural anatomy and no visible text, watermark or logos",
+          "Confident contemporary Nigerian adult style"
+        ]
+      }
+    },
+    "char-dapo-gallery": {
+      "prompt": "Create ONE new photorealistic lifestyle photograph using the attached portrait strictly as the fictional adult identity reference. Preserve this exact adult person's face, skin tone, hair, build and age 28. Clearly adult Nigerian man aged 28, rich brown skin, square face, medium stocky build, short neat BLACK hair and neatly trimmed BLACK beard. No greying hair or mature wrinkles.. Show the SAME PERSON in a DIFFERENT fashionable, fully clothed outfit: navy premium knit polo and beige chinos. Scene: sunlit stylish indoor cafe with textured walls in Lekki, Lagos. Relaxed candid three-quarter pose, smiling while looking slightly away from camera. Clearly adult fashionable Nigerian dating-profile style, credible natural light and skin texture. No elderly styling or grey hair. One person, no other identifiable people. No logos, readable text, watermark or collage. NOT the same rooftop sunset setting as the reference. This is a fictional adult.",
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection of individual full images",
+        "date": "2026-10-18",
+        "criteria": [
+          "Clearly adult fictional subject matching revised age range",
+          "Same identity across paired portrait and gallery",
+          "Fully clothed non-explicit styling",
+          "Natural anatomy and no visible text, watermark or logos",
+          "Confident contemporary Nigerian adult style"
+        ]
+      }
+    },
+    "char-bassey-portrait": {
+      "prompt": "Create ONE photorealistic dating-profile portrait of a wholly fictional Nigerian adult: bassey, age 29. Identity: Clearly adult Nigerian man aged 29, deep brown skin, long face, broad athletic build, short tightly coiled BLACK hair, thick neat BLACK moustache and clean-shaven chin. No grey temples.. Wardrobe and mood: Crisp contemporary linen shirt, subtle chain, confident youthful adult styling.. Waist-up, attractive naturally confident warm expression, looking toward camera. Environment: a tasteful rooftop terrace at golden hour in Lekki, Lagos. Nigerian young-adult social-life style, not a corporate headshot. Real natural skin texture, believable hands, one subject only, fully clothed, no visible brands, no text, watermark, collage, celebrities or real-person likeness. Clearly adult, portrait orientation. Distinct facial structure specified above; do not homogenize the faces.",
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection of individual full images",
+        "date": "2026-10-18",
+        "criteria": [
+          "Clearly adult fictional subject matching revised age range",
+          "Same identity across paired portrait and gallery",
+          "Fully clothed non-explicit styling",
+          "Natural anatomy and no visible text, watermark or logos",
+          "Confident contemporary Nigerian adult style"
+        ]
+      }
+    },
+    "char-bassey-gallery": {
+      "prompt": "Create ONE new photorealistic lifestyle photograph using the attached portrait strictly as the fictional adult identity reference. Preserve this exact adult person's face, skin tone, hair, build and age 29. Clearly adult Nigerian man aged 29, deep brown skin, long face, broad athletic build, short tightly coiled BLACK hair, thick neat BLACK moustache and clean-shaven chin. No grey temples.. Show the SAME PERSON in a DIFFERENT fashionable, fully clothed outfit: modern deep green kaftan and understated watch. Scene: tasteful outdoor weekend garden restaurant in Lekki, Lagos. Relaxed candid three-quarter pose, genuine warm smile toward camera. Clearly adult fashionable Nigerian dating-profile style, credible natural light and skin texture. No elderly styling or grey hair. One person, no other identifiable people. No logos, readable text, watermark or collage. NOT the same rooftop sunset setting as the reference. This is a fictional adult.",
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection of individual full images",
+        "date": "2026-10-18",
+        "criteria": [
+          "Clearly adult fictional subject matching revised age range",
+          "Same identity across paired portrait and gallery",
+          "Fully clothed non-explicit styling",
+          "Natural anatomy and no visible text, watermark or logos",
+          "Confident contemporary Nigerian adult style"
+        ]
+      }
+    },
+    "char-samuel-portrait": {
+      "prompt": "Create ONE photorealistic dating-profile portrait of a wholly fictional Nigerian adult: samuel, age 28. Identity: Clearly adult Nigerian man aged 28, medium brown skin, rounded face, soft stocky build, short neat BLACK hair, clean-shaven and stylish oval glasses. No salt-and-pepper hair or pronounced mature lines.. Wardrobe and mood: Stylish knit polo, elegant glasses, understated watch and polished Abuja casualwear.. Waist-up, attractive naturally confident warm expression, looking toward camera. Environment: a tasteful contemporary restaurant terrace with greenery in Jabi, Abuja. Nigerian young-adult social-life style, not a corporate headshot. Real natural skin texture, believable hands, one subject only, fully clothed, no visible brands, no text, watermark, collage, celebrities or real-person likeness. Clearly adult, portrait orientation. Distinct facial structure specified above; do not homogenize the faces.",
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection of individual full images",
+        "date": "2026-10-18",
+        "criteria": [
+          "Clearly adult fictional subject matching revised age range",
+          "Same identity across paired portrait and gallery",
+          "Fully clothed non-explicit styling",
+          "Natural anatomy and no visible text, watermark or logos",
+          "Confident contemporary Nigerian adult style"
+        ]
+      }
+    },
+    "char-samuel-gallery": {
+      "prompt": "Create one new photorealistic lifestyle photograph of the EXACT same wholly fictional Nigerian adult man in the attached identity-reference portrait. Preserve his face, skin, hair, build and age 28. Clearly adult Nigerian man aged 28, medium brown skin, rounded face, soft stocky build, short neat BLACK hair, clean-shaven and stylish oval glasses. No salt-and-pepper hair or pronounced mature lines.. Different fashionable outfit: a crisp pale-blue long-sleeved Oxford shirt, tailored dark trousers, keep his glasses. Scene: a bright modern Abuja art-gallery courtyard with textured stone and tropical plants in daylight, not a rooftop sunset. Relaxed three-quarter pose, friendly confident smile. One adult person only, completely clothed, natural skin texture, believable hands and proportions. No grey hair, no elderly styling, no text, readable logos, watermark, collage or other identifiable people. A stylish adult social-life photograph.",
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection of individual full images",
+        "date": "2026-10-18",
+        "criteria": [
+          "Clearly adult fictional subject matching revised age range",
+          "Same identity across paired portrait and gallery",
+          "Fully clothed non-explicit styling",
+          "Natural anatomy and no visible text, watermark or logos",
+          "Confident contemporary Nigerian adult style"
+        ]
+      }
+    },
+    "char-yomi-portrait": {
+      "prompt": "Generate one photorealistic lifestyle portrait for a fictional adult Nigerian dating character. Subject: Yomi, age 31, clearly adult Nigerian man, deep dark brown skin, long angular face, lean athletic build, short neat BLACK hair, neatly trimmed BLACK moustache and beard, warm charismatic smile. Nigerian Lagos big-boy style: impeccably cut dark olive short-sleeve linen shirt, subtle fine gold chain and understated steel wristwatch. Waist-up at a tasteful Ikoyi Lagos rooftop lounge just before sunset, soft warm light, blurred modern architecture and greenery. Stylish, attractive, grounded and confident with natural skin texture, candid dating-profile photograph rather than a stiff corporate headshot. One person only. Fully clothed. No text, no logo, no watermark, no collage, no celebrity or real person likeness. Portrait orientation. This is a wholly fictional adult.",
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection of individual full images",
+        "date": "2026-10-18",
+        "criteria": [
+          "Clearly adult fictional subject matching revised age range",
+          "Same identity across paired portrait and gallery",
+          "Fully clothed non-explicit styling",
+          "Natural anatomy and no visible text, watermark or logos",
+          "Confident contemporary Nigerian adult style"
+        ]
+      }
+    },
+    "char-yomi-gallery": {
+      "prompt": "Create ONE new photorealistic lifestyle photograph using the attached portrait strictly as the fictional adult identity reference. Preserve this exact adult person's face, skin tone, hair, build and age 31. Clearly adult Nigerian man aged 31, dark brown skin, long angular face, lean athletic build, short neat BLACK hair, trimmed BLACK moustache and beard. No silver hair or elderly features.. Show the SAME PERSON in a DIFFERENT fashionable, fully clothed outfit: crisp black short-sleeve knit polo and tailored light trousers. Scene: bright late-morning modern art gallery courtyard in Ikoyi, Lagos. Relaxed candid three-quarter pose, genuine warm smile toward camera. Clearly adult fashionable Nigerian dating-profile style, credible natural light and skin texture. No elderly styling or grey hair. One person, no other identifiable people. No logos, readable text, watermark or collage. NOT the same rooftop sunset setting as the reference. This is a fictional adult.",
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection of individual full images",
+        "date": "2026-10-18",
+        "criteria": [
+          "Clearly adult fictional subject matching revised age range",
+          "Same identity across paired portrait and gallery",
+          "Fully clothed non-explicit styling",
+          "Natural anatomy and no visible text, watermark or logos",
+          "Confident contemporary Nigerian adult style"
+        ]
+      }
+    },
+    "char-segun-portrait": {
+      "prompt": "Create ONE photorealistic dating-profile portrait of a wholly fictional Nigerian adult: segun, age 28. Identity: Clearly adult Nigerian man aged 28, dark brown skin, rounded square face, large broad build, shaved head and full neat short BLACK beard. No silver chin patch or elderly features.. Wardrobe and mood: Sharp modern kaftan, stylish watch and neat black beard; youthful Abuja social confidence.. Waist-up, attractive naturally confident warm expression, looking toward camera. Environment: a tasteful boutique design-hotel lounge with soft daylight in Wuse II, Abuja. Nigerian young-adult social-life style, not a corporate headshot. Real natural skin texture, believable hands, one subject only, fully clothed, no visible brands, no text, watermark, collage, celebrities or real-person likeness. Clearly adult, portrait orientation. Distinct facial structure specified above; do not homogenize the faces.",
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection of individual full images",
+        "date": "2026-10-18",
+        "criteria": [
+          "Clearly adult fictional subject matching revised age range",
+          "Same identity across paired portrait and gallery",
+          "Fully clothed non-explicit styling",
+          "Natural anatomy and no visible text, watermark or logos",
+          "Confident contemporary Nigerian adult style"
+        ]
+      }
+    },
+    "char-segun-gallery": {
+      "prompt": "Create one new photorealistic lifestyle photograph of the EXACT same wholly fictional Nigerian adult man in the attached identity-reference portrait. Preserve his face, skin, hair, build and age 28. Clearly adult Nigerian man aged 28, dark brown skin, rounded square face, large broad build, shaved head and full neat short BLACK beard. No silver chin patch or elderly features.. Different fashionable outfit: a deep-green fitted polo shirt and tailored beige chinos, subtle watch. Scene: a sunlit contemporary Abuja garden cafe in daylight, not a rooftop sunset. Relaxed three-quarter pose, friendly confident smile. One adult person only, completely clothed, natural skin texture, believable hands and proportions. No grey hair, no elderly styling, no text, readable logos, watermark, collage or other identifiable people. A stylish adult social-life photograph.",
+      "visualReview": "passed",
+      "review": {
+        "reviewer": "Codex visual inspection of individual full images",
+        "date": "2026-10-18",
+        "criteria": [
+          "Clearly adult fictional subject matching revised age range",
+          "Same identity across paired portrait and gallery",
+          "Fully clothed non-explicit styling",
+          "Natural anatomy and no visible text, watermark or logos",
+          "Confident contemporary Nigerian adult style"
+        ]
+      }
+    }
+  }
+}

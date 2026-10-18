@@ -54,12 +54,14 @@ export function validateRoster(pack) {
 
 export async function loadRoster() {
     const generated = await read('docs/cast-50/image-generation.json').catch(error => { if (error.code === 'ENOENT') return { photos: {} }; throw error; });
-    const [current, original, expansion, seeds, voices, knowledge, research, relationships, contentScope, lives] = await Promise.all([
+    const youthPhotos = await read('docs/cast-50/youth-images.json').catch(error => { if (error.code === 'ENOENT') return { photos: {} }; throw error; });
+    const [current, original, expansion, seeds, voices, knowledge, research, relationships, contentScope, lives, youth] = await Promise.all([
         read('docs/cast-50/existing-identities.json'), read('docs/stage-0/characters.json'),
         read('docs/cast-expansion/characters.json'), read('docs/cast-50/identity-seeds.json'),
         read('docs/cast-50/voice-profiles.json'), read('docs/cast-50/knowledge-base.json'), read('docs/cast-50/research.json'),
         read('docs/cast-50/relationship-profiles.json'), read('docs/cast-50/content-scope.json'),
         read('docs/cast-50/life-stories.json'),
+        read('docs/cast-50/youth-rework.json'),
     ]);
     assert.equal(current.length, 22);
     assert.equal(seeds.characters.length, 28);
@@ -81,15 +83,27 @@ export async function loadRoster() {
     }
     const identities = [...current.map(c => ({ ...c, key: c.id, origin: 'existing_catalogue' })), ...seeds.characters.map(c => ({ ...c, origin: 'new_draft' }))];
     const characters = identities.map(identity => {
-        const voice = voices.characters.find(c => c.key === identity.key);
-        assert(voice, `Missing voice for ${identity.key}`);
+        const baseVoice = voices.characters.find(c => c.key === identity.key);
+        assert(baseVoice, `Missing voice for ${identity.key}`);
+        const revision = youth.characters.find(c => c.key === identity.key);
+        assert(revision, `Missing approved youth revision for ${identity.key}`);
+        const voice = { ...baseVoice, bio: revision.bio, clue: revision.clue, socialWorld: revision.socialWorld,
+            handle: `${revision.archetype}: ${baseVoice.handle.replace(/older guy|old-school raconteur|grown man/g, 'young social charmer')}`,
+            register: revision.age <= 34 ? 'Contemporary Nigerian English by default, warm and socially confident. Use Pidgin only when the user starts it or asks for it; match rather than force slang. No older-mentor voice, American dating-coach language or proverbs as a personality substitute.' : baseVoice.register };
         const relationship = Object.fromEntries(Object.entries(relationships.characters.find(c => c.key === identity.key)).filter(([key]) => key !== 'key'));
         const backstory = Object.fromEntries(Object.entries(lives.characters.find(c => c.key === identity.key)).filter(([key]) => key !== 'key'));
         const old = original.characters.find(c => c.id === identity.key);
         const expanded = expansion.characters.find(c => c.key === identity.key);
-        const appearance = identity.appearance ?? expanded?.appearance ?? old?.appearanceContinuity;
+        const originalAppearance = identity.appearance ?? expanded?.appearance ?? old?.appearanceContinuity;
+        const appearance = revision.appearance ?? originalAppearance.replace(/in (?:his|her) (?:early|mid|late)[ -](?:twenties|thirties|forties|fifties)|around forty|age \d+/gi, `aged ${revision.age}`);
         boundedText(appearance, 2500, `${identity.key}: appearance continuity`);
         const profile = Object.fromEntries(fields.map(field => [field, identity[field]]));
+        Object.assign(profile, { age: revision.age, fictionalLocation: revision.location, name: revision.name ?? profile.name, occupation: revision.occupation ?? profile.occupation,
+            personalityTags: [...new Set([...profile.personalityTags, revision.archetype])] });
+        if (identity.key === 'char-chief-chukwudi') backstory.workLife = 'Owns a small automotive business in his fictional backstory, sources vehicles and handles customer follow-up. Enugu is his family background; Ikoyi, Lagos is his current home. Chuka is 30, not an elderly chief. He tells a self-deprecating story about polishing a showroom car just before a dusty delivery arrived. No actual vehicles, customer data or sales are available to the user.';
+        if (identity.key === 'char-dr-aisha') backstory.workLife = backstory.workLife.replace('Based in Kano as her profile says, with earlier Abuja/Kaduna ties.', 'Based in Abuja, with Kano family roots and earlier Kaduna ties.');
+        if (identity.key === 'char-emeka') backstory.workLife = backstory.workLife.replace('Enugu is his profile base; past Lagos experience is background.', 'Lekki, Lagos is his current home; Enugu is his family background.');
+        if (identity.key === 'char-kunle') backstory.workLife = backstory.workLife.replace('Based in Ibadan, with earlier Abuja work ties;', 'Based in Abuja, with Ibadan family ties;');
         profile.bio = voice.bio;
         profile.conversationClue = voice.clue;
         // Existing public tags remain useful filters; the deeper temperament is
@@ -106,6 +120,8 @@ export async function loadRoster() {
             'Remain honest about being fictional AI when asked. Keep chat non-explicit. No money requests, financial rescue, actual meetings, off-platform contact or claims of real services.',
             'Follow server language preferences and explicit current tone requests before the register examples below. A short reply is allowed. Do not ask a question every turn or turn your career into every topic.',
             `Appearance continuity, never a fact about the user: ${appearance}`,
+            `Founder-approved dating style: ${revision.archetype}. ${revision.style} ${revision.socialWorld}`,
+            'Big girl, big boy and baddie describe confident adult taste, banter and social energy. Do not turn them into repetitive labels, claims of extreme wealth, contempt for ordinary people or constant demands for spending. Be specific, funny, affectionate and interested in the actual conversation. Lifestyle stories are fictional canon, not live reports. The four older personalities can have composed affluent styling without offering money, dependency, sponsorship or real arrangements.',
             ...['handle', 'register', 'temperament', 'contradiction', 'socialWorld', 'texting', 'affection', 'softSpot', 'friction'].map(field => `${field}: ${voice[field]}`),
             `Fictional preferences, not universal Nigerian views: ${voice.opinions.join(' / ')}`,
             `Familiar conversation topics, not professional authority or live knowledge: ${voice.knowledgeTopics.join(' / ')}`,
@@ -120,22 +136,22 @@ export async function loadRoster() {
             `Thoughtful discussion: ${relationship.thoughtfulReply}`,
             expanded?.roleBoundary,
         ].filter(Boolean).join('\n');
-        const photoBriefs = identity.origin === 'new_draft' ? ['portrait', 'gallery'].map(slot => ({
-            slot, status: generated.photos[`${identity.key}-${slot}`]?.visualReview === 'passed' ? 'generated_visually_reviewed' : 'not_generated', reference: slot === 'gallery' ? `${identity.key}-portrait (reviewed identity reference)` : null,
-            prompt: `Create one realistic photograph of a wholly fictional Nigerian adult aged ${profile.age}. ${appearance} ${slot === 'portrait' ? identity.portraitScene : identity.galleryScene} Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people.`,
+        const photoBriefs = identity.origin === 'new_draft' || revision.appearance ? ['portrait', 'gallery'].map(slot => ({
+            slot, status: (revision.appearance ? youthPhotos : generated).photos[`${identity.key}-${slot}`]?.visualReview === 'passed' ? 'generated_visually_reviewed' : 'not_generated', reference: slot === 'gallery' ? `${identity.key}-portrait (reviewed identity reference)` : null,
+            prompt: `Create one realistic photograph of a wholly fictional Nigerian adult aged ${profile.age}. ${appearance} ${revision.appearance ? `${revision.style} Stylish ${slot === 'portrait' ? 'waist-up portrait' : 'lifestyle photograph in a different outfit'} in ${profile.fictionalLocation}.` : slot === 'portrait' ? identity.portraitScene : identity.galleryScene} Preserve the exact same adult identity, age, face, skin tone, hair and build across both photos; gallery uses the reviewed portrait as reference, with different clothing and composition. Natural skin texture, ordinary credible setting, fully clothed non-explicit presentation. No real-person likeness request, celebrity, readable logo, watermark, text, collage or additional identifiable people.`,
         })) : [];
         return {
             key: identity.key, origin: identity.origin, profile, appearance,
             personality: { ...Object.fromEntries(Object.entries(voice).filter(([key]) => !['key', 'bio', 'clue'].includes(key))), relationship },
             knowledgeCards, backstory, direction, photoBriefs,
-            readiness: { ownerReview: 'pending', voiceEvaluation: 'pending', photos: identity.origin === 'new_draft' ? (photoBriefs.every(photo => photo.status === 'generated_visually_reviewed') ? 'generated_visually_reviewed' : 'not_generated') : 'existing_photos_retained_as_recorded', publication: 'see_publication_record' },
+            readiness: { ownerReview: 'pending', voiceEvaluation: 'pending', photos: identity.origin === 'new_draft' || revision.appearance ? (photoBriefs.every(photo => photo.status === 'generated_visually_reviewed') ? 'generated_visually_reviewed' : 'not_generated') : 'existing_photos_retained_as_recorded', publication: 'see_publication_record' },
         };
     });
     const pack = {
-        version: 1, preparedOn: '2026-10-17', status: 'editorial_rework_not_published',
-        sourceFingerprint: hash({ current, original, expansion, seeds, voices, knowledge, research, relationships, contentScope, lives }),
+        version: 1, preparedOn: youth.approvedOn, status: 'editorial_rework_not_published',
+        sourceFingerprint: hash({ current, original, expansion, seeds, voices, knowledge, research, relationships, contentScope, lives, youth }),
         contentScope,
-        counts: { total: 50, existing: 22, additions: 28, women: characters.filter(c => c.profile.gender === 'woman').length, men: characters.filter(c => c.profile.gender === 'man').length, newPhotosRequired: 56 },
+        counts: { total: 50, existing: 22, additions: 28, women: characters.filter(c => c.profile.gender === 'woman').length, men: characters.filter(c => c.profile.gender === 'man').length, newPhotosRequired: 56, youthReworkPhotos: 20, youngerAdults: 46, olderAdults: 4 },
         characters,
     };
     const publication = await read('docs/cast-50/publication.json').catch(error => { if (error.code === 'ENOENT') return null; throw error; });
@@ -144,11 +160,17 @@ export async function loadRoster() {
         for (const c of characters) c.readiness.publication = 'hosted_published';
     }
     validateRoster(pack);
+    assert.equal(characters.filter(c => c.profile.age >= 22 && c.profile.age <= 34).length, 46);
+    const older = characters.filter(c => c.profile.age >= 40 && c.profile.age <= 50);
+    assert.equal(older.length, 4);
+    assert.equal(older.filter(c => c.profile.gender === 'man').length, 2);
+    assert.equal(older.filter(c => c.profile.gender === 'woman').length, 2);
     return pack;
 }
 
 function reviewMarkdown(pack) {
     const lines = ['# Fifty Nigerian character voice drafts', '',
+        '18 October founder-approved rework: 46 younger adults and four older adults, with individual Lagos/Abuja-oriented biographies, social circles and styling. Twenty replacement photographs update ten identities. See [youth rework and publication evidence](./youth-review.md).', '',
         '**Fifty compiled profiles.** All 56 new photos are generated and visually reviewed; the frontend catalogue includes all 50. See README and publication record for hosted status. Every example below is written sample dialogue, not a live-model result. Native-speaker and live voice evaluation remain pending.', '',
         'The founder requested explicit adult text chat. **Explicit mode is not enabled:** the current Claude provider prohibits it. The romantic examples below remain non-explicit; see [scope decision](./adult-chat-scope.md).', '',
         'Generated from the identity and voice sources by `npm run cast:build`. Edit those sources, then rebuild. Research and evaluation requirements are in [README](./README.md).', '',

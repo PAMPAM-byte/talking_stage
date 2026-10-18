@@ -32,4 +32,4 @@ export async function proxy(request: NextRequest) {
   // Identity, onboarding, roles and ownership are independently enforced in DAL/RLS.
   return response;
 }
-export const config = { matcher: ["/sign-in", "/register", "/onboarding/:path*", "/recover/:path*", "/auth/:path*", "/discover/:path*", "/characters/:path*", "/messages/:path*", "/settings/:path*", "/payments/:path*", "/admin/:path*", "/api/conversations/:path*"] };
+export const config = { matcher: ["/sign-in", "/register", "/onboarding/:path*", "/recover/:path*", "/auth/:path*", "/discover/:path*", "/characters/:path*", "/messages/:path*", "/settings/:path*", "/payments/:path*", "/admin/:path*", "/api/conversations/:path*", "/api/cast-assets/:path*"] };

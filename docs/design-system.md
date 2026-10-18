@@ -1,5 +1,7 @@
 # TalkingStage design system
 
+Cast access and age mix · 18 October: the public catalogue renders all fifty matching profiles with lazy-loaded photos. Discover exposes the full matching count and page controls above the one-card deck. The approved cast has 46 younger adults and four older adults, with more Lagos/Abuja social styling and twenty age-consistent replacement photographs. Existing red/white/blush tokens, Manrope and restrained serif quotes remain. See [rework and validation](./cast-50/youth-review.md).
+
 Conversation sync · 18 October: the latest open conversation updates automatically through adaptive polling, preserving drafts, layout and scroll behavior. Temporary connection failures use a quiet reconnecting status on the existing rose/white canvas. Active replies continue being observed after sixty seconds; focus and reconnection catch up automatically. See [implementation and boundaries](./reviews/conversation-sync.md).
 
 Cast catalogue · 17 October: all 50 fictional adult personalities are searchable by name, city or interest, with gender selection and 12-card progressive loading. Existing portrait-card styling, red/white/blush tokens and serif conversation clues remain. Search and select controls use 16px text, generous touch targets, visible keyboard focus and stacked controls on narrow screens. Result counts, clearable empty states, native biography disclosures and AI/photo labels remain available. See [delivery and validation](./reviews/cast-50-publication.md).

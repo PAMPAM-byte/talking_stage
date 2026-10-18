@@ -23,11 +23,23 @@ test('published fifty-character cast renders profiles and all private photos wit
     await page.getByLabel('Password', { exact: true }).fill(password);
     await page.getByRole('button', { name: 'Sign in', exact: true }).click();
     await expect(page).toHaveURL(/\/discover(?:\?|$)/);
+    await page.goto('/discover?gender=all');
+    await expect(page.getByRole('status', { exact: true }).filter({ hasText: '50 characters match your preferences.' })).toBeVisible();
+    // Reach the next batch without first passing all twelve visible cards.
+    await page.getByRole('navigation', { name: 'Pagination', exact: true }).getByRole('link', { name: 'Next page' }).click();
+    await expect(page).toHaveURL(/page=2/);
+    const publicRows: { id: string; age: number; gender: string }[] = [];
     for (let batch = 1; batch <= 5; batch++) {
       await page.goto(`/discover?gender=all&page=${batch}`);
       await expect(page.locator('.discovery-deck')).toHaveAttribute('data-selection-size', String(batch === 5 ? 2 : 12));
       await expect.poll(() => page.locator('.discovery-deck__photo img').evaluate(image => (image as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);
+      const rows = await member.rpc('discover_cast', { p_page: batch, p_gender: null });
+      expect(rows.error).toBeNull(); publicRows.push(...rows.data.characters);
     }
+    expect(new Set(publicRows.map(c => c.id)).size).toBe(50);
+    expect(publicRows.filter(c => c.age >= 22 && c.age <= 34)).toHaveLength(46);
+    expect(publicRows.filter(c => c.age >= 40 && c.age <= 50 && c.gender === 'man')).toHaveLength(2);
+    expect(publicRows.filter(c => c.age >= 40 && c.age <= 50 && c.gender === 'woman')).toHaveLength(2);
     const assets = await member.from('character_assets').select('id');
     expect(assets.error).toBeNull(); expect(assets.data).toHaveLength(100);
     for (let start = 0; start < assets.data!.length; start += 4) {
@@ -39,7 +51,7 @@ test('published fifty-character cast renders profiles and all private photos wit
         expect((await response.body()).length).toBeGreaterThan(100);
       }));
     }
-    for (const [key, name] of [['char-bisola', 'Bisola'], ['char-farouk', 'Farouk'], ['char-dele', 'Dele']]) {
+    for (const [key, name] of [['char-chief-chukwudi', 'Chuka'], ['char-yomi', 'Yomi'], ['char-lola', 'Lola']]) {
       await page.goto(`/characters/${receipt.keys[key]}`);
       await expect(page.getByRole('heading', { name: new RegExp(`^${name},`) })).toBeVisible();
       await expect(page.locator('.profile-facts')).toContainText('· Fictional setting');
@@ -48,11 +60,11 @@ test('published fifty-character cast renders profiles and all private photos wit
         await page.getByRole('button', { name: `Show photo ${number} of ${name}`, exact: true }).click();
         await expect.poll(() => page.locator('.profile-photo-open img').evaluate(image => (image as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);
       }
-      if (key === 'char-bisola') for (const width of [390, 1440]) {
+      if (key === 'char-yomi') for (const width of [390, 1440]) {
         await page.setViewportSize({ width, height: 900 });
-        await page.getByRole('heading', { name: /^Bisola,/ }).click();
+        await page.getByRole('heading', { name: /^Yomi,/ }).click();
         expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-        await page.screenshot({ path: `docs/reviews/cast-50/hosted-bisola-${width}.png`, fullPage: true });
+        await page.screenshot({ path: `test-results-hosted/youth-yomi-${width}.png`, fullPage: true });
       }
     }
     const anonymous = await browser.newContext();

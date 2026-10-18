@@ -42,7 +42,7 @@ const dependencies = {
 };
 dependencies['@/lib/backend/reply-worker'] = dependencies['./reply-worker'];
 async function load(path) {
-  const context = createContext({ Response });
+  const context = createContext({ Response, process: { env: { NODE_ENV: 'test' } } });
   const source = ts.transpileModule(readFileSync(path, 'utf8'), { compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.ESNext } }).outputText;
   const sourceModule = new SourceTextModule(source, { context });
   await sourceModule.link(specifier => {
@@ -120,3 +120,37 @@ reset(); state.replyState = 'failed';
 assert.deepEqual(await (await route.POST(request(), params())).json(), { state: 'failed' });
 assert.equal(state.scheduled.length, 0);
 console.log('Reply entry points passed: committed delivery survives cache/scheduler failures, GET is private/read-only, actor/adult/ownership/Origin denials prevent generation, and provider failures remain separate from delivery. No network calls.');
+
+// Exercise the real account reader: transient Auth/profile errors must not
+// masquerade as sign-out on private photo/API reads.
+let identityResult = { data: { user: { id: 'synthetic-actor' } }, error: null };
+let profileResult = { data: { id: 'synthetic-actor' }, error: null, status: 200 };
+const accountClient = {
+  auth: { getUser: async () => identityResult },
+  from: () => ({ select() { return this; }, eq() { return this; }, single: async () => profileResult }),
+};
+dependencies['server-only'] = {};
+dependencies['@supabase/ssr'] = { createServerClient: () => accountClient };
+dependencies['next/headers'] = { cookies: async () => ({ getAll: () => [], set() {} }) };
+dependencies['next/server'].connection = async () => {};
+dependencies['./config'] = { supabaseConfig: () => ({ url: 'https://synthetic.invalid', key: 'synthetic-public-key' }) };
+dependencies['./dependency-fetch.mjs'] = { dependencyFetch() { throw new Error('Network forbidden'); } };
+const realAccount = (await load('lib/backend/server.ts')).currentAccount;
+assert.equal((await realAccount({ failOnUnavailable: true })).user.id, 'synthetic-actor');
+for (const status of [0, 429, 503]) {
+  identityResult = { data: { user: null }, error: { status } };
+  await assert.rejects(realAccount({ failOnUnavailable: true }), /Identity service unavailable/);
+  assert.equal(await realAccount(), null, 'Legacy callers retain their current behavior');
+}
+for (const status of [400, 401, 403]) {
+  identityResult = { data: { user: null }, error: { status } };
+  assert.equal(await realAccount({ failOnUnavailable: true }), null);
+}
+identityResult = { data: { user: { id: 'synthetic-actor' } }, error: null };
+for (const status of [0, 429, 503]) {
+  profileResult = { data: null, error: { message: 'synthetic outage' }, status };
+  await assert.rejects(realAccount({ failOnUnavailable: true }), /Account service unavailable/);
+}
+profileResult = { data: null, error: { message: 'missing profile' }, status: 404 };
+assert.equal(await realAccount({ failOnUnavailable: true }), null);
+console.log('Private API identity checks passed: valid sessions, signed-out denial and retryable Auth/profile transport/rate-limit failures. No network calls.');

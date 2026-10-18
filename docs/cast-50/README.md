@@ -1,5 +1,7 @@
 # Fifty Nigerian personalities
 
+18 October youth rework: the founder approved a 46/4 younger/older mix and easier access to all fifty profiles. See [the rework and publication controls](./youth-review.md). The approved `youth-rework.json` overlay takes precedence over the historical identity and voice sources below.
+
 18 October personal-life revision: all 50 published private directions now include their exact profile occupation/location and five consistent personal-canon entries each. Work, friends, family, exes and former crushes can be discussed naturally in first person. [The correction and live evidence](./life-review.md) record 65 completed metered replies, all 50 profession answers, Amara's personal-history continuity and targeted language regressions. Earlier live studies remain historical evidence for their recorded prompt/source fingerprints.
 
 17 October 2026. **All 50 profiles and 100 photos are published to hosted Discover and available in the public frontend catalogue.** This includes a full editorial rework of all 50 voices, 56 newly generated photos and 44 retained photos. [The publication receipt](./publication.json) records successful ordinary-adult pagination and hosted counts; see [delivery and verification](../reviews/cast-50-publication.md). The roster contains 26 women and 24 men, all fictional adults aged 25–64.
