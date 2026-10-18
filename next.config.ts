@@ -2,6 +2,8 @@ import type { NextConfig } from "next";
 import {networkInterfaces} from 'node:os';
 
 const nextConfig: NextConfig = {
+  // The floating development badge covers chat controls on narrow screens.
+  devIndicators: false,
   allowedDevOrigins: Object.values(networkInterfaces()).flatMap(entries=>
     (entries??[]).filter(entry=>entry.family==='IPv4'&&!entry.internal).map(entry=>entry.address)),
   // Isolate real-auth browser checks from the user's running development server.

@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { initialReplyWatch, pollReply } from '../lib/chat/reply-polling.mjs';
+import { browserTimeZone, initialReplyWatch, pollReply } from '../lib/chat/reply-polling.mjs';
 
 const statuses = [
   { messageId: 'old', state: 'blocked_provider', attempts: 0 },
@@ -17,7 +17,7 @@ const json = value => Response.json(value);
 let recoveries = 0;
 let posts = 0;
 const fetcher = async (_url, init) => {
-  if (init.method === 'POST') { posts++; return json({ state: 'completed' }); }
+  if (init.method === 'POST') { posts++; assert.equal(init.headers['X-TalkingStage-Timezone'], browserTimeZone()); return json({ state: 'completed' }); }
   assert.equal(init.cache, 'no-store');
   return json({ state: 'blocked_provider', attempts: 0 });
 };

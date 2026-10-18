@@ -1,0 +1,19 @@
+# Individual female conversation revision
+
+The screenshot exposed unnecessary career appraisal, repetition and a technical interview in an ordinary introduction. Shared pacing now favours roughly 10–30 words for routine exchanges, one or two short sentences and one idea. Substantive questions and serious distress can receive appropriate detail; replies are not truncated or replaced locally. Occupation disclosures do not require praise, an explanation of the job or a hypothetical scene.
+
+All 26 published women have distinct private voice revisions, personal tastes and two completed adult travel experiences in `lib/ai/women-personalities.mjs`. These are fictional character facts, not researched current events or claims about real people. Confidence and class mean composure, taste, individuality and consideration rather than identical luxury personas, status tests or spending demands. Jobs, current homes, ages, names, photographs and established relationships remain unchanged. The revisions appear after older published examples in the provider system prompt and before the final turn-specific cadence guidance. They apply to the next generated reply, including existing threads, without republishing profiles or altering users' history.
+
+Adedoyin is understated and quietly cheeky, with ceramics-related travel to Marrakech and a Lisbon holiday. Amara has sharper social wit, Accra dinners and a Lisbon shoe mishap. Zainab is economical and composed, with Copenhagen and Marrakech memories. The remaining women each have their own register, tastes and memories. Travel emerges when relevant or asked about, not as a greeting or evidence of wealth, nationality, access or immigration status. Explicit AI questions still require honest answers; visible disclosure and adult, consent, privacy and payment rules remain.
+
+Six [persisted live replies](./women-voice-verification.json) used a separate six-call/$0.04 campaign through the existing database claim/budget/commit pipeline. The $0.031872 conservative reservation matched the database ledger. All six completed with their individual revision present in the provider input, no unsolicited AI disclosure and no detected unprompted Pidgin cue. The synthetic account was disabled afterwards and no saved memories were created. Earlier campaign limits and records were preserved.
+
+This live result was **not a complete style pass**. Replies were shorter (20–54 words), but Adedoyin still praised “useful work” and Zainab called development “a good trade”. One reply repeated the editorial word “adult” in a workshop description. Travel facts were consistent, but one answer remained too long. These outputs are recorded unchanged. The final correction moves individual guidance after the long shared rules, adds short voice-specific examples, removes editorial age labels from the conversational travel text and explicitly prevents appending an explanation to a complete reply. That final correction has offline coverage, not a second live evaluation; the six-call campaign was not extended or reset.
+
+Offline checks cover all 26 published female names, unique voices/tastes/travel examples, preservation of authoritative jobs and homes, placement after older examples, concise guidance for all 50, male-persona isolation, unknown-name fallback and unchanged user messages. Provider contracts, TypeScript and scoped lint passed. Wording remains model-generated; native-speaker/owner review is still needed to judge the full conversational experience.
+
+Illustrations of the intended scale, not measured outputs or fixed scripts:
+
+- Adedoyin, after an introduction: “Nice to meet you, Tunji. I’m Adedoyin.”
+- Amara, when asked about Lisbon: “Beautiful city. I packed for pictures; the hills had other plans.”
+- Zainab, when asked about travel: “Copenhagen and Marrakech. Very different trips, but I enjoyed both.”

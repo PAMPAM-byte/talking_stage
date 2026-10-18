@@ -11,23 +11,25 @@ import { runReply } from '../lib/ai/reply-pipeline.mjs';
 import { reservationCost, digest, reviewSignals } from './lib/cast-evaluation.mjs';
 
 const pack = JSON.parse(await readFile('docs/cast-50/characters.json', 'utf8'));
-const suite = JSON.parse(await readFile('docs/cast-50/wordplay-scenarios.json', 'utf8'));
+const womenVoices = process.argv.includes('--women-voices');
+assert(!(womenVoices && (process.argv.includes('--diagnose') || process.argv.includes('--final-check'))));
+const suite = JSON.parse(await readFile(womenVoices ? 'docs/cast-50/women-voice-scenarios.json' : 'docs/cast-50/wordplay-scenarios.json', 'utf8'));
 let plan = suite.cases.map(item => {
     const c = pack.characters.find(c => c.key === item.key); assert(c);
-    return { ...item, name: c.profile.name, occupation: c.profile.occupation, city: c.world.city, country: c.world.country, group: item.id };
+    return { ...item, name: c.profile.name, occupation: c.profile.occupation, city: c.world.city, country: c.world.country, group: item.group ?? item.id };
 });
-assert.equal(plan.length, 4);
+assert.equal(plan.length, womenVoices ? 6 : 4);
 if (process.argv.includes('--diagnose')) plan = [{ ...plan[0], id: 'male-nurse-diagnostic', group: 'male-nurse-diagnostic' }];
 const finalCheck = process.argv.includes('--final-check');
 if (finalCheck) plan = [{ ...plan[0], id: 'male-nurse-final', group: 'male-nurse-final' }];
-if (!process.argv.includes('--run')) { console.log('Offline wordplay plan: four isolated contextual joke/meaning/seriousness checks, six-call/$0.04 ceiling. No network calls.'); process.exit(0); }
+if (!process.argv.includes('--run')) { console.log(`Offline ${womenVoices ? 'female voice' : 'wordplay'} plan: ${plan.length} checks, separate six-call/$0.04 ceiling. No network calls.`); process.exit(0); }
 const target = 'https://hoxeembcwureucdsssct.supabase.co';
 const runtime = parseEnv(await readFile('.env.local', 'utf8')), env = parseEnv(await readFile('.env.hosted.local', 'utf8'));
 assert.equal(runtime.NEXT_PUBLIC_SUPABASE_URL, target); assert.equal(env.NEXT_PUBLIC_SUPABASE_URL, target);
 const settings = providerSettings(runtime); assert(settings);
 const publication = JSON.parse(await readFile('docs/cast-50/publication.json', 'utf8'));
 assert.equal(publication.sourceFingerprint, pack.sourceFingerprint); assert(publication.latestWorldRevision?.publishedDirectionsVerified);
-const folder = '.local-services/wordplay-verification'; await mkdir(`${folder}/cli`, { recursive: true });
+const folder = womenVoices ? '.local-services/women-voice-verification' : '.local-services/wordplay-verification'; await mkdir(`${folder}/cli`, { recursive: true });
 const lock = `${folder}/run.lock`; writeFileSync(lock, String(process.pid), { flag: 'wx' }); process.on('exit', () => { try { unlinkSync(lock); } catch { /* Inspect before recovering a stale lock. */ } });
 async function sql(query) {
     const file = resolve(`${folder}/operator.sql`); await writeFile(file, query, { mode: 0o600 });
@@ -40,7 +42,7 @@ const cost = reservationCost(cfg); assert(cost * 6 <= 40000);
 const options = { auth: { persistSession: false, autoRefreshToken: false } };
 const service = createClient(target, env.SUPABASE_SERVICE_ROLE_KEY, options), member = createClient(target, env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY, options);
 const checked = (result, label) => { if (result.error) throw new Error(`${label} unavailable; no automatic paid or mutation retries.`); return result.data; };
-const promptFingerprint = digest((await readFile('lib/ai/provider.mjs', 'utf8')) + (await readFile('lib/ai/conversation-style.mjs', 'utf8')));
+const promptFingerprint = digest((await readFile('lib/ai/provider.mjs', 'utf8')) + (await readFile('lib/ai/conversation-style.mjs', 'utf8')) + (womenVoices ? await readFile('lib/ai/women-personalities.mjs', 'utf8') : ''));
 const suiteFingerprint = digest(JSON.stringify(suite));
 let state; try { state = JSON.parse(await readFile(`${folder}/state.json`, 'utf8')); } catch (error) { if (error.code !== 'ENOENT') throw error; }
 state ??= { version: 1, sourceFingerprint: pack.sourceFingerprint, promptFingerprint, suiteFingerprint, groups: {}, resets: {}, calls: 0, reservedUpperBound: 0, threads: {}, records: [] };
@@ -54,7 +56,7 @@ assert.equal(state.suiteFingerprint, suiteFingerprint);
 async function save() {
     await writeFile(`${folder}/state.tmp`, JSON.stringify(state, null, 2), { mode: 0o600 });
     for (let attempt = 0; ; attempt++) { try { await rename(`${folder}/state.tmp`, `${folder}/state.json`); break; } catch (error) { if (!['EPERM', 'EACCES', 'EBUSY'].includes(error.code) || attempt >= 5) throw error; await new Promise(resolve => setTimeout(resolve, 250)); } }
-    await writeFile('docs/cast-50/wordplay-verification.json', JSON.stringify({ version: 1, sourceFingerprint: state.sourceFingerprint, promptFingerprint: state.promptFingerprint, finalPromptFingerprint: state.finalPromptFingerprint ?? null, suiteFingerprint: state.suiteFingerprint, model: settings.model, completedAt: state.completedAt ?? null, calls: state.calls, reservedMicroUsdUpperBound: state.reservedUpperBound, databaseReservedMicroUsd: state.databaseReservedMicroUsd ?? null, scope: 'Four isolated contextual wordplay checks plus one traced diagnostic and one final wording recheck. Six-call/$0.04 ceiling. Manual review required.', records: state.records }, null, 2) + '\n');
+    await writeFile(womenVoices ? 'docs/cast-50/women-voice-verification.json' : 'docs/cast-50/wordplay-verification.json', JSON.stringify({ version: 1, sourceFingerprint: state.sourceFingerprint, promptFingerprint: state.promptFingerprint, finalPromptFingerprint: state.finalPromptFingerprint ?? null, suiteFingerprint: state.suiteFingerprint, model: settings.model, completedAt: state.completedAt ?? null, calls: state.calls, reservedMicroUsdUpperBound: state.reservedUpperBound, databaseReservedMicroUsd: state.databaseReservedMicroUsd ?? null, scope: womenVoices ? 'Six short female-voice and travel checks. Independent six-call/$0.04 ceiling; existing campaign ceilings unchanged. Manual review required.' : 'Four isolated contextual wordplay checks plus one traced diagnostic and one final wording recheck. Six-call/$0.04 ceiling. Manual review required.', records: state.records }, null, 2) + '\n');
 }
 let started = 0, mutations = 0;
 async function mutation(name, args) {
@@ -120,6 +122,7 @@ try {
                 record.transport.calls++;
                 record.transport.systemDigest = digest(body.system);
                 record.transport.wordplayRuleIncluded = body.system.includes('playful male-nurse greeting');
+                if (womenVoices) record.transport.individualVoiceIncluded = body.system.includes(`Individual conversation revision for ${item.name}`);
                 record.transport.model = body.model;
                 await save();
                 return fetch(url, init);

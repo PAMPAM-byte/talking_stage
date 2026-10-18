@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "retrievedAt": "2026-10-18T22:59:02.001Z",
+  "source": "https://github.com/UniversalDependencies/UD_Naija-NSC",
+  "revision": "e1208ebb7111cf1180964d5a0012b6b273752324",
+  "license": "CC BY-SA 4.0",
+  "file": "pcm_nsc-ud-dev.conllu",
+  "sha256": "3733a8a80aa5d7f2b61ae26570d84a0609ebbf79639f0c0a1dda68d37388c92e",
+  "dialogueUnits": {
+    "units": 172,
+    "medianWords": 6,
+    "unitsAtMost12Words": 144
+  },
+  "confirmedAdultDialogueUnits": {
+    "units": 0,
+    "medianWords": null,
+    "unitsAtMost12Words": 0
+  },
+  "usage": "Aggregate structural research only. Annotated utterance units are not whole chat messages. No raw conversations, speaker metadata or verbatim corpus replies are shipped to the model. Broad age ranges are not treated as verified adult dating data."
+}

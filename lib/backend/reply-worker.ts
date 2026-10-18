@@ -16,7 +16,7 @@ function replyConfiguration() {
   return { settings, client: trustedBackendClient() };
 }
 
-export async function processReply(messageId: string, actorId: string, signal?: AbortSignal): Promise<string> {
+export async function processReply(messageId: string, actorId: string, signal?: AbortSignal, userTimeZone?: string | null): Promise<string> {
   const configuration = replyConfiguration();
   if (!configuration) {
     emit('ai.reply', 'disabled');
@@ -25,7 +25,7 @@ export async function processReply(messageId: string, actorId: string, signal?: 
 
   const { client, settings } = configuration;
   // Claim and completion RPCs independently enforce ownership, leases and budgets.
-  return observeAI('ai.reply', () => runReply(client, messageId, actorId, settings, { signal }));
+  return observeAI('ai.reply', () => runReply(client, messageId, actorId, settings, { signal, userTimeZone }));
 }
 
 export async function processSummary(messageId: string, actorId: string): Promise<string> {

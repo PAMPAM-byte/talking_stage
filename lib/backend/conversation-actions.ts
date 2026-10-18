@@ -26,11 +26,11 @@ function refreshMessages() {
   catch { emit('conversation.change', 'unexpected'); }
 }
 
-function scheduleReply(messageId: string, actorId: string) {
+function scheduleReply(messageId: string, actorId: string, userTimeZone: string) {
   try {
     after(async () => {
       try {
-        const state = await processReply(messageId, actorId);
+        const state = await processReply(messageId, actorId, undefined, userTimeZone);
         if (state === 'completed') {
           try { await processSummary(messageId, actorId); }
           catch { emit('ai.summary', 'unexpected'); }
@@ -93,7 +93,7 @@ export async function conversationAction(form: FormData): Promise<ConversationRe
     if (result.error) return mutationFailure(result.error.message);
 
     const messageId = operation === 'send' ? result.data?.id as string | undefined : undefined;
-    if (messageId) scheduleReply(messageId, account.user.id);
+    if (messageId) scheduleReply(messageId, account.user.id, String(form.get('timeZone') ?? ''));
     refreshMessages();
     return {
       id: operation === 'start' ? result.data : id,

@@ -36,7 +36,7 @@ const dependencies = {
   'next/server': { after(work) { if (state.scheduleThrows) throw new Error('synthetic scheduling failure'); state.scheduled.push(work); } },
   './server': { currentAccount: async () => account() },
   '@/lib/backend/server': { currentAccount: async () => account() },
-  './reply-worker': { processReply: async () => { state.replyCalls++; return state.replyState; }, processSummary: async () => 'disabled' },
+  './reply-worker': { processReply: async (...args) => { state.replyCalls++; state.replyArgs = args; return state.replyState; }, processSummary: async () => 'disabled' },
   '@/lib/monitoring/events.mjs': { emit() {}, observe: async (_operation, work) => work() },
   '@/lib/backend/request-origin.mjs': { isFirstPartyOrigin: () => state.firstParty },
 };
@@ -96,6 +96,15 @@ assert((await conversationAction(form('skip'))).error); assert.equal(state.rpcCa
 
 const params = () => ({ params: Promise.resolve({ conversationId, messageId }) });
 const request = () => new Request('http://localhost/synthetic', { method: 'POST', headers: { origin: 'http://localhost' } });
+reset();
+const localSend = form('send'); localSend.set('timeZone', 'Africa/Lagos');
+await conversationAction(localSend);
+await state.scheduled[0]();
+assert.equal(state.replyArgs[3], 'Africa/Lagos', 'Background generation must receive the sender timezone.');
+reset();
+const zonedRequest = new Request('http://localhost/synthetic', { method: 'POST', headers: {origin:'http://localhost','X-TalkingStage-Timezone':'America/Toronto'} });
+assert.equal((await route.POST(zonedRequest, params())).status, 200);
+assert.equal(state.replyArgs[3], 'America/Toronto', 'Retry/recovery must forward the current browser timezone.');
 reset();
 const metadata = await route.GET(request(), params());
 assert.equal(metadata.headers.get('cache-control'), 'private, no-store');

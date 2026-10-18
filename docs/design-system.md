@@ -1,5 +1,7 @@
 # TalkingStage design system
 
+Chat expressions · 18 October: the connected composer has a quiet smile control opening a white, rose-accented searchable picker with Emoji, Stickers and GIFs. Original reaction artwork is shared between transparent stickers and bounded animated GIFs. Selected media previews above the field with optional captions and a remove action. Sent reactions sit naturally in the thread; reduced motion selects static posters. See [implementation and scope](./reviews/chat-expressions.md).
+
 Continuous Discover · 18 October: the full matching cast lives in one swipe deck, with no Next/Previous pages or batch counters. Existing portrait-led layout, circular coloured actions, shared typography and AI labels remain. Session continuity and Undo span the full deck; the end state offers Browse again. This supersedes the page-navigation presentation below. [Research and implementation](./reviews/continuous-discovery.md).
 
 Cast access and age mix · 18 October: the public catalogue renders all fifty matching profiles with lazy-loaded photos. Discover exposes the full matching count and page controls above the one-card deck. The approved cast has 46 younger adults and four older adults, with more Lagos/Abuja social styling and twenty age-consistent replacement photographs. Existing red/white/blush tokens, Manrope and restrained serif quotes remain. See [rework and validation](./cast-50/youth-review.md).

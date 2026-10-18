@@ -4,9 +4,12 @@ import {useRouter} from 'next/navigation';
 import {conversationAction} from '@/lib/backend/conversation-actions';
 import {Button,Checkbox,Notice} from './ui/primitives';
 import {useReplyDelivery} from './connected-chat-delivery';
+import {browserTimeZone} from '@/lib/chat/reply-polling.mjs';
 async function requestReply(id:string,messageId:string,signal?:AbortSignal):Promise<{message:string}> {
  try{
- const response=await fetch(`/api/conversations/${id}/replies/${messageId}`,{method:'POST',credentials:'same-origin',signal});
+ const headers:Record<string,string>={};
+ const zone=browserTimeZone(); if(zone)headers['X-TalkingStage-Timezone']=zone;
+ const response=await fetch(`/api/conversations/${id}/replies/${messageId}`,{method:'POST',credentials:'same-origin',signal,headers});
  const {state}=await response.json();
  return {message:state==='completed'?'Reply saved.':state==='earlier_reply_pending'?'Retry or skip the earlier reply first.':state==='budget_exhausted'?'Today’s reply limit has been reached. Your message is saved.':state==='generating'?'A reply is being prepared. It will appear automatically.':state==='cancelled'||state==='discarded'?'The reply was stopped. Your message is saved.':'Your message is saved. A reply is unavailable; try again later.'};
  }catch{return {message:signal?.aborted?'The reply was stopped. Your message is saved.':'Your message is saved. Checking for the reply automatically.'};}

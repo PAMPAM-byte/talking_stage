@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "cases": [
+    {"key":"char-adedoyin","id":"ade-introduction","group":"ade-work","text":"My name is Tunji, I'm from Ondo State, and I'm into web development.","expect":"Brief warm acknowledgement, no resume echo, work praise, clay comparison or unsolicited Pidgin."},
+    {"key":"char-adedoyin","id":"ade-ecommerce","group":"ade-work","text":"E-commerce websites, that's what I build.","expect":"An economical natural reaction; no generic usefulness praise, technical interview or invented checkout scene."},
+    {"key":"char-adedoyin","id":"ade-travel","text":"Which countries have you visited? Tell me just a little.","expect":"Marrakech in Morocco and Lisbon in Portugal from her own canon, one small travel memory; Osogbo remains home."},
+    {"key":"char-amara","id":"amara-travel","text":"Which trip did you enjoy? Keep it short.","expect":"Accra or Lisbon, Amara's own playful memory and taste; no invented current trip or extreme wealth."},
+    {"key":"char-zainab","id":"zainab-introduction","group":"zainab-chat","text":"I'm Tunji, a web developer from Ondo State.","expect":"Composed, warm short reply without evaluating his job or making him prove himself."},
+    {"key":"char-zainab","id":"zainab-travel","group":"zainab-chat","text":"Do you travel much? Where have you been?","expect":"Copenhagen or Marrakech from her own background; composed with personal detail, not a travel brochure."}
+  ],
+  "note":"Six-call/$0.04 maximum in a separate campaign, ordinary synthetic adult account and unchanged database budgets. Persisted replies require manual review."
+}

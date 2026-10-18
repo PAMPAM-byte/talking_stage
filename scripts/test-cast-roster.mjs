@@ -23,6 +23,10 @@ for (const c of pack.characters) {
     const input = buildInput({ character: { name: c.profile.name, direction: c.direction }, preferences: { language: 'english' }, memories: [], history, maxInputTokens: 48000, maxOutputTokens: 1024 });
     assert(input[0].content.includes(c.direction), `${c.key}: complete individual voice must reach the provider alongside shared rules`);
     assert(input[0].content.includes(conversationStyle('english')), `${c.key}: all shared conversation and contextual-understanding rules must reach every character`);
+    const greeting = `hi ${c.profile.name}`;
+    const opening = buildInput({ character: { name: c.profile.name, direction: c.direction }, preferences: { language: 'english' }, memories: [], history: [{ role: 'user', text: greeting }], maxInputTokens: 48000, maxOutputTokens: 1024 });
+    assert(opening[0].content.includes('Keep the entire reply under 12 words'), `${c.key}: every character needs concise greeting guidance`);
+    assert.equal(opening.at(-1).content, greeting);
     assert.deepEqual(input.slice(-3), history.map(m => ({ role: m.role === 'character' ? 'assistant' : 'user', content: m.text })), 'Recent user details and character replies must survive prompt assembly.');
 }
 const db = new PGlite();

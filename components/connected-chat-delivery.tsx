@@ -5,7 +5,10 @@ import { conversationAction } from '@/lib/backend/conversation-actions';
 import { Button, TextArea } from './ui/primitives';
 import { Icon } from './ui/icon';
 import { MessageDelivery, TypingBubble } from './message-delivery';
-import { initialReplyWatch, pollReply, replyWatchMs } from '@/lib/chat/reply-polling.mjs';
+import { browserTimeZone, initialReplyWatch, pollReply, replyWatchMs } from '@/lib/chat/reply-polling.mjs';
+import { encodeExpression, type Expression } from '@/lib/chat/expressions';
+import { ChatExpressionPicker } from './chat-expression-picker';
+import { ChatMessageContent, ExpressionImage } from './chat-expression';
 type Outgoing = {
     clientId: string;
     text: string;
@@ -146,6 +149,7 @@ export function ConnectedChatDelivery({ id, generation, replies, savedIds, saved
         data.set('generation', String(generation));
         data.set('clientId', item.clientId);
         data.set('text', text);
+        data.set('timeZone', browserTimeZone());
         try {
             const result = await action(data);
             if (!mounted.current)
@@ -218,7 +222,7 @@ export function ChatOutbox({ name }: {
     const newest = outgoing.at(-1)?.clientId;
     useEffect(() => { if (newest)
         end.current?.scrollIntoView({ block: 'end' }); }, [newest]);
-    return <>{outgoing.map(item => <article ref={item.clientId === newest ? end : null} className="message-turn message-turn--user message-turn--outgoing" key={item.clientId} data-delivery={item.state} data-client-id={item.clientId}><p className="message-bubble">{item.text}</p><div className="message-meta caption muted"><time dateTime={item.time}>{new Date(item.time).toLocaleTimeString('en-NG', { timeZone: 'Africa/Lagos', hour: '2-digit', minute: '2-digit' })}</time>{item.state === 'saved' && item.messageId ? <ConnectedMessageDelivery messageId={item.messageId}/> : <MessageDelivery state={item.state}/>}</div>{item.state === 'failed' && <div className="message-send-error"><p role="alert" className="caption">{item.error}</p><Button variant="quiet" disabled={sending} onClick={() => void send(item.text, item)}>Retry sending</Button></div>}</article>)}{typing && <><TypingBubble name={name}/><Button className="chat-stop-reply" variant="quiet" loading={stopping} onClick={async () => { setStopping(true); try {
+    return <>{outgoing.map(item => <article ref={item.clientId === newest ? end : null} className="message-turn message-turn--user message-turn--outgoing" key={item.clientId} data-delivery={item.state} data-client-id={item.clientId}><ChatMessageContent text={item.text}/><div className="message-meta caption muted"><time dateTime={item.time}>{new Date(item.time).toLocaleTimeString('en-NG', { timeZone: 'Africa/Lagos', hour: '2-digit', minute: '2-digit' })}</time>{item.state === 'saved' && item.messageId ? <ConnectedMessageDelivery messageId={item.messageId}/> : <MessageDelivery state={item.state}/>}</div>{item.state === 'failed' && <div className="message-send-error"><p role="alert" className="caption">{item.error}</p><Button variant="quiet" disabled={sending} onClick={() => void send(item.text, item)}>Retry sending</Button></div>}</article>)}{typing && <><TypingBubble name={name}/><Button className="chat-stop-reply" variant="quiet" loading={stopping} onClick={async () => { setStopping(true); try {
         await stop();
     }
     finally {
@@ -231,16 +235,29 @@ export function LiveMessageComposer({ disabled, name }: {
 }) {
     const { send, sending } = useDelivery();
     const [text, setText] = useState('');
+    const [expression, setExpression] = useState<Expression | null>(null);
     const form = useRef<HTMLFormElement>(null);
     useEffect(() => { const input = form.current?.querySelector('textarea'); if (input) {
         input.style.height = '0px';
         input.style.height = `${Math.min(144, Math.max(44, input.scrollHeight))}px`;
     } }, [text]);
-    function submit() { if (disabled || sending || !text.trim())
-        return; const value = text; setText(''); void send(value); }
-    return <form ref={form} className="connected-message-composer" onSubmit={event => { event.preventDefault(); submit(); }}><div className="connected-composer-row"><TextArea label={`Message ${name}`} value={text} onChange={event => setText(event.target.value)} maxLength={2000} rows={1} disabled={disabled} placeholder={`Message ${name}…`} onKeyDown={event => { if (event.key === 'Enter' && !event.shiftKey && !event.nativeEvent.isComposing && event.nativeEvent.keyCode !== 229) {
+    const limit = expression ? 2000 - encodeExpression(expression).length - 1 : 2000;
+    function addEmoji(emoji: string) {
+        const input = form.current?.querySelector('textarea');
+        const start = input?.selectionStart ?? text.length;
+        const end = input?.selectionEnd ?? start;
+        const next = text.slice(0, start) + emoji + text.slice(end);
+        if (next.length > limit) return;
+        setText(next);
+        requestAnimationFrame(() => { input?.focus(); input?.setSelectionRange(start + emoji.length, start + emoji.length); });
+    }
+    function submit() { if (disabled || sending || (!text.trim() && !expression) || text.length > limit)
+        return; const value = expression ? encodeExpression(expression, text) : text; setText(''); setExpression(null); void send(value); }
+    return <form ref={form} className="connected-message-composer" onSubmit={event => { event.preventDefault(); submit(); }}>
+      {expression && <div className="expression-draft" aria-label="Selected reaction"><ExpressionImage expression={expression}/><span className="caption muted">{text.length > limit ? 'Shorten your caption to send.' : 'Add a caption, or send as it is.'}</span><button className="expression-trigger" type="button" aria-label="Remove reaction" onClick={() => setExpression(null)}><Icon name="close"/></button></div>}
+      <div className="connected-composer-row"><ChatExpressionPicker disabled={disabled || sending} onEmoji={addEmoji} onSelect={value => { setExpression(value); requestAnimationFrame(() => form.current?.querySelector('textarea')?.focus()); }}/><TextArea label={`Message ${name}`} value={text} onChange={event => setText(event.target.value)} maxLength={limit} rows={1} disabled={disabled} placeholder={expression ? 'Add a caption…' : `Message ${name}…`} onKeyDown={event => { if (event.key === 'Enter' && !event.shiftKey && !event.nativeEvent.isComposing && event.nativeEvent.keyCode !== 229) {
         event.preventDefault();
         if (!event.repeat)
             submit();
-    } }}/><Button type="submit" className="composer-send" disabled={disabled || sending || !text.trim()} aria-label="Send message"><Icon name="arrow"/></Button></div></form>;
+    } }}/><Button type="submit" className="composer-send" disabled={disabled || sending || (!text.trim() && !expression) || text.length > limit} aria-label="Send message"><Icon name="arrow"/></Button></div></form>;
 }

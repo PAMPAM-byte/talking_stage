@@ -46,7 +46,7 @@ export async function POST(request: Request, { params }: ReplyParams) {
       .eq('id', messageId).eq('conversation_id', conversationId).eq('role', 'user').single();
     if (owned.error) return respond('unavailable', 404);
 
-    const state = await processReply(messageId, account.user.id, request.signal);
+    const state = await processReply(messageId, account.user.id, request.signal, request.headers.get('X-TalkingStage-Timezone'));
     if (state === 'completed') {
       try {
         after(async () => {

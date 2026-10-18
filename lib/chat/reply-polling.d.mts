@@ -1,5 +1,6 @@
 export type ReplyStatus = { messageId: string; state: string; attempts: number };
 export const replyWatchMs: number;
+export function browserTimeZone(): string;
 export function initialReplyWatch(statuses: ReplyStatus[], savedIds: string[], repliesEnabled: boolean): string[];
 export function pollReply(url: string, options: {
   signal: AbortSignal;

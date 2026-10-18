@@ -1,6 +1,7 @@
 import type { SVGProps, ReactNode } from "react";
-export type IconName = "discover" | "message" | "settings" | "arrow" | "back" | "close" | "check" | "info" | "warning" | "photo" | "filter" | "people" | "payment" | "shield" | "menu" | "eye" | "eye-off";
+export type IconName = "smile" | "discover" | "message" | "settings" | "arrow" | "back" | "close" | "check" | "info" | "warning" | "photo" | "filter" | "people" | "payment" | "shield" | "menu" | "eye" | "eye-off";
 const paths: Record<IconName, ReactNode> = {
+  smile: <><circle cx="12" cy="12" r="9"/><path d="M8 14a4.5 4.5 0 0 0 8 0M8.5 9h.01M15.5 9h.01"/></>,
   eye: <><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7S2 12 2 12Z" /><circle cx="12" cy="12" r="3" /></>,
   "eye-off": <><path d="m3 3 18 18M10.6 5.1A12 12 0 0 1 12 5c7 0 10 7 10 7a17 17 0 0 1-3 4M6.5 6.5A19 19 0 0 0 2 12s3 7 10 7a12 12 0 0 0 5.5-1.5M10 10a3 3 0 0 0 4 4" /></>,
   discover: <><circle cx="12" cy="12" r="9" /><path d="m16 8-2.5 5.5L8 16l2.5-5.5Z" /></>,
