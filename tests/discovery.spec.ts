@@ -1,5 +1,7 @@
 import { expect, test, type Page } from '@playwright/test';
 import cast from '../lib/mock/public-cast.json';
+const amara = cast.find(c => c.id === 'char-amara')!;
+const zainab = cast.find(c => c.id === 'char-zainab')!;
 
 async function signIn(page: Page) {
   await page.goto('/sign-in');
@@ -19,7 +21,7 @@ test('filters apply together, cancel without changing results, reset and handle 
   await page.getByRole('group', { name: 'Interest', exact: true }).getByRole('radio', { name: 'books', exact: true }).check();
   await page.getByRole('button', { name: 'Apply filters' }).click();
   await expect(page.locator('.character-card')).toHaveCount(1);
-  await expect(page.locator('.character-card h2')).toHaveText('Zainab, 30');
+  await expect(page.locator('.character-card h2')).toHaveText(`${zainab.name}, ${zainab.age}`);
   await page.getByRole('button', { name: /Filters/ }).click();
   await page.getByRole('group', { name: 'Interest', exact: true }).getByRole('radio', { name: 'football', exact: true }).check();
   await page.keyboard.press('Escape');
@@ -56,7 +58,7 @@ test('selected gender survives visiting and refreshing a preview profile', async
 test('gallery stays with its character, keyboard works, and starting resumes one conversation', async ({ page }) => {
   await signIn(page);
   await page.getByRole('link', { name: 'View profile', exact: true }).click();
-  await expect(page.getByRole('heading', { name: 'Amara, 28' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: `${amara.name}, ${amara.age}` })).toBeVisible();
   await page.getByRole('button', { name: /View photos/ }).click();
   const dialog = page.getByRole('dialog');
   await expect(dialog).toBeVisible();
@@ -90,7 +92,7 @@ test('missing, deactivated, paused and broken assets have useful recovery', asyn
   await page.goto('/characters/no-such-character');
   await expect(page.getByRole('heading', { name: 'Profile not found' })).toBeVisible();
   await page.goto('/characters/char-amara');
-  await expect(page.getByRole('heading', { name: 'Amara, 28' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: `${amara.name}, ${amara.age}` })).toBeVisible();
   await page.getByText('Developer review scenarios', { exact: true }).click();
   await page.getByLabel('Discovery scenario').selectOption('deactivated');
   await expect(page.getByRole('heading', { name: 'Character unavailable' })).toBeVisible();
@@ -121,7 +123,7 @@ test('discovery and profiles fit all review widths and capture screens', async (
             if (!image.naturalWidth) throw new Error(`Character image failed: ${image.src}`);
           }));
         });
-        await page.screenshot({ path: `docs/reviews/stage-3/${route === '/discover' ? 'discover' : 'profile'}-${width}.png`, fullPage: true });
+        await page.screenshot({ path: `test-results/${route === '/discover' ? 'discover' : 'profile'}-${width}.png`, fullPage: true });
       }
     }
   }

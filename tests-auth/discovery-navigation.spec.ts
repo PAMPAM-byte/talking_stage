@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test';
 import credentials from '../lib/backend/local-test-account.json';
 import cast from '../lib/mock/public-cast.json';
 
-test('profile return preserves gender, other filters and pagination even after refreshing', async ({ page }) => {
+test('profile return preserves gender and other filters even after refreshing', async ({ page }) => {
   test.skip(process.env.TALKINGSTAGE_LOCAL_TEST_ACCOUNT !== '1', 'Run npm run backend:test-account first.');
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/sign-in');
@@ -27,7 +27,7 @@ test('profile return preserves gender, other filters and pagination even after r
     expect(cast.some(character => character.name === name && (gender === 'all' || character.gender === gender))).toBe(true);
   }
 
-  for (const query of ['gender=woman&interest=books', 'gender=all&page=2']) {
+  for (const query of ['gender=woman&interest=books', 'gender=all']) {
     await page.goto(`/discover?${query}`);
     await expect(page.locator('.character-card').first()).toBeVisible();
     const originalUrl = page.url();

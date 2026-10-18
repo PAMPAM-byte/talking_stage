@@ -7,7 +7,7 @@ import { CharacterInterests } from './character-interests';
 import { currentAccount } from '@/lib/backend/server';
 import { Badge, EmptyState, Notice } from './ui/primitives';
 import { ConnectedDiscoveryDeck } from './connected-discovery-deck';
-import { Pagination } from './ui/pagination';
+import { loadDiscoveryFeed } from '@/lib/discovery-feed';
 import {ConversationControl} from './connected-conversation-forms';
 import {configuredReplyModel} from '@/lib/backend/reply-worker';
 type Filters={gender?:string;interest?:string;personality?:string;page?:string};
@@ -16,11 +16,20 @@ async function eligibleCast(id?: string,filters:Filters={}) {
  const account=await currentAccount(); if(!account) return null;
  const preferred=account.profile.genders;
  const gender=filters.gender===undefined?(preferred.length===1?preferred[0]:'all'):(['man','woman'].includes(filters.gender)?filters.gender:'all');
- const effectiveFilters={...filters,gender};
- const result=id?await account.client.from('characters').select('id,name,age,gender,bio,conversation_clue,fictional_location,occupation,interests,personality').eq('id',id):await account.client.rpc('discover_cast',{p_page:Number(filters.page??1),p_gender:gender==='all'?null:gender,p_interest:filters.interest||null,p_personality:filters.personality||null});
- if(result.error) return null;
- const characters=(id?result.data:result.data.characters) as CastRow[];
- const collection=id?{page:1,total:characters.length,interests:[] as string[],personalities:[] as string[]}:result.data as {page:number;total:number;interests:string[];personalities:string[]};
+ const effectiveFilters={gender,interest:filters.interest,personality:filters.personality};
+ let characters: CastRow[];
+ let collection: {page:number;total:number;interests:string[];personalities:string[]};
+ if(id) {
+   const result=await account.client.from('characters').select('id,name,age,gender,bio,conversation_clue,fictional_location,occupation,interests,personality').eq('id',id);
+   if(result.error) return null;
+   characters=result.data;
+   collection={page:1,total:characters.length,interests:[],personalities:[]};
+ } else {
+   try {
+     const feed=await loadDiscoveryFeed<CastRow>(page=>account.client.rpc('discover_cast',{p_page:page,p_gender:gender==='all'?null:gender,p_interest:filters.interest||null,p_personality:filters.personality||null}));
+     characters=feed.characters; collection=feed;
+   } catch { return null; }
+ }
  if(!characters.length) return {account,characters,assets:[] as {id:string;character_id:string;slot:string;alt_text:string}[],collection,filters:effectiveFilters};
  const assets=await account.client.from('character_assets').select('id,character_id,slot,alt_text').in('character_id',characters.map(c=>c.id));
  if(assets.error) return null;
@@ -32,13 +41,10 @@ export async function ConnectedDiscovery({ filters:requestedFilters }: {filters:
  const rows=data.characters;
  const filters=data.filters;
  const genderHref=(gender:string)=>{if(gender==='all')return '/discover?gender=all';const query=new URLSearchParams({gender});for(const key of ['interest','personality'] as const)if(filters[key])query.set(key,filters[key]!);return `/discover?${query}`;};
- const pageHref=(page:number)=>{const query=new URLSearchParams();for(const key of ['gender','interest','personality'] as const)if(filters[key])query.set(key,filters[key]!);query.set('page',String(page));return `/discover?${query}`;};
  return <div className="discovery-page discovery-page--swipe stack"><header className="discovery-heading"><div className="stack"><p className="supporting muted">Welcome, {data.account.profile.display_name}.</p><h1 className="display discovery-title">Find your spark.</h1><p className="muted">Meet fictional AI characters with a personality of their own.</p></div><div className="discovery-disclosure">Every character is AI.<br/>Every story is fictional.</div></header>
  <nav className="row" aria-label="Character gender">{[['all','Everyone'],['woman','Women'],['man','Men']].map(([gender,label])=><Link key={gender} className="chip" href={genderHref(gender)} aria-current={filters.gender===gender?'page':undefined}>{label}</Link>)}</nav>
  <ConnectedDiscoveryFilters filters={filters} interests={data.collection.interests} personalities={data.collection.personalities} />
- <p className="caption muted" role="status">{data.collection.total} characters match your preferences. Showing {rows.length} in this batch.</p>
- <Pagination page={data.collection.page} total={data.collection.total} href={pageHref}/>
- {rows.length ? <ConnectedDiscoveryDeck key={JSON.stringify(filters)} scope={`${data.account.profile.id}:${JSON.stringify(filters)}`} nextHref={data.collection.page * 12 < data.collection.total ? pageHref(data.collection.page + 1) : undefined} cards={rows.map(c => {
+ {rows.length ? <ConnectedDiscoveryDeck key={JSON.stringify(filters)} scope={`${data.account.profile.id}:${JSON.stringify(filters)}`} cards={rows.map(c => {
    const photo = data.assets.find(a => a.character_id === c.id && a.slot === 'portrait');
    return { id: c.id, name: c.name, age: c.age, location: c.fictional_location, occupation: c.occupation, clue: c.conversation_clue, bio: c.bio, interests: c.interests, href: characterHref(c.id, filters), photo: photo ?
      // eslint-disable-next-line @next/next/no-img-element

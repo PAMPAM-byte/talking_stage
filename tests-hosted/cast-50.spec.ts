@@ -24,15 +24,11 @@ test('published fifty-character cast renders profiles and all private photos wit
     await page.getByRole('button', { name: 'Sign in', exact: true }).click();
     await expect(page).toHaveURL(/\/discover(?:\?|$)/);
     await page.goto('/discover?gender=all');
-    await expect(page.getByRole('status', { exact: true }).filter({ hasText: '50 characters match your preferences.' })).toBeVisible();
-    // Reach the next batch without first passing all twelve visible cards.
-    await page.getByRole('navigation', { name: 'Pagination', exact: true }).getByRole('link', { name: 'Next page' }).click();
-    await expect(page).toHaveURL(/page=2/);
+    await expect(page.locator('.discovery-deck')).toHaveAttribute('data-selection-size', '50');
+    await expect(page.getByRole('navigation', { name: 'Pagination', exact: true })).toHaveCount(0);
+    await expect.poll(() => page.locator('.discovery-deck__photo img').evaluate(image => (image as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);
     const publicRows: { id: string; age: number; gender: string }[] = [];
     for (let batch = 1; batch <= 5; batch++) {
-      await page.goto(`/discover?gender=all&page=${batch}`);
-      await expect(page.locator('.discovery-deck')).toHaveAttribute('data-selection-size', String(batch === 5 ? 2 : 12));
-      await expect.poll(() => page.locator('.discovery-deck__photo img').evaluate(image => (image as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);
       const rows = await member.rpc('discover_cast', { p_page: batch, p_gender: null });
       expect(rows.error).toBeNull(); publicRows.push(...rows.data.characters);
     }

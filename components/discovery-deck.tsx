@@ -13,7 +13,7 @@ export type DiscoveryCard = {
 };
 
 /** Pass browses locally; Meet starts or resumes the existing conversation flow. */
-export function DiscoveryDeck({ cards, scope, nextHref, onMeet }: { cards: DiscoveryCard[]; scope: string; nextHref?: string; onMeet: (id: string) => Promise<{ id?: string; error?: string }> }) {
+export function DiscoveryDeck({ cards, scope, onMeet }: { cards: DiscoveryCard[]; scope: string; onMeet: (id: string) => Promise<{ id?: string; error?: string }> }) {
   const router = useRouter();
   const [index, setIndex] = useState(0);
   const [drag, setDrag] = useState(0);
@@ -26,7 +26,8 @@ export function DiscoveryDeck({ cards, scope, nextHref, onMeet }: { cards: Disco
   const origin = useRef<{ id: number; x: number; y: number } | null>(null);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const locked = useRef(false);
-  const storageKey = `talkingstage:discovery-deck:v1:${scope}`;
+  // Old twelve-card completion markers must not hide the rest of the full cast.
+  const storageKey = `talkingstage:discovery-deck:v2:${scope}`;
   const card = cards[index];
 
   useEffect(() => {
@@ -64,7 +65,7 @@ export function DiscoveryDeck({ cards, scope, nextHref, onMeet }: { cards: Disco
           if (mounted.current) { setOpening(false); locked.current = false; }
         }
       } else {
-        setAnnouncement(`Passed ${card.name}. ${cards[index + 1] ? `Now showing ${cards[index + 1].name}.` : 'You have seen this selection.'}`);
+        setAnnouncement(`Passed ${card.name}. ${cards[index + 1] ? `Now showing ${cards[index + 1].name}.` : 'You have explored everyone who matches your filters.'}`);
         move(index + 1);
       }
     }, reduced ? 0 : 200);
@@ -95,7 +96,7 @@ export function DiscoveryDeck({ cards, scope, nextHref, onMeet }: { cards: Disco
     <p className="sr-only" role="status" aria-live="polite">{announcement}</p>
     {error && <Notice live tone="danger" title="Conversation couldn’t open">{error}</Notice>}
     {card ? <>
-      <div className="discovery-deck__meta"><span className="caption muted">{index + 1} of {cards.length} in this selection</span><span className="caption muted">Fictional AI characters · 18+</span></div>
+      <div className="discovery-deck__meta"><span className="caption muted">{index + 1} of {cards.length} to discover</span><span className="caption muted">Fictional AI characters · 18+</span></div>
       <div className="discovery-deck__layout">
         <div className="discovery-deck__stage">
           <div className={`discovery-deck__card character-card${drag ? ' is-dragging' : ''}${exit ? ` is-exiting-${exit}` : ''}`} style={style} onPointerDown={start} onPointerMove={update} onPointerUp={finish} onPointerCancel={() => { origin.current = null; setDrag(0); }} onLostPointerCapture={() => { origin.current = null; setDrag(0); }} onKeyDown={event => {
@@ -117,6 +118,6 @@ export function DiscoveryDeck({ cards, scope, nextHref, onMeet }: { cards: Disco
         </div>
         <aside className="discovery-deck__details stack"><div><p className="caption muted">A little conversation starter</p><blockquote>“{card.clue}”</blockquote></div>{card.occupation && <p className="supporting muted">{card.occupation}</p>}<details className="discovery-deck__about"><summary>A little more about {card.name}<span aria-hidden="true">+</span></summary><div className="stack"><div className="row">{card.interests.slice(0, 3).map(interest => <span className="interest-label" key={interest}>{interest}</span>)}</div>{card.bio && <p className="supporting">{card.bio}</p>}<Link href={card.href}>View full profile</Link></div></details></aside>
       </div>
-    </> : <div className="discovery-deck__complete"><EmptyState icon="discover" title="You’ve seen this selection" action={<div className="row">{nextHref && <Link href={nextHref} className="button button--primary">Keep discovering </Link>}<Button variant="secondary" onClick={() => move(0)}>Browse again</Button>{index > 0 && <Button variant="quiet" onClick={() => move(index - 1)}>Undo last pass</Button>}</div>}>Continue exploring or change your filters to find a different personality.</EmptyState></div>}
+    </> : <div className="discovery-deck__complete"><EmptyState icon="discover" title="You’re all caught up" action={<div className="row"><Button variant="secondary" onClick={() => move(0)}>Browse again</Button>{index > 0 && <Button variant="quiet" onClick={() => move(index - 1)}>Undo last pass</Button>}</div>}>Browse again or adjust your filters to discover someone different.</EmptyState></div>}
   </section>;
 }

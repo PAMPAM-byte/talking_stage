@@ -1,5 +1,7 @@
 # TalkingStage design system
 
+Continuous Discover · 18 October: the full matching cast lives in one swipe deck, with no Next/Previous pages or batch counters. Existing portrait-led layout, circular coloured actions, shared typography and AI labels remain. Session continuity and Undo span the full deck; the end state offers Browse again. This supersedes the page-navigation presentation below. [Research and implementation](./reviews/continuous-discovery.md).
+
 Cast access and age mix · 18 October: the public catalogue renders all fifty matching profiles with lazy-loaded photos. Discover exposes the full matching count and page controls above the one-card deck. The approved cast has 46 younger adults and four older adults, with more Lagos/Abuja social styling and twenty age-consistent replacement photographs. Existing red/white/blush tokens, Manrope and restrained serif quotes remain. See [rework and validation](./cast-50/youth-review.md).
 
 Conversation sync · 18 October: the latest open conversation updates automatically through adaptive polling, preserving drafts, layout and scroll behavior. Temporary connection failures use a quiet reconnecting status on the existing rose/white canvas. Active replies continue being observed after sixty seconds; focus and reconnection catch up automatically. See [implementation and boundaries](./reviews/conversation-sync.md).

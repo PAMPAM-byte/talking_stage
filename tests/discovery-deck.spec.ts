@@ -8,6 +8,26 @@ async function signIn(page: Page) {
   await expect(page.locator('.discovery-deck__card')).toHaveCount(1);
 }
 
+test('the full cast is one continuous deck beyond the old twelve-card boundary', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await signIn(page);
+  await page.getByRole('button', { name: 'Everyone', exact: true }).click();
+  const discoveryUrl = page.url();
+  await expect(page.locator('.discovery-deck')).toHaveAttribute('data-selection-size', '50');
+  await expect(page.getByRole('link', { name: /Next page|Previous page|Keep discovering/ })).toHaveCount(0);
+  const seen = new Set<string>();
+  for (let i = 0; i < 50; i++) {
+    seen.add(await page.locator('.discovery-deck__card').getByRole('heading').innerText());
+    await expect(page.locator('.discovery-deck__meta')).toContainText(`${i + 1} of 50`);
+    await page.getByRole('button', { name: /^Pass / }).click();
+  }
+  expect(seen.size).toBe(50);
+  await expect(page.getByRole('heading', { name: 'You’re all caught up' })).toBeVisible();
+  await expect(page).toHaveURL(discoveryUrl);
+  await page.getByRole('button', { name: 'Undo last pass', exact: true }).click();
+  await expect(page.locator('.discovery-deck__meta')).toContainText('50 of 50');
+});
+
 test('one profile, pass, undo, refresh continuity, meet and end-of-deck recovery', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await signIn(page);
@@ -31,7 +51,7 @@ test('one profile, pass, undo, refresh continuity, meet and end-of-deck recovery
   await expect(card.getByRole('heading')).toHaveText(original);
   await page.emulateMedia({ reducedMotion: 'reduce' });
   for (let i = 0; i < 50 && await card.count(); i++) await page.getByRole('button', { name: /^Pass / }).click();
-  await expect(page.getByRole('heading', { name: 'You’ve seen this selection' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'You’re all caught up' })).toBeVisible();
   await page.getByRole('button', { name: 'Browse again' }).click();
   await expect(card.getByRole('heading')).toHaveText(original);
 });
@@ -87,7 +107,7 @@ test('single-card layout fits mobile and desktop and actions avoid navigation', 
     if (width < 900) expect(actions.y + actions.height, `Actions clear navigation at ${width}px`).toBeLessThanOrEqual(nav.y);
     if ([390, 1440].includes(width)) {
       await page.locator('.discovery-deck__photo img').evaluate(image => (image as HTMLImageElement).decode());
-      await page.screenshot({ path: `docs/reviews/swipe-discovery-${width}.png`, fullPage: true });
+      await page.screenshot({ path: `test-results/continuous-discovery-${width}.png`, fullPage: true });
     }
   }
 });

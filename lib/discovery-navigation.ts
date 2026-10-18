@@ -7,7 +7,6 @@ export function discoveryQuery(filters: DiscoveryFilters) {
   for (const key of ['interest', 'personality'] as const) {
     if (typeof filters[key] === 'string' && filters[key]!.length <= 100 && filters[key]) query.set(key, filters[key]!);
   }
-  if (typeof filters.page === 'string' && /^[1-9]\d{0,5}$/.test(filters.page)) query.set('page', filters.page);
   return query.toString();
 }
 
