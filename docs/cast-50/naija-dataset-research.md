@@ -1,0 +1,28 @@
+# Nigerian conversational data and short-text revision
+
+Reviewed 19 October 2026. The request was for shorter Nigerian dating dialogue, including differing money attitudes, selective standards and initially nonchalant personalities. Those are individual fictional traits, not findings about all Nigerian women.
+
+Sources reviewed:
+
+| Source | Assessment and actual use |
+| --- | --- |
+| [UD Naija-NSC](https://github.com/UniversalDependencies/UD_Naija-NSC) | Spoken Nigerian Pidgin with English translations, not dating DMs. Its CC BY-SA 4.0 licence and public dev file were inspected. A pinned copy was downloaded to ignored local research storage. [Recorded aggregate analysis](./naija-corpus-analysis.json): 172 dialogue utterance units, median six English words, 144 units at most twelve words. Units are annotated speech segments, not complete text messages. The dialogue age bands do not verify everyone as adult; no participant utterances or identities are used as adult dating examples. |
+| [CENCOS](https://zenodo.org/records/7314016) | Natural English/Pidgin interaction from Nigerian fieldwork. Useful evidence of mixed registers, but the retrieved licence field was empty. No raw files were imported. |
+| [NaijaPidgin conversational dataset](https://huggingface.co/datasets/ahmadabdulnasir/naijaPidgin) | The card describes assistant-style examples that can include long explanations, lists and headings. Access is gated. Files were not accessed or imported; this would not solve excessive assistant-like prose by itself. |
+| [ICE Nigeria](https://varieng.helsinki.fi/CoRD/corpora/ICE-NIG/) | Multi-genre English corpus rather than dating dialogue. Its directory states a noncommercial licence. No raw files were imported. |
+| [Zikoko State of Love 2026](https://www.zikoko.com/the-state-of-love-2026/) | Publisher-reported survey context: varied expectations around initiative, generosity, financial stability and communication. Used to support variety rather than a universal gender script. No claim of a representative training dataset or verified adult private chat sample. |
+| [Zikoko Love Currency](https://www.zikoko.com/money/love-currency-i-never-should-have-agreed-to-a-50-50-partnership/) | Edited first-person account of changing financial expectations. Qualitative context only; the interviewee’s story and identity were not copied into a character. |
+
+No suitable verified-adult, licensed Nigerian dating-message dataset was established in this review. We have not trained or fine-tuned the hosted model. The implementation instead uses research-informed, original fictional adult examples at inference time. It does not claim corpus transcripts are dating exchanges.
+
+`lib/ai/naija-exchanges.mjs` contains 45 short original pairs across cool, cheeky, warm, composed and playful styles. Each of the 26 women has an individual early manner, money attitude and preferences. Only one relevant, style-matched example enters a turn; arbitrary user text is never interpolated into developer instructions. Names, activities and opinions in examples are not user memory. Unknown topics, AI identity questions, serious distress, age concerns and platform billing failures receive no dating example. Language remains English first until the user leads with or requests Pidgin.
+
+Routine pacing now favours one brief line, approximately 3–18 words, allowing shorter acknowledgements. Longer replies remain available for a requested explanation, a substantive story or serious care. Coolness is a voice choice, not simulated delay, withholding, humiliation or a payment incentive. Money opinions, preferences, playful fussiness and discussion of ordinary costs are allowed; transfers, income tests, financial rescue and affection tied to spending remain prohibited.
+
+An [independent live campaign](./naija-exchange-verification.json) ran six replies through the existing metered claim/commit pipeline. Reservation was $0.031872 and matched the database ledger; daily limits were unchanged. Outputs were 5, 18, 10, 26, 46 and 16 whitespace-separated words. No unsolicited AI disclosure or detected unprompted Pidgin cue occurred. The synthetic login was disabled afterwards and no saved memories were created.
+
+The hello and short-work cases improved. Money and standards answers still exceeded the target; this is not a complete naturalness pass. After recording those outputs unchanged, the final revision added five bill-splitting examples, made the single-opinion limit explicit and placed the selected example after generic cadence guidance. That adjustment passed offline checks but was not retested live. Neither this campaign nor the previous campaign was extended or reset.
+
+Verification covers all styles and published female names, example uniqueness/length, relevant selection, sensitive-context exclusions, unchanged user data, no user-text injection, unchanged adult/payment protections, provider contracts, TypeScript and scoped lint. Native Nigerian readers still need to judge the exchanges in context; neither a word count nor a survey proves authenticity.
+
+Corpus attribution: Universal Dependencies UD_Naija-NSC / NaijaSynCor contributors, including Bernard Caron and collaborators; [authors and acknowledgements](https://github.com/UniversalDependencies/UD_Naija-NSC#acknowledgments), [CC BY-SA 4.0 licence](https://github.com/UniversalDependencies/UD_Naija-NSC/blob/master/LICENSE.txt). No raw or adapted corpus passage is redistributed in the application examples. Run `node scripts/research-naija-corpus.mjs` only for an explicit online research refresh; its pinned result is recorded separately from offline tests.

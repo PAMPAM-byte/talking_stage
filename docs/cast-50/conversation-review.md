@@ -1,5 +1,7 @@
 # Conversation voice and chemistry
 
+19 October short-text revision: [dataset research and results](./naija-dataset-research.md) distinguish inspected speech data from 45 original adult dating examples now selected by style and topic. Routine turns target roughly 3–18 words; all 26 women have varied initial manners, financial attitudes and preferences. Six live outputs and the remaining money/standards verbosity are recorded without claiming a complete style pass.
+
 18 October 2026. Current requested scope: playful, personal, non-explicit conversation between adults. This work does not implement the older proposed explicit mode. The existing AI disclosure remains visible, direct AI questions require honesty, and actual meetings remain unavailable.
 
 Female voice revision: all 26 published women now receive individual private voice, taste and completed adult travel canon after the older published examples. Routine replies receive stronger short-text guidance across all 50 characters. [The review](./women-voice-review.md) records six live replies, remaining stiffness found in those outputs and the final correction, which has offline coverage but has not been retested live. These are runtime conversation revisions; public homes, careers, names and photographs remain unchanged.

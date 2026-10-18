@@ -11,7 +11,7 @@ for(const character of pack.characters){
   const context={character:{name:character.profile.name,direction:character.direction},preferences:{language:'english'},memories:[],history:[{role:'user',text:'My name is Tunji, I am from Ondo and I build e-commerce websites.'}],maxInputTokens:48000,maxOutputTokens:1024};
   const input=buildInput(context);
   assert(input[0].content.includes(character.direction),'Existing canonical occupation, home and private life must remain available.');
-  assert(input[0].content.includes('roughly 10–30 words'),'All characters need concise everyday pacing.');
+  assert(input[0].content.includes('roughly 3–18 words'),'All characters need concise everyday pacing.');
   assert(input[0].content.includes('not automatically "interesting"'),'Do not appraise ordinary work disclosures.');
   const revision=womenConversationDirection(character.profile.name);
   if(character.profile.gender==='woman'){

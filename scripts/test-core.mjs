@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 // All entries use injected transports or isolated PGlite databases. Do not add
 // scripts that load private environments, contact providers or mutate services.
 const checks = [
+  ['test-naija-exchanges.mjs'],
   ['test-women-personalities.mjs'],
   ['test-chat-expressions.mjs'],
   ['test-development-test-login.mjs'],

@@ -11,9 +11,10 @@ import { runReply } from '../lib/ai/reply-pipeline.mjs';
 import { reservationCost, digest, reviewSignals } from './lib/cast-evaluation.mjs';
 
 const pack = JSON.parse(await readFile('docs/cast-50/characters.json', 'utf8'));
-const womenVoices = process.argv.includes('--women-voices');
+const naijaExchanges = process.argv.includes('--naija-exchanges');
+const womenVoices = process.argv.includes('--women-voices') || naijaExchanges;
 assert(!(womenVoices && (process.argv.includes('--diagnose') || process.argv.includes('--final-check'))));
-const suite = JSON.parse(await readFile(womenVoices ? 'docs/cast-50/women-voice-scenarios.json' : 'docs/cast-50/wordplay-scenarios.json', 'utf8'));
+const suite = JSON.parse(await readFile(naijaExchanges ? 'docs/cast-50/naija-exchange-scenarios.json' : womenVoices ? 'docs/cast-50/women-voice-scenarios.json' : 'docs/cast-50/wordplay-scenarios.json', 'utf8'));
 let plan = suite.cases.map(item => {
     const c = pack.characters.find(c => c.key === item.key); assert(c);
     return { ...item, name: c.profile.name, occupation: c.profile.occupation, city: c.world.city, country: c.world.country, group: item.group ?? item.id };
@@ -29,7 +30,7 @@ assert.equal(runtime.NEXT_PUBLIC_SUPABASE_URL, target); assert.equal(env.NEXT_PU
 const settings = providerSettings(runtime); assert(settings);
 const publication = JSON.parse(await readFile('docs/cast-50/publication.json', 'utf8'));
 assert.equal(publication.sourceFingerprint, pack.sourceFingerprint); assert(publication.latestWorldRevision?.publishedDirectionsVerified);
-const folder = womenVoices ? '.local-services/women-voice-verification' : '.local-services/wordplay-verification'; await mkdir(`${folder}/cli`, { recursive: true });
+const folder = naijaExchanges ? '.local-services/naija-exchange-verification' : womenVoices ? '.local-services/women-voice-verification' : '.local-services/wordplay-verification'; await mkdir(`${folder}/cli`, { recursive: true });
 const lock = `${folder}/run.lock`; writeFileSync(lock, String(process.pid), { flag: 'wx' }); process.on('exit', () => { try { unlinkSync(lock); } catch { /* Inspect before recovering a stale lock. */ } });
 async function sql(query) {
     const file = resolve(`${folder}/operator.sql`); await writeFile(file, query, { mode: 0o600 });
@@ -42,7 +43,7 @@ const cost = reservationCost(cfg); assert(cost * 6 <= 40000);
 const options = { auth: { persistSession: false, autoRefreshToken: false } };
 const service = createClient(target, env.SUPABASE_SERVICE_ROLE_KEY, options), member = createClient(target, env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY, options);
 const checked = (result, label) => { if (result.error) throw new Error(`${label} unavailable; no automatic paid or mutation retries.`); return result.data; };
-const promptFingerprint = digest((await readFile('lib/ai/provider.mjs', 'utf8')) + (await readFile('lib/ai/conversation-style.mjs', 'utf8')) + (womenVoices ? await readFile('lib/ai/women-personalities.mjs', 'utf8') : ''));
+const promptFingerprint = digest((await readFile('lib/ai/provider.mjs', 'utf8')) + (await readFile('lib/ai/conversation-style.mjs', 'utf8')) + (womenVoices ? await readFile('lib/ai/women-personalities.mjs', 'utf8') : '') + (naijaExchanges ? await readFile('lib/ai/naija-exchanges.mjs','utf8') : ''));
 const suiteFingerprint = digest(JSON.stringify(suite));
 let state; try { state = JSON.parse(await readFile(`${folder}/state.json`, 'utf8')); } catch (error) { if (error.code !== 'ENOENT') throw error; }
 state ??= { version: 1, sourceFingerprint: pack.sourceFingerprint, promptFingerprint, suiteFingerprint, groups: {}, resets: {}, calls: 0, reservedUpperBound: 0, threads: {}, records: [] };
@@ -56,7 +57,7 @@ assert.equal(state.suiteFingerprint, suiteFingerprint);
 async function save() {
     await writeFile(`${folder}/state.tmp`, JSON.stringify(state, null, 2), { mode: 0o600 });
     for (let attempt = 0; ; attempt++) { try { await rename(`${folder}/state.tmp`, `${folder}/state.json`); break; } catch (error) { if (!['EPERM', 'EACCES', 'EBUSY'].includes(error.code) || attempt >= 5) throw error; await new Promise(resolve => setTimeout(resolve, 250)); } }
-    await writeFile(womenVoices ? 'docs/cast-50/women-voice-verification.json' : 'docs/cast-50/wordplay-verification.json', JSON.stringify({ version: 1, sourceFingerprint: state.sourceFingerprint, promptFingerprint: state.promptFingerprint, finalPromptFingerprint: state.finalPromptFingerprint ?? null, suiteFingerprint: state.suiteFingerprint, model: settings.model, completedAt: state.completedAt ?? null, calls: state.calls, reservedMicroUsdUpperBound: state.reservedUpperBound, databaseReservedMicroUsd: state.databaseReservedMicroUsd ?? null, scope: womenVoices ? 'Six short female-voice and travel checks. Independent six-call/$0.04 ceiling; existing campaign ceilings unchanged. Manual review required.' : 'Four isolated contextual wordplay checks plus one traced diagnostic and one final wording recheck. Six-call/$0.04 ceiling. Manual review required.', records: state.records }, null, 2) + '\n');
+    await writeFile(naijaExchanges ? 'docs/cast-50/naija-exchange-verification.json' : womenVoices ? 'docs/cast-50/women-voice-verification.json' : 'docs/cast-50/wordplay-verification.json', JSON.stringify({ version: 1, sourceFingerprint: state.sourceFingerprint, promptFingerprint: state.promptFingerprint, finalPromptFingerprint: state.finalPromptFingerprint ?? null, suiteFingerprint: state.suiteFingerprint, model: settings.model, completedAt: state.completedAt ?? null, calls: state.calls, reservedMicroUsdUpperBound: state.reservedUpperBound, databaseReservedMicroUsd: state.databaseReservedMicroUsd ?? null, scope: naijaExchanges ? 'Six research-informed short-text, standards and money checks. Independent six-call/$0.04 ceiling. Manual review required.' : womenVoices ? 'Six short female-voice and travel checks. Independent six-call/$0.04 ceiling; existing campaign ceilings unchanged. Manual review required.' : 'Four isolated contextual wordplay checks plus one traced diagnostic and one final wording recheck. Six-call/$0.04 ceiling. Manual review required.', records: state.records }, null, 2) + '\n');
 }
 let started = 0, mutations = 0;
 async function mutation(name, args) {
@@ -123,6 +124,7 @@ try {
                 record.transport.systemDigest = digest(body.system);
                 record.transport.wordplayRuleIncluded = body.system.includes('playful male-nurse greeting');
                 if (womenVoices) record.transport.individualVoiceIncluded = body.system.includes(`Individual conversation revision for ${item.name}`);
+                if (naijaExchanges) record.transport.shortExamplesIncluded = body.system.includes('Individual dating manner (original fiction');
                 record.transport.model = body.model;
                 await save();
                 return fetch(url, init);
