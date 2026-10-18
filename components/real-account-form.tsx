@@ -7,6 +7,7 @@ import { resetOnboardingDraft, submitAccount } from "@/lib/backend/account-actio
 import type { FlowStep } from "./mock-account-flow";
 import { Brand } from "./shells";
 import { Button, Checkbox, Chip, Notice, SelectField, TextField } from "./ui/primitives";
+import { DevelopmentSignInGate } from './development-test-sign-in';
 
 export type AccountProfile = { display_name: string; genders: string[]; language: string; requests_enabled: boolean; version: number };
 const titles: Record<FlowStep, [string, string]> = {
@@ -18,7 +19,7 @@ const titles: Record<FlowStep, [string, string]> = {
   preferences: ["Let’s make it feel like you.", "A few choices to help you find your kind of conversation."],
   complete: ["Your next conversation awaits.", "One last thing before you explore."],
 };
-export function RealAccountForm({ step, configured, profile, expired = false, localTestAccount, settings = false }: { step: FlowStep; configured: boolean; settings?: boolean; profile?: AccountProfile; expired?: boolean; localTestAccount?: { email: string; password: string } }) {
+export function RealAccountForm({ step, configured, profile, expired = false, localTestAccount, settings = false, developmentTestLogin = false }: { step: FlowStep; configured: boolean; settings?: boolean; profile?: AccountProfile; expired?: boolean; localTestAccount?: { email: string; password: string }; developmentTestLogin?: boolean }) {
   const router = useRouter(); const [busy, startTransition] = useTransition();
   const [pendingAction, setPendingAction] = useState<"submit" | "underage" | "leave" | null>(null);
   const [error, setError] = useState(""); const [message, setMessage] = useState("");
@@ -82,6 +83,7 @@ export function RealAccountForm({ step, configured, profile, expired = false, lo
     {!configured && <Notice title="Account services are unavailable" tone="warning">Please try again later.</Notice>}
     {expired && <Notice title="Sign in to continue">Your session has expired.</Notice>}
     {error && <Notice title={error} tone="danger" live />}{message && <Notice title={message} tone="success" live />}
+    <DevelopmentSignInGate enabled={step === 'sign-in' && developmentTestLogin}>
     {blocked ? <Notice title="TalkingStage is for adults 18 and over" tone="warning">You can return when you are eligible.</Notice> : <form ref={formRef} className="stack account-form" onSubmit={submit}>
       <input type="hidden" name="version" value={profile?.version ?? 0} />
       {step === "sign-in" && localTestAccount && <Notice title="Testing locally"><p>Use the sample account to explore TalkingStage.</p><p className="caption">Email: {localTestAccount.email}<br />Password: {localTestAccount.password}</p><Button variant="secondary" disabled={busy} onClick={fillTestAccount}>Use test account</Button></Notice>}
@@ -102,6 +104,7 @@ export function RealAccountForm({ step, configured, profile, expired = false, lo
       {step === "age" && <Button variant="quiet" loading={busy && pendingAction === "underage"} disabled={busy} onClick={declareUnderage}>I am under 18</Button>}
       {step === "sign-in" && <Link href="/recover">Forgot your password?</Link>}
     </form>}
+    </DevelopmentSignInGate>
     {!settings && <p className="account-footer supporting"><Link href={step === "sign-in" ? "/onboarding/age" : "/sign-in"}>{step === "sign-in" ? "Create an account" : "Already have an account? Sign in"}</Link></p>}
   </Content></AccountPage>;
 }

@@ -12,6 +12,7 @@ import {conversationRevision} from '@/lib/backend/conversation-revision';
 import {configuredReplyModel} from '@/lib/backend/reply-worker';
 import {ConnectedChatPhoto} from './connected-chat-photo';
 import {ConnectedChatPortrait} from './connected-chat-portrait';
+import {ClearAllChats} from './clear-all-chats';
 type Conversation={id:string;character_id:string;name:string;status:string;version:number;generation:number;last_message_preview?:string;updated_at?:string};
 export async function ConnectedConversations({archived=false,page=1}:{archived?:boolean;page?:number}) {
  const account=await currentAccount();if(!account)return null;
@@ -20,7 +21,7 @@ export async function ConnectedConversations({archived=false,page=1}:{archived?:
  const rows=result.data.conversations as Conversation[];
  const portraits=rows.length?(await account.client.from('character_assets').select('id,character_id').eq('slot','portrait').in('character_id',[...new Set(rows.map(row=>row.character_id))])).data??[]:[];
  const model=configuredReplyModel();const available=!!model&&(await account.client.rpc('reply_availability',{p_model:model})).data===true;
- return <section className="message-list stack"><h1 className="display page-title">Messages</h1><div className="row"><Link href="/messages" aria-current={!archived?'page':undefined}>Active</Link><Link href="/messages?archived=1" aria-current={archived?'page':undefined}>Archived</Link></div>{!available&&<Notice title="Your conversations are saved">AI replies are not available yet. You can save messages and manage your history.</Notice>}
+ return <section className="message-list stack"><header className="message-list__header"><h1 className="display page-title">Messages</h1><ClearAllChats /></header><div className="row"><Link href="/messages" aria-current={!archived?'page':undefined}>Active</Link><Link href="/messages?archived=1" aria-current={archived?'page':undefined}>Archived</Link></div>{!available&&<Notice title="Your conversations are saved">AI replies are not available yet. You can save messages and manage your history.</Notice>}
  {rows.length?<div className="message-list__rows">{rows.map(row=><article className="conversation-row" key={row.id}><Link className="conversation-row__link" href={`/messages/${row.id}`}><ConnectedChatPortrait assetId={portraits.find(photo=>photo.character_id===row.character_id)?.id} name={row.name}/><span className="conversation-row__body"><strong>{row.name}</strong><span className="supporting muted conversation-preview">{row.last_message_preview??'Your conversation is ready.'}</span><span className="caption muted">Fictional AI character</span></span></Link></article>)}</div>:<EmptyState title={archived?'No archived conversations':'Your first conversation starts here'} action={<Link className="button button--primary" href="/discover">Explore characters</Link>}>Meet a character to start your own conversation.</EmptyState>}
  <Pagination page={result.data.page} total={result.data.total} href={p=>`/messages?page=${p}${archived?'&archived=1':''}`}/></section>;
 }

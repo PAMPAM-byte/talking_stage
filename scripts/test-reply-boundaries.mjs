@@ -56,7 +56,7 @@ async function load(path) {
   return sourceModule.namespace;
 }
 reset();
-const { conversationAction } = await load('lib/backend/conversation-actions.ts');
+const { conversationAction, clearAllChatsAction } = await load('lib/backend/conversation-actions.ts');
 const route = await load('app/api/conversations/[conversationId]/replies/[messageId]/route.ts');
 dependencies['@/lib/backend/conversation-revision'] = await load('lib/backend/conversation-revision.ts');
 const syncRoute = await load('app/api/conversations/[conversationId]/sync/route.ts');
@@ -84,6 +84,13 @@ reset(); state.signedIn = false;
 assert((await conversationAction(form('send'))).error); assert.equal(state.rpcCalls, 0);
 reset(); state.adult = false;
 assert((await conversationAction(form('send'))).error); assert.equal(state.rpcCalls, 0);
+const clearForm = new FormData(); clearForm.set('confirmation', 'clear-all-chats');
+reset(); assert((await clearAllChatsAction(new FormData())).error); assert.equal(state.rpcCalls, 0);
+for (const denied of ['signedIn', 'adult']) { reset(); state[denied] = false; assert((await clearAllChatsAction(clearForm)).error); assert.equal(state.rpcCalls, 0); }
+reset(); state.refreshThrows = true;
+assert.equal((await clearAllChatsAction(clearForm)).message, 'All chats cleared.', 'Cache failure must not misreport committed clearing.');
+reset(); state.rpcFailure = true;
+assert((await clearAllChatsAction(clearForm)).error);
 reset(); state.owned = false;
 assert((await conversationAction(form('skip'))).error); assert.equal(state.rpcCalls, 0);
 

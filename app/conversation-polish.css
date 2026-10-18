@@ -1,4 +1,8 @@
 .chat-shell__header { min-height: 80px; gap: 16px; }
+.message-list__header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+.message-list__header .page-title { margin: 0; }
+.clear-all-chats { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.clear-all-chats .clear-all-chats__trigger { color: var(--danger); }
 .message-list .conversation-row__link > .connected-chat-avatar { width: 56px; height: 56px; flex: none; border-radius: 50%; overflow: hidden; border: 2px solid white; box-shadow: 0 0 0 1px var(--border); }
 .message-list .conversation-row__link > .connected-chat-avatar img { width: 100%; height: 100%; object-fit: cover; }
 .chat-shell__header > .button--icon { width: 44px; height: 44px; min-height: 44px; padding: 12px; background: #faf7f8; border: 1px solid var(--border); border-radius: 12px; }

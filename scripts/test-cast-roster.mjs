@@ -3,6 +3,7 @@ import { readFile } from 'node:fs/promises';
 import { PGlite } from '@electric-sql/pglite';
 import { loadRoster } from './build-cast-roster.mjs';
 import { buildInput } from '../lib/ai/provider.mjs';
+import { conversationStyle } from '../lib/ai/conversation-style.mjs';
 
 // Validate real compiled content against the actual PostgreSQL draft contract.
 // This database is in memory. No environment files, providers or services used.
@@ -21,6 +22,7 @@ for (const c of pack.characters) {
     const history = [{ role: 'user', text: 'I like jazz.' }, { role: 'character', text: 'One good song can improve an ordinary evening.' }, { role: 'user', text: 'What music did I mention?' }];
     const input = buildInput({ character: { name: c.profile.name, direction: c.direction }, preferences: { language: 'english' }, memories: [], history, maxInputTokens: 48000, maxOutputTokens: 1024 });
     assert(input[0].content.includes(c.direction), `${c.key}: complete individual voice must reach the provider alongside shared rules`);
+    assert(input[0].content.includes(conversationStyle('english')), `${c.key}: all shared conversation and contextual-understanding rules must reach every character`);
     assert.deepEqual(input.slice(-3), history.map(m => ({ role: m.role === 'character' ? 'assistant' : 'user', content: m.text })), 'Recent user details and character replies must survive prompt assembly.');
 }
 const db = new PGlite();

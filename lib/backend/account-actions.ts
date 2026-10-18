@@ -98,7 +98,7 @@ export async function signOutAccount() {
   const client = await backendClient();
   try { if (client) await client.auth.signOut(); } catch { /* Always clear this browser's local access, including during provider outage. */ }
   await clearLocalCookies();
-  redirect("/sign-in");
+  redirect(process.env.NODE_ENV === 'development' && process.env.TALKINGSTAGE_DEV_TEST_LOGIN === '1' ? '/sign-in?manual=1' : '/sign-in');
 }
 async function clearLocalCookies() {
   const jar = await cookies();

@@ -105,3 +105,22 @@ export async function conversationAction(form: FormData): Promise<ConversationRe
     return { error: 'Conversation services are unavailable. Please try again later.' };
   }
 }
+
+export async function clearAllChatsAction(form: FormData): Promise<ConversationResult> {
+  if (form.get('confirmation') !== 'clear-all-chats') return { error: 'Confirm that you want to clear all chats.' };
+  try {
+    const account = await currentAccount();
+    if (!account?.profile.onboarding_complete || !account.profile.adult_declared_at) return { error: 'Sign in with an eligible account.' };
+    const result = await observe('conversation.change', () => account.client.rpc('clear_all_conversations', { p_clear_memories: form.get('clearMemories') === 'on' }));
+    if (result.error) return mutationFailure(result.error.message);
+    refreshMessages();
+    if (form.get('clearMemories') === 'on') {
+      try { revalidatePath('/settings/memories', 'layout'); }
+      catch { emit('conversation.change', 'unexpected'); }
+    }
+    return { message: 'All chats cleared.' };
+  } catch {
+    emit('conversation.change', 'unexpected');
+    return { error: 'Chats could not be cleared. Please try again.' };
+  }
+}

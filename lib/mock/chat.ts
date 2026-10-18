@@ -94,6 +94,11 @@ export async function prepareReply(id: string, messageId: string, scenario: Chat
 }
 export async function archiveConversation(id: string, archived: boolean) { await delay(); if (!owned(id)) return fail('NOT_FOUND', 'Conversation unavailable.'); updateMockConversation(id, { status: archived ? 'archived' : 'active' }); persist(); return ok(true); }
 export async function deleteConversation(id: string) { await delay(); if (!owned(id)) return fail('NOT_FOUND', 'Conversation unavailable.'); threads.delete(id); removeMockConversation(id); persist(); return ok(true); }
+export function clearOwnedChatPreviews() {
+  hydrate(); const rows = listSavedConversations();
+  for (const row of rows) { threads.delete(row.id); removeMockConversation(row.id); }
+  persist(); return rows;
+}
 export function resetChatPreview() { threads.clear(); resetMockConversations(); persist(); }
 export function ownedPhoto(id: string, assetId: string) { const c = owned(id); return c ? characters.find(p => p.id === c.characterId && p.galleryAssetIds.includes(assetId)) : undefined; }
 export async function resetConversation(id: string) {

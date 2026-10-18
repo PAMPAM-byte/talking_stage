@@ -13,6 +13,6 @@ export default defineConfig({
   webServer: {
     command: 'node node_modules/next/dist/bin/next dev --port 3102', url: 'http://localhost:3102',
     reuseExistingServer: false, timeout: 120000,
-    env: { ...hosted, TALKINGSTAGE_AUTH_TEST: '1', TALKINGSTAGE_SITE_URL: 'http://localhost:3102' },
+    env: { ...hosted, TALKINGSTAGE_DEV_TEST_LOGIN: '0', TALKINGSTAGE_AUTH_TEST: '1', TALKINGSTAGE_SITE_URL: 'http://localhost:3102' },
   },
 });

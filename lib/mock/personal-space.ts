@@ -1,7 +1,7 @@
 import type { Memory, PaymentIntent, PaymentStatus, Report, Result, Preferences } from '../contracts';
 import { getAccount, patchMockUser, signOut } from './account';
 import { characters, readConversation } from './discovery';
-import { appendMockStatus, deleteConversation, readThread, resetChatPreview, resetConversation } from './chat';
+import { appendMockStatus, clearOwnedChatPreviews, deleteConversation, readThread, resetChatPreview, resetConversation } from './chat';
 import { hasMockAdminAccess } from './admin-access';
 import { capabilities, previewOperations } from './operator-public';
 export type SpaceScenario = 'ready' | 'offline' | 'error';
@@ -80,6 +80,15 @@ export function manageConversation(id: string, action: 'delete' | 'reset', clear
   const c = readConversation(id); if (!c) return fail('Conversation unavailable.', 'NOT_FOUND');
   if (clearMemories) state.memories = state.memories.filter(m => m.characterId !== c.characterId || m.userId !== actor()); changed(); return ok(c.characterId);
 }).then(async r => { if (r.error) return r; const next = action === 'delete' ? await deleteConversation(id) : await resetConversation(id); return next.error ? fail<string>(next.error.message, next.error.code) : ok(r.data); }); }
+export async function clearAllMockChats(clearMemories: boolean, scenario: SpaceScenario = 'ready') {
+  const loaded = await loadSpace(scenario); if (loaded.error) return loaded;
+  return run(scenario, () => {
+    const rows = clearOwnedChatPreviews();
+    const ids = new Set(rows.map(row => row.characterId));
+    if (clearMemories) state.memories = state.memories.filter(m => m.userId !== actor() || !ids.has(m.characterId));
+    changed(); return ok(true);
+  });
+}
 export function deleteMockAccount(confirmation: string, scenario: SpaceScenario) { return run(scenario, () => {
   if (confirmation !== 'DELETE') return fail('Type DELETE to confirm.');
   state = initial(); confirmations.clear(); changed(); resetChatPreview(); signOut(true); try { sessionStorage.removeItem(key); sessionStorage.removeItem('talkingstage:mock-chat:v1'); sessionStorage.removeItem('talkingstage:mock-conversations:v1'); sessionStorage.removeItem('talkingstage:mock-onboarding:v1'); } catch { /* No real records exist. */ } return ok(true);
