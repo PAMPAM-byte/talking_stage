@@ -22,6 +22,13 @@ await generateReply(photoContext,settings,{fetcher:async(_url,init)=>{
  return response('end_turn',JSON.stringify({text:'A synthetic photo.',photoAssetId:photoId}));
 }});
 assert.equal((await generateReply(context,settings,{fetcher:async()=>response('refusal','No.')})).refused,true);
+let refusals = 0;
+const hardRefusal = await generateReply(context,settings,{fetcher:async()=>{refusals++;return response('refusal','SENSITIVE-PROVIDER-DIAGNOSTIC');}});
+assert.equal(refusals, 1);
+assert.equal(hardRefusal.photoAssetId, null);
+assert(hardRefusal.text.length < 120 && !/SENSITIVE|policy|as an ai|blush|kiss/i.test(hardRefusal.text));
+const playful = "Careful. I'm starting to enjoy your confidence.";
+assert.equal((await generateReply(context,settings,{fetcher:async()=>response('end_turn',JSON.stringify({text:playful,photoAssetId:null}))})).text,playful);
 await assert.rejects(generateReply(context,settings,{fetcher:async()=>response('max_tokens')}),/invalid_output/);
 await assert.rejects(generateReply(context,settings,{fetcher:async()=>response('end_turn','{"action":"send_money"}')}),/invalid_output/);
 await assert.rejects(generateReply(context,settings,{fetcher:async()=>new Response('',{status:429})}),/provider_error/);

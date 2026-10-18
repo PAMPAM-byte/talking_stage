@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "completedAt": "2026-10-18T20:25:37.113Z",
+  "sourceFingerprint": "6d454f42c54d1432c6e9c9e64b8851b29bee49e46805678c3d713b627526fc2a",
+  "profiles": 50,
+  "previousSourceFingerprint": "4d50dbce822e3bc3b16bd2d40353f71f402d0a86bd7e12e16f30dcf20102d66c",
+  "nigerianHomes": 37,
+  "otherAfricanHomes": 6,
+  "canadianHomes": 4,
+  "usHomes": 3,
+  "ordinaryAdultDiscoveryVerified": true,
+  "preservedIdsAndPhotos": true,
+  "encryptedBaselineVerified": true,
+  "publishedDirectionsVerified": true
+}

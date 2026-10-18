@@ -82,6 +82,11 @@
     "cast:life:check": "node scripts/publish-cast-life.mjs --check",
     "cast:life:publish": "node scripts/publish-cast-life.mjs --publish",
     "cast:life:verify": "node scripts/verify-cast-life.mjs --run",
+    "cast:world:check": "node scripts/publish-cast-world.mjs --check",
+    "cast:world:publish": "node scripts/publish-cast-world.mjs --publish",
+    "cast:world:verify": "node scripts/verify-cast-world.mjs --run",
+    "cast:chemistry:plan": "node scripts/verify-cast-chemistry.mjs --check",
+    "cast:chemistry:verify": "node scripts/verify-cast-chemistry.mjs --run",
     "test:cast-evaluation": "node scripts/test-cast-evaluation.mjs"
   },
   "dependencies": {

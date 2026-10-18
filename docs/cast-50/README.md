@@ -1,10 +1,14 @@
 # Fifty Nigerian personalities
 
+Current conversation refinement: [voice, chemistry, implementation and live review](./conversation-review.md) records shared delivery changes, the three contrasting conversation examples, provider limits and remaining style failures. Non-explicit romance is the current requested and implemented task scope. Individual character definitions remain separate from shared rules.
+
+Current geography revision: [world profiles](./world-profiles.json) supplies the authoritative current home, roots, move reason/year, work, routines and personal story for each character. It overrides earlier location and biography descriptions below. The cast covers all 36 Nigerian states plus FCT, six other African countries, four Canadian cities and three US cities. Social labels do not impose a home city. The age mix remains 46 adults aged 22–34 and four aged 40–50. See [world revision and verification](./world-review.md) for delivery status and limits.
+
 18 October youth rework: the founder approved a 46/4 younger/older mix and easier access to all fifty profiles. See [the rework and publication controls](./youth-review.md). The approved `youth-rework.json` overlay takes precedence over the historical identity and voice sources below.
 
 18 October personal-life revision: all 50 published private directions now include their exact profile occupation/location and five consistent personal-canon entries each. Work, friends, family, exes and former crushes can be discussed naturally in first person. [The correction and live evidence](./life-review.md) record 65 completed metered replies, all 50 profession answers, Amara's personal-history continuity and targeted language regressions. Earlier live studies remain historical evidence for their recorded prompt/source fingerprints.
 
-17 October 2026. **All 50 profiles and 100 photos are published to hosted Discover and available in the public frontend catalogue.** This includes a full editorial rework of all 50 voices, 56 newly generated photos and 44 retained photos. [The publication receipt](./publication.json) records successful ordinary-adult pagination and hosted counts; see [delivery and verification](../reviews/cast-50-publication.md). The roster contains 26 women and 24 men, all fictional adults aged 25–64.
+17 October 2026. **All 50 profiles and 100 photos are published to hosted Discover and available in the public frontend catalogue.** This includes a full editorial rework of all 50 voices, 56 newly generated photos and 44 retained photos. [The publication receipt](./publication.json) records successful ordinary-adult pagination and hosted counts; see [delivery and verification](../reviews/cast-50-publication.md). The roster contains 26 women and 24 men, all fictional adults; the current age mix is recorded above.
 
 The current 22 character keys, names, adult ages and photo identities are retained so this work can revise their voices without silently replacing identities or breaking conversations. Their biographies and private personalities are fully proposed again. Another 28 Nigerian identities bring the proposed total to 50. Names, occupations, regional mix and traits of these additions remain editorial proposals for founder review. The founder subsequently requested explicit adult text chat; [the scope decision](./adult-chat-scope.md) records that intent and the current Anthropic provider blocker. Explicit generation is not enabled. No new financial, meeting or matching feature is introduced.
 
@@ -22,6 +26,7 @@ Politics and economic frustration can be ordinary gist. The static knowledge bas
 
 ## Implementation
 
+- `world-profiles.json`: latest location, public biography and private everyday-life canon; validated for exact coverage and bounded model input.
 - `identity-seeds.json`: editable identity and photography briefs for the 28 additions.
 - `voice-profiles.json`: editable voice, biography and conversation-example source for all 50.
 - `relationship-profiles.json`: individual romantic style, pace, depth and two additional examples per voice.

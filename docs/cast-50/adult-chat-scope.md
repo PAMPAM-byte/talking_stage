@@ -1,5 +1,7 @@
 # Adult-chat scope decision
 
+18 October clarification: the latest requested work explicitly targets non-explicit flirting, chemistry and natural conversation. See [the conversation review](./conversation-review.md). The earlier explicit-mode proposal below is historical future scope, not a blocker for the current supported improvements.
+
 17 October 2026. The founder explicitly requested adult chat rather than only suggestive teasing. This records a change in intended text-chat scope, superseding the earlier non-explicit product direction as a future requirement. It does not claim the feature is implemented. The machine-readable record is [content-scope.json](./content-scope.json).
 
 The configured integration accepts Anthropic Claude Haiku models only. Anthropic's [policy effective September 15, 2025](https://www.anthropic.com/legal/archive/22742366-2ef0-4c7a-a833-6523f10d3944) prohibits sexually explicit generation and erotic chats. The [announced policy effective November 12, 2026](https://www.anthropic.com/legal/aup) retains that restriction. Both were inspected on October 17; the future effective date was not treated as already in force. Explicit generation therefore remains unavailable on this integration. No bypass instructions, provider fallback, new provider account or unmetered calls were added.

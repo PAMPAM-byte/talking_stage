@@ -2,10 +2,27 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { PGlite } from '@electric-sql/pglite';
 import { loadRoster } from './build-cast-roster.mjs';
+import { buildInput } from '../lib/ai/provider.mjs';
 
 // Validate real compiled content against the actual PostgreSQL draft contract.
 // This database is in memory. No environment files, providers or services used.
 const pack = await loadRoster();
+const publicCast = JSON.parse(await readFile(new URL('../lib/mock/public-cast.json', import.meta.url), 'utf8'));
+for (const c of pack.characters) {
+    const exposed = publicCast.find(row => row.id === c.key);
+    assert(exposed, `${c.key}: missing public profile`);
+    assert.equal(exposed.fictionalLocation, `${c.world.city}, ${c.world.region}, ${c.world.country}`);
+    assert.equal(exposed.occupation, c.profile.occupation);
+    assert.equal(exposed.bio, c.world.bio);
+    for (const privateField of ['world', 'direction', 'backstory', 'knowledgeCards', 'personality']) assert(!Object.hasOwn(exposed, privateField), `${c.key}: private canon leaked`);
+    for (const field of ['roots', 'arrival', 'work', 'routine', 'offDuty', 'story']) assert(c.direction.includes(c.world[field]), `${c.key}: ${field} missing from model context`);
+    assert(c.direction.includes(c.world.timeZone));
+    assert(!/Lagos (?:big boy|big girl)|Abuja (?:big boy|big girl)/i.test(c.profile.personalityTags.join(' ')), 'Social style must not impose a home city.');
+    const history = [{ role: 'user', text: 'I like jazz.' }, { role: 'character', text: 'One good song can improve an ordinary evening.' }, { role: 'user', text: 'What music did I mention?' }];
+    const input = buildInput({ character: { name: c.profile.name, direction: c.direction }, preferences: { language: 'english' }, memories: [], history, maxInputTokens: 48000, maxOutputTokens: 1024 });
+    assert(input[0].content.includes(c.direction), `${c.key}: complete individual voice must reach the provider alongside shared rules`);
+    assert.deepEqual(input.slice(-3), history.map(m => ({ role: m.role === 'character' ? 'assistant' : 'user', content: m.text })), 'Recent user details and character replies must survive prompt assembly.');
+}
 const db = new PGlite();
 const admins = ['00000000-0000-4000-8000-000000000001', '00000000-0000-4000-8000-000000000002'];
 const member = '00000000-0000-4000-8000-000000000003';

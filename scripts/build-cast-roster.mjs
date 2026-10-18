@@ -55,13 +55,14 @@ export function validateRoster(pack) {
 export async function loadRoster() {
     const generated = await read('docs/cast-50/image-generation.json').catch(error => { if (error.code === 'ENOENT') return { photos: {} }; throw error; });
     const youthPhotos = await read('docs/cast-50/youth-images.json').catch(error => { if (error.code === 'ENOENT') return { photos: {} }; throw error; });
-    const [current, original, expansion, seeds, voices, knowledge, research, relationships, contentScope, lives, youth] = await Promise.all([
+    const [current, original, expansion, seeds, voices, knowledge, research, relationships, contentScope, lives, youth, worlds] = await Promise.all([
         read('docs/cast-50/existing-identities.json'), read('docs/stage-0/characters.json'),
         read('docs/cast-expansion/characters.json'), read('docs/cast-50/identity-seeds.json'),
         read('docs/cast-50/voice-profiles.json'), read('docs/cast-50/knowledge-base.json'), read('docs/cast-50/research.json'),
         read('docs/cast-50/relationship-profiles.json'), read('docs/cast-50/content-scope.json'),
         read('docs/cast-50/life-stories.json'),
         read('docs/cast-50/youth-rework.json'),
+        read('docs/cast-50/world-profiles.json'),
     ]);
     assert.equal(current.length, 22);
     assert.equal(seeds.characters.length, 28);
@@ -70,6 +71,15 @@ export async function loadRoster() {
     assert.equal(relationships.characters.length, 50);
     unique(relationships.characters.map(c => c.key), 'Duplicate relationship source.');
     assert.equal(lives.characters.length, 50);
+    assert.equal(worlds.characters.length, 50);
+    unique(worlds.characters.map(c => c.key), 'Duplicate world source.');
+    assert.deepEqual(worlds.characters.map(c => c.key).sort(), voices.characters.map(c => c.key).sort(), 'World profiles must cover the same cast.');
+    const nigerianHomes = worlds.characters.filter(c => c.country === 'Nigeria');
+    assert.equal(nigerianHomes.length, 37);
+    assert.deepEqual(nigerianHomes.map(c => c.region).sort(), 'Abia|Adamawa|Akwa Ibom|Anambra|Bauchi|Bayelsa|Benue|Borno|Cross River|Delta|Ebonyi|Edo|Ekiti|Enugu|FCT|Gombe|Imo|Jigawa|Kaduna|Kano|Katsina|Kebbi|Kogi|Kwara|Lagos|Nasarawa|Niger|Ogun|Ondo|Osun|Oyo|Plateau|Rivers|Sokoto|Taraba|Yobe|Zamfara'.split('|').sort());
+    assert.equal(worlds.characters.filter(c => c.country === 'Canada').length, 4);
+    assert.equal(worlds.characters.filter(c => c.country === 'United States').length, 3);
+    assert.deepEqual(worlds.characters.filter(c => !['Nigeria', 'Canada', 'United States'].includes(c.country)).map(c => c.country).sort(), ['Benin', 'Ghana', 'Kenya', 'Rwanda', 'Senegal', 'South Africa']);
     unique(lives.characters.map(c => c.key), 'Duplicate backstory source.');
     assert.deepEqual(lives.characters.map(c => c.key).sort(), voices.characters.map(c => c.key).sort(), 'Backstories must cover the exact same cast.');
     assert.deepEqual(relationships.characters.map(c => c.key).sort(), voices.characters.map(c => c.key).sort(), 'Relationship sources must cover the exact same 50 voices.');
@@ -87,8 +97,14 @@ export async function loadRoster() {
         assert(baseVoice, `Missing voice for ${identity.key}`);
         const revision = youth.characters.find(c => c.key === identity.key);
         assert(revision, `Missing approved youth revision for ${identity.key}`);
-        const voice = { ...baseVoice, bio: revision.bio, clue: revision.clue, socialWorld: revision.socialWorld,
-            handle: `${revision.archetype}: ${baseVoice.handle.replace(/older guy|old-school raconteur|grown man/g, 'young social charmer')}`,
+        const world = worlds.characters.find(c => c.key === identity.key);
+        for (const field of ['city', 'region', 'country', 'roots', 'arrival', 'work', 'routine', 'offDuty', 'story', 'bio']) boundedText(world[field], 1200, `${identity.key}: world ${field}`);
+        const timeZone = world.timeZone ?? 'Africa/Lagos';
+        new Intl.DateTimeFormat('en', { timeZone }).format();
+        const archetype = revision.archetype.replace(/Lagos |Abuja /g, '');
+        const socialWorld = `${world.roots} ${world.arrival} ${world.offDuty}`;
+        const voice = { ...baseVoice, bio: world.bio, clue: revision.clue, socialWorld,
+            handle: `${archetype}: ${baseVoice.handle.replace(/older guy|old-school raconteur|grown man/g, 'young social charmer')}`,
             register: revision.age <= 34 ? 'Contemporary Nigerian English by default, warm and socially confident. Use Pidgin only when the user starts it or asks for it; match rather than force slang. No older-mentor voice, American dating-coach language or proverbs as a personality substitute.' : baseVoice.register };
         const relationship = Object.fromEntries(Object.entries(relationships.characters.find(c => c.key === identity.key)).filter(([key]) => key !== 'key'));
         const backstory = Object.fromEntries(Object.entries(lives.characters.find(c => c.key === identity.key)).filter(([key]) => key !== 'key'));
@@ -98,12 +114,9 @@ export async function loadRoster() {
         const appearance = revision.appearance ?? originalAppearance.replace(/in (?:his|her) (?:early|mid|late)[ -](?:twenties|thirties|forties|fifties)|around forty|age \d+/gi, `aged ${revision.age}`);
         boundedText(appearance, 2500, `${identity.key}: appearance continuity`);
         const profile = Object.fromEntries(fields.map(field => [field, identity[field]]));
-        Object.assign(profile, { age: revision.age, fictionalLocation: revision.location, name: revision.name ?? profile.name, occupation: revision.occupation ?? profile.occupation,
-            personalityTags: [...new Set([...profile.personalityTags, revision.archetype])] });
-        if (identity.key === 'char-chief-chukwudi') backstory.workLife = 'Owns a small automotive business in his fictional backstory, sources vehicles and handles customer follow-up. Enugu is his family background; Ikoyi, Lagos is his current home. Chuka is 30, not an elderly chief. He tells a self-deprecating story about polishing a showroom car just before a dusty delivery arrived. No actual vehicles, customer data or sales are available to the user.';
-        if (identity.key === 'char-dr-aisha') backstory.workLife = backstory.workLife.replace('Based in Kano as her profile says, with earlier Abuja/Kaduna ties.', 'Based in Abuja, with Kano family roots and earlier Kaduna ties.');
-        if (identity.key === 'char-emeka') backstory.workLife = backstory.workLife.replace('Enugu is his profile base; past Lagos experience is background.', 'Lekki, Lagos is his current home; Enugu is his family background.');
-        if (identity.key === 'char-kunle') backstory.workLife = backstory.workLife.replace('Based in Ibadan, with earlier Abuja work ties;', 'Based in Abuja, with Ibadan family ties;');
+        Object.assign(profile, { age: revision.age, fictionalLocation: `${world.city}, ${world.region}, ${world.country}`, name: revision.name ?? profile.name, occupation: world.occupation ?? revision.occupation ?? profile.occupation,
+            personalityTags: [...new Set([...profile.personalityTags, archetype].map(tag => tag.replace(/Lagos |Abuja /g, '')))] });
+        backstory.workLife = world.work;
         profile.bio = voice.bio;
         profile.conversationClue = voice.clue;
         // Existing public tags remain useful filters; the deeper temperament is
@@ -113,6 +126,10 @@ export async function loadRoster() {
         const direction = [
             `Fictional adult Nigerian AI character: ${profile.name}, ${profile.age}.`,
             `Authoritative profile: Occupation: ${profile.occupation}. Home base: ${profile.fictionalLocation}. Biography: ${profile.bio}`,
+            ...['roots', 'arrival', 'routine', 'offDuty', 'story'].map(field => `Established life / ${field}: ${world[field]}`),
+            `Home time zone: ${timeZone}. This is location context, not a live clock. Do not guess the current local time, weather or travel conditions.`,
+            'Use this current home and move history even if an older assistant message named another home. Birthplace, past jobs, visits and photo settings are different from current residence. Existing photographs can depict earlier life or travel; do not infer a new home from an image. Do not assume nationality, ethnicity, religion, wealth or immigration status from a city. No visa, licensing or relocation advice is implied by the fictional move.',
+            'When asked where you live or what brought you there, answer directly with your established city and one relevant reason or detail. Describe work in ordinary words using your actual role. Let routines, interests and small personal stories emerge where they fit; do not recite your biography, force a work metaphor or end every reply with a question. A past anecdote here is yours, not a shared memory with the user.',
             'Portray this established profession and personal history naturally in first person. A question about work, friends, family, an ex or an old crush is about this character, not a request for real-world services. Answer with the actual profile role and relevant canon below; do not deny having a job or a life because you are fictional. Do not add an AI disclaimer to ordinary backstory answers. Be honest if directly asked whether you are human or AI.',
             'Profile occupation and home base take precedence over loose social-world descriptions. Other city references are earlier experience or ties, not a different current job or home. All named social and romantic peers below are fictional adults. These facts are about the character, never the user.',
             ...Object.entries(backstory).map(([field, text]) => `Personal canon / ${field}: ${text}`),
@@ -120,7 +137,7 @@ export async function loadRoster() {
             'Remain honest about being fictional AI when asked. Keep chat non-explicit. No money requests, financial rescue, actual meetings, off-platform contact or claims of real services.',
             'Follow server language preferences and explicit current tone requests before the register examples below. A short reply is allowed. Do not ask a question every turn or turn your career into every topic.',
             `Appearance continuity, never a fact about the user: ${appearance}`,
-            `Founder-approved dating style: ${revision.archetype}. ${revision.style} ${revision.socialWorld}`,
+            `Founder-approved dating style: ${archetype}. ${revision.style} ${socialWorld}`,
             'Big girl, big boy and baddie describe confident adult taste, banter and social energy. Do not turn them into repetitive labels, claims of extreme wealth, contempt for ordinary people or constant demands for spending. Be specific, funny, affectionate and interested in the actual conversation. Lifestyle stories are fictional canon, not live reports. The four older personalities can have composed affluent styling without offering money, dependency, sponsorship or real arrangements.',
             ...['handle', 'register', 'temperament', 'contradiction', 'socialWorld', 'texting', 'affection', 'softSpot', 'friction'].map(field => `${field}: ${voice[field]}`),
             `Fictional preferences, not universal Nigerian views: ${voice.opinions.join(' / ')}`,
@@ -143,13 +160,13 @@ export async function loadRoster() {
         return {
             key: identity.key, origin: identity.origin, profile, appearance,
             personality: { ...Object.fromEntries(Object.entries(voice).filter(([key]) => !['key', 'bio', 'clue'].includes(key))), relationship },
-            knowledgeCards, backstory, direction, photoBriefs,
+            knowledgeCards, backstory, world: { ...world, timeZone }, direction, photoBriefs,
             readiness: { ownerReview: 'pending', voiceEvaluation: 'pending', photos: identity.origin === 'new_draft' || revision.appearance ? (photoBriefs.every(photo => photo.status === 'generated_visually_reviewed') ? 'generated_visually_reviewed' : 'not_generated') : 'existing_photos_retained_as_recorded', publication: 'see_publication_record' },
         };
     });
     const pack = {
-        version: 1, preparedOn: youth.approvedOn, status: 'editorial_rework_not_published',
-        sourceFingerprint: hash({ current, original, expansion, seeds, voices, knowledge, research, relationships, contentScope, lives, youth }),
+        version: 1, preparedOn: worlds.preparedOn, status: 'editorial_rework_not_published',
+        sourceFingerprint: hash({ current, original, expansion, seeds, voices, knowledge, research, relationships, contentScope, lives, youth, worlds }),
         contentScope,
         counts: { total: 50, existing: 22, additions: 28, women: characters.filter(c => c.profile.gender === 'woman').length, men: characters.filter(c => c.profile.gender === 'man').length, newPhotosRequired: 56, youthReworkPhotos: 20, youngerAdults: 46, olderAdults: 4 },
         characters,
@@ -170,7 +187,7 @@ export async function loadRoster() {
 
 function reviewMarkdown(pack) {
     const lines = ['# Fifty Nigerian character voice drafts', '',
-        '18 October founder-approved rework: 46 younger adults and four older adults, with individual Lagos/Abuja-oriented biographies, social circles and styling. Twenty replacement photographs update ten identities. See [youth rework and publication evidence](./youth-review.md).', '',
+        '46 younger adults and four older adults. Current homes cover all 36 Nigerian states and FCT, six other African countries, four Canadian cities and three US cities. Big boy/big girl describes social style, not a requirement to live in Lagos or Abuja. See [world profiles](./world-profiles.json) and [youth rework evidence](./youth-review.md).', '',
         '**Fifty compiled profiles.** All 56 new photos are generated and visually reviewed; the frontend catalogue includes all 50. See README and publication record for hosted status. Every example below is written sample dialogue, not a live-model result. Native-speaker and live voice evaluation remain pending.', '',
         'The founder requested explicit adult text chat. **Explicit mode is not enabled:** the current Claude provider prohibits it. The romantic examples below remain non-explicit; see [scope decision](./adult-chat-scope.md).', '',
         'Generated from the identity and voice sources by `npm run cast:build`. Edit those sources, then rebuild. Research and evaluation requirements are in [README](./README.md).', '',
@@ -185,6 +202,8 @@ function reviewMarkdown(pack) {
             `**Familiar topics:** ${c.personality.knowledgeTopics.join(' / ')}`, '',
             '**Personal backstory:**', '',
             ...Object.entries(c.backstory).map(([field, text]) => `- **${field}:** ${text}`), '',
+            '**Home and everyday life:**', '',
+            ...['roots', 'arrival', 'routine', 'offDuty', 'story', 'timeZone'].map(field => `- **${field}:** ${c.world[field]}`), '',
             `**Flirting:** ${c.personality.relationship.flirtStyle}`, '',
             `**Pacing:** ${c.personality.relationship.pace}`, '',
             `**Conversation depth:** ${c.personality.relationship.depthStyle}`, '',
