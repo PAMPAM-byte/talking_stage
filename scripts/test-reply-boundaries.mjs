@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { SourceTextModule, SyntheticModule, createContext } from 'node:vm';
 import ts from 'typescript';
+import { createHash } from 'node:crypto';
 
 // Execute the actual server entry points with framework/Auth/provider boundaries
 // injected. Database authorization/leases/budgets have separate PGlite tests.
@@ -11,7 +12,7 @@ let state;
 function reset() {
   state = { signedIn: true, adult: true, owned: true, firstParty: true,
     scheduleThrows: false, refreshThrows: false, saveFails: false,
-    rpcCalls: 0, replyCalls: 0, scheduled: [], replyState: 'completed' };
+    rpcCalls: 0, replyCalls: 0, scheduled: [], replyState: 'completed', rpcFailure: false };
 }
 function account() {
   if (!state.signedIn) return null;
@@ -20,13 +21,17 @@ function account() {
     user: { id: 'synthetic-actor' }, profile: { onboarding_complete: true, adult_declared_at: state.adult ? 'accepted' : null },
     client: { from: () => query, rpc: async (name) => {
       state.rpcCalls++;
+      if (state.rpcFailure) return { error: { message: 'connection_unavailable' } };
+      if (!state.owned) return { error: { message: 'not_found' } };
       if (state.saveFails) return { error: { message: 'thread_changed' } };
+      if (name === 'conversation_thread') return { data: { conversation: { generation: 1, version: 1, status: 'active' }, capabilities: { chat: true }, messages: [{ id: messageId, sequence: 1, text: 'MUST-NOT-LEAK' }] } };
       if (name === 'reply_status') return { data: [{ messageId, state: 'blocked_provider', attempts: 0, privateContext: 'MUST-NOT-LEAK' }] };
       return { data: { id: messageId }, error: null };
     } },
   };
 }
 const dependencies = {
+  'node:crypto': { createHash },
   'next/cache': { revalidatePath() { if (state.refreshThrows) throw new Error('synthetic cache failure'); } },
   'next/server': { after(work) { if (state.scheduleThrows) throw new Error('synthetic scheduling failure'); state.scheduled.push(work); } },
   './server': { currentAccount: async () => account() },
@@ -53,6 +58,15 @@ async function load(path) {
 reset();
 const { conversationAction } = await load('lib/backend/conversation-actions.ts');
 const route = await load('app/api/conversations/[conversationId]/replies/[messageId]/route.ts');
+dependencies['@/lib/backend/conversation-revision'] = await load('lib/backend/conversation-revision.ts');
+const syncRoute = await load('app/api/conversations/[conversationId]/sync/route.ts');
+const { conversationRevision } = dependencies['@/lib/backend/conversation-revision'];
+const revisionThread = { conversation: { generation: 1, version: 1, status: 'active' }, capabilities: { chat: true }, messages: [{ id: messageId, sequence: 1, text: 'original' }] };
+const firstRevision = conversationRevision(revisionThread, []);
+assert.equal(conversationRevision({ ...revisionThread, messages: [{ id: messageId, sequence: 1, text: 'private text excluded' }] }, []), firstRevision);
+assert.notEqual(conversationRevision({ ...revisionThread, messages: [] }, []), firstRevision);
+assert.notEqual(conversationRevision({ ...revisionThread, conversation: { ...revisionThread.conversation, generation: 2 } }, []), firstRevision);
+assert.notEqual(conversationRevision(revisionThread, [{ messageId, state: 'generating', attempts: 1 }]), firstRevision);
 const form = operation => {
   const data = new FormData(); data.set('id', conversationId); data.set('operation', operation);
   data.set('messageId', messageId); data.set('clientId', messageId); data.set('generation', '1'); data.set('text', 'Synthetic input');
@@ -80,6 +94,19 @@ const metadata = await route.GET(request(), params());
 assert.equal(metadata.headers.get('cache-control'), 'private, no-store');
 assert.deepEqual(await metadata.json(), { state: 'blocked_provider', attempts: 0 });
 assert.equal(state.replyCalls, 0, 'GET must never generate a reply');
+reset();
+const synced = await syncRoute.GET(request(), params());
+assert.equal(synced.status, 200);
+assert.equal(synced.headers.get('cache-control'), 'private, no-store');
+assert.match((await synced.json()).revision, /^[a-f0-9]{64}$/);
+assert.equal(state.replyCalls, 0, 'Sync must never generate a reply');
+for (const [flag, expected] of [['signedIn', 401], ['adult', 403], ['owned', 404], ['rpcFailure', 503]]) {
+  reset(); state[flag] = flag === 'rpcFailure';
+  assert.equal((await syncRoute.GET(request(), params())).status, expected);
+  assert.equal(state.replyCalls, 0);
+}
+reset(); state.rpcFailure = true;
+assert.equal((await route.GET(request(), params())).status, 503, 'Transport failures must remain retryable');
 for (const [flag, expected] of [['firstParty', 403], ['signedIn', 401], ['adult', 403], ['owned', 404]]) {
   reset(); state[flag] = false;
   assert.equal((await route.POST(request(), params())).status, expected); assert.equal(state.replyCalls, 0);

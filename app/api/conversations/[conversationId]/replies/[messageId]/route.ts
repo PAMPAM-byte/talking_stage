@@ -27,7 +27,7 @@ export async function GET(_request: Request, { params }: ReplyParams) {
 
     // The RPC checks ownership, adult access and deletion before exposing metadata.
     const result = await account.client.rpc('reply_status', { p_conversation: conversationId });
-    if (result.error) return respond('unavailable', 404);
+    if (result.error) return respond('unavailable', /not_found|forbidden/.test(result.error.message) ? 404 : 503);
     const status = (result.data as ReplyStatus[]).find(item => item.messageId === messageId);
     return status ? respond(status.state, 200, status.attempts) : respond('unavailable', 404);
   } catch { return respond('unavailable', 503); }

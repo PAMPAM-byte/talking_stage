@@ -8,8 +8,8 @@ async function requestReply(id:string,messageId:string,signal?:AbortSignal):Prom
  try{
  const response=await fetch(`/api/conversations/${id}/replies/${messageId}`,{method:'POST',credentials:'same-origin',signal});
  const {state}=await response.json();
- return {message:state==='completed'?'Reply saved.':state==='earlier_reply_pending'?'Retry or skip the earlier reply first.':state==='budget_exhausted'?'Today’s reply limit has been reached. Your message is saved.':state==='generating'?'A reply is already being prepared. Reload shortly.':state==='cancelled'||state==='discarded'?'The reply was stopped. Your message is saved.':'Your message is saved. A reply is unavailable; try again later.'};
- }catch{return {message:signal?.aborted?'The reply was stopped. Your message is saved.':'Your message is saved. Reload to check the reply before retrying.'};}
+ return {message:state==='completed'?'Reply saved.':state==='earlier_reply_pending'?'Retry or skip the earlier reply first.':state==='budget_exhausted'?'Today’s reply limit has been reached. Your message is saved.':state==='generating'?'A reply is being prepared. It will appear automatically.':state==='cancelled'||state==='discarded'?'The reply was stopped. Your message is saved.':'Your message is saved. A reply is unavailable; try again later.'};
+ }catch{return {message:signal?.aborted?'The reply was stopped. Your message is saved.':'Your message is saved. Checking for the reply automatically.'};}
 }
 export function ConversationControl({id,operation,version,label}:{id:string;operation:string;version?:number;label:string}) {
  const [result,setResult]=useState<{error?:string}>({});const [pending,start]=useTransition();const router=useRouter();

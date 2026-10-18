@@ -5,4 +5,4 @@ export function pollReply(url: string, options: {
   signal: AbortSignal;
   recover: () => boolean;
   fetcher?: typeof fetch;
-}): Promise<{ state: string; attempts?: number }>;
+}): Promise<{ state: string; attempts?: number; httpStatus?: number }>;

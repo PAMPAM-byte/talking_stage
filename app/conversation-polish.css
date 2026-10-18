@@ -45,7 +45,7 @@
 /* Delivery stays quiet; the conversation, rather than its machinery, leads. */
 .message-delivery { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 18px; color: #8b7881; }
 .message-delivery svg { width: 20px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
-.message-delivery--replied { color: #bd2040; }
+.message-delivery--seen { color: #bd2040; }
 .message-delivery--failed { color: var(--danger); }
 .message-turn--outgoing { animation: message-arrive 180ms ease-out both; }
 .message-send-error { max-width: 32ch; text-align: right; color: var(--danger); }
