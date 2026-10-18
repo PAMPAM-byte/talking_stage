@@ -9,6 +9,10 @@ const response=(output,status='completed')=>new Response(JSON.stringify({status,
 const fetcher=async(url,options)=>{
  calls++;assert.equal(url,'https://api.openai.com/v1/responses');assert.equal(options.headers.Authorization,'Bearer SYNTHETIC-NOT-A-KEY');assert(options.signal);
  const body=JSON.parse(options.body);assert.equal(body.store,false);assert.equal(body.max_output_tokens,1024);assert.equal(body.text.format.strict,true);assert.equal(body.tools,undefined);assert.equal(body.previous_response_id,undefined);
+ const suppliedContext=JSON.parse(body.input[1].content.slice(body.input[1].content.indexOf('{')));
+ assert.equal(suppliedContext.preferences.language,undefined,'Saved bilingual metadata is not a user-authored Pidgin cue.');
+ assert.equal(suppliedContext.defaultReplyLanguage,'english');
+ assert.equal(context.preferences.language,'english_pidgin','Model-facing language policy must not rewrite the saved preference.');
  assert.equal(body.input[0].role,'developer');assert.equal(body.input.at(-1).role,'user');assert(body.input[0].content.includes('Payment requests are disabled'));
  assert.deepEqual(body.text.format.schema.properties.photoAssetId.enum,[null]);
  return response([{type:'output_text',text:JSON.stringify({text:'Synthetic offline reply.',photoAssetId:null})}]);
@@ -22,9 +26,8 @@ assert.equal((await generateReply(context,settings,{fetcher:async()=>response([{
 assert.throws(()=>buildInput({...context,maxInputTokens:1024}),/context_limit/);
 const pidginInput = buildInput(context);
 const englishInput = buildInput({...context,preferences:{...context.preferences,language:'english'}});
-assert(pidginInput[0].content.includes('The saved preference welcomes English and Nigerian Pidgin'));
-assert(englishInput[0].content.includes('Do not force Pidgin or slang'));
-assert(!englishInput[0].content.includes('The saved preference welcomes English and Nigerian Pidgin'));
+assert(pidginInput[0].content.includes('does not authorize starting in Pidgin'));
+assert(englishInput[0].content.includes('The saved preference is English'));
 assert(pidginInput[0].content.includes('You have no live news tool'));
 assert.equal(pidginInput.at(-1).content,context.history.at(-1).text,'Untrusted user instructions remain outside the trusted style guide.');
 const large=response([{type:'output_text',text:'x'.repeat(270000)}]);await assert.rejects(generateReply(context,settings,{fetcher:async()=>large}),/invalid_output/);

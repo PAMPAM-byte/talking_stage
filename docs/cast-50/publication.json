@@ -2,7 +2,7 @@
   "version": 1,
   "target": "https://hoxeembcwureucdsssct.supabase.co",
   "completedAt": "2026-10-17T22:20:43.453Z",
-  "sourceFingerprint": "7ce2305ee0937ef473e9eb713e41cdd8dea5f23d0f3adfdee8093e15c8bfabe2",
+  "sourceFingerprint": "1ac1ceaaf9efa8eb523363cdf37ccaf857cee45b0d4c173e99c28df6d661ac3f",
   "profiles": 50,
   "photos": 100,
   "ordinaryAdultPaginationVerified": true,
@@ -57,5 +57,16 @@
     "char-segun": "0b42fb44-48bd-4e5f-93d1-27384fd9a4aa",
     "char-usman": "b2a6d0cd-8606-490d-acf1-fa4b606df25a",
     "char-dele": "2f5ad193-62f9-446b-b8ee-711e4ab042ce"
+  },
+  "latestDirectionRevision": {
+    "version": 1,
+    "completedAt": "2026-10-18T13:39:54.900Z",
+    "sourceFingerprint": "1ac1ceaaf9efa8eb523363cdf37ccaf857cee45b0d4c173e99c28df6d661ac3f",
+    "profiles": 50,
+    "personalFacts": 250,
+    "preservedPublicProfiles": true,
+    "preservedIdsAndPhotos": true,
+    "encryptedBaselineVerified": true,
+    "publishedDirectionsVerified": true
   }
 }

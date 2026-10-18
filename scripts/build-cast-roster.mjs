@@ -42,6 +42,9 @@ export function validateRoster(pack) {
         assert.equal(c.readiness.ownerReview, 'pending');
         assert(c.knowledgeCards.every(card => card.kind === 'fictional_character_fact'));
         assert.equal(c.knowledgeCards.length, 8);
+        for (const field of ['workLife', 'friend', 'family', 'pastRelationship', 'formerCrush']) boundedText(c.backstory[field], 850, `${c.key}: backstory ${field}`);
+        assert(c.direction.includes(`Occupation: ${p.occupation}`), `${c.key}: profile occupation must reach the model`);
+        assert(c.direction.includes(`Home base: ${p.fictionalLocation}`), `${c.key}: profile location must reach the model`);
         if (c.origin === 'new_draft') {
             assert(['not_generated', 'generated_visually_reviewed'].includes(c.readiness.photos));
             assert.equal(c.photoBriefs.length, 2);
@@ -51,11 +54,12 @@ export function validateRoster(pack) {
 
 export async function loadRoster() {
     const generated = await read('docs/cast-50/image-generation.json').catch(error => { if (error.code === 'ENOENT') return { photos: {} }; throw error; });
-    const [current, original, expansion, seeds, voices, knowledge, research, relationships, contentScope] = await Promise.all([
+    const [current, original, expansion, seeds, voices, knowledge, research, relationships, contentScope, lives] = await Promise.all([
         read('docs/cast-50/existing-identities.json'), read('docs/stage-0/characters.json'),
         read('docs/cast-expansion/characters.json'), read('docs/cast-50/identity-seeds.json'),
         read('docs/cast-50/voice-profiles.json'), read('docs/cast-50/knowledge-base.json'), read('docs/cast-50/research.json'),
         read('docs/cast-50/relationship-profiles.json'), read('docs/cast-50/content-scope.json'),
+        read('docs/cast-50/life-stories.json'),
     ]);
     assert.equal(current.length, 22);
     assert.equal(seeds.characters.length, 28);
@@ -63,6 +67,9 @@ export async function loadRoster() {
     unique(voices.characters.map(c => c.key), 'Duplicate voice source.');
     assert.equal(relationships.characters.length, 50);
     unique(relationships.characters.map(c => c.key), 'Duplicate relationship source.');
+    assert.equal(lives.characters.length, 50);
+    unique(lives.characters.map(c => c.key), 'Duplicate backstory source.');
+    assert.deepEqual(lives.characters.map(c => c.key).sort(), voices.characters.map(c => c.key).sort(), 'Backstories must cover the exact same cast.');
     assert.deepEqual(relationships.characters.map(c => c.key).sort(), voices.characters.map(c => c.key).sort(), 'Relationship sources must cover the exact same 50 voices.');
     unique(relationships.characters.map(c => c.attractionReply), 'Attraction examples must be individually authored.');
     unique(relationships.characters.map(c => c.thoughtfulReply), 'Substantive examples must be individually authored.');
@@ -77,6 +84,7 @@ export async function loadRoster() {
         const voice = voices.characters.find(c => c.key === identity.key);
         assert(voice, `Missing voice for ${identity.key}`);
         const relationship = Object.fromEntries(Object.entries(relationships.characters.find(c => c.key === identity.key)).filter(([key]) => key !== 'key'));
+        const backstory = Object.fromEntries(Object.entries(lives.characters.find(c => c.key === identity.key)).filter(([key]) => key !== 'key'));
         const old = original.characters.find(c => c.id === identity.key);
         const expanded = expansion.characters.find(c => c.key === identity.key);
         const appearance = identity.appearance ?? expanded?.appearance ?? old?.appearanceContinuity;
@@ -90,6 +98,11 @@ export async function loadRoster() {
         const knowledgeCards = facts.map((text, index) => ({ id: `${identity.key}-fact-${index + 1}`, kind: 'fictional_character_fact', text }));
         const direction = [
             `Fictional adult Nigerian AI character: ${profile.name}, ${profile.age}.`,
+            `Authoritative profile: Occupation: ${profile.occupation}. Home base: ${profile.fictionalLocation}. Biography: ${profile.bio}`,
+            'Portray this established profession and personal history naturally in first person. A question about work, friends, family, an ex or an old crush is about this character, not a request for real-world services. Answer with the actual profile role and relevant canon below; do not deny having a job or a life because you are fictional. Do not add an AI disclaimer to ordinary backstory answers. Be honest if directly asked whether you are human or AI.',
+            'Profile occupation and home base take precedence over loose social-world descriptions. Other city references are earlier experience or ties, not a different current job or home. All named social and romantic peers below are fictional adults. These facts are about the character, never the user.',
+            ...Object.entries(backstory).map(([field, text]) => `Personal canon / ${field}: ${text}`),
+            'Keep these names and histories consistent across turns. Share one relevant detail or short anecdote, not the whole dossier. Past relationships are over, not rivals used to provoke jealousy. Ordinary incidental story details may fit this canon, but do not invent major jobs, named relatives, marriages, children or new relationship history. Do not claim a real current shift, actual client/patient data, a fresh outing, live access or the ability to perform services for the user.',
             'Remain honest about being fictional AI when asked. Keep chat non-explicit. No money requests, financial rescue, actual meetings, off-platform contact or claims of real services.',
             'Follow server language preferences and explicit current tone requests before the register examples below. A short reply is allowed. Do not ask a question every turn or turn your career into every topic.',
             `Appearance continuity, never a fact about the user: ${appearance}`,
@@ -114,13 +127,13 @@ export async function loadRoster() {
         return {
             key: identity.key, origin: identity.origin, profile, appearance,
             personality: { ...Object.fromEntries(Object.entries(voice).filter(([key]) => !['key', 'bio', 'clue'].includes(key))), relationship },
-            knowledgeCards, direction, photoBriefs,
+            knowledgeCards, backstory, direction, photoBriefs,
             readiness: { ownerReview: 'pending', voiceEvaluation: 'pending', photos: identity.origin === 'new_draft' ? (photoBriefs.every(photo => photo.status === 'generated_visually_reviewed') ? 'generated_visually_reviewed' : 'not_generated') : 'existing_photos_retained_as_recorded', publication: 'see_publication_record' },
         };
     });
     const pack = {
         version: 1, preparedOn: '2026-10-17', status: 'editorial_rework_not_published',
-        sourceFingerprint: hash({ current, original, expansion, seeds, voices, knowledge, research, relationships, contentScope }),
+        sourceFingerprint: hash({ current, original, expansion, seeds, voices, knowledge, research, relationships, contentScope, lives }),
         contentScope,
         counts: { total: 50, existing: 22, additions: 28, women: characters.filter(c => c.profile.gender === 'woman').length, men: characters.filter(c => c.profile.gender === 'man').length, newPhotosRequired: 56 },
         characters,
@@ -148,6 +161,8 @@ function reviewMarkdown(pack) {
             ...['handle', 'register', 'temperament', 'contradiction', 'socialWorld', 'texting', 'affection', 'softSpot', 'friction'].map(field => `- **${field}:** ${c.personality[field]}`), '',
             `**Own opinions:** ${c.personality.opinions.join(' / ')}`, '',
             `**Familiar topics:** ${c.personality.knowledgeTopics.join(' / ')}`, '',
+            '**Personal backstory:**', '',
+            ...Object.entries(c.backstory).map(([field, text]) => `- **${field}:** ${text}`), '',
             `**Flirting:** ${c.personality.relationship.flirtStyle}`, '',
             `**Pacing:** ${c.personality.relationship.pace}`, '',
             `**Conversation depth:** ${c.personality.relationship.depthStyle}`, '',
