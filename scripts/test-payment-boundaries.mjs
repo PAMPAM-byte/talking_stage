@@ -50,3 +50,35 @@ assert.equal((await webhookModule.namespace.POST(request(payload,{}))).status,40
 assert.equal((await webhookModule.namespace.POST(request('x'.repeat(262145)))).status,413);assert.equal(verifications,prior);
 assert.equal((await webhookModule.namespace.POST(request())).status,204);assert.equal(verifications,prior+1);
 console.log('Payment action boundaries passed: identity/adult/amount-confirmation gates, ownership denial before reconciliation, independent admin authorization, and authenticated refusal. No network calls.');
+
+// Exercise the actual shared wrapper: connected payment pages must render
+// children after account checks, rather than an old rollout placeholder.
+const jsxRuntime=await import('react/jsx-runtime');
+const react=await import('react');
+let wrapperAccount={profile:{adult_declared_at:'synthetic',onboarding_complete:true}};
+const shell=()=>null;
+const wrapperDeps={
+ 'server-only':{},'react':{Suspense:react.Suspense},'react/jsx-runtime':{jsx:jsxRuntime.jsx,jsxs:jsxRuntime.jsxs,Fragment:jsxRuntime.Fragment},
+ 'next/navigation':{redirect:path=>{throw new Error(`redirect:${path}`);}},
+ 'next/headers':{headers:async()=>new Headers({'x-talkingstage-path':'/gifts/synthetic'})},
+ 'next/link':{default:()=>null},
+ '@/lib/backend/config':{usesSupabase:()=>true,supabaseConfig:()=>({url:'synthetic'})},
+ '@/lib/backend/server':{currentAccount:async()=>wrapperAccount},
+ '@/lib/backend/account-actions':{signOutAccount:async()=>{}},
+ './shells':{AppShell:shell,PublicShell:()=>null},
+ './ui/primitives':{Notice:()=>null,Skeleton:()=>null},'./chat-loading':{ChatLoading:()=>null},
+};
+const wrapperModules=new Map();
+for(const [name,exports]of Object.entries(wrapperDeps))wrapperModules.set(name,new SyntheticModule(Object.keys(exports),function(){for(const [key,value]of Object.entries(exports))this.setExport(key,value);},{context}));
+const wrapperCode=ts.transpileModule(readFileSync('components/protected-area.tsx','utf8'),{compilerOptions:{module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ES2022,jsx:ts.JsxEmit.ReactJSX}}).outputText;
+const wrapper=new SourceTextModule(wrapperCode,{context});await wrapper.link(name=>wrapperModules.get(name));await wrapper.evaluate();
+const protectedPayment=()=>{
+ const suspended=wrapper.namespace.ProtectedArea({area:'Payments',children:'CONNECTED_PAYMENT_CONTENT'});
+ return suspended.props.children.type(suspended.props.children.props);
+};
+let page=await protectedPayment();
+assert.equal(page.type,shell);assert.equal(page.props.children,'CONNECTED_PAYMENT_CONTENT');
+wrapperAccount=null;await assert.rejects(protectedPayment(),/redirect:\/sign-in/);
+wrapperAccount={profile:{adult_declared_at:null,onboarding_complete:true}};await assert.rejects(protectedPayment(),/redirect:\/onboarding\/age/);
+wrapperAccount={profile:{adult_declared_at:'synthetic',onboarding_complete:false}};await assert.rejects(protectedPayment(),/redirect:\/onboarding\/preferences/);
+console.log('Protected payment routes passed: gift/receipt children render only after identity, adult and onboarding checks.');

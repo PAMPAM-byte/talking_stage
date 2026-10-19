@@ -19,6 +19,8 @@
 .chat-thread > .notice { box-shadow: none; }
 .message-turn { max-width: min(84%, 520px); }
 .message-bubble { line-height: 1.75; letter-spacing: .002em; box-shadow: none; }
+.message-bubble .chat-gift-link { display: inline-flex; align-items: center; gap: 12px; min-height: 44px; margin-top: 8px; color: var(--brand); font-weight: 700; text-decoration: underline; text-underline-offset: 4px; }
+.message-bubble .chat-gift-link:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; border-radius: 4px; }
 .expression-picker { position: static; flex: 0 0 44px; }
 .connected-message-composer { position: relative; }
 .expression-trigger { width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; border: 0; border-radius: 50%; color: #806772; background: transparent; cursor: pointer; }

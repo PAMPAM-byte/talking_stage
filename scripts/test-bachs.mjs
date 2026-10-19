@@ -21,6 +21,12 @@ const fetcher=async(url,options)=>{
 };
 assert.equal((await createCheckout(settings,intent,'https://example.com',{fetcher})).checkoutId,'chk_synthetic');assert.equal(creates,1);
 await assert.rejects(createCheckout(settings,intent,'http://localhost:3000',{fetcher}),/public_return_url_required/);
+await createCheckout(settings,intent,'http://localhost:3000',{allowLocalSandboxReturn:true,fetcher:async(url,options)=>{
+ if(url.endsWith('/accounts/me'))return respond({id:settings.organizationId,is_active:true});
+ const body=JSON.parse(options.body);assert.equal(body.success_url,undefined);assert.equal(body.cancel_url,undefined);
+ return respond({checkout_id:'chk_synthetic',checkout_url:'https://checkout.bachs.io/c/synthetic',reference:intent.reference,expires_at:'2026-10-19T12:30:00Z'});
+}});
+await assert.rejects(createCheckout({...settings,environment:'production'},intent,'http://localhost:3000',{allowLocalSandboxReturn:true,fetcher}),/public_return_url_required/);
 const now=Date.parse('2026-10-19T12:00:00Z'),timestamp=String(now/1000);
 const event={id:'evt_synthetic',type:'collection.succeeded',organization_id:settings.organizationId,data:{checkout_id:'chk_synthetic'}};
 const raw=Buffer.from(JSON.stringify(event));
@@ -44,10 +50,28 @@ for(const overrides of [{currency:'USD'},{amount:'4999.00'},{reference:'other'},
 assert.notEqual((await verifyCheckout(settings,intent,{fetcher:reader({amount_paid:'1.00'})})).status,'paid');
 const context={character:{name:'Synthetic adult',direction:'Warm adult conversation.'},history:[{role:'user',text:'How are you?'}],memories:[],preferences:{language:'english'},maxInputTokens:48000,maxOutputTokens:1024,
  payments:{available:true,requestsEligible:true,requestMinimum:10000,requestMaximum:1000000,environment:'sandbox',recent:[{status:'paid',verifiedAt:'2026-10-19T12:00:00Z',amountMinor:500000,currency:'NGN'}]},requestControls:{actionsEnabled:true,allowedByUser:true,muted:false,refused:false}};
-const modelReply=async(_url,options)=>{const body=JSON.parse(options.body);assert(body.text.format.schema.required.includes('requestAmountMinor'));return respond({status:'completed',output:[{type:'message',content:[{type:'output_text',text:JSON.stringify({text:'A small gift would be sweet, if you feel like it.',photoAssetId:null,requestAmountMinor:250000})}]}]});};
+const modelReply=async(_url,options)=>{const body=JSON.parse(options.body);assert(body.text.format.schema.required.includes('requestAmountMinor'));return respond({status:'completed',output:[{type:'message',content:[{type:'output_text',text:JSON.stringify({text:'A small gift would be sweet, if you feel like it.',photoAssetId:null,giftLink:false,requestAmountMinor:250000})}]}]});};
 assert.equal((await generateReply(context,{key:'SYNTHETIC',model:'synthetic'},{fetcher:modelReply})).requestAmountMinor,250000);
 assert(buildInput(context)[0].content.includes('Sandbox records are test payments'));
 for(const controls of [{...context.requestControls,muted:true},{...context.requestControls,refused:true},{...context.requestControls,allowedByUser:false}]){
  await assert.rejects(generateReply({...context,requestControls:controls},{key:'SYNTHETIC',model:'synthetic'},{fetcher:async()=>respond({status:'completed',output:[{type:'message',content:[{type:'output_text',text:'{"text":"Unallowed request","photoAssetId":null,"requestAmountMinor":250000}'}]}]})}),/invalid_output/);
 }
-console.log('Bachs adapter passed: sandbox gates, exact money, idempotency, redirect safety, raw-body signature/rotation/replay checks, owned checkout/payment matching, pending/failure/refund/review states. No network calls.');
+// Offering a link is separate from a character-initiated request and never calls Bachs.
+const {GIFT_LINK_TOKEN,giftMessage}=await import('../lib/payments/gift-link.mjs');
+const offer={...context,history:[{role:'user',text:"I'd love to send you some money for skincare"}],requestControls:{...context.requestControls,allowedByUser:false},payments:{...context.payments,requestsEligible:false}};
+const offerReply=(value)=>async(_url,options)=>{
+ const schema=JSON.parse(options.body).text.format.schema;
+ assert.equal(schema.required.includes('giftLink'),offer.payments.available);
+ assert(!schema.required.includes('requestAmountMinor'));
+ return respond({status:'completed',output:[{type:'message',content:[{type:'output_text',text:JSON.stringify(value)}]}]});
+};
+const offered=await generateReply(offer,{key:'SYNTHETIC',model:'synthetic'},{fetcher:offerReply({text:"That's sweet of you 😊 Here's the link.",photoAssetId:null,giftLink:true})});
+assert(offered.text.endsWith(GIFT_LINK_TOKEN));
+assert.deepEqual(giftMessage(offered.text,true),{text:"That's sweet of you 😊 Here's the link.",showLink:true});
+assert.equal(giftMessage(offered.text,false).showLink,false);
+assert.equal(giftMessage('Hello',true).showLink,false);
+const ordinary=await generateReply(offer,{key:'SYNTHETIC',model:'synthetic'},{fetcher:offerReply({text:'How was your day?',photoAssetId:null,giftLink:false})});
+assert(!ordinary.text.includes(GIFT_LINK_TOKEN));
+for(const giftLink of ['https://example.com',null])await assert.rejects(generateReply(offer,{key:'SYNTHETIC',model:'synthetic'},{fetcher:offerReply({text:'Here',photoAssetId:null,giftLink})}),/invalid_output/);
+await assert.rejects(generateReply({...offer,payments:{available:false}},{key:'SYNTHETIC',model:'synthetic'},{fetcher:async()=>respond({status:'completed',output:[{type:'message',content:[{type:'output_text',text:JSON.stringify({text:'Here',photoAssetId:null,giftLink:true})}]}]})}),/invalid_output/);
+console.log('Bachs adapter passed: sandbox gates, exact money, idempotency, redirect safety, signatures, verified states and user-initiated gift links. No network calls.');

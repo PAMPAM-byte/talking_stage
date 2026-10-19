@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "webhook:relay": "node scripts/bachs-webhook-relay.mjs",
+    "test:webhook-relay": "node scripts/test-webhook-relay.mjs",
     "test:bachs": "node scripts/test-bachs.mjs && node scripts/test-gift-database.mjs && node --experimental-vm-modules scripts/test-payment-boundaries.mjs",
     "dev": "next dev --hostname 0.0.0.0",
     "build": "next build",

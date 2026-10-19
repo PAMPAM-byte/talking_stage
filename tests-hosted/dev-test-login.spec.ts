@@ -2,6 +2,50 @@ import { test, expect } from '@playwright/test';
 import { readFileSync } from 'node:fs';
 
 test.skip(process.env.TALKINGSTAGE_DEV_LOGIN_TEST !== '1', 'Uses the dedicated development-login configuration.');
+
+test('stalled automatic sign-in reveals recovery and the manual form', async ({ page }) => {
+  await page.clock.install();
+  let release!: () => void;
+  const blocked = new Promise<void>(resolve => { release = resolve; });
+  let posts = 0;
+  await page.route('**/sign-in*', async route => {
+    if (route.request().method() !== 'POST') return route.continue();
+    posts++;
+    await blocked;
+    await route.abort('failed');
+  });
+  await page.goto('/sign-in');
+  await expect(page.getByRole('status')).toHaveText('Signing you in…');
+  await expect.poll(() => posts).toBe(1);
+  await page.clock.fastForward(26000);
+  await expect(page.locator('.notice [role="alert"]')).toContainText('taking too long');
+  await expect(page.getByLabel('Email address')).toBeVisible();
+  await expect(page.getByLabel('Password', { exact: true })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Try test sign-in again' })).toBeEnabled();
+  release();
+  await expect(page.locator('.notice [role="alert"]')).toContainText('taking too long');
+  await page.setViewportSize({ width: 390, height: 844 });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+});
+
+test('switching accounts stays responsive while automatic sign-in is pending', async ({ page }) => {
+  let release!: () => void;
+  const blocked = new Promise<void>(resolve => { release = resolve; });
+  await page.route('**/sign-in*', async route => {
+    if (route.request().method() !== 'POST') return route.continue();
+    await blocked;
+    await route.abort('failed');
+  });
+  await page.goto('/sign-in');
+  await expect(page.getByRole('status')).toHaveText('Signing you in…');
+  await page.getByRole('link', { name: 'Use another account' }).click();
+  await expect(page.getByLabel('Email address')).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Sign in with test account' })).toBeEnabled();
+  release();
+  await expect(page).toHaveURL(/manual=1/);
+  await expect(page.getByRole('status')).not.toHaveText('Signing you in…');
+  await expect(page.locator('.notice [role="alert"]')).toHaveCount(0);
+});
 test('automatic test login keeps credentials server-side and honours explicit sign-out', async ({ page, context }) => {
   const credentials = JSON.parse(readFileSync('.local-services/hosted-cast/test-account.json', 'utf8')) as { password: string };
   let loginPosts = 0;

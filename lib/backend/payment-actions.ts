@@ -14,7 +14,7 @@ export async function createGiftAction(form:FormData):Promise<{id?:string;error?
   const result=await startGift(account.user.id,conversation,amount,operation);
   try{revalidatePath('/settings/payments');}catch{/* A cache failure cannot undo a reservation. */}
   return result;
- }catch{return {error:'Checkout could not be confirmed. Retry this same attempt; your gift will not be duplicated.'};}
+ }catch{return {error:'Checkout could not be confirmed. Retry this same attempt; your payment will not be duplicated.'};}
 }
 export async function checkGiftAction(form:FormData):Promise<{error?:string}> {
  try{

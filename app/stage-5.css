@@ -33,6 +33,9 @@
 .receipt-fields dt { color: var(--text-secondary); }
 .receipt-fields dd { margin: 0; max-width: 100%; overflow-wrap: anywhere; }
 .receipt-summary { padding: 16px; border-radius: 12px; background: var(--canvas); }
+.gift-page { width: 100%; max-width: 640px; margin-inline: auto; }
+.gift-page .payment-card { padding: clamp(18px, 4vw, 28px); }
+@media (max-width: 599px) { .gift-page .row { flex-direction: column; align-items: stretch; } .gift-page .row .button { width: 100%; } }
 .payment-history-list { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; }
 .payment-history-row { display: flex; align-items: center; flex-wrap: wrap; justify-content: space-between; gap: 16px; padding: 20px; border-bottom: 1px solid var(--border); text-decoration: none; color: var(--ink); }
 .payment-history-row:last-child { border-bottom: 0; }
