@@ -15,6 +15,8 @@ const fetcher=async(url,options)=>{
  if(url.endsWith('/accounts/me'))return respond({id:settings.organizationId,is_active:true});
  creates++;assert.equal(url,'https://sandbox-api.bachs.io/v1/checkout-sessions');assert.equal(options.headers['Idempotency-Key'],`gift-${intent.id}`);
  const body=JSON.parse(options.body);assert.deepEqual(body.pricing,{currency:'NGN',amount:'5000.00'});assert.equal(body.reference,intent.reference);assert.equal(body.customer,undefined);assert.equal(body.save_payment_method,undefined);assert.equal(body.metadata.talkingstage_intent,intent.id);
+ assert.equal(options.headers['X-Account-Id'],undefined,'Standard checkout must use the configured merchant, without connected-account routing.');
+ assert.equal(body.transfer_data,undefined);assert.equal(body.platform_fee,undefined);assert.equal(body.account_name,undefined,'Bank beneficiary details must be supplied by Bachs, not invented by the application.');
  return respond({checkout_id:'chk_synthetic',checkout_url:'https://checkout.bachs.io/c/synthetic',reference:intent.reference,expires_at:'2026-10-19T12:30:00Z'});
 };
 assert.equal((await createCheckout(settings,intent,'https://example.com',{fetcher})).checkoutId,'chk_synthetic');assert.equal(creates,1);
