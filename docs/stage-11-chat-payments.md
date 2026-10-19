@@ -1,5 +1,7 @@
 # Chat payments integration handoff
 
+Update: the founder selected Bachs and the integration code is now implemented, with sandbox/production separation and disabled defaults. [Bachs setup, delivered behavior, validation scope and remaining activation inputs](./bachs-payments.md) supersede the initial repository findings below. The hosted migration and gateway sandbox/live acceptance have not been performed.
+
 19 October 2026, Africa/Lagos. Founder intent: characters can respond to voluntary gifts, present legitimate payment instructions, acknowledge verified outcomes, and women characters can occasionally make optional monetary requests. Giving must remain optional. This records intended behavior; it does not activate checkout or requests.
 
 ## Repository findings

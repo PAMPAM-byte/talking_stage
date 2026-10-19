@@ -1,5 +1,7 @@
 # TalkingStage design system
 
+Gift confirmation · 19 October: existing white cards, rose notices, red actions and Manrope/tabular amount styling carry a two-step gift review. “Gift for [character]” is separate from “Received by [registered merchant]”. A blank amount field leads to an explicit confirmation; uncertain checkout retries preserve that amount and operation. Optional requests offer Review gift and No thanks. A development-only synthetic fixture passed browser checks at 320–1440px; gateway activation remains pending. [Setup and limits](./bachs-payments.md).
+
 Chat expressions · 18 October: the connected composer has a quiet smile control opening a white, rose-accented searchable picker with Emoji, Stickers and GIFs. Original reaction artwork is shared between transparent stickers and bounded animated GIFs. Selected media previews above the field with optional captions and a remove action. Sent reactions sit naturally in the thread; reduced motion selects static posters. See [implementation and scope](./reviews/chat-expressions.md).
 
 Continuous Discover · 18 October: the full matching cast lives in one swipe deck, with no Next/Previous pages or batch counters. Existing portrait-led layout, circular coloured actions, shared typography and AI labels remain. Session continuity and Undo span the full deck; the end state offers Browse again. This supersedes the page-navigation presentation below. [Research and implementation](./reviews/continuous-discovery.md).

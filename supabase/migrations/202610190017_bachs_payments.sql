@@ -1,3 +1,4 @@
+-- Disabled until the operator supplies matching Bachs settings and approved limits.
 begin;
 create table private.bachs_configuration (
  singleton boolean primary key default true check(singleton), enabled boolean not null default false,
@@ -122,7 +123,7 @@ begin
  if intent.status in ('paid','refunded','disputed') and p_state in ('pending','failed','cancelled','expired') then return intent.status;end if;
  if intent.status in ('refunded','disputed') and p_state='paid' then return intent.status;end if;
  new_state:=case when p_state='review' then case when intent.status='paid' then 'paid' else 'pending' end else p_state end;
- review:=p_state='review';changed:=new_state<>intent.status or review<>intent.needs_review;
+ review:=p_state='review' or (intent.needs_review and p_state<>'refunded');changed:=new_state<>intent.status or review<>intent.needs_review;
  update public.payment_intents set status=new_state,needs_review=review,gateway_payment_id=coalesce(p_payment,gateway_payment_id),gateway_updated_at=p_verified_at,
  verified_at=case when p_state in ('paid','refunded','failed','cancelled','expired') then p_verified_at else verified_at end where id=intent.id;
  if changed and c.deleted_at is null then
@@ -148,7 +149,7 @@ begin
  select * into policy from private.monetary_request_policy where singleton;
  eligible:=cfg.enabled and (private.monetary_request_eligibility(c.id,p_actor)->>'eligible')::boolean and exists(select 1 from public.characters where id=c.character_id and gender='woman');
  select coalesce(jsonb_agg(to_jsonb(r)),'[]'::jsonb) into recent from
- (select id,amount_minor as "amountMinor",currency,case when needs_review then 'review' else status end as status,verified_at as "verifiedAt",gateway_environment as environment
+ (select id,reference,created_at as "createdAt",amount_minor as "amountMinor",currency,case when needs_review then 'review' else status end as status,verified_at as "verifiedAt",gateway_environment as environment
   from public.payment_intents where user_id=p_actor and conversation_id=c.id order by created_at desc,id limit 5) r;
  return result||jsonb_build_object('requestControls',(result->'requestControls')||jsonb_build_object('actionsEnabled',eligible),'payments',jsonb_build_object('available',cfg.enabled and c.status='active' and private.compute_capabilities(c.character_id)->>'payments'='true',
  'recipient',cfg.recipient_name,'giftPath','/gifts/'||c.id::text,'environment',cfg.environment,'recent',recent,'requestsEligible',eligible,

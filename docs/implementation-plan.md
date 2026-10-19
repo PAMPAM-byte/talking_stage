@@ -298,6 +298,8 @@ Evidence so far: [Stage 7 review](./reviews/stage-7.md), [contract index](./fron
 
 ### Stage 11 — Payments and reconciliation backend
 
+19 October implementation slice: Bachs is founder-selected. Gift checkout, verification, optional controlled proposals, chat payment context and owner/admin screens are implemented with disabled configuration. Hosted application and sandbox acceptance are pending; unchecked stage criteria below remain open. See [setup and implementation limits](./bachs-payments.md).
+
 **PRD coverage:** PAY-01–06, ADMIN-02 payment operations.
 
 - [ ] Confirm gateway account, Nigeria onboarding, stated product acceptance, and approved merchant purpose before integration.

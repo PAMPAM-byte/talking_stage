@@ -14,8 +14,14 @@ try{
  await actor('','service_role');
  const reserve=async(actorId=a,amount=500000,operation='00000000-0000-4000-8000-000000000099')=>(await db.query("select public.reserve_gift($1,$2,$3,$4,'sandbox','acct_synthetic') v",[actorId,c,amount,operation])).rows[0].v;
  await assert.rejects(reserve(),/payments_paused/);
- await db.exec("reset role;update private.bachs_configuration set enabled=true,recipient_name='Synthetic operator',organization_id='acct_synthetic',minimum_amount_minor=10000,maximum_amount_minor=1000000;");
+ await db.exec("reset role;update private.bachs_configuration set enabled=true,recipient_name='Synthetic operator',organization_id='acct_synthetic';");
  await actor('','service_role');await assert.rejects(reserve(b),/not_found/);await assert.rejects(reserve(a,1),/invalid_amount/);
+ await assert.rejects(reserve(a,199999),/invalid_amount/);
+ await assert.rejects(reserve(a,100000001),/invalid_amount/);
+ await db.exec('begin');
+ assert.equal((await reserve(a,200000,'00000000-0000-4000-8000-000000000097')).amount_minor,200000);
+ assert.equal((await reserve(a,100000000,'00000000-0000-4000-8000-000000000098')).amount_minor,100000000);
+ await db.exec('rollback');
  const intent=await reserve();assert.equal((await reserve()).id,intent.id);await assert.rejects(reserve(a,600000),/conflict/);
  await db.query("select public.bind_gift_checkout($1,'chk_synthetic','https://checkout.bachs.io/c/synthetic',now()+interval '1 hour')",[intent.id]);
  const apply=async(state='paid',event='evt_synthetic',time=new Date().toISOString())=>(await db.query("select public.apply_gift_verification($1,'chk_synthetic','pay_synthetic',$2,$3,$4,'collection.succeeded') v",[intent.id,state,time,event])).rows[0].v;
@@ -24,6 +30,11 @@ try{
  const receipts=(await db.query("select * from public.messages where kind='payment'")).rows;assert.equal(receipts.length,1);assert.equal(receipts[0].role,'system');
  await assert.rejects(db.query("select public.apply_gift_verification($1,'chk_synthetic',null,'paid',now())",[intent.id]),/permission denied/);
  await actor(b);assert.equal((await db.query('select * from public.payment_intents')).rows.length,0);await assert.rejects(db.query('select public.gift_settings($1)',[c]),/not_found/);
+ await assert.rejects(db.query('select public.admin_gift_ledger()'),/forbidden/);
+ await db.exec(`reset role;insert into private.user_roles(user_id,role) values('${b}','admin');`);await actor(b);
+ assert.equal((await db.query('select public.admin_gift_ledger() v')).rows[0].v.payments.length,1);
+ await actor('','service_role');assert.equal(await apply('review','evt_dispute'),'paid');assert.equal(await apply('paid','evt_repeated_success'),'paid');
+ await actor();assert.equal((await db.query('select needs_review from public.payment_intents')).rows[0].needs_review,true);
  await actor('','service_role');assert.equal(await apply('refunded','evt_refund'),'refunded');assert.equal(await apply('paid','evt_late_success'),'refunded');
  await db.exec("reset role;update public.profiles set requests_enabled=true;update private.monetary_request_policy set enabled=true,minimum_completed_exchanges=1,minimum_amount_minor=10000,maximum_amount_minor=1000000,cooldown_seconds=3600;update private.ai_configuration set enabled=true,model='synthetic',project_daily_micro_usd=100,user_daily_micro_usd=100,input_micro_usd_per_million=1,output_micro_usd_per_million=1;");
  await db.query("insert into private.character_direction(character_id,direction) values($1,'Synthetic adult direction')",[char]);

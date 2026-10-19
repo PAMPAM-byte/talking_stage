@@ -24,6 +24,7 @@ export async function reconcileGift(intent:GiftIntent,event?:{id:string;type:str
  const settings=bachsSettings();
  if(!settings||intent.gateway_environment!==settings.environment||intent.gateway_organization_id!==settings.organizationId)throw new Error('Payment verification unavailable.');
  const verified=await verifyCheckout(settings,intent);
+ if(event?.type.startsWith('dispute.'))verified.status='review';
  const result=await trustedBackendClient().rpc('apply_gift_verification',{p_intent:intent.id,p_checkout:verified.checkoutId,p_payment:verified.paymentId,p_state:verified.status,p_verified_at:verified.verifiedAt,p_event:event?.id??null,p_event_type:event?.type??'reconciliation'});
  if(result.error)throw new Error('Payment verification unavailable.');
  return result.data as string;

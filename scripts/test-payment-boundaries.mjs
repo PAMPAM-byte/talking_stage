@@ -2,6 +2,8 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {SourceTextModule,SyntheticModule,createContext} from 'node:vm';
 import ts from 'typescript';
+import {createHmac} from 'node:crypto';
+import {verifyBachsEvent,PaymentError} from '../lib/payments/bachs.mjs';
 const id='00000000-0000-4000-8000-000000000001';
 let signedIn=true,adult=true,owned=true,admin=false,starts=0,verifications=0,declines=0;
 const account=()=>signedIn?{user:{id},profile:{onboarding_complete:adult,adult_declared_at:adult?'yes':null},client:{from:()=>({select(){return this;},eq(){return this;},async maybeSingle(){return {data:owned?{id,conversation_id:id}:null};}}),rpc:async name=>name==='is_admin'?{data:admin}:name==='decline_gift_proposal'?(declines++,{data:null}):{error:{message:'unknown'}}}}:null;
@@ -14,17 +16,37 @@ const dependencies={
 };
 const modules=new Map();
 for(const [name,exports]of Object.entries(dependencies)){modules.set(name,new SyntheticModule(Object.keys(exports),function(){for(const [key,value]of Object.entries(exports))this.setExport(key,value);},{context}));}
-const code=ts.transpileModule(readFileSync('lib/backend/payment-actions.ts','utf8'),{compilerOptions:{module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ES2022}}).outputText;
-const module=new SourceTextModule(code,{context});await module.link(name=>{const dependency=modules.get(name);if(!dependency)throw Error(name);return dependency;});await module.evaluate();
+const code=ts.transpileModule(readFileSync('lib/backend/payment-actions.ts','utf8'),{compilerOptions:{actionModule:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ES2022}}).outputText;
+const actionModule=new SourceTextModule(code,{context});await actionModule.link(name=>{const dependency=modules.get(name);if(!dependency)throw Error(name);return dependency;});await actionModule.evaluate();
 const form=()=>{const data=new FormData();data.set('conversation',id);data.set('operation',id);data.set('amount','5000');data.set('confirmed','yes');data.set('id',id);return data;};
-signedIn=false;assert((await module.namespace.createGiftAction(form())).error);assert.equal(starts,0);
-signedIn=true;adult=false;assert((await module.namespace.createGiftAction(form())).error);assert.equal(starts,0);
-adult=true;const unconfirmed=form();unconfirmed.delete('confirmed');assert((await module.namespace.createGiftAction(unconfirmed)).error);assert.equal(starts,0);
-assert.equal((await module.namespace.createGiftAction(form())).id,id);assert.equal(starts,1);
-owned=false;assert((await module.namespace.checkGiftAction(form())).error);assert.equal(verifications,0);
-owned=true;assert.deepEqual(JSON.parse(JSON.stringify(await module.namespace.checkGiftAction(form()))),{});assert.equal(verifications,1);
-assert((await module.namespace.adminCheckGiftAction(form())).error);assert.equal(verifications,1);
-admin=true;await module.namespace.adminCheckGiftAction(form());assert.equal(verifications,2);
-await module.namespace.declineGiftAction(form());assert.equal(declines,1);
-signedIn=false;await module.namespace.declineGiftAction(form());assert.equal(declines,1);
+signedIn=false;assert((await actionModule.namespace.createGiftAction(form())).error);assert.equal(starts,0);
+signedIn=true;adult=false;assert((await actionModule.namespace.createGiftAction(form())).error);assert.equal(starts,0);
+adult=true;const unconfirmed=form();unconfirmed.delete('confirmed');assert((await actionModule.namespace.createGiftAction(unconfirmed)).error);assert.equal(starts,0);
+assert.equal((await actionModule.namespace.createGiftAction(form())).id,id);assert.equal(starts,1);
+owned=false;assert((await actionModule.namespace.checkGiftAction(form())).error);assert.equal(verifications,0);
+owned=true;assert.deepEqual(JSON.parse(JSON.stringify(await actionModule.namespace.checkGiftAction(form()))),{});assert.equal(verifications,1);
+assert((await actionModule.namespace.adminCheckGiftAction(form())).error);assert.equal(verifications,1);
+admin=true;await actionModule.namespace.adminCheckGiftAction(form());assert.equal(verifications,2);
+await actionModule.namespace.declineGiftAction(form());assert.equal(declines,1);
+signedIn=false;await actionModule.namespace.declineGiftAction(form());assert.equal(declines,1);
+const webhookSettings={organizationId:'acct_synthetic',webhookSecret:'whsec_SYNTHETIC'};
+const webhookDeps={
+ 'next/cache':dependencies['next/cache'],
+ '@/lib/payments/bachs.mjs':{verifyBachsEvent,PaymentError,bachsSettings:()=>webhookSettings},
+ '@/lib/backend/trusted-client':dependencies['./trusted-client'],
+ '@/lib/backend/payment-service':dependencies['./payment-service'],
+};
+const webhookModules=new Map();
+for(const [name,exports]of Object.entries(webhookDeps))webhookModules.set(name,new SyntheticModule(Object.keys(exports),function(){for(const [key,value]of Object.entries(exports))this.setExport(key,value);},{context}));
+const webhookCode=ts.transpileModule(readFileSync('app/api/webhooks/bachs/route.ts','utf8'),{compilerOptions:{module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ES2022}}).outputText;
+const webhookModule=new SourceTextModule(webhookCode,{context});await webhookModule.link(name=>webhookModules.get(name));await webhookModule.evaluate();
+const payload=JSON.stringify({id:'evt_synthetic',organization_id:'acct_synthetic',type:'collection.succeeded',data:{checkout_id:'chk_synthetic'}});
+const timestamp=String(Math.floor(Date.now()/1000));
+const signature=createHmac('sha256',webhookSettings.webhookSecret).update(`${timestamp}.${payload}`).digest('hex');
+const headers={'X-Bachs-Signature-V2':`t=${timestamp},v1=${signature}`};
+const request=(body=payload,requestHeaders=headers)=>new Request('https://example.com/api/webhooks/bachs',{method:'POST',body,headers:requestHeaders});
+const prior=verifications;
+assert.equal((await webhookModule.namespace.POST(request(payload,{}))).status,400);assert.equal(verifications,prior);
+assert.equal((await webhookModule.namespace.POST(request('x'.repeat(262145)))).status,413);assert.equal(verifications,prior);
+assert.equal((await webhookModule.namespace.POST(request())).status,204);assert.equal(verifications,prior+1);
 console.log('Payment action boundaries passed: identity/adult/amount-confirmation gates, ownership denial before reconciliation, independent admin authorization, and authenticated refusal. No network calls.');
