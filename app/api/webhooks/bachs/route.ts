@@ -2,7 +2,6 @@ import { verifyBachsEvent, bachsSettings, PaymentError } from '@/lib/payments/ba
 import { trustedBackendClient } from '@/lib/backend/trusted-client';
 import { reconcileGift, type GiftIntent } from '@/lib/backend/payment-service';
 import { revalidatePath } from 'next/cache';
-export const runtime='nodejs';
 export const maxDuration=60;
 export async function POST(request:Request) {
  const settings=bachsSettings();if(!settings)return new Response('Unavailable',{status:503});
