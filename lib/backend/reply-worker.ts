@@ -5,6 +5,7 @@ import { providerSettings } from '@/lib/ai/provider.mjs';
 import { runReply } from '@/lib/ai/reply-pipeline.mjs';
 import { runSummary } from '@/lib/ai/summary-pipeline.mjs';
 import { observeAI, emit } from '@/lib/monitoring/events.mjs';
+import { bachsSettings } from '@/lib/payments/bachs.mjs';
 
 export function configuredReplyModel() {
   return providerSettings()?.model ?? null;
@@ -25,7 +26,7 @@ export async function processReply(messageId: string, actorId: string, signal?: 
 
   const { client, settings } = configuration;
   // Claim and completion RPCs independently enforce ownership, leases and budgets.
-  return observeAI('ai.reply', () => runReply(client, messageId, actorId, settings, { signal, userTimeZone }));
+  return observeAI('ai.reply', () => runReply(client, messageId, actorId, settings, { signal, userTimeZone, paymentsEnabled: !!bachsSettings() }));
 }
 
 export async function processSummary(messageId: string, actorId: string): Promise<string> {

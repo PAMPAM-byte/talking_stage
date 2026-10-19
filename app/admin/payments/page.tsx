@@ -1,3 +1,5 @@
 export const instant = false;
 import { AdminScreen } from '@talkingstage/admin-ui';
-export default function Page() { return <AdminScreen section="payments" />; }
+import {ConnectedPaymentAdmin} from '@/components/connected-payment-admin';
+import {usesSupabase} from '@/lib/backend/config';
+export default function Page() { return usesSupabase()?<ConnectedPaymentAdmin/>:<AdminScreen section="payments" />; }

@@ -16,6 +16,9 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: process.cwd(),
     resolveAlias: {
+      "@talkingstage/gift-preview": process.env.NODE_ENV === "development"
+        ? "./app/dev/gifts/preview.tsx"
+        : "./lib/preview-disabled.tsx",
       "@talkingstage/chat-delivery-preview": process.env.NODE_ENV === "development"
         ? "./app/dev/chat-delivery/preview.tsx"
         : "./lib/preview-disabled.tsx",

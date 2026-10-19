@@ -23,6 +23,7 @@
       }
     ],
     "paths": {
+      "@talkingstage/gift-preview": ["./app/dev/gifts/preview.tsx"],
       "@talkingstage/chat-delivery-preview": [
         "./app/dev/chat-delivery/preview.tsx"
       ],
