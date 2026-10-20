@@ -1,5 +1,7 @@
 # TalkingStage design system
 
+Interrupted chat recovery · 20 October: initial conversation skeletons include native reload/return links, usable before hydration. Hydrated loading switches after 15 seconds to a bounded, responsive recovery view; conversation render failures share it. One loading boundary owns the standalone chat. Recovery is explicit and does not replay messages. See [review](./reviews/chat-render-recovery.md).
+
 Reply status refinement · 20 October: a saved message keeps one tick while its reply is queued, with “Preparing a reply…” in the thread. A confirmed generating job gets double ticks and the typing bubble together. Seen receipts persist after interruption. Failed replies keep recovery beside the message with an explanation; the generic floating failure toast is removed. Existing Manrope, white/blush bubbles, red actions and reduced-motion support remain.
 
 Payment character labels · 20 October: payment headings, review and receipt display “[character] TalkingStage” for every character. “Received by” continues to show the registered merchant supplied by the payment integration.

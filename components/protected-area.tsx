@@ -32,7 +32,7 @@ async function ConnectedArea({ area, children, standalone = false }: { area: str
   return <AppShell items={[{ label: "Discover", icon: "discover", href: "/discover", active: area === "Discover" }, { label: "Messages", icon: "message", href: "/messages", active: area === "Messages" }, { label: "Settings", icon: "settings", href: "/settings", active: area === "Settings" }]} actions={<form action={signOutAccount}><button className="button button--quiet">Sign out</button></form>}><h1 className="display page-title">{area === "Discover" ? `Welcome, ${account.profile.display_name}.` : area}</h1>{<Notice title={area === "Discover" ? "Characters are being prepared" : "This space isn’t available yet"}><Link href="/settings/preferences">Update your preferences</Link> while we prepare this space.</Notice>}</AppShell>;
 }
 export function ProtectedArea({ children, area, standalone = false }: { children: ReactNode; area: string; standalone?: boolean }) {
-  if (!usesSupabase()) return <>{children}</>;
+  if (!usesSupabase()) return area === 'Messages' && standalone ? <Suspense fallback={<ChatLoading />}>{children}</Suspense> : <>{children}</>;
   // Unfinished feature adapters stay in the explicit development preview.
   return <Suspense fallback={area === 'Messages' ? <ChatLoading /> : <main id="main-content" className="container shell__main"><span className="sr-only" role="status">Checking your account</span><div className="stack" aria-hidden="true"><Skeleton width="60%" height={32} /><Skeleton height={260} /></div></main>}><ConnectedArea area={area} standalone={standalone}>{children}</ConnectedArea></Suspense>;
 }

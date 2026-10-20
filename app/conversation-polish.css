@@ -89,6 +89,7 @@
 .chat-stop-reply { align-self: flex-start; min-height: 44px; font-size: 11px; padding: 8px 4px; color: #80646f; }
 .message-reply-actions .button { min-height: 44px; font-size: 12px; }
 .message-reply-actions > p:first-child { margin: 12px 0 0; }
+.chat-load-recovery { max-width: 560px; padding-top: clamp(48px, 12vh, 112px); }
 .typing-bubble { display: flex; align-items: center; gap: 5px; width: 65px; height: 40px; padding-inline: 17px; background: #fff; border: 1px solid #eee3e7; border-radius: 18px 18px 18px 5px; }
 .typing-bubble > span { width: 6px; height: 6px; flex: none; border-radius: 50%; background: #b56e80; animation: typing-dot 1200ms ease-in-out infinite; }
 .typing-bubble > span:nth-child(2) { animation-delay: 150ms; }
