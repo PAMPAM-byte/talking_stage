@@ -28,6 +28,7 @@ for(const width of [390,1440])test(`expressions send and render at ${width}px`,a
   await expect(page.getByLabel('Saved',{exact:true})).toHaveCount(2);
   await trigger.click();
   await page.getByRole('button',{name:'GIFs',exact:true}).click();
+  await expect(page.getByRole('button',{name:/^GIF: /})).toHaveCount(20);
   await page.getByRole('button',{name:'GIF: You have finished me',exact:true}).click();
   await page.getByRole('button',{name:'Send message',exact:true}).click();
   const gif=page.getByRole('log').getByRole('img',{name:'GIF: You have finished me',exact:true});
@@ -36,6 +37,31 @@ for(const width of [390,1440])test(`expressions send and render at ${width}px`,a
   await expect(page.getByLabel('Saved',{exact:true})).toHaveCount(3);
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true);
   await page.screenshot({path:`.local-services/chat-expressions-${width}.png`});
+});
+
+test('new Naija GIFs send and character media replies render with captions',async({page})=>{
+  await page.setViewportSize({width:390,height:844});
+  await page.goto('/dev/chat-delivery?scenario=disabled');
+  await page.getByRole('button',{name:'Emoji, stickers and GIFs',exact:true}).click();
+  await page.getByRole('button',{name:'GIFs',exact:true}).click();
+  await page.getByLabel('Search expressions').fill('love');
+  await page.getByRole('button',{name:'GIF: My person',exact:true}).click();
+  await page.getByRole('textbox',{name:'Message Amara'}).fill('This is you');
+  await page.getByRole('button',{name:'Send message',exact:true}).click();
+  const sent=page.getByRole('log').getByRole('img',{name:'GIF: My person',exact:true});
+  await expect(sent).toHaveAttribute('src','/chat-reactions/my-person.gif');
+  await expect(page.getByLabel('Saved',{exact:true})).toBeVisible();
+  await expect.poll(()=>sent.evaluate((image:HTMLImageElement)=>image.naturalWidth)).toBe(192);
+  await page.goto('/dev/chat-delivery?scenario=expressions');
+  await expect(page.getByTestId('character-gif').getByRole('img',{name:'GIF: Omo, I don laugh'})).toBeVisible();
+  await expect(page.getByTestId('character-gif').getByText('You got me too 😂',{exact:true})).toBeVisible();
+  await expect(page.getByTestId('character-sticker').getByRole('img',{name:'Sticker: My person'})).toBeVisible();
+  await expect(page.getByRole('log')).not.toContainText('[[ts:');
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true);
+  await page.screenshot({path:'.local-services/chat-character-reactions.png'});
+  await page.emulateMedia({reducedMotion:'reduce'});
+  const received=page.getByTestId('character-gif').getByRole('img');
+  await expect.poll(()=>received.evaluate((image:HTMLImageElement)=>image.currentSrc)).toContain('/chat-reactions/omo-laugh.svg');
 });
 
 test('picker dismissal, draft retention, failed-media retry and reduced motion',async({page})=>{

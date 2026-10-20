@@ -61,7 +61,7 @@ export function RealAccountForm({ step, configured, profile, expired = false, lo
     startTransition(async () => {
       try {
         const result = await submitAccount(step, form);
-        if (result.destination) { router.push(result.destination); router.refresh(); }
+        if (result.destination) { const destination = result.destination; startTransition(() => router.push(destination)); }
         else { setError(result.error ?? ""); setMessage(result.message ?? ""); if (result.message && step === "preferences") router.refresh(); }
       } catch { setError("We couldn’t connect. Please try again."); }
       finally { setPendingAction(null); }

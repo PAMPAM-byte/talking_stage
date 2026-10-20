@@ -1,7 +1,18 @@
-/* Connected chat: a full portrait on a rose ribbon canvas. */
+/* The chat opening uses a character-specific invitation, with no central image. */
+/* Connected chat: a clear invitation on a rose ribbon canvas. */
 .atmosphere:global(.connected-chat) :global(.chat-shell) {
   --chat-rose-line: #e5ced7;
+  width: 100%;
+  max-width: none;
+  margin-inline: 0;
+  border-inline: 0;
   background: #f7eaf0;
+}
+.atmosphere:global(.connected-chat) :global(.chat-thread),
+.atmosphere:global(.connected-chat) :global(.chat-composer) {
+  width: 100%;
+  max-width: none;
+  margin-inline: 0;
 }
 .atmosphere:global(.connected-chat) :global(.chat-shell__messages) {
   background-color: #f7eaf0;
@@ -20,37 +31,6 @@
 }
 .atmosphere:global(.connected-chat) :global(.connected-chat-welcome--minimal) {
   padding: 24px;
-}
-.atmosphere:global(.connected-chat) :global(.chat-welcome-photo) {
-  display: block;
-  padding: 8px;
-  border: 1px solid rgb(255 255 255 / 85%);
-  border-radius: 34px;
-  background: rgb(255 255 255 / 85%);
-  box-shadow: 0 28px 64px -22px rgb(97 39 63 / 32%), 0 3px 12px rgb(97 39 63 / 7%);
-}
-.atmosphere:global(.connected-chat) :global(.chat-welcome-photo .chat-avatar) {
-  display: grid;
-  place-items: center;
-  width: clamp(216px, 28vw, 320px);
-  height: clamp(270px, 46dvh, 414px);
-  border: 0;
-  border-radius: 26px;
-  background: #e8ccd8;
-  color: #8b3353;
-  font-size: 68px;
-  box-shadow: none;
-}
-.atmosphere:global(.connected-chat) :global(.chat-welcome-photo .chat-avatar img) {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center 30%;
-}
-.atmosphere:global(.connected-chat) :global(.chat-welcome-photo:focus-visible) {
-  outline: 2px solid var(--brand);
-  outline-offset: 6px;
 }
 .atmosphere:global(.connected-chat) :global(.message-bubble) {
   background: white;
@@ -96,15 +76,31 @@
   box-shadow: none;
 }
 @media (hover: hover) {
-  .atmosphere:global(.connected-chat) :global(.chat-welcome-photo:hover) { border-color: #d9b6c6; }
   .atmosphere:global(.connected-chat) :global(.chat-composer .button.composer-send:hover:not(:disabled)) { background: var(--brand-hover); }
 }
 @media (max-height: 600px) {
   .atmosphere:global(.connected-chat) :global(.connected-chat-welcome--minimal) { padding-block: 14px; }
-  .atmosphere:global(.connected-chat) :global(.chat-welcome-photo .chat-avatar) { width: 140px; height: 178px; }
-  .atmosphere:global(.connected-chat) :global(.chat-welcome-photo) { padding: 5px; border-radius: 25px; }
-  .atmosphere:global(.connected-chat) :global(.chat-welcome-photo .chat-avatar) { border-radius: 20px; }
 }
-@media (max-height: 420px) {
-  .atmosphere:global(.connected-chat) :global(.chat-welcome-photo .chat-avatar) { width: 100px; height: 126px; }
+.atmosphere .introduction {
+  width: min(100%, 560px);
+  text-align: center;
+  gap: 14px;
+}
+.atmosphere .introduction h2 {
+  margin: 0;
+  max-width: none;
+  color: var(--ink);
+  font-family: var(--font-interface), system-ui, sans-serif;
+  font-size: clamp(25px, 3vw, 38px);
+  font-weight: 650;
+  line-height: 1.25;
+  letter-spacing: -.035em;
+  overflow-wrap: anywhere;
+}
+.atmosphere .introduction h2 span { display: block; color: var(--brand); }
+.atmosphere .introduction p {
+  margin: 0;
+  color: #725661;
+  font-size: 15px;
+  line-height: 1.6;
 }

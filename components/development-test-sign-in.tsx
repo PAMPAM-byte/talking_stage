@@ -38,7 +38,6 @@ function DevelopmentTestSignIn({ children }: { children: ReactNode }) {
       if (!active()) return;
       if (result.destination) {
         router.replace(result.destination);
-        router.refresh();
       } else {
         clearTimeout(timer.current); inFlight.current = false; setBusy(false);
         setError(result.error ?? 'Test sign-in is unavailable. Use your email and password above.');

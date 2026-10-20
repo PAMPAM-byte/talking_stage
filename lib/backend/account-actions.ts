@@ -52,7 +52,7 @@ export async function submitAccount(step: string, form: FormData): Promise<Accou
       if (step === "sign-in") {
         const { error } = await observe('auth.sign-in', () => client.auth.signInWithPassword({ email, password }));
         if (error) return providerFailure(error) ?? { error: "We couldn’t sign you in. Check your email and password, or reset your password." };
-        const account = await currentAccount();
+        const account = await currentAccount({ failOnUnavailable: true });
         if (!account || !account.profile.adult_declared_at) { await client.auth.signOut(); return { error: "This account needs an accepted adult declaration. Contact support." }; }
         return { destination: account.profile.onboarding_complete ? "/discover" : "/onboarding/preferences" };
       }
@@ -60,7 +60,7 @@ export async function submitAccount(step: string, form: FormData): Promise<Accou
       if (recovery.error) return providerFailure(recovery.error) ?? { error: "We couldn’t request a recovery link. Wait a moment and try again." };
       return { message: "If an account matches that email, a recovery link will arrive shortly. Check your inbox and spam folder." };
     }
-    const account = await currentAccount();
+    const account = await currentAccount({ failOnUnavailable: true });
     if (!account) return { destination: "/sign-in" };
     if (step === "recovery-complete") {
       if (!await validFlowCookie("recovery", account.user.id)) return { error: "This recovery link has expired. Request a new link." };

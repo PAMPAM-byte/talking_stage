@@ -1,0 +1,21 @@
+.root { position: relative; width: min(100%, 440px); max-width: 100%; align-self: flex-start; }
+:global(.message-turn--user) .root { align-self: flex-end; }
+.bar { display: flex; align-items: center; flex-wrap: wrap; gap: 4px; }
+:global(.message-turn--user) .bar { justify-content: flex-end; }
+.trigger, .pill { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; border: 1px solid transparent; border-radius: 24px; color: var(--text-secondary); background: transparent; cursor: pointer; }
+.trigger { opacity: .7; }
+.trigger:hover { opacity: 1; background: white; }
+.pill { gap: 5px; padding: 0 10px; background: white; border-color: var(--border); font-size: 20px; }
+.pill[aria-pressed='true'] { background: var(--brand-soft); border-color: var(--brand); }
+.count { font-size: 12px; color: var(--text-secondary); }
+.picker { position: relative; z-index: 4; margin-block: 4px; padding: 10px; border: 1px solid var(--border); border-radius: 20px; background: white; box-shadow: 0 8px 28px rgb(50 20 35 / 10%); }
+.quick, .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(40px, 1fr)); gap: 2px; }
+.quick button, .grid button { min-width: 40px; min-height: 44px; padding: 4px; border: 0; border-radius: 12px; background: transparent; font-size: 23px; cursor: pointer; }
+.quick button:hover, .grid button:hover, .quick button[aria-pressed='true'], .grid button[aria-pressed='true'] { background: var(--brand-soft); }
+.grid { max-height: min(230px, 28dvh); overflow-y: auto; overscroll-behavior: contain; }
+.picker input { width: 100%; margin: 8px 0; padding: 10px; font-size: 16px; border: 1px solid var(--border); border-radius: 12px; }
+.picker p { margin: 6px 4px 0; font-size: 11px; color: var(--text-secondary); }
+.root button:focus-visible, .picker input:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+.root button:disabled { cursor: default; }
+.feedback { display: block; font-size: 12px; color: var(--brand); }
+.feedback:empty { display: none; }

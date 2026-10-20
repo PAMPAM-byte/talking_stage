@@ -56,6 +56,7 @@ console.log('Payment action boundaries passed: identity/adult/amount-confirmatio
 const jsxRuntime=await import('react/jsx-runtime');
 const react=await import('react');
 let wrapperAccount={profile:{adult_declared_at:'synthetic',onboarding_complete:true}};
+let wrapperUnavailable=false;
 const shell=()=>null;
 const wrapperDeps={
  'server-only':{},'react':{Suspense:react.Suspense},'react/jsx-runtime':{jsx:jsxRuntime.jsx,jsxs:jsxRuntime.jsxs,Fragment:jsxRuntime.Fragment},
@@ -63,7 +64,7 @@ const wrapperDeps={
  'next/headers':{headers:async()=>new Headers({'x-talkingstage-path':'/gifts/synthetic'})},
  'next/link':{default:()=>null},
  '@/lib/backend/config':{usesSupabase:()=>true,supabaseConfig:()=>({url:'synthetic'})},
- '@/lib/backend/server':{renderAccount:async()=>wrapperAccount},
+ '@/lib/backend/server':{renderAccount:async()=>{if(wrapperUnavailable)throw Error('synthetic outage');return wrapperAccount;}},
  '@/lib/backend/account-actions':{signOutAccount:async()=>{}},
  './shells':{AppShell:shell,PublicShell:()=>null},
  './ui/primitives':{Notice:()=>null,Skeleton:()=>null},'./chat-loading':{ChatLoading:()=>null},
@@ -83,12 +84,25 @@ wrapperAccount=null;await assert.rejects(protectedPayment(),/redirect:\/sign-in/
 wrapperAccount={profile:{adult_declared_at:null,onboarding_complete:true}};await assert.rejects(protectedPayment(),/redirect:\/onboarding\/age/);
 wrapperAccount={profile:{adult_declared_at:'synthetic',onboarding_complete:false}};await assert.rejects(protectedPayment(),/redirect:\/onboarding\/preferences/);
 console.log('Protected payment routes passed: gift/receipt children render only after identity, adult and onboarding checks.');
+const protectedChat=()=>{
+ const suspended=wrapper.namespace.ProtectedArea({area:'Messages',standalone:true,children:'PRIVATE_CHAT_CONTENT'});
+ return suspended.props.children.type(suspended.props.children.props);
+};
+wrapperUnavailable=true;
+page=await protectedChat();assert.equal(page.props.unavailable,true);
+assert.equal(page.props.children,undefined,'An initial outage must not supply private chat children');
+wrapperUnavailable=false;wrapperAccount=null;await assert.rejects(protectedChat(),/redirect:\/sign-in/);
+wrapperAccount={profile:{adult_declared_at:null,onboarding_complete:true}};await assert.rejects(protectedChat(),/redirect:\/onboarding\/age/);
+wrapperAccount={profile:{adult_declared_at:'synthetic',onboarding_complete:false}};await assert.rejects(protectedChat(),/redirect:\/onboarding\/preferences/);
+wrapperAccount={profile:{adult_declared_at:'synthetic',onboarding_complete:true}};
+page=await protectedChat();assert.equal(page.props.children,'PRIVATE_CHAT_CONTENT');
+console.log('Chat server boundary passed: unavailable identity reaches continuity without private children; sign-in, adult and onboarding gates remain enforced.');
 
 // Actual proxy must distinguish dependency failure from a missing/invalid session.
 let claims={data:null,error:null},claimsThrows=false;
 class TestNextResponse extends Response {
  cookies={getAll:()=>[],set(){}};
- static next(){return new TestNextResponse(null,{status:200});}
+ static next(){return new TestNextResponse(null,{status:200,headers:{'x-middleware-next':'1'}});}
  static redirect(url){return new TestNextResponse(null,{status:307,headers:{location:String(url)}});}
  static json(value,options){return new TestNextResponse(JSON.stringify(value),options);}
 }
@@ -102,16 +116,33 @@ const proxyModules=new Map();
 for(const [name,exports]of Object.entries(proxyDeps))proxyModules.set(name,new SyntheticModule(Object.keys(exports),function(){for(const [key,value]of Object.entries(exports))this.setExport(key,value);},{context}));
 const proxyCode=ts.transpileModule(readFileSync('proxy.ts','utf8'),{compilerOptions:{module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ES2022}}).outputText;
 const proxyModule=new SourceTextModule(proxyCode,{context});await proxyModule.link(name=>proxyModules.get(name));await proxyModule.evaluate();
-const proxied=method=>proxyModule.namespace.proxy({method,url:'http://localhost:3000/payments/synthetic',nextUrl:new URL('http://localhost:3000/payments/synthetic'),headers:new Headers(),cookies:{getAll:()=>[],set(){}}});
+const proxied=(method,path='/payments/synthetic',headers={})=>proxyModule.namespace.proxy({method,url:`http://localhost:3000${path}`,nextUrl:new URL(`http://localhost:3000${path}`),headers:new Headers(headers),cookies:{getAll:()=>[],set(){}}});
 for(const error of [{name:'AuthRetryableFetchError',status:0},{name:'AuthApiError',status:429},{name:'AuthApiError',status:503}]){
  claims={data:null,error};
  for(const method of ['GET','POST']){
   const response=await proxied(method);assert.equal(response.status,503);assert.equal(response.headers.get('location'),null);assert.equal(response.headers.get('Cache-Control'),'private, no-store');
  }
+ for(const headers of [{},{rsc:'1','next-router-state-tree':'synthetic'}]){
+  const response=await proxied('GET',`/messages/${id}`,headers);
+  assert.equal(response.headers.get('x-middleware-next'),'1','A temporary identity failure must reach the independently gated chat boundary');
+  assert.equal(response.headers.get('Cache-Control'),'private, no-store');
+  assert.equal(await response.text(),'','Do not replace a chat refresh with raw HTML');
+ }
+ for(const path of [`/messages/${id}`,'/messages','/settings/preferences','/admin']){
+  const response=await proxied('POST',path);assert.equal(response.status,503);
+  assert(!/payment/i.test(await response.text()),'Unrelated actions must not show payment recovery instructions');
+ }
+ for(const path of ['/messages','/settings/preferences','/admin']){
+  const response=await proxied('GET',path);assert.equal(response.status,503);
+  assert(!/payment/i.test(await response.text()));
+ }
+ assert.match(await (await proxied('GET')).text(),/Your payment status/);
 }
 claimsThrows=true;assert.equal((await proxied('GET')).status,503);claimsThrows=false;
+claimsThrows=true;assert.equal((await proxied('GET',`/messages/${id}`)).headers.get('x-middleware-next'),'1');claimsThrows=false;
 for(const error of [null,{name:'AuthSessionMissingError'},{name:'AuthApiError',status:401}]){
  claims={data:null,error};const response=await proxied('GET');assert.equal(response.status,307);assert.equal(new URL(response.headers.get('location')).pathname,'/sign-in');
+ assert.equal((await proxied('GET',`/messages/${id}`,{rsc:'1'})).status,307,'Missing or invalid chat sessions must still be denied');
 }
 claims={data:{claims:{sub:'synthetic'}},error:null};assert.equal((await proxied('GET')).status,200);
 console.log('Payment proxy passed: authenticated navigation, signed-out denial, retryable network/rate-limit/outage responses without false sign-in redirects.');

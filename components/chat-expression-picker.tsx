@@ -1,6 +1,6 @@
 'use client';
 import { useId, useRef, useState, useEffect } from 'react';
-import { emojis, reactions, type Expression, type ExpressionKind } from '@/lib/chat/expressions';
+import { emojis, reactions, supportsExpression, type Expression, type ExpressionKind } from '@/lib/chat/expressions';
 import { ExpressionImage } from './chat-expression';
 import { Icon } from './ui/icon';
 export function ChatExpressionPicker({ disabled, onEmoji, onSelect }: { disabled: boolean; onEmoji: (value: string) => void; onSelect: (value: Expression) => void }) {
@@ -17,7 +17,7 @@ export function ChatExpressionPicker({ disabled, onEmoji, onSelect }: { disabled
     return () => { document.removeEventListener('pointerdown', close); document.removeEventListener('keydown', escape); };
   }, [open]);
   const search = query.trim().toLowerCase();
-  const visible = reactions.filter(item => `${item.label} ${item.tags}`.toLowerCase().includes(search));
+  const visible = reactions.filter(item => supportsExpression(item,tab === 'emoji' ? 'sticker' : tab) && `${item.label} ${item.tags}`.toLowerCase().includes(search));
   const visibleEmoji = emojis.filter(([emoji, words]) => `${emoji} ${words}`.includes(search));
   return <div className="expression-picker">
     <button ref={trigger} className="expression-trigger" type="button" disabled={disabled} aria-label="Emoji, stickers and GIFs" aria-expanded={open} aria-controls={id} onClick={() => setOpen(value => !value)}><Icon name="smile"/></button>
@@ -29,7 +29,7 @@ export function ChatExpressionPicker({ disabled, onEmoji, onSelect }: { disabled
         {tab === 'emoji' ? visibleEmoji.map(([emoji, words]) => <button key={emoji} type="button" aria-label={`${emoji} ${words}`} title={words} onClick={() => onEmoji(emoji)}>{emoji}</button>) : visible.map(item => <button key={item.id} type="button" aria-label={`${tab === 'gif' ? 'GIF' : 'Sticker'}: ${item.label}`} onClick={() => { onSelect({ kind: tab, id: item.id }); setOpen(false); }}><ExpressionImage expression={{kind:tab,id:item.id}}/><span>{item.label}</span></button>)}
       </div>
       {!(tab === 'emoji' ? visibleEmoji.length : visible.length) && <p className="caption muted">No reactions found. Try “love” or “laugh”.</p>}
-      {tab !== 'emoji' && <p className="expression-credit caption muted">TalkingStage originals</p>}
+      {tab !== 'emoji' && <p className="expression-credit caption muted">{tab === 'sticker' ? <>Naija reactions · <a href="/sticker-credits" target="_blank" rel="noopener noreferrer">Sticker credits</a></> : 'TalkingStage originals'}</p>}
     </div>}
   </div>;
 }

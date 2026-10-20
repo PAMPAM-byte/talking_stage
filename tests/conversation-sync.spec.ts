@@ -58,6 +58,38 @@ test('an unchanged refresh does not acknowledge a reply that has not rendered', 
     expect(posts).toBe(0);
 });
 
+test('repeated stale renders back off while keeping the open draft and checking for updates', async ({ page }) => {
+    await page.clock.install();
+    let reads = 0;
+    let refreshes = 0;
+    let posts = 0;
+    page.on('request', request => {
+        if (request.method() === 'POST') posts++;
+        if (request.url().includes('/dev/chat-delivery') && request.headers()['rsc'] === '1') refreshes++;
+    });
+    // Metadata is newer, but every server render still returns preview-0.
+    await page.route('**/api/conversations/**/sync', route => {
+        reads++;
+        return route.fulfill({ json: { revision: 'preview-1' } });
+    });
+    await page.goto('/dev/chat-delivery?scenario=sync');
+    const input = page.getByRole('textbox', { name: 'Message Amara' });
+    await input.fill('Keep this while the server catches up.');
+    await page.clock.fastForward(1100);
+    await expect.poll(() => refreshes).toBe(1);
+    for (let i = 0; i < 6; i++) {
+        const before = reads;
+        await page.clock.fastForward(6000);
+        await expect.poll(() => reads).toBeGreaterThan(before);
+        // Allow a started RSC request to finish before advancing the next poll.
+        await expect(input).toHaveValue('Keep this while the server catches up.');
+    }
+    expect(refreshes).toBeGreaterThan(1);
+    expect(refreshes).toBeLessThanOrEqual(4);
+    expect(reads).toBeGreaterThan(refreshes);
+    expect(posts).toBe(0);
+});
+
 test('a background reply appears without navigation and preserves the draft', async ({ page, context }) => {
     let reads = 0;
     let revision = 'preview-0';

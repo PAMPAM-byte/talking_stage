@@ -1,7 +1,8 @@
 import sharp from 'sharp';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
-import { reactions } from '../lib/chat/expressions.ts';
+import { reactions, supportsExpression } from '../lib/chat/expressions.ts';
+import { naijaStickerArtwork } from './lib/naija-sticker-art.mjs';
 // Original vector artwork, rendered locally. No third-party media or tracking.
 const folder = new URL('../public/chat-reactions/', import.meta.url);
 await mkdir(folder, { recursive: true });
@@ -15,9 +16,11 @@ function artwork(id, frame=0) {
   return `<svg xmlns="http://www.w3.org/2000/svg" width="192" height="160" viewBox="0 0 192 160"><g transform="translate(0 ${bounce})" stroke="#392331" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="96" cy="134" rx="45" ry="5" fill="#ead8de" stroke="none"/><circle cx="96" cy="75" r="53" fill="#f6ba77" stroke="white" stroke-width="8"/><circle cx="96" cy="75" r="49" fill="#f6ba77" stroke="#392331" stroke-width="2.5"/><ellipse cx="64" cy="84" rx="10" ry="5" fill="#e98c87" stroke="none"/><ellipse cx="128" cy="84" rx="10" ry="5" fill="#e98c87" stroke="none"/>${eyes}${mouth}${extras}${arms}</g></svg>`;
 }
 for (const reaction of reactions) {
-  await writeFile(new URL(`${reaction.id}.svg`,folder),artwork(reaction.id));
+  if (reaction.stickerSrc) continue;
+  await writeFile(new URL(`${reaction.id}.svg`,folder),naijaStickerArtwork(reaction.id) ?? artwork(reaction.id));
+  if (!supportsExpression(reaction,'gif')) continue;
   const frames=[];
-  for(let index=0;index<8;index++)frames.push(await sharp(Buffer.from(artwork(reaction.id,index))).ensureAlpha().raw().toBuffer());
+  for(let index=0;index<8;index++)frames.push(await sharp(Buffer.from(naijaStickerArtwork(reaction.id,index) ?? artwork(reaction.id,index))).ensureAlpha().raw().toBuffer());
   await sharp(Buffer.concat(frames),{raw:{width:192,height:160*8,channels:4,pageHeight:160}}).gif({delay:140,loop:2,colours:64}).toFile(fileURLToPath(new URL(`${reaction.id}.gif`,folder)));
 }
-console.log('Built eight original sticker SVGs and eight animated GIFs; each animation stops within five seconds.');
+console.log('Built original SVG stickers and 20 GIF reactions, each bounded to five seconds. Licensed source photos are retained unchanged.');

@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "reviewedOn": "2026-10-20",
+  "photos": [
+    {
+      "id": "patience",
+      "author": "ChikaOjiegbe",
+      "license": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:PatienceOzokwor.jpg",
+      "file": "patience.jpg",
+      "bytes": 14279,
+      "sha256": "775aa05f9a409100fc0c34b481f68e61897eb717d38c4ca28ebc5bd171e86144",
+      "changes": "Original photograph unchanged. Reaction captions are rendered separately by TalkingStage."
+    },
+    {
+      "id": "pete",
+      "author": "Kelvin Jewel",
+      "license": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Pete-edochie.jpg",
+      "file": "pete.jpg",
+      "bytes": 35752,
+      "sha256": "878a9ceacd82f931f4cabc14b1d24b4d85d9adeba494503440cfe41ee5426fca",
+      "changes": "Original photograph unchanged. Reaction captions are rendered separately by TalkingStage."
+    },
+    {
+      "id": "aki-pawpaw",
+      "author": "Ameyaw Debrah",
+      "license": "CC BY 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Aki_and_Paw_Paw.jpg",
+      "file": "aki-pawpaw.jpg",
+      "bytes": 92773,
+      "sha256": "491db08911ba09aeebde95cfb23ccf07dc8e6bfd279b146ae14e31e8c1bb486b",
+      "changes": "Original photograph unchanged. Reaction captions are rendered separately by TalkingStage."
+    }
+  ]
+}

@@ -8,6 +8,7 @@ import {ConversationSync} from '@/components/conversation-sync';
 import {ChatLoading,ConversationLoadRecovery} from '@/components/chat-loading';
 import {MemoryForm} from '@/components/connected-memory-form';
 import {MemorySavedConfirmation} from '@/components/memory-saved-confirmation';
+import {encodeExpression} from '@/lib/chat/expressions';
 const id='00000000-0000-4000-8000-000000000001';
 export default function DeliveryPreview({scenario,snapshot=false}:{scenario?:string;snapshot?:boolean}){
  const seeded=['unstarted','generating','failed','attempted'].includes(scenario??'');
@@ -15,6 +16,7 @@ export default function DeliveryPreview({scenario,snapshot=false}:{scenario?:str
  const [saved,setSaved]=useState<{id:string;clientId:string;text:string}[]>(()=>seeded?[{id:seededId,clientId:seededId,text:'Previously saved message.'}]:[]);const fail=useRef(false);const attempts=useRef(new Map<string,string>());
  const statuses=seeded?[{messageId:seededId,state:scenario==='generating'?'generating':scenario==='failed'?'failed':'blocked_provider',attempts:scenario==='unstarted'?0:1}]:[];
  const failStop=useRef(false);
+ if(scenario==='expressions')return <ChatShell back={<span>Preview</span>} identity={<h1>Amara · scripted reactions</h1>} composer={<div className="chat-composer">Synthetic media rendering preview</div>}><div role="log" aria-label="Conversation messages" className="chat-log"><article className="message-turn message-turn--user"><ChatMessageContent text="That joke finished me 😂"/></article><article className="message-turn" data-testid="character-gif"><ChatMessageContent text={encodeExpression({kind:'gif',id:'omo-laugh'},'You got me too 😂')}/></article><article className="message-turn" data-testid="character-sticker"><ChatMessageContent text={encodeExpression({kind:'sticker',id:'my-person'})}/></article></div></ChatShell>;
  if(scenario?.startsWith('memory-'))return scenario==='memory-saved'?<MemorySavedConfirmation/>:<MemoryForm character={id} operation="save" label="Save memory" conversation={scenario==='memory-return'?id:undefined} action={async()=>scenario==='memory-failure'?{error:'Synthetic save unavailable.'}:{message:'Memory saved.'}}/>;
  if(scenario==='loading')return <ChatLoading/>;
  if(scenario==='render-error')return <ConversationLoadRecovery failed/>;
