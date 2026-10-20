@@ -21,6 +21,7 @@ type ReplyStatus = {
     messageId: string;
     state: string;
     attempts: number;
+    outputMessageId?: string | null;
 };
 type Delivery = {
     outgoing: Outgoing[];
@@ -28,6 +29,7 @@ type Delivery = {
     typing: boolean;
     preparing: boolean;
     active: string[];
+    canStop: boolean;
     seen: Set<string>;
     send: (text: string, item?: Outgoing) => Promise<void>;
     watch: (messageId: string) => void;
@@ -57,6 +59,18 @@ export function ConnectedChatDelivery({ id, generation, replies, savedIds, saved
     // Match typing immediately; stopping or failing a reply must not undo a receipt.
     const [seen, setSeen] = useState(() => new Set(statuses.filter(item => item.state === 'generating' || item.state === 'completed' || item.attempts > 0).map(item => item.messageId)));
     const [generating, setGenerating] = useState(() => statuses.filter(item => item.state === 'generating').map(item => item.messageId));
+    // A completed metadata poll precedes the RSC payload containing the bubble.
+    // Keep that handoff visible until the committed history acknowledges it.
+    const [completing, setCompleting] = useState<string[]>([]);
+    useEffect(() => {
+        const rendered = new Set(statuses.filter(item => item.state === 'completed' && item.outputMessageId && savedIds.includes(item.outputMessageId)).map(item => item.messageId));
+        // Retire acknowledged handoffs before their status leaves the history
+        // window, so an old completion can never bring typing back later.
+        const retire = (current: string[]) => current.some(messageId => rendered.has(messageId)) ? current.filter(messageId => !rendered.has(messageId)) : current;
+        setCompleting(retire);
+        setWatching(retire);
+        setGenerating(retire);
+    }, [statuses, savedIds]);
     const recoveryAttempts = useRef(new Set<string>());
     const watchStarted = useRef(new Map<string, number>());
     const [notice, setNotice] = useState('');
@@ -93,6 +107,7 @@ export function ConnectedChatDelivery({ id, generation, replies, savedIds, saved
                 return;
             }
             const finished: string[] = [];
+            const completed: string[] = [];
             for (const messageId of watching) {
                 if (controller.signal.aborted)
                     return;
@@ -112,6 +127,7 @@ export function ConnectedChatDelivery({ id, generation, replies, savedIds, saved
                         setSeen(current => current.has(messageId) ? current : new Set([...current, messageId]));
                         if (state === 'generating') setGenerating(current => current.includes(messageId) ? current : [...current, messageId]);
                     }
+                    if (state === 'completed') completed.push(messageId);
                     if (state === 'inaccessible') {
                         finished.push(messageId);
                         if (httpStatus === 401) router.replace('/sign-in');
@@ -135,6 +151,7 @@ export function ConnectedChatDelivery({ id, generation, replies, savedIds, saved
             if (controller.signal.aborted)
                 return;
             if (finished.length) {
+                if (completed.length) setCompleting(current => [...new Set([...current, ...completed])]);
                 for (const messageId of finished) watchStarted.current.delete(messageId);
                 setWatching(current => current.filter(value => !finished.includes(value)));
                 setGenerating(current => current.filter(value => !finished.includes(value)));
@@ -198,6 +215,8 @@ export function ConnectedChatDelivery({ id, generation, replies, savedIds, saved
             }
             setWatching([]);
             setGenerating([]);
+            // Already-completed replies still need their render handoff, even
+            // when the user stops a different job that is generating alongside it.
             for (const messageId of watching) watchStarted.current.delete(messageId);
             router.refresh();
         } catch {
@@ -213,9 +232,14 @@ export function ConnectedChatDelivery({ id, generation, replies, savedIds, saved
         setNotice('');
         setWatching(current => [...new Set([...current, messageId])]);
     }
+    // Metadata may arrive before or after history. Only the exact saved output
+    // in this rendered snapshot acknowledges that job, including overlapping sends.
+    const settled = new Set(statuses.filter(item => item.state === 'completed' && item.outputMessageId && savedIds.includes(item.outputMessageId)).map(item => item.messageId));
+    const active = watching.filter(messageId => !settled.has(messageId));
+    const awaitingHistory = completing.filter(messageId => !settled.has(messageId));
     const value = {
         outgoing: outgoing.filter(item => !savedClientIds.includes(item.clientId) && (!item.messageId || !savedIds.includes(item.messageId))),
-        sending, typing: watching.some(messageId => generating.includes(messageId)), preparing: watching.length > 0 && !watching.some(messageId => generating.includes(messageId)), active: watching, seen, send, watch, stop,
+        sending, typing: awaitingHistory.length > 0 || active.some(messageId => generating.includes(messageId)), preparing: active.length > 0 && !active.some(messageId => generating.includes(messageId)), active: [...new Set([...active, ...awaitingHistory])], canStop: active.length > 0, seen, send, watch, stop,
     };
     return <Context.Provider value={value}>{children}{notice && <p className="chat-delivery-notice caption" role="status">{notice}</p>}</Context.Provider>;
 }
@@ -227,18 +251,18 @@ export function ConnectedMessageDelivery({ messageId, status }: { messageId: str
 export function ChatOutbox({ name }: {
     name: string;
 }) {
-    const { outgoing, typing, preparing, send, sending, stop } = useDelivery();
+    const { outgoing, typing, preparing, canStop, send, sending, stop } = useDelivery();
     const [stopping, setStopping] = useState(false);
     const end = useRef<HTMLElement>(null);
     const newest = outgoing.at(-1)?.clientId;
     useEffect(() => { if (newest)
         end.current?.scrollIntoView({ block: 'end' }); }, [newest]);
-    return <>{outgoing.map(item => <article ref={item.clientId === newest ? end : null} className="message-turn message-turn--user message-turn--outgoing" key={item.clientId} data-delivery={item.state} data-client-id={item.clientId}><ChatMessageContent text={item.text}/><div className="message-meta caption muted"><time dateTime={item.time}>{new Date(item.time).toLocaleTimeString('en-NG', { timeZone: 'Africa/Lagos', hour: '2-digit', minute: '2-digit' })}</time>{item.state === 'saved' && item.messageId ? <ConnectedMessageDelivery messageId={item.messageId}/> : <MessageDelivery state={item.state}/>}</div>{item.state === 'failed' && <div className="message-send-error"><p role="alert" className="caption">{item.error}</p><Button variant="quiet" disabled={sending} onClick={() => void send(item.text, item)}>Retry sending</Button></div>}</article>)}{(typing || preparing) && <>{typing && <TypingBubble name={name}/>}<Button className="chat-stop-reply" variant="quiet" loading={stopping} onClick={async () => { setStopping(true); try {
+    return <>{outgoing.map(item => <article ref={item.clientId === newest ? end : null} className="message-turn message-turn--user message-turn--outgoing" key={item.clientId} data-delivery={item.state} data-client-id={item.clientId}><ChatMessageContent text={item.text}/><div className="message-meta caption muted"><time dateTime={item.time}>{new Date(item.time).toLocaleTimeString('en-NG', { timeZone: 'Africa/Lagos', hour: '2-digit', minute: '2-digit' })}</time>{item.state === 'saved' && item.messageId ? <ConnectedMessageDelivery messageId={item.messageId}/> : <MessageDelivery state={item.state}/>}</div>{item.state === 'failed' && <div className="message-send-error"><p role="alert" className="caption">{item.error}</p><Button variant="quiet" disabled={sending} onClick={() => void send(item.text, item)}>Retry sending</Button></div>}</article>)}{(typing || preparing) && <>{typing && <TypingBubble name={name}/>} {canStop&&<Button className="chat-stop-reply" variant="quiet" loading={stopping} onClick={async () => { setStopping(true); try {
         await stop();
     }
     finally {
         setStopping(false);
-    } }}>Stop reply</Button></>}</>;
+    } }}>Stop reply</Button>}</>}</>;
 }
 export function LiveMessageComposer({ disabled, name }: {
     disabled: boolean;

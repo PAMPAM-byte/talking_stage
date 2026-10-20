@@ -61,7 +61,7 @@ export async function ConnectedThread({id,before,memorySaved=false}:{id:string;b
   userMessageIds.length?account.client.from('messages').select('client_message_id').eq('conversation_id',id).eq('role','user').in('id',userMessageIds):Promise.resolve({data:[]}),
  ]);
  const available=!!model&&availability.data===true;
- const statuses=statusRows.data as {messageId:string;state:string;attempts:number}[]|null;
+ const statuses=statusRows.data as {messageId:string;state:string;attempts:number;outputMessageId?:string|null}[]|null;
  const photoDescriptions=photos.data??[];
  const paymentIds=(paymentMessages.data??[]).map(m=>m.payment_intent_id).filter(Boolean);
  const giftRows=paymentIds.length?await account.client.from('payment_intents').select('*').eq('conversation_id',id).in('id',paymentIds):{data:[]};
