@@ -475,6 +475,8 @@ Final cast, branding clearance, age-assurance method, payment limits and gateway
 
 Light mode is the launch design baseline. Dark mode requires a separately tested token mapping and is not implied by this specification.
 
+Quoted replies - 21 October: saved user and character messages support a deliberate right swipe, with a reply button beside the bubble on hover or keyboard focus. Quotes use a compact author rail and two-line preview inside the message; outgoing colours follow the existing red bubble. The composer previews the selected message above its input and provides an accessible cancel control. Quote links return to the original message. Preserve vertical scrolling, draft text, read ticks and reduced motion. See [quoted reply review](./reviews/quoted-replies.md).
+
 Typing handoff - 21 October: keep the existing character-name typing indicator visible between a completed status poll and the rendered reply. Remove it in the same render that displays that job's exact saved output message. Preserve draft, ticks, responsive layout and reduced motion; add no artificial typing delay. See [reply handoff review](./reviews/reply-render-handoff.md).
 
 Character check-ins - 20 October: Settings uses accessible radio cards for Off, occasional daily, twice-weekly and on-return preferences. White cards, blush selection, brand-red borders and existing type tokens keep the control consistent with TalkingStage. One Save preference action exposes pending, failure and saved states. All frequencies remain bounded by one message a day across chats; unanswered messages block further nudges. The default is Off. See [conversation continuity review](./reviews/conversation-continuity.md).
