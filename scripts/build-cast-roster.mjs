@@ -3,6 +3,8 @@ import { createHash } from 'node:crypto';
 import { readFile, writeFile } from 'node:fs/promises';
 import { pathToFileURL } from 'node:url';
 import { resolve } from 'node:path';
+import {personalityDefinitions,interestDefinitions} from '../lib/discovery-taxonomy.mjs';
+import {discoveryIdentityDirection} from '../lib/ai/discovery-identity.mjs';
 
 const root = new URL('../', import.meta.url);
 const read = async path => JSON.parse(await readFile(new URL(path, root), 'utf8'));
@@ -55,7 +57,7 @@ export function validateRoster(pack) {
 export async function loadRoster() {
     const generated = await read('docs/cast-50/image-generation.json').catch(error => { if (error.code === 'ENOENT') return { photos: {} }; throw error; });
     const youthPhotos = await read('docs/cast-50/youth-images.json').catch(error => { if (error.code === 'ENOENT') return { photos: {} }; throw error; });
-    const [current, original, expansion, seeds, voices, knowledge, research, relationships, contentScope, lives, youth, worlds] = await Promise.all([
+    const [current, original, expansion, seeds, voices, knowledge, research, relationships, contentScope, lives, youth, worlds, discovery] = await Promise.all([
         read('docs/cast-50/existing-identities.json'), read('docs/stage-0/characters.json'),
         read('docs/cast-expansion/characters.json'), read('docs/cast-50/identity-seeds.json'),
         read('docs/cast-50/voice-profiles.json'), read('docs/cast-50/knowledge-base.json'), read('docs/cast-50/research.json'),
@@ -63,8 +65,11 @@ export async function loadRoster() {
         read('docs/cast-50/life-stories.json'),
         read('docs/cast-50/youth-rework.json'),
         read('docs/cast-50/world-profiles.json'),
+        read('docs/cast-50/discovery-profiles.json'),
     ]);
     assert.equal(current.length, 22);
+    assert.equal(discovery.characters.length,50);
+    unique(discovery.characters.map(c=>c.key),'Duplicate discovery assignment');
     assert.equal(seeds.characters.length, 28);
     assert.equal(voices.characters.length, 50);
     unique(voices.characters.map(c => c.key), 'Duplicate voice source.');
@@ -96,6 +101,10 @@ export async function loadRoster() {
         const baseVoice = voices.characters.find(c => c.key === identity.key);
         assert(baseVoice, `Missing voice for ${identity.key}`);
         const revision = youth.characters.find(c => c.key === identity.key);
+        const assignment=discovery.characters.find(c=>c.key===identity.key);
+        assert(assignment,`Missing discovery assignment: ${identity.key}`);
+        assert(assignment.personalityTags.every(tag=>Object.hasOwn(personalityDefinitions,tag)),`${identity.key}: unknown personality`);
+        assert(assignment.interests.every(tag=>Object.hasOwn(interestDefinitions,tag)),`${identity.key}: unknown interest`);
         assert(revision, `Missing approved youth revision for ${identity.key}`);
         const world = worlds.characters.find(c => c.key === identity.key);
         for (const field of ['city', 'region', 'country', 'roots', 'arrival', 'work', 'routine', 'offDuty', 'story', 'bio']) boundedText(world[field], 1200, `${identity.key}: world ${field}`);
@@ -115,12 +124,11 @@ export async function loadRoster() {
         boundedText(appearance, 2500, `${identity.key}: appearance continuity`);
         const profile = Object.fromEntries(fields.map(field => [field, identity[field]]));
         Object.assign(profile, { age: revision.age, fictionalLocation: `${world.city}, ${world.region}, ${world.country}`, name: revision.name ?? profile.name, occupation: world.occupation ?? revision.occupation ?? profile.occupation,
-            personalityTags: [...new Set([...profile.personalityTags, archetype].map(tag => tag.replace(/Lagos |Abuja /g, '')))] });
+            personalityTags: assignment.personalityTags, interests:assignment.interests });
         backstory.workLife = world.work;
         profile.bio = voice.bio;
         profile.conversationClue = voice.clue;
-        // Existing public tags remain useful filters; the deeper temperament is
-        // represented separately instead of adding unreviewed filter taxonomies.
+        // Public filters and private expression share one curated assignment.
         const facts = [voice.socialWorld, voice.contradiction, ...voice.opinions, voice.softSpot, voice.friction, voice.affection];
         const knowledgeCards = facts.map((text, index) => ({ id: `${identity.key}-fact-${index + 1}`, kind: 'fictional_character_fact', text }));
         const direction = [
@@ -152,6 +160,7 @@ export async function loadRoster() {
             `Sincere attraction: ${relationship.attractionReply}`,
             `Thoughtful discussion: ${relationship.thoughtfulReply}`,
             expanded?.roleBoundary,
+            discoveryIdentityDirection(profile,assignment),
         ].filter(Boolean).join('\n');
         const photoBriefs = identity.origin === 'new_draft' || revision.appearance ? ['portrait', 'gallery'].map(slot => ({
             slot, status: (revision.appearance ? youthPhotos : generated).photos[`${identity.key}-${slot}`]?.visualReview === 'passed' ? 'generated_visually_reviewed' : 'not_generated', reference: slot === 'gallery' ? `${identity.key}-portrait (reviewed identity reference)` : null,
@@ -166,7 +175,7 @@ export async function loadRoster() {
     });
     const pack = {
         version: 1, preparedOn: worlds.preparedOn, status: 'editorial_rework_not_published',
-        sourceFingerprint: hash({ current, original, expansion, seeds, voices, knowledge, research, relationships, contentScope, lives, youth, worlds }),
+          sourceFingerprint: hash({ current, original, expansion, seeds, voices, knowledge, research, relationships, contentScope, lives, youth, worlds, discovery }),
         contentScope,
         counts: { total: 50, existing: 22, additions: 28, women: characters.filter(c => c.profile.gender === 'woman').length, men: characters.filter(c => c.profile.gender === 'man').length, newPhotosRequired: 56, youthReworkPhotos: 20, youngerAdults: 46, olderAdults: 4 },
         characters,
