@@ -9,9 +9,10 @@
 .conversation-row__body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
 .conversation-row__name { display: flex; justify-content: space-between; gap: 8px; align-items: center; }
 .conversation-preview { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.chat-workspace { height: 100dvh; display: flex; overflow: hidden; }
+.chat-workspace { position: fixed; top: var(--chat-viewport-top, 0px); inset-inline: 0; height: var(--chat-viewport-height, 100dvh); display: flex; overflow: hidden; }
 .chat-sidebar { display: none; }
-.chat-workspace .chat-shell { flex: 1; min-width: 0; }
+.chat-workspace .chat-shell { flex: 1; min-width: 0; min-height: 0; height: 100%; }
+.chat-workspace .chat-shell__header, .chat-workspace .chat-shell__composer { flex-shrink: 0; }
 .chat-identity { display: flex; align-items: center; gap: 12px; }
 .chat-avatar { width: 44px; height: 44px; border-radius: 14px; overflow: hidden; flex: none; }
 .chat-avatar .character-photo { aspect-ratio: 1; }

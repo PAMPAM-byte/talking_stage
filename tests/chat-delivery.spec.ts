@@ -6,13 +6,14 @@ test('queued replies stay saved until the server confirms generation',async({pag
  await page.goto('/dev/chat-delivery');
  await page.getByRole('textbox',{name:'Message Amara'}).fill('A queued message.');
  await page.getByRole('button',{name:'Send message'}).click();
- await expect(page.getByText('Preparing a reply…',{exact:true})).toBeVisible();
+ await expect(page.getByText('Amara is typing…',{exact:true})).toBeVisible();
  await expect(page.getByLabel('Saved',{exact:true})).toBeVisible();
  await expect(page.getByLabel('Seen',{exact:true})).toHaveCount(0);
- await expect(page.locator('.typing-bubble')).toHaveCount(0);
+ await expect(page.locator('.typing-bubble')).toBeVisible();
  started=true;
  await expect(page.getByLabel('Seen',{exact:true})).toBeVisible();
  await expect(page.locator('.typing-bubble')).toBeVisible();
+ await expect(page.getByText('Amara is typing…',{exact:true})).toHaveCount(1);
 });
 
 test('a saved message keeps one tick when no reply starts',async({page})=>{
@@ -28,11 +29,32 @@ test('reopened generating messages already have double ticks and retain them aft
  await page.route('**/api/conversations/**/replies/**',route=>route.fulfill({json:{state:'generating',attempts:1}}));
  await page.goto('/dev/chat-delivery?scenario=generating');
  await expect(page.locator('.typing-bubble')).toBeVisible();
+ await expect(page.locator('.message-reply-actions')).toHaveCount(0);
  await expect(page.getByLabel('Seen',{exact:true})).toBeVisible();
  await expect(page.locator('.message-delivery--seen svg path')).toHaveCount(2);
  await page.getByRole('button',{name:'Stop reply'}).click();
  await expect(page.locator('.typing-bubble')).toHaveCount(0);
  await expect(page.getByLabel('Seen',{exact:true})).toBeVisible();
+});
+
+test('generating server HTML does not label an active reply as failed',async({request})=>{
+ const response=await request.get('/dev/chat-delivery?scenario=generating');
+ expect(response.ok()).toBe(true);
+ const html=await response.text();
+ expect(html).not.toContain('class="message-reply-actions"');
+ expect(html).not.toContain('Preparing a reply');
+ expect(html).not.toContain('The reply could not finish');
+});
+
+test('retry replaces genuine failure controls with one consistent reply indicator',async({page})=>{
+ await page.route('**/api/conversations/**/replies/**',route=>route.fulfill({json:{state:'generating',attempts:2}}));
+ await page.goto('/dev/chat-delivery?scenario=failed');
+ await expect(page.getByText('The reply was interrupted. Your message is saved.',{exact:true})).toBeVisible();
+ await expect(page.getByRole('button',{name:'Continue without reply',exact:true})).toBeVisible();
+ await page.getByRole('button',{name:'Retry reply',exact:true}).click();
+ await expect(page.getByText('Amara is typing…',{exact:true})).toBeVisible();
+ await expect(page.locator('.message-reply-actions')).toHaveCount(0);
+ await expect(page.getByText(/prepar.*reply|reply.*prepar/i)).toHaveCount(0);
 });
 
 test('each receipt belongs to its own message',async({page})=>{

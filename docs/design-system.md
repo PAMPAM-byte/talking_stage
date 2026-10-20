@@ -1,12 +1,14 @@
 # TalkingStage design system
 
+Chat viewport - 20 October: standalone conversations occupy a fixed viewport with one scrollable message region. Header and composer stay in view through window resizing and visible-viewport changes from mobile keyboards; sizing no longer depends on a streamed shell's temporary document position. Embedded design-system shells retain their toolbar offset.
+
 Character identity - 20 October: profiles, discovery cards, conversation headers and photo viewers no longer repeat fictional-AI badges or photo disclaimers. Names, ages, occupations, locations, photo navigation and reporting remain. Landing-page, catalogue introduction, onboarding and announcement disclosures remain available.
 
 Sign-in entry · 20 October: the normal email/password form is always visible. Local test login is an explicit action in a collapsed Development options disclosure, with a native marker, keyboard focus, existing secondary button and scoped error notice. Visiting sign-in never triggers the development account automatically.
 
 Interrupted chat recovery · 20 October: initial conversation skeletons include native reload/return links, usable before hydration. Hydrated loading switches after 15 seconds to a bounded, responsive recovery view; conversation render failures share it. One loading boundary owns the standalone chat. Recovery is explicit and does not replay messages. See [review](./reviews/chat-render-recovery.md).
 
-Reply status refinement · 20 October: a saved message keeps one tick while its reply is queued, with “Preparing a reply…” in the thread. A confirmed generating job gets double ticks and the typing bubble together. Seen receipts persist after interruption. Failed replies keep recovery beside the message with an explanation; the generic floating failure toast is removed. Existing Manrope, white/blush bubbles, red actions and reduced-motion support remain.
+Reply status refinement · 20 October: a saved message keeps one tick while its reply is queued, with one “[character name] is typing…” indicator and animated dots throughout queued and generating states. A confirmed generating job gets double ticks. Seen receipts persist after interruption. Only failed or unavailable replies show recovery beside the message, with state-specific explanations and Continue without reply; pending and generating jobs never render failure controls, including before hydration; the generic floating failure toast is removed. Existing Manrope, white/blush bubbles, red actions and reduced-motion support remain.
 
 Payment character labels · 20 October: payment headings, review and receipt display “[character] TalkingStage” for every character. “Received by” continues to show the registered merchant supplied by the payment integration.
 

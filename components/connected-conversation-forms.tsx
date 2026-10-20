@@ -11,7 +11,7 @@ async function requestReply(id:string,messageId:string,signal?:AbortSignal):Prom
  const zone=browserTimeZone(); if(zone)headers['X-TalkingStage-Timezone']=zone;
  const response=await fetch(`/api/conversations/${id}/replies/${messageId}`,{method:'POST',credentials:'same-origin',signal,headers});
  const {state}=await response.json();
- return {message:state==='completed'?'Reply saved.':state==='earlier_reply_pending'?'Retry or skip the earlier reply first.':state==='budget_exhausted'?'Today’s reply limit has been reached. Your message is saved.':state==='generating'?'A reply is being prepared. It will appear automatically.':state==='cancelled'||state==='discarded'?'The reply was stopped. Your message is saved.':'Your message is saved. A reply is unavailable; try again later.'};
+ return {message:state==='completed'?'Reply saved.':state==='earlier_reply_pending'?'Retry or skip the earlier reply first.':state==='budget_exhausted'?'Today’s reply limit has been reached. Your message is saved.':state==='generating'?'':state==='cancelled'||state==='discarded'?'The reply was stopped. Your message is saved.':'Your message is saved. A reply is unavailable; try again later.'};
  }catch{return {message:signal?.aborted?'The reply was stopped. Your message is saved.':'Your message is saved. Checking for the reply automatically.'};}
 }
 export function ConversationControl({id,operation,version,label}:{id:string;operation:string;version?:number;label:string}) {
@@ -23,13 +23,18 @@ export function ConversationControl({id,operation,version,label}:{id:string;oper
  {destructive?<details><summary>{label}</summary><p className="supporting muted">This removes the conversation messages. Saved memories and payment history are kept.</p><Checkbox name="clearMemories" label="Also clear saved memories for this character"/><Button type="submit" variant="danger" loading={pending}>Confirm {operation}</Button></details>:<Button type="submit" variant="secondary" loading={pending}>{label}</Button>}
  </form>;
 }
-export function ReplyRetry({id,messageId,retry=true}:{id:string;messageId:string;retry?:boolean}) {
+export function ReplyRetry({id,messageId,status}:{id:string;messageId:string;status:{state:string;attempts:number}}) {
  const delivery=useReplyDelivery();
  const [result,setResult]=useState<{error?:string;message?:string}>({});const [pending,start]=useTransition();
  const [cancelling,stop]=useTransition();
  const router=useRouter();
- return <form className="message-reply-actions" hidden={delivery?.active.includes(messageId)} onSubmit={event=>{event.preventDefault();const submitter=(event.nativeEvent as SubmitEvent).submitter as HTMLButtonElement;const operation=submitter?.value??'skip';const data=new FormData(event.currentTarget);data.set('operation',operation);if(operation==='retry')delivery?.watch(messageId);const begin=operation==='skip'?stop:start;begin(async()=>{setResult(operation==='retry'?await requestReply(id,messageId):await conversationAction(data));router.refresh();});}}>
- <p className="caption muted">The reply could not finish. Your message is saved.</p>
+ // Pending and generating jobs are not failures, including in server HTML.
+ // Do not rely on hydration or a hidden attribute to correct their presentation.
+ if (!['failed','blocked_provider'].includes(status.state) || delivery?.active.includes(messageId)) return null;
+ const retry=status.attempts<3;
+ const explanation=status.state==='blocked_provider'?'A reply is temporarily unavailable. Your message is saved.':retry?'The reply was interrupted. Your message is saved.':'This reply could not be completed. Continue without it to send a new message.';
+ return <form className="message-reply-actions" onSubmit={event=>{event.preventDefault();const submitter=(event.nativeEvent as SubmitEvent).submitter as HTMLButtonElement;const operation=submitter?.value??'skip';const data=new FormData(event.currentTarget);data.set('operation',operation);if(operation==='retry')delivery?.watch(messageId);const begin=operation==='skip'?stop:start;begin(async()=>{setResult(operation==='retry'?await requestReply(id,messageId):await conversationAction(data));router.refresh();});}}>
+ <p className="caption muted">{explanation}</p>
  <input type="hidden" name="id" value={id}/><input type="hidden" name="messageId" value={messageId}/>
- {retry&&<Button name="operation" value="retry" variant="quiet" type="submit" loading={pending} disabled={cancelling}>Retry reply</Button>}<Button name="operation" value="skip" variant="quiet" type="submit" loading={cancelling}>Skip reply</Button>{(result.error||result.message)&&<p className="caption muted" role="status">{result.error||result.message}</p>}</form>;
+ {retry&&<Button name="operation" value="retry" variant="quiet" type="submit" loading={pending} disabled={cancelling}>Retry reply</Button>}<Button name="operation" value="skip" variant="quiet" type="submit" loading={cancelling}>Continue without reply</Button>{(result.error||result.message)&&<p className="caption muted" role="status">{result.error||result.message}</p>}</form>;
 }

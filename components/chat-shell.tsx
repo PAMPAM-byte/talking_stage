@@ -18,15 +18,30 @@ export function ChatShell({ identity, actions, back, children, composer, onMessa
   useEffect(() => {
     const viewport = window.visualViewport;
     if (!viewport) return;
+    const element = ref.current;
+    if (!element) return;
+    const workspace = element.closest<HTMLElement>('.chat-workspace');
     const updateHeight = () => {
-      const element = ref.current;
-      if (element) element.style.height = `${Math.max(200, viewport.height - Math.max(0, element.getBoundingClientRect().top - viewport.offsetTop))}px`;
+      if (workspace) {
+        // Standalone chat owns the viewport. Measuring its position during a
+        // streamed route transition can otherwise freeze a shortened height.
+        workspace.style.setProperty('--chat-viewport-height', `${viewport.height}px`);
+        workspace.style.setProperty('--chat-viewport-top', `${viewport.offsetTop}px`);
+      } else {
+        // Keep the design-system's embedded shell below its own toolbar.
+        element.style.height = `${Math.max(0, viewport.height - Math.max(0, element.getBoundingClientRect().top - viewport.offsetTop))}px`;
+      }
     };
     updateHeight();
     viewport.addEventListener("resize", updateHeight);
     viewport.addEventListener("scroll", updateHeight);
     window.addEventListener("resize", updateHeight);
-    return () => { viewport.removeEventListener("resize", updateHeight); viewport.removeEventListener("scroll", updateHeight); window.removeEventListener("resize", updateHeight); };
+    return () => {
+      viewport.removeEventListener("resize", updateHeight); viewport.removeEventListener("scroll", updateHeight); window.removeEventListener("resize", updateHeight);
+      workspace?.style.removeProperty('--chat-viewport-height');
+      workspace?.style.removeProperty('--chat-viewport-top');
+      element.style.removeProperty('height');
+    };
   }, []);
   return <div ref={ref} className="chat-shell"><header className="chat-shell__header">{back}<div className="chat-shell__identity">{identity}</div>{actions}</header><main id="main-content" className="chat-shell__messages" onScroll={onMessagesScroll}>{children}</main><footer className="chat-shell__composer">{composer}</footer></div>;
 }

@@ -9,5 +9,5 @@ export function MessageDelivery({state}:{state:'sending'|'saved'|'seen'|'failed'
 }
 
 export function TypingBubble({name}:{name:string}) {
- return <div className="message-turn typing-turn" role="status"><span className="sr-only">{name} is preparing a reply</span><div className="typing-bubble" aria-hidden="true"><span/><span/><span/></div><span className="caption muted" aria-hidden="true">{name} is typing</span></div>;
+ return <div className="message-turn typing-turn" role="status"><span className="sr-only">{name} is typing</span><div className="typing-bubble" aria-hidden="true"><span/><span/><span/></div><span className="caption muted" aria-hidden="true">{name} is typing…</span></div>;
 }
