@@ -1,5 +1,7 @@
 # TalkingStage design system
 
+Chat payment attribution - 20 October: trusted payment events are centered and explicitly labelled Payment update · TalkingStage. They retain the owned payment card and timestamp, with no character reporting, read ticks or reply controls. If the owned payment cannot be loaded, the system event offers payment history rather than falling back to a character-style text bubble. Ordinary character replies remain left aligned and user messages remain right aligned.
+
 Checkout handoff - 20 October: reviewing an amount now leads to Continue to checkout, with a clear explanation that payment happens at Bachs. An unpaid attempt with an available checkout is titled Complete your payment; other unconfirmed states use Payment details. Payment receipt is reserved for verified paid attempts. Unconfirmed cards identify the Payment recipient rather than implying receipt; sandbox copy describes test mode without implying a completed transfer.
 
 Payment amount feedback - 20 October: amount entry accepts correctly grouped thousands separators, including 50,000 and 50,000.50. Invalid entry shows the existing warning icon and field error beneath the amount, with separate minimum, maximum, required and format messages. Errors are associated with the input and announced politely. Review payment remains actionable so an invalid submission explains the problem and focuses the amount; only a valid amount can enter review. Checkout limits and explicit confirmation remain enforced.

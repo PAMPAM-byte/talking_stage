@@ -1,0 +1,8 @@
+{
+  "version": "202610200019",
+  "appliedAt": "2026-10-20T14:36:57.734Z",
+  "migrationHash": "8b252a4eb4f82f8f224e4fc04fc11f13a756749e078654cdfd2a3de384639b16",
+  "encryptedDdlSnapshotVerified": true,
+  "serviceOnlyVerificationVerified": true,
+  "existingPaymentsNotReplayed": true
+}

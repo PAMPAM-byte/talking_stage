@@ -42,6 +42,10 @@
 .chat-date { color: var(--text-secondary); font-size: 12px; line-height: 18px; text-align: center; margin-block: 4px; }
 .message-turn { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; max-width: min(84%, 480px); align-self: flex-start; }
 .message-turn--user { align-self: flex-end; align-items: flex-end; }
+.message-turn.message-turn--system { align-self: center; align-items: stretch; width: min(100%, 440px); max-width: 100%; }
+.message-turn--system .message-meta { justify-content: center; }
+.message-system-label { margin: 0; text-align: center; color: var(--text-secondary); }
+.message-turn--system .payment-card { min-width: 0; overflow-wrap: anywhere; }
 .message-bubble { padding: 12px 16px; background: var(--surface); color: var(--ink); border: 1px solid var(--border); border-radius: 18px 18px 18px 5px; white-space: pre-wrap; overflow-wrap: anywhere; }
 .message-turn--user .message-bubble { background: var(--brand); color: var(--surface); border-color: var(--brand); border-radius: 18px 18px 5px 18px; }
 .message-meta { display: flex; flex-wrap: wrap; gap: 8px; padding-inline: 4px; }

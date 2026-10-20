@@ -28,6 +28,10 @@ try{
  assert.equal(await apply(),'paid');assert.equal(await apply(),'paid');assert.equal(await apply('failed','evt_failure'),'paid');
  await actor();assert.equal((await db.query('select * from public.payment_intents')).rows.length,1);
  const receipts=(await db.query("select * from public.messages where kind='payment'")).rows;assert.equal(receipts.length,1);assert.equal(receipts[0].role,'system');
+ const acknowledgements=(await db.query("select * from public.messages where role='character' and kind='text'")).rows;
+ assert.equal(acknowledgements.length,1);assert(acknowledgements[0].text.startsWith('Test payment confirmed.'));
+ assert(acknowledgements[0].text.includes('No real money was transferred.'));assert.equal(Number(acknowledgements[0].sequence),Number(receipts[0].sequence)+1);
+ await assert.rejects(db.query('select * from private.payment_acknowledgements'),/permission denied/);
  await assert.rejects(db.query("select public.apply_gift_verification($1,'chk_synthetic',null,'paid',now())",[intent.id]),/permission denied/);
  await actor(b);assert.equal((await db.query('select * from public.payment_intents')).rows.length,0);await assert.rejects(db.query('select public.gift_settings($1)',[c]),/not_found/);
  await assert.rejects(db.query('select public.admin_gift_ledger()'),/forbidden/);
@@ -49,5 +53,31 @@ try{
  const noThanks=await send('no thanks');const declined=await claim(noThanks);assert.equal(declined.requestControls.refused,true);assert.equal(declined.payments.requestsEligible,false);
  await actor();assert.equal((await db.query('select state from public.gift_proposals')).rows[0].state,'declined');
  await actor(b);assert.equal((await db.query('select * from public.gift_proposals')).rows.length,0);await assert.rejects(db.query('select public.decline_gift_proposal($1)',[proposals[0].id]),/not_found/);
+ // Automatic acknowledgements are driven by the verified ledger, not chat claims.
+ await db.exec("reset role;update private.bachs_configuration set environment='production';update public.characters set personality=array['playful'] where name='Synthetic adult';");
+ const fresh=async()=>{
+  await actor('','service_role');
+  const row=(await db.query("select public.reserve_gift($1,$2,500000,gen_random_uuid(),'production','acct_synthetic') v",[a,c])).rows[0].v;
+  const suffix=row.id.replaceAll('-','');
+  await db.query("select public.bind_gift_checkout($1,$2,$3,now()+interval '1 hour')",[row.id,`chk_${suffix}`,`https://checkout.bachs.io/c/${suffix}`]);
+  return {id:row.id,checkout:`chk_${suffix}`,payment:`pay_${suffix}`};
+ };
+ const verify=async(row,state,event=null)=>(await db.query("select public.apply_gift_verification($1,$2,$3,$4,now(),$5) v",[row.id,row.checkout,row.payment,state,event])).rows[0].v;
+ const ackCount=async()=>{await db.exec('reset role');return Number((await db.query('select count(*) n from private.payment_acknowledgements')).rows[0].n);};
+ const paid=await fresh();await verify(paid,'pending');assert.equal(await ackCount(),1);
+ await actor('','service_role');await verify(paid,'paid','evt_new_paid');await verify(paid,'paid','evt_new_paid');await verify(paid,'paid','evt_another_paid');
+ assert.equal(await ackCount(),2);
+ const thanks=(await db.query('select m.* from public.messages m join private.payment_acknowledgements a on a.message_id=m.id where a.intent_id=$1',[paid.id])).rows[0];
+ assert(thanks.text.startsWith('Payment confirmed!'));assert(thanks.text.includes('Thank you'));assert(!thanks.text.includes('Test payment'));assert.equal(thanks.role,'character');
+ const failed=await fresh();await verify(failed,'failed');assert.equal(await ackCount(),2);
+ const reviewed=await fresh();await verify(reviewed,'review');await verify(reviewed,'paid');assert.equal(await ackCount(),2);
+ const archived=await fresh();await db.exec("reset role;update public.conversations set status='archived';");await actor('','service_role');await verify(archived,'paid');assert.equal(await ackCount(),2);
+ await db.exec("update public.conversations set status='active';");
+ const stale=await fresh();await db.exec('reset role;update public.conversations set generation=generation+1;');await actor('','service_role');await verify(stale,'paid');assert.equal(await ackCount(),2);
+ // A reset may erase the message, but replay must never bring the thanks back.
+ await db.query('delete from public.messages where id=$1',[thanks.id]);
+ await actor('','service_role');await verify(paid,'paid','evt_after_reset');assert.equal(await ackCount(),2);
+ assert.equal((await db.query('select message_id from private.payment_acknowledgements where intent_id=$1',[paid.id])).rows[0].message_id,null);
+ console.log('Payment acknowledgements passed: sandbox/live wording, warm trait-based replies, receipt order, webhook/manual deduplication, no thanks for failures/review, archive/reset isolation and private permissions.');
  console.log('Gift database passed: disabled defaults, bounded/owned/idempotent intents, service-only verification, actor isolation, deduplicated receipts and non-regressing verified states. Disposable database only.');
 }finally{await db.close();}
