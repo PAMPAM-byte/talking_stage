@@ -96,7 +96,7 @@ export function DiscoveryDeck({ cards, scope, onMeet }: { cards: DiscoveryCard[]
     <p className="sr-only" role="status" aria-live="polite">{announcement}</p>
     {error && <Notice live tone="danger" title="Conversation couldn’t open">{error}</Notice>}
     {card ? <>
-      <div className="discovery-deck__meta"><span className="caption muted">{index + 1} of {cards.length} to discover</span><span className="caption muted">Fictional AI characters · 18+</span></div>
+      <div className="discovery-deck__meta"><span className="caption muted">{index + 1} of {cards.length} to discover</span></div>
       <div className="discovery-deck__layout">
         <div className="discovery-deck__stage">
           <div className={`discovery-deck__card character-card${drag ? ' is-dragging' : ''}${exit ? ` is-exiting-${exit}` : ''}`} style={style} onPointerDown={start} onPointerMove={update} onPointerUp={finish} onPointerCancel={() => { origin.current = null; setDrag(0); }} onLostPointerCapture={() => { origin.current = null; setDrag(0); }} onKeyDown={event => {
@@ -107,7 +107,7 @@ export function DiscoveryDeck({ cards, scope, onMeet }: { cards: DiscoveryCard[]
             <div className="discovery-deck__photo" key={card.id}>{card.photo}</div>
             <span className="discovery-deck__badge">✦ AI character</span>
             {Math.abs(drag) > 24 && <span aria-hidden="true" className={`discovery-deck__verdict ${drag > 0 ? 'is-meet' : 'is-pass'}`}>{drag > 0 ? 'Meet' : 'Pass'}</span>}
-            <div className="discovery-deck__identity"><h2>{card.name}<span>, {card.age}</span></h2><p>{card.location} · fictional setting</p><Link href={card.href} className="discovery-deck__profile">View profile </Link></div>
+            <div className="discovery-deck__identity"><h2>{card.name}<span>, {card.age}</span></h2><p>{card.location}</p><Link href={card.href} className="discovery-deck__profile">View profile </Link></div>
           </div>
           <div className="discovery-deck__actions">
             <button type="button" className="deck-action deck-action--undo" disabled={index === 0 || !!exit || opening} onClick={() => { setAnnouncement('Last pass undone.'); move(index - 1); }} aria-label="Undo last pass"><span className="deck-action__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M4 10a8 8 0 1 1 1 9M4 4v6h6" /></svg></span><span className="deck-action__label">Undo</span></button>

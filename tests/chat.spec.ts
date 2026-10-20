@@ -44,7 +44,8 @@ test('scripted replies, multiline composer, owned photos, viewer, and safe refre
   await expect(page.getByRole('button', { name: 'View Amara’s character photo' })).toBeFocused();
   await page.reload();
   await expect(page.getByText('Preview message (text not stored).', { exact: true })).toBeVisible();
-  await expect(page.locator('.chat-photo figcaption strong')).toHaveText('AI-generated character photo');
+  await expect(page.locator('.chat-photo img')).toBeVisible();
+  await expect(page.locator('.chat-photo figcaption')).toHaveCount(0);
   await expect(page.locator('.message-turn--user')).toHaveCount(2);
 });
 

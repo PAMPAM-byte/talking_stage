@@ -1,5 +1,7 @@
 # TalkingStage design system
 
+Character identity - 20 October: profiles, discovery cards, conversation headers and photo viewers no longer repeat fictional-AI badges or photo disclaimers. Names, ages, occupations, locations, photo navigation and reporting remain. Landing-page, catalogue introduction, onboarding and announcement disclosures remain available.
+
 Sign-in entry · 20 October: the normal email/password form is always visible. Local test login is an explicit action in a collapsed Development options disclosure, with a native marker, keyboard focus, existing secondary button and scoped error notice. Visiting sign-in never triggers the development account automatically.
 
 Interrupted chat recovery · 20 October: initial conversation skeletons include native reload/return links, usable before hydration. Hydrated loading switches after 15 seconds to a bounded, responsive recovery view; conversation render failures share it. One loading boundary owns the standalone chat. Recovery is explicit and does not replay messages. See [review](./reviews/chat-render-recovery.md).
