@@ -1,0 +1,8 @@
+{
+  "version": "202610200020",
+  "appliedAt": "2026-10-20T21:16:01.325Z",
+  "migrationHash": "362c874907f58218a60f0468543f5f017a334a553876c9d684a9b4ff5aece503",
+  "encryptedDdlSnapshotVerified": true,
+  "ownerReactionRpcVerified": true,
+  "serviceOnlyCharacterCommitVerified": true
+}

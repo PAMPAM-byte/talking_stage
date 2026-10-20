@@ -29,7 +29,7 @@ try{
  (await db.query('select public.finish_reply($1,$2,$3,$4,$5,$6) as v',[p.p_job,p.p_actor,p.p_lease,p.p_text,p.p_failure,p.p_asset])).rows[0].v})};
  let calls=0;const settings={model:'synthetic',key:'SYNTHETIC-NOT-A-KEY'};
  const fetcher=async(_url,options)=>{calls++;const body=JSON.parse(options.body);assert.deepEqual(body.text.format.schema.properties.photoAssetId,{anyOf:[{type:'null'},{type:'string'}]});
- return new Response(JSON.stringify({status:'completed',output:[{type:'message',content:[{type:'output_text',text:JSON.stringify({text:'Synthetic approved-photo reply',photoAssetId:galleries[0]})}]}]}));};
+ return new Response(JSON.stringify({status:'completed',output:[{type:'message',content:[{type:'output_text',text:JSON.stringify({text:'Synthetic approved-photo reply',photoAssetId:galleries[0],...(body.text.format.schema.properties.reaction?{reaction:null}:{})})}]}]}));};
  const first=await send();assert.equal(await runReply(client,first,a,settings,{fetcher}),'completed');assert.equal(await runReply(client,first,a,settings,{fetcher}),'completed');assert.equal(calls,1);
  await actor(a);const messages=(await db.query('select sequence,kind,asset_id from public.messages where conversation_id=$1 order by sequence',[c])).rows;
  assert.deepEqual(messages.map(m=>m.kind),['text','text','photo']);assert.deepEqual(messages.map(m=>Number(m.sequence)),[1,2,3]);assert.equal(messages[2].asset_id,galleries[0]);

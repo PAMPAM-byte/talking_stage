@@ -7,10 +7,11 @@ import {Icon} from './ui/icon';
 import styles from './message-reactions.module.css';
 type Result={error?:string};
 export function MessageReactions({messageId,name,reactions,disabled=false,action}:{messageId:string;name:string;reactions:MessageReaction[];disabled?:boolean;action:(messageId:string,emoji:string|null)=>Promise<Result>}){
- const [items,setItems]=useState(reactions);const [open,setOpen]=useState(false);const [more,setMore]=useState(false);const [query,setQuery]=useState('');const [busy,setBusy]=useState(false);const [error,setError]=useState('');
+ const [optimistic,setOptimistic]=useState<{signature:string;items:MessageReaction[]}|null>(null);const [open,setOpen]=useState(false);const [more,setMore]=useState(false);const [query,setQuery]=useState('');const [busy,setBusy]=useState(false);const [error,setError]=useState('');
  const root=useRef<HTMLDivElement>(null);const trigger=useRef<HTMLButtonElement>(null);const picker=useId();const router=useRouter();
  const signature=JSON.stringify(reactions);
- useEffect(()=>{setItems(JSON.parse(signature));},[signature]);
+ const items=optimistic?.signature===signature?optimistic.items:reactions;
+ const setItems=(items:MessageReaction[])=>setOptimistic({signature,items});
  useEffect(()=>{if(!open)return;function outside(event:PointerEvent){if(!root.current?.contains(event.target as Node))setOpen(false);}function escape(event:KeyboardEvent){if(event.key==='Escape'){setOpen(false);trigger.current?.focus();}}document.addEventListener('pointerdown',outside);document.addEventListener('keydown',escape);return()=>{document.removeEventListener('pointerdown',outside);document.removeEventListener('keydown',escape);};},[open]);
  const selected=items.find(item=>item.actor==='user')?.emoji;
  async function choose(emoji:string){if(busy||disabled)return;const next=selected===emoji?null:emoji;const previous=items;setItems([...items.filter(item=>item.actor!=='user'),...(next?[{messageId,actor:'user' as const,emoji:next}]:[])]);setOpen(false);setBusy(true);setError('');trigger.current?.focus();try{const result=await action(messageId,next);if(result.error){setItems(previous);setError(result.error);}else router.refresh();}catch{setItems(previous);setError('Reaction not saved. Try again.');}finally{setBusy(false);}}

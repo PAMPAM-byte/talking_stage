@@ -56,7 +56,7 @@ try{
  const settings={key:'SYNTHETIC-NOT-A-KEY',model:'synthetic'};let networkCalls=0;
  const fetcher=async(_url,options)=>{networkCalls++;const body=JSON.parse(options.body);assert(body.input[0].content.includes('SYNTHETIC PRIVATE VOICE'));assert.equal(body.store,false);
  if(networkCalls===1)assert(body.input[0].content.includes('"timeZone":"Africa/Lagos"'),'The full claim/provider pipeline must carry the current local clock.');
- return new Response(JSON.stringify({status:'completed',output:[{type:'message',content:[{type:'output_text',text:'{"text":"Synthetic pipeline reply.","photoAssetId":null}'}]}]}));};
+ return new Response(JSON.stringify({status:'completed',output:[{type:'message',content:[{type:'output_text',text:JSON.stringify({text:'Synthetic pipeline reply.',photoAssetId:null,...(body.text.format.schema.properties.reaction?{reaction:null}:{})})}]}]}));};
  await actor(a);const pipelineMessage=await send('Synthetic pipeline input',2);await actor('', 'service_role');
  assert.equal(await runReply(client,pipelineMessage,a,settings,{fetcher,userTimeZone:'Africa/Lagos'}),'completed');assert.equal(networkCalls,1);
  assert.equal(await runReply(client,pipelineMessage,a,settings,{fetcher}),'completed');assert.equal(networkCalls,1);

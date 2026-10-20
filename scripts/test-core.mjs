@@ -11,6 +11,7 @@ const checks = [
   ['test-women-personalities.mjs'],
   ['test-lifestyle-personalities.mjs'],
   ['test-chat-expressions.mjs'],
+  ['test-message-reactions.mjs'],
   ['test-development-test-login.mjs'],
   ['--experimental-vm-modules', 'test-account-boundaries.mjs'],
   ['test-discovery-feed.mjs'],
