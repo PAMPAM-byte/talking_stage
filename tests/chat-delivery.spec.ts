@@ -1,5 +1,76 @@
 import {test,expect} from '@playwright/test';
 
+for(const width of [390,1440])test(`typing hands off to rendered reply without a blank frame at ${width}px`,async({page})=>{
+ await page.setViewportSize({width,height:844});
+ let completed=false;let completionReads=0;let posts=0;
+ await page.route('**/api/conversations/**/replies/**',route=>{
+  if(route.request().method()==='POST')posts++;
+  if(completed)completionReads++;
+  return route.fulfill({json:{state:completed?'completed':'generating',attempts:1}});
+ });
+ await page.goto('/dev/chat-delivery?scenario=generating');
+ await expect(page.locator('.typing-bubble')).toBeVisible();
+ const input=page.getByRole('textbox',{name:'Message Amara'});await input.fill('Keep my next draft.');
+ await page.evaluate(()=>{
+  const state={blank:0,overlap:0,samples:0};Object.assign(window,{handoffFrames:state});
+  const sample=()=>{const typing=!!document.querySelector('.typing-bubble');const reply=!!document.querySelector('[data-testid="handoff-reply"]');state.samples++;if(!typing&&!reply)state.blank++;if(typing&&reply)state.overlap++;if(!reply)requestAnimationFrame(sample);};requestAnimationFrame(sample);
+ });
+ completed=true;await expect.poll(()=>completionReads).toBeGreaterThan(0);
+ await page.getByRole('button',{name:'Acknowledge completion only'}).click();
+ // Simulate a slow/stale history refresh after the metadata says completed.
+ await page.waitForTimeout(1200);
+ await expect(page.locator('.typing-bubble')).toBeVisible();
+ await expect(page.getByTestId('handoff-reply')).toHaveCount(0);
+ await page.getByRole('button',{name:'Render completed reply'}).click();
+ await expect(page.getByTestId('handoff-reply')).toBeVisible();
+ await expect(page.locator('.typing-bubble')).toHaveCount(0);
+ await expect(input).toHaveValue('Keep my next draft.');
+ const frames=await page.evaluate(()=>(window as unknown as {handoffFrames:{blank:number;overlap:number;samples:number}}).handoffFrames);
+ expect(frames.samples).toBeGreaterThan(1);expect(frames.blank).toBe(0);expect(frames.overlap).toBe(0);expect(posts).toBe(0);
+});
+
+test('a rendered server reply clears typing even before the next metadata poll',async({page})=>{
+ await page.route('**/api/conversations/**/replies/**',route=>route.fulfill({json:{state:'generating',attempts:1}}));
+ await page.goto('/dev/chat-delivery?scenario=generating');await expect(page.locator('.typing-bubble')).toBeVisible();
+ await page.getByRole('button',{name:'Render completed reply'}).click();
+ await expect(page.getByTestId('handoff-reply')).toBeVisible();await expect(page.locator('.typing-bubble')).toHaveCount(0);
+});
+
+test('an earlier rendered reply cannot settle a newer completed reply',async({page})=>{
+ let reads=0;
+ await page.route('**/api/conversations/**/replies/**',route=>{reads++;return route.fulfill({json:{state:'completed',attempts:1}});});
+ await page.goto('/dev/chat-delivery?scenario=generating');
+ await expect.poll(()=>reads).toBeGreaterThan(0);
+ await page.getByRole('button',{name:'Render completed reply'}).click();
+ await expect(page.locator('.typing-bubble')).toHaveCount(0);
+ const previousReads=reads;
+ await page.getByRole('textbox',{name:'Message Amara'}).fill('A second message.');
+ await page.getByRole('button',{name:'Send message'}).click();
+ await expect.poll(()=>reads).toBeGreaterThan(previousReads);
+ await expect(page.getByTestId('handoff-reply')).toBeVisible();
+ await expect(page.locator('.typing-bubble')).toBeVisible();
+ await expect(page.getByLabel('Seen',{exact:true})).toHaveCount(2);
+});
+
+test('stopping a newer job preserves an earlier completed handoff',async({page})=>{
+ let completedReads=0;
+ await page.route('**/api/conversations/**/replies/**',route=>{
+  const earlier=route.request().url().endsWith('00000000-0000-4000-8000-000000000002');
+  if(earlier)completedReads++;
+  return route.fulfill({json:{state:earlier?'completed':'generating',attempts:1}});
+ });
+ await page.goto('/dev/chat-delivery?scenario=generating');
+ await expect.poll(()=>completedReads).toBeGreaterThan(0);
+ await page.getByRole('textbox',{name:'Message Amara'}).fill('Another thought.');
+ await page.getByRole('button',{name:'Send message'}).click();
+ await page.getByRole('button',{name:'Stop reply',exact:true}).click();
+ await expect(page.locator('.typing-bubble')).toBeVisible();
+ await expect(page.getByRole('button',{name:'Stop reply',exact:true})).toHaveCount(0);
+ await page.getByRole('button',{name:'Render completed reply'}).click();
+ await expect(page.getByTestId('handoff-reply')).toBeVisible();
+ await expect(page.locator('.typing-bubble')).toHaveCount(0);
+});
+
 test('queued replies stay saved until the server confirms generation',async({page})=>{
  let started=false;
  await page.route('**/api/conversations/**/replies/**',route=>route.fulfill({json:started?{state:'generating',attempts:1}:{state:'earlier_reply_pending',attempts:0}}));
@@ -55,6 +126,14 @@ test('retry replaces genuine failure controls with one consistent reply indicato
  await expect(page.getByText('Amara is typing…',{exact:true})).toBeVisible();
  await expect(page.locator('.message-reply-actions')).toHaveCount(0);
  await expect(page.getByText(/prepar.*reply|reply.*prepar/i)).toHaveCount(0);
+ let completionReads=0;
+ await page.route('**/api/conversations/**/replies/**',route=>{completionReads++;return route.fulfill({json:{state:'completed',attempts:2}});});
+ await expect.poll(()=>completionReads).toBeGreaterThan(0);
+ await expect(page.locator('.typing-bubble')).toBeVisible();
+ await expect(page.locator('.message-reply-actions')).toHaveCount(0);
+ await expect(page.getByRole('button',{name:'Stop reply',exact:true})).toHaveCount(0);
+ await page.getByRole('button',{name:'Render completed reply'}).click();
+ await expect(page.locator('.typing-bubble')).toHaveCount(0);
 });
 
 test('each receipt belongs to its own message',async({page})=>{
@@ -104,6 +183,8 @@ test('late replies continue updating after sixty seconds without regeneration',a
  const priorReads=reads;
  await page.route('**/api/conversations/**/replies/**',route=>route.fulfill({json:{state:'completed',attempts:1}}));
  await page.clock.fastForward(11000);
+ await expect(page.locator('.typing-bubble')).toBeVisible();
+ await page.getByRole('button',{name:'Render completed reply'}).click();
  await expect(page.locator('.typing-bubble')).toHaveCount(0);
  expect(reads).toBeGreaterThanOrEqual(priorReads);
  expect(posts).toBe(0);
@@ -119,6 +200,7 @@ test('reopening recovers an unstarted saved job once without replaying failed at
  await page.goto('/dev/chat-delivery?scenario=unstarted');
  await expect(page.getByText('Previously saved message.',{exact:true})).toBeVisible();
  await expect.poll(()=>posts).toBe(1);
+ await page.getByRole('button',{name:'Render completed reply'}).click();
  await expect(page.locator('.typing-bubble')).toHaveCount(0);
  await page.goto('/dev/chat-delivery?scenario=failed');
  await expect(page.getByText('Previously saved message.',{exact:true})).toBeVisible();
@@ -163,6 +245,7 @@ test('pending clock becomes double ticks alongside typing before a reply arrives
  await page.emulateMedia({reducedMotion:'reduce'});
  expect(await page.locator('.typing-bubble > span').first().evaluate(el=>getComputedStyle(el).animationName)).toBe('none');
  await page.route('**/api/conversations/**/replies/**',route=>route.fulfill({json:{state:'completed'}}));
+ await page.getByRole('button',{name:'Render completed reply'}).click();
  await expect(page.locator('.typing-bubble')).toHaveCount(0);
  await expect(input).toHaveValue('I can keep writing.');
 });

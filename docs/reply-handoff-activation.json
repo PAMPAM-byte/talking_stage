@@ -1,0 +1,11 @@
+{
+  "appliedAt": "2026-10-20T22:58:57.820Z",
+  "migration": {
+    "version": "202610200025",
+    "name": "reply_render_handoff",
+    "hash": "e5b25d15188b51a70f5e2efa3332b5dd5f9a3ceb2999e4d3e9b2960d78cc8909"
+  },
+  "encryptedDdlSnapshotVerified": true,
+  "ownedReadOnlyStatus": true,
+  "noMessagesGenerated": true
+}

@@ -33,6 +33,12 @@ try{
  await db.exec('reset role');assert.equal(Number((await db.query("select count(*) as n from public.messages where role='character'")).rows[0].n),1);
  assert.equal(Number((await db.query("select amount_micro_usd as n from private.ai_daily_usage where scope='project'")).rows[0].n),2*49024);
  await actor(a);await memory('enable');await memory('delete',null,fact);const second=await send();
+ const completedStatus=(await db.query('select public.reply_status($1) as v',[c])).rows[0].v.find(item=>item.messageId===message);
+ assert.equal(completedStatus.state,'completed');
+ assert.equal((await db.query('select id from public.messages where id=$1 and conversation_id=$2 and role=$3',[completedStatus.outputMessageId,c,'character'])).rows.length,1);
+ assert.deepEqual(Object.keys(completedStatus).sort(),['attempts','messageId','outputMessageId','state']);
+ const pendingStatus=(await db.query('select public.reply_status($1) as v',[c])).rows[0].v.find(item=>item.messageId===second);
+ assert.equal(pendingStatus.outputMessageId,null);
  await actor('', 'service_role');const secondJob=await claim(second);assert.deepEqual(secondJob.memories,[]);assert.equal(secondJob.history.at(-1).text,'Synthetic input');
  await db.exec('reset role');await db.exec("update private.capability_controls set chat=false where scope='global'");await actor('', 'service_role');assert.equal(await finish(secondJob),'discarded');
  await db.exec('reset role');await db.exec("update private.capability_controls set chat=true where scope='global'");await actor('', 'service_role');const afterPause=await claim(second);assert.equal(afterPause.state,'claimed');
