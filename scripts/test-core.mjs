@@ -12,6 +12,7 @@ const checks = [
   ['test-chat-expressions.mjs'],
   ['test-development-test-login.mjs'],
   ['test-discovery-feed.mjs'],
+  ['test-discovery-identities.mjs'],
   ['test-reply-recovery.mjs'],
   ['--experimental-vm-modules', 'test-reply-boundaries.mjs'],
   ['--experimental-vm-modules', 'test-memory-navigation.mjs'],
