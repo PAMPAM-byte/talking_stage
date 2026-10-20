@@ -1,5 +1,7 @@
 # Conversation context and factual confidence
 
+20 October idiom/identity correction: an ordinary sincerity challenge following a tease was incorrectly answered as a literal identity question. Shared product direction now distinguishes the referent of real/serious from a clear request about AI, bots or a human responder. A short static reminder follows older persona examples when the latest user phrasing could be such an idiom; it asks the model to read context, never supplies a reply, never copies user text into instructions and never overrides honest identity answers or real-world-access boundaries. Mild appearance teasing can receive a short character-specific reaction without an automatic lecture, stock correction or new interview question. Discomfort still stops the approach. No output filter removes disclosures, and no fabricated human identity is introduced.
+
 20 October 2026. The reported failure was an answer that repeated a song title,
 called it a classic without support, described a generic reaction to its sound,
 and immediately asked another interview-style question. Existing prompt rules

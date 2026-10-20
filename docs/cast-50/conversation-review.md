@@ -1,5 +1,7 @@
 # Conversation voice and chemistry
 
+20 October sincerity/identity correction: [context and confidence review](./conversation-grounding-review.md) records the distinction between an idiomatic challenge to a remark and a genuine question about who is responding. Shared direction and a final contextual reminder preserve playful ordinary chat, concise teasing and honest literal/indirect identity answers. Offline cases cover both history formats, injection isolation and complete input assembly for all fifty voices. This is prompt behavior guidance, not a live-model quality guarantee.
+
 20 October context and confidence revision: [implementation and limits](./conversation-grounding-review.md) document shared guidance for short-answer interpretation, specific reactions, fewer filler questions and honest uncertainty. A small reviewed public-music reference anchors the reported Bend/Wizkid case without asserting lyrics, popularity or a listening memory. Offline provider, title-resolution and complete all-cast assembly checks cover the revision; no new live voice-quality result is claimed.
 
 19 October short-text revision: [dataset research and results](./naija-dataset-research.md) distinguish inspected speech data from 45 original adult dating examples now selected by style and topic. Routine turns target roughly 3–18 words; all 26 women have varied initial manners, financial attitudes and preferences. Six live outputs and the remaining money/standards verbosity are recorded without claiming a complete style pass.
