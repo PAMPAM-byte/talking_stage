@@ -859,5 +859,75 @@
       "x": 0.5,
       "y": 0.4
     }
+  },
+  "char-tomi-portrait-luxury-v1": {
+    "altText": "Tomi, 24, in an ivory dress seated in a charter jet cabin during a past fashion shoot.",
+    "focalPoint": {
+      "x": 0.5,
+      "y": 0.29
+    }
+  },
+  "char-ranti-portrait-luxury-v1": {
+    "altText": "Ranti, 26, in a chocolate-brown evening dress at a Dubai hotel suite window on a past holiday.",
+    "focalPoint": {
+      "x": 0.5,
+      "y": 0.28
+    }
+  },
+  "char-adanna-portrait-luxury-v1": {
+    "altText": "Adanna, 28, in a burgundy wrap dress outside a Paris shopping arcade on a past textile-buying trip.",
+    "focalPoint": {
+      "x": 0.5,
+      "y": 0.28
+    }
+  },
+  "char-lola-portrait-luxury-v1": {
+    "altText": "Lola, 28, in a white shirt and tailored trousers on a charter yacht during a past Lagos birthday outing.",
+    "focalPoint": {
+      "x": 0.5,
+      "y": 0.28
+    }
+  },
+  "char-zainab-portrait-luxury-v1": {
+    "altText": "Zainab, 28, in an ivory covered outfit and neutral headwrap in a Marrakech design-hotel courtyard on a past holiday.",
+    "focalPoint": {
+      "x": 0.5,
+      "y": 0.28
+    }
+  },
+  "char-damilola-portrait-luxury-v1": {
+    "altText": "Damilola, 29, in an emerald evening dress at a rooftop dinner with a Nigerian city skyline.",
+    "focalPoint": {
+      "x": 0.5,
+      "y": 0.28
+    }
+  },
+  "char-kiki-portrait-luxury-v1": {
+    "altText": "Kiki, 28, in a green-and-white football jersey holding a microphone in public stadium stands during a past London trip.",
+    "focalPoint": {
+      "x": 0.5,
+      "y": 0.28
+    }
+  },
+  "char-hauwa-portrait-luxury-v1": {
+    "altText": "Hauwa, 26, in a burgundy covered outfit and matching headwrap at a luxury fabric showroom.",
+    "focalPoint": {
+      "x": 0.5,
+      "y": 0.28
+    }
+  },
+  "char-naomi-portrait-luxury-v1": {
+    "altText": "Naomi, 27, in an olive-green travel dress holding a camera on a Bali resort terrace during a past filming trip.",
+    "focalPoint": {
+      "x": 0.5,
+      "y": 0.28
+    }
+  },
+  "char-nimi-portrait-luxury-v1": {
+    "altText": "Nimi, 27, in a terracotta linen shirt and cream trousers at a Zanzibar coastal resort during a past holiday.",
+    "focalPoint": {
+      "x": 0.5,
+      "y": 0.28
+    }
   }
 }

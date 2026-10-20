@@ -1,5 +1,7 @@
 # Fifty Nigerian personalities
 
+20 October lifestyle refinement: [baddie and big-girl expression](./lifestyle-review.md) adds 13 individual runtime revisions, 26 short examples and four identity-preserving luxury profile photos. Fashion, travel and expensive tastes can be expressed openly without flattening everyone into the same understated voice. Existing payment controls, adult/non-explicit scope and English-first rules remain. The image manifest and publication evidence are linked from that review.
+
 Current conversation refinement: [voice, chemistry, implementation and live review](./conversation-review.md) records shared delivery changes, the three contrasting conversation examples, provider limits and remaining style failures. Non-explicit romance is the current requested and implemented task scope. Individual character definitions remain separate from shared rules.
 
 Current geography revision: [world profiles](./world-profiles.json) supplies the authoritative current home, roots, move reason/year, work, routines and personal story for each character. It overrides earlier location and biography descriptions below. The cast covers all 36 Nigerian states plus FCT, six other African countries, four Canadian cities and three US cities. Social labels do not impose a home city. The age mix remains 46 adults aged 22–34 and four aged 40–50. See [world revision and verification](./world-review.md) for delivery status and limits.

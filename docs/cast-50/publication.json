@@ -2,7 +2,7 @@
   "version": 1,
   "target": "https://hoxeembcwureucdsssct.supabase.co",
   "completedAt": "2026-10-17T22:20:43.453Z",
-  "sourceFingerprint": "795c695493a3742142e4bd395b6b25c072105370b72392f58ebabc90a7d046b9",
+  "sourceFingerprint": "1253efaaf37f35f1280886ef80f91ccf544f772561d0e6a9e49822e36df3e983",
   "profiles": 50,
   "photos": 100,
   "ordinaryAdultPaginationVerified": true,
@@ -107,5 +107,39 @@
     "encryptedBaselineVerified": true,
     "ordinaryAdultFilterCountsVerified": true,
     "publishedDirectionsVerified": true
+  },
+  "latestLifestylePhotoRevision": {
+    "version": 1,
+    "completedAt": "2026-10-20T15:14:34.413Z",
+    "portraits": 4,
+    "profiles": 50,
+    "photos": 100,
+    "previousImagesRetained": true,
+    "unchangedProfilesAndDirections": true,
+    "ordinaryAdultVisibilityVerified": true,
+    "encryptedBaselineVerified": true
+  },
+  "latestSixteenRevision": {
+    "version": 1,
+    "completedAt": "2026-10-20T15:31:14.757Z",
+    "sourceFingerprint": "1253efaaf37f35f1280886ef80f91ccf544f772561d0e6a9e49822e36df3e983",
+    "updatedProfiles": 6,
+    "featuredWomen": 16,
+    "profiles": 50,
+    "photos": 100,
+    "encryptedBaselineVerified": true,
+    "ordinaryAdultFilterCountsVerified": true,
+    "publishedDirectionsVerified": true
+  },
+  "latestLifestyleExpansionPhotoRevision": {
+    "version": 1,
+    "completedAt": "2026-10-20T15:33:59.094Z",
+    "portraits": 6,
+    "profiles": 50,
+    "photos": 100,
+    "previousImagesRetained": true,
+    "unchangedProfilesAndDirections": true,
+    "ordinaryAdultVisibilityVerified": true,
+    "encryptedBaselineVerified": true
   }
 }

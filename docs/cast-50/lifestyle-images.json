@@ -1,0 +1,196 @@
+{
+  "version": 1,
+  "tool": "built-in image_gen",
+  "photos": {
+    "char-tomi-portrait": {
+      "key": "char-tomi",
+      "slot": "portrait",
+      "original": "docs/cast-50/lifestyle-assets/char-tomi-portrait.png",
+      "publicAssetId": "char-tomi-portrait-luxury-v1",
+      "publicPath": "public/images/characters/char-tomi-portrait-luxury-v1.webp",
+      "sourceHash": "b7d0c2f60dc68b9c94ba81ca03ea88512eed1bd28a33dcacf41effb688580cf0",
+      "width": 1086,
+      "height": 1448,
+      "reference": "public/images/characters/char-tomi-portrait.webp",
+      "visualReview": "passed",
+      "altText": "Tomi, 24, in an ivory dress seated in a charter jet cabin during a past fashion shoot.",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.29
+      },
+      "sceneBrief": "Tomi, 24, in an ivory dress seated in a charter jet cabin during a past fashion shoot.",
+      "reviewNotes": "Compared with the referenced original: adult identity, face, skin tone, hairstyle and build preserved; appropriate fashion, setting and anatomy."
+    },
+    "char-ranti-portrait": {
+      "key": "char-ranti",
+      "slot": "portrait",
+      "original": "docs/cast-50/lifestyle-assets/char-ranti-portrait.png",
+      "publicAssetId": "char-ranti-portrait-luxury-v1",
+      "publicPath": "public/images/characters/char-ranti-portrait-luxury-v1.webp",
+      "sourceHash": "d527506f7dd8a5938f1b5ce520fa7f402e3ac54ce51cc12bbb734cb570d05ee1",
+      "width": 1086,
+      "height": 1448,
+      "reference": "public/images/characters/char-ranti-portrait.webp",
+      "visualReview": "passed",
+      "altText": "Ranti, 26, in a chocolate-brown evening dress at a Dubai hotel suite window on a past holiday.",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.28
+      },
+      "sceneBrief": "Ranti, 26, in a chocolate-brown evening dress at a Dubai hotel suite window on a past holiday.",
+      "reviewNotes": "Compared with the referenced original: adult identity, face, skin tone, hairstyle and build preserved; appropriate fashion, setting and anatomy."
+    },
+    "char-adanna-portrait": {
+      "key": "char-adanna",
+      "slot": "portrait",
+      "original": "docs/cast-50/lifestyle-assets/char-adanna-portrait.png",
+      "publicAssetId": "char-adanna-portrait-luxury-v1",
+      "publicPath": "public/images/characters/char-adanna-portrait-luxury-v1.webp",
+      "sourceHash": "3d868428f83a6b774724fc335fa4f428740afb6f75777e0c4699b78702cebba4",
+      "width": 1086,
+      "height": 1448,
+      "reference": "public/images/characters/char-adanna-portrait.webp",
+      "visualReview": "passed",
+      "altText": "Adanna, 28, in a burgundy wrap dress outside a Paris shopping arcade on a past textile-buying trip.",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.28
+      },
+      "sceneBrief": "Adanna, 28, in a burgundy wrap dress outside a Paris shopping arcade on a past textile-buying trip.",
+      "reviewNotes": "Compared with the referenced original: adult identity, face, skin tone, hairstyle and build preserved; appropriate fashion, setting and anatomy."
+    },
+    "char-lola-portrait": {
+      "key": "char-lola",
+      "slot": "portrait",
+      "original": "docs/cast-50/lifestyle-assets/char-lola-portrait.png",
+      "publicAssetId": "char-lola-portrait-luxury-v1",
+      "publicPath": "public/images/characters/char-lola-portrait-luxury-v1.webp",
+      "sourceHash": "ef9c36304fc155c99ed1b3b318a473dc5e8d2173fc2e3df9b267d56e34d40c03",
+      "width": 1312,
+      "height": 1199,
+      "reference": "public/images/characters/char-lola-portrait-youth-v1.webp",
+      "visualReview": "passed",
+      "altText": "Lola, 28, in a white shirt and tailored trousers on a charter yacht during a past Lagos birthday outing.",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.28
+      },
+      "sceneBrief": "Lola, 28, in a white shirt and tailored trousers on a charter yacht during a past Lagos birthday outing.",
+      "reviewNotes": "Compared with the referenced original: adult identity, face, skin tone, hairstyle and build preserved; appropriate fashion, setting and anatomy."
+    },
+    "char-kiki-portrait": {
+      "key": "char-kiki",
+      "slot": "portrait",
+      "original": "docs/cast-50/lifestyle-assets/char-kiki-portrait-sixteen.png",
+      "publicAssetId": "char-kiki-portrait-luxury-v1",
+      "publicPath": "public/images/characters/char-kiki-portrait-luxury-v1.webp",
+      "sourceHash": "fe4b4a2bb2db70f85684104b26491af2fb76e658defffcb652c5b9389512079b",
+      "width": 1086,
+      "height": 1448,
+      "reference": "public/images/characters/char-kiki-portrait.webp",
+      "visualReview": "passed",
+      "altText": "Kiki, 28, in a green-and-white football jersey holding a microphone in public stadium stands during a past London trip.",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.28
+      },
+      "sceneBrief": "Kiki, 28, in a green-and-white football jersey holding a microphone in public stadium stands during a past London trip.",
+      "reviewNotes": "Compared with the adult reference: facial identity, skin tone, hairstyle and build retained. Clothing, scene, hands and anatomy reviewed. Destination scenes are completed fictional experiences, not current location or official access."
+    },
+    "char-naomi-portrait": {
+      "key": "char-naomi",
+      "slot": "portrait",
+      "original": "docs/cast-50/lifestyle-assets/char-naomi-portrait-sixteen.png",
+      "publicAssetId": "char-naomi-portrait-luxury-v1",
+      "publicPath": "public/images/characters/char-naomi-portrait-luxury-v1.webp",
+      "sourceHash": "6485714950f4d90bbe8a3f4ece7eadb3aa869a2863bad7475e0a301e95cf6c09",
+      "width": 1086,
+      "height": 1448,
+      "reference": "public/images/characters/char-naomi-portrait.webp",
+      "visualReview": "passed",
+      "altText": "Naomi, 27, in an olive-green travel dress holding a camera on a Bali resort terrace during a past filming trip.",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.28
+      },
+      "sceneBrief": "Naomi, 27, in an olive-green travel dress holding a camera on a Bali resort terrace during a past filming trip.",
+      "reviewNotes": "Compared with the adult reference: facial identity, skin tone, hairstyle and build retained. Clothing, scene, hands and anatomy reviewed. Destination scenes are completed fictional experiences, not current location or official access."
+    },
+    "char-hauwa-portrait": {
+      "key": "char-hauwa",
+      "slot": "portrait",
+      "original": "docs/cast-50/lifestyle-assets/char-hauwa-portrait-sixteen.png",
+      "publicAssetId": "char-hauwa-portrait-luxury-v1",
+      "publicPath": "public/images/characters/char-hauwa-portrait-luxury-v1.webp",
+      "sourceHash": "32ef0fab7080f83533863039377bda5f2b3620d57d94405110815f18065bacf6",
+      "width": 1086,
+      "height": 1448,
+      "reference": "public/images/characters/char-hauwa-portrait.webp",
+      "visualReview": "passed",
+      "altText": "Hauwa, 26, in a burgundy covered outfit and matching headwrap at a luxury fabric showroom.",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.28
+      },
+      "sceneBrief": "Hauwa, 26, in a burgundy covered outfit and matching headwrap at a luxury fabric showroom.",
+      "reviewNotes": "Compared with the adult reference: facial identity, skin tone, hairstyle and build retained. Clothing, scene, hands and anatomy reviewed. Destination scenes are completed fictional experiences, not current location or official access."
+    },
+    "char-damilola-portrait": {
+      "key": "char-damilola",
+      "slot": "portrait",
+      "original": "docs/cast-50/lifestyle-assets/char-damilola-portrait-sixteen.png",
+      "publicAssetId": "char-damilola-portrait-luxury-v1",
+      "publicPath": "public/images/characters/char-damilola-portrait-luxury-v1.webp",
+      "sourceHash": "1bfe317ecb670a095f90397923ea63291a6b116e2419b099fbc2558c6b36019b",
+      "width": 1086,
+      "height": 1448,
+      "reference": "public/images/characters/char-damilola-portrait.webp",
+      "visualReview": "passed",
+      "altText": "Damilola, 29, in an emerald evening dress at a rooftop dinner with a Nigerian city skyline.",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.28
+      },
+      "sceneBrief": "Damilola, 29, in an emerald evening dress at a rooftop dinner with a Nigerian city skyline.",
+      "reviewNotes": "Compared with the adult reference: facial identity, skin tone, hairstyle and build retained. Clothing, scene, hands and anatomy reviewed. Destination scenes are completed fictional experiences, not current location or official access."
+    },
+    "char-zainab-portrait": {
+      "key": "char-zainab",
+      "slot": "portrait",
+      "original": "docs/cast-50/lifestyle-assets/char-zainab-portrait-sixteen.png",
+      "publicAssetId": "char-zainab-portrait-luxury-v1",
+      "publicPath": "public/images/characters/char-zainab-portrait-luxury-v1.webp",
+      "sourceHash": "20728c9c443026589fb7faf4dd4aaac3cb19e369f917980681bcb94bf80e1f5a",
+      "width": 1086,
+      "height": 1448,
+      "reference": "public/images/characters/char-zainab-portrait.webp",
+      "visualReview": "passed",
+      "altText": "Zainab, 28, in an ivory covered outfit and neutral headwrap in a Marrakech design-hotel courtyard on a past holiday.",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.28
+      },
+      "sceneBrief": "Zainab, 28, in an ivory covered outfit and neutral headwrap in a Marrakech design-hotel courtyard on a past holiday.",
+      "reviewNotes": "Compared with the adult reference: facial identity, skin tone, hairstyle and build retained. Clothing, scene, hands and anatomy reviewed. Destination scenes are completed fictional experiences, not current location or official access."
+    },
+    "char-nimi-portrait": {
+      "key": "char-nimi",
+      "slot": "portrait",
+      "original": "docs/cast-50/lifestyle-assets/char-nimi-portrait-sixteen.png",
+      "publicAssetId": "char-nimi-portrait-luxury-v1",
+      "publicPath": "public/images/characters/char-nimi-portrait-luxury-v1.webp",
+      "sourceHash": "0415932ac650d82be78cc8511fc50636a655f462434b2836b17cbcc648f0ea41",
+      "width": 1086,
+      "height": 1448,
+      "reference": "public/images/characters/char-nimi-portrait.webp",
+      "visualReview": "passed",
+      "altText": "Nimi, 27, in a terracotta linen shirt and cream trousers at a Zanzibar coastal resort during a past holiday.",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.28
+      },
+      "sceneBrief": "Nimi, 27, in a terracotta linen shirt and cream trousers at a Zanzibar coastal resort during a past holiday.",
+      "reviewNotes": "Compared with the adult reference: facial identity, skin tone, hairstyle and build retained. Clothing, scene, hands and anatomy reviewed. Destination scenes are completed fictional experiences, not current location or official access."
+    }
+  }
+}
