@@ -16,7 +16,7 @@ const dependencies={
 };
 const modules=new Map();
 for(const [name,exports]of Object.entries(dependencies)){modules.set(name,new SyntheticModule(Object.keys(exports),function(){for(const [key,value]of Object.entries(exports))this.setExport(key,value);},{context}));}
-const code=ts.transpileModule(readFileSync('lib/backend/payment-actions.ts','utf8'),{compilerOptions:{actionModule:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ES2022}}).outputText;
+const code=ts.transpileModule(readFileSync('lib/backend/payment-actions.ts','utf8'),{compilerOptions:{module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ES2022}}).outputText;
 const actionModule=new SourceTextModule(code,{context});await actionModule.link(name=>{const dependency=modules.get(name);if(!dependency)throw Error(name);return dependency;});await actionModule.evaluate();
 const form=()=>{const data=new FormData();data.set('conversation',id);data.set('operation',id);data.set('amount','5000');data.set('confirmed','yes');data.set('id',id);return data;};
 signedIn=false;assert((await actionModule.namespace.createGiftAction(form())).error);assert.equal(starts,0);
@@ -67,6 +67,7 @@ const wrapperDeps={
  '@/lib/backend/account-actions':{signOutAccount:async()=>{}},
  './shells':{AppShell:shell,PublicShell:()=>null},
  './ui/primitives':{Notice:()=>null,Skeleton:()=>null},'./chat-loading':{ChatLoading:()=>null},
+ './conversation-continuity':{ConversationContinuity:()=>null},
 };
 const wrapperModules=new Map();
 for(const [name,exports]of Object.entries(wrapperDeps))wrapperModules.set(name,new SyntheticModule(Object.keys(exports),function(){for(const [key,value]of Object.entries(exports))this.setExport(key,value);},{context}));

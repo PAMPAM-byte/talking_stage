@@ -1,5 +1,5 @@
 "use client";
-import {useRef,useState} from 'react';
+import {useId,useRef,useState} from 'react';
 import {useRouter} from 'next/navigation';
 import {createGiftAction,checkGiftAction} from '@/lib/backend/payment-actions';
 import {adminCheckGiftAction,declineGiftAction} from '@/lib/backend/payment-actions';
@@ -9,10 +9,13 @@ import {Button,TextField,Notice} from './ui/primitives';
 export function ConnectedGiftForm({conversation,name,recipient,minimum,maximum,sandbox,action=createGiftAction}:{conversation:string;name:string;recipient:string;minimum:number;maximum:number;sandbox:boolean;action?:typeof createGiftAction}){
  const [amount,setAmount]=useState(''),[review,setReview]=useState(false),[busy,setBusy]=useState(false),[error,setError]=useState('');
  const operation=useRef<string|null>(null);const [attempted,setAttempted]=useState(false);const router=useRouter();
+ const amountId=useId();const [touched,setTouched]=useState(false);
  const minor=parseNaira(amount);
  const valid=minor!==null&&minor>=minimum&&minor<=maximum;
+ const amountError=!amount.trim()?'Enter an amount to continue.':minor===null?'Enter a valid amount, such as 50,000 or 50,000.50.':minor<minimum?`The minimum payment is ${formatNaira(minimum)}. Enter ${formatNaira(minimum)} or more.`:minor>maximum?`The maximum payment is ${formatNaira(maximum)}. Enter ${formatNaira(maximum)} or less.`:'';
  async function submit(){
-  if(!valid||busy)return;
+  if(busy)return;
+  if(!valid){setTouched(true);document.getElementById(amountId)?.focus();return;}
   if(!review){setReview(true);return;}
   setBusy(true);setError('');operation.current??=crypto.randomUUID();setAttempted(true);
   const data=new FormData();data.set('conversation',conversation);data.set('operation',operation.current);data.set('amount',amount);data.set('confirmed','yes');
@@ -22,9 +25,9 @@ export function ConnectedGiftForm({conversation,name,recipient,minimum,maximum,s
  }
  return <form className="stack" onSubmit={event=>{event.preventDefault();void submit();}}>
   {sandbox&&<Notice title="Sandbox payment">This is a test payment. No real money moves.</Notice>}
-  {review?<div className="receipt-summary stack"><strong className="receipt-amount tabular">{minor===null?'':formatNaira(minor)}</strong><dl className="receipt-fields"><div><dt>For</dt><dd>{name} TalkingStage</dd></div><div><dt>Received by</dt><dd>{recipient}</dd></div><div><dt>Purpose</dt><dd>Voluntary payment</dd></div></dl><p className="supporting muted">Giving is optional. It does not buy affection, messages or photo access.</p></div>:<TextField label="Amount in NGN" value={amount} onChange={event=>setAmount(event.target.value)} inputMode="decimal" autoComplete="off" hint={`${formatNaira(minimum)} to ${formatNaira(maximum)}. Choose an amount you are comfortable with.`}/>}
+  {review?<div className="receipt-summary stack"><strong className="receipt-amount tabular">{minor===null?'':formatNaira(minor)}</strong><dl className="receipt-fields"><div><dt>For</dt><dd>{name} TalkingStage</dd></div><div><dt>Payment recipient</dt><dd>{recipient}</dd></div><div><dt>Purpose</dt><dd>Voluntary payment</dd></div></dl><p className="supporting muted">Giving is optional. It does not buy affection, messages or photo access.</p><p className="supporting muted">Next, open Bachs checkout to choose a payment method and pay. Confirming this amount does not send money.</p></div>:<div aria-live="polite"><TextField id={amountId} name="amount" label="Amount in NGN" value={amount} onChange={event=>setAmount(event.target.value)} onBlur={()=>setTouched(true)} inputMode="decimal" autoComplete="off" maxLength={40} error={touched||amount.length>0?amountError:undefined} hint={`${formatNaira(minimum)} to ${formatNaira(maximum)}. Choose an amount you are comfortable with.`}/></div>}
   {error&&<Notice title="Checkout not confirmed" tone="warning" live>{error}</Notice>}
-  <div className="row">{review&&!attempted&&<Button variant="quiet" disabled={busy} onClick={()=>setReview(false)}>Change amount</Button>}<Button type="submit" loading={busy} disabled={!valid}>{review?error?'Retry this checkout':`Confirm ${minor===null?'payment':formatNaira(minor)}`:'Review payment'}</Button></div>
+  <div className="row">{review&&!attempted&&<Button variant="quiet" disabled={busy} onClick={()=>setReview(false)}>Change amount</Button>}<Button type="submit" loading={busy}>{review?error?'Retry this checkout':`Continue to checkout (${minor===null?'payment':formatNaira(minor)})`:'Review payment'}</Button></div>
  </form>;
 }
 export function CheckGiftStatus({id,admin=false}:{id:string;admin?:boolean}){

@@ -35,7 +35,10 @@ test("signed-out and underage actors cannot use mock discovery", async () => {
 test("money parser preserves kobo and rejects ambiguous or unsafe amounts", () => {
   expect(parseNaira("5000.01")).toBe(500001);
   expect(parseNaira("0.10")).toBe(10);
-  for (const invalid of ["-1", "0", "1.234", "5,000", "1e5", "NaN", "Infinity", "9007199254740991"]) expect(parseNaira(invalid)).toBeNull();
+  expect(parseNaira("50,000")).toBe(5000000);
+  expect(parseNaira("1,000,000.50")).toBe(100000050);
+  expect(parseNaira("90071992547409.91")).toBe(Number.MAX_SAFE_INTEGER);
+  for (const invalid of ["-1", "0", "1.234", "50,00", "1,00,000", "1,,000", "1,000,", "1e5", "NaN", "Infinity", "9007199254740991", "90071992547409.92"]) expect(parseNaira(invalid)).toBeNull();
   expect(formatNaira(500001)).toContain("5,000.01");
   expect(() => formatNaira(1.5)).toThrow();
 });
