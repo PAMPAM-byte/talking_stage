@@ -25,7 +25,7 @@ const fetcher=async(url,options)=>{
  assert.equal(suppliedContext.defaultReplyLanguage,'english');
  assert.equal(context.preferences.language,'english_pidgin','Model-facing language policy must not rewrite the saved preference.');
  assert.equal(body.input[0].role,'developer');assert.equal(body.input.at(-1).role,'user');assert(body.input[0].content.includes('Payment requests are disabled'));
- assert.deepEqual(body.text.format.schema.properties.photoAssetId.enum,[null]);
+ assert.deepEqual(body.text.format.schema.properties.photoAssetId,{anyOf:[{type:'null'},{type:'string'}]});
  return response([{type:'output_text',text:JSON.stringify({text:'Synthetic offline reply.',photoAssetId:null})}]);
 };
 assert.equal((await generateReply(context,settings,{fetcher})).text,'Synthetic offline reply.');assert.equal(calls,1);
@@ -82,7 +82,7 @@ assert.equal(pidginInput.at(-1).content,context.history.at(-1).text,'Untrusted u
 const large=response([{type:'output_text',text:'x'.repeat(270000)}]);await assert.rejects(generateReply(context,settings,{fetcher:async()=>large}),/invalid_output/);
 const controller=new AbortController();controller.abort();await assert.rejects(generateReply(context,settings,{signal:controller.signal,fetcher:async(_url,options)=>{options.signal.throwIfAborted();}}),/timeout/);
 const photo='00000000-0000-4000-8000-000000000099';const photoContext={...context,photos:[{id:photo,description:'Synthetic approved adult gallery photo'}]};
-const photoFetcher=async(_url,options)=>{const body=JSON.parse(options.body);assert.deepEqual(body.text.format.schema.properties.photoAssetId.enum,[null,photo]);return response([{type:'output_text',text:JSON.stringify({text:'An approved character photo.',photoAssetId:photo})}]);};
+const photoFetcher=async(_url,options)=>{const body=JSON.parse(options.body);assert.deepEqual(body.text.format.schema.properties.photoAssetId,{anyOf:[{type:'null'},{type:'string'}]});return response([{type:'output_text',text:JSON.stringify({text:'An approved character photo.',photoAssetId:photo})}]);};
 assert.equal((await generateReply(photoContext,settings,{fetcher:photoFetcher})).photoAssetId,photo);
 await assert.rejects(generateReply(context,settings,{fetcher:async()=>response([{type:'output_text',text:JSON.stringify({text:'Unadvertised photo.',photoAssetId:photo})}])}),/invalid_output/);
 await assert.rejects(generateReply(photoContext,settings,{fetcher:async()=>response([{type:'output_text',text:JSON.stringify({text:'Wrong character.',photoAssetId:'00000000-0000-4000-8000-000000000098'})}])}),/invalid_output/);

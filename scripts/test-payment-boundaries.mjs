@@ -63,7 +63,7 @@ const wrapperDeps={
  'next/headers':{headers:async()=>new Headers({'x-talkingstage-path':'/gifts/synthetic'})},
  'next/link':{default:()=>null},
  '@/lib/backend/config':{usesSupabase:()=>true,supabaseConfig:()=>({url:'synthetic'})},
- '@/lib/backend/server':{currentAccount:async()=>wrapperAccount},
+ '@/lib/backend/server':{renderAccount:async()=>wrapperAccount},
  '@/lib/backend/account-actions':{signOutAccount:async()=>{}},
  './shells':{AppShell:shell,PublicShell:()=>null},
  './ui/primitives':{Notice:()=>null,Skeleton:()=>null},'./chat-loading':{ChatLoading:()=>null},

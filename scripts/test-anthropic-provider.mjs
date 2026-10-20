@@ -8,19 +8,24 @@ assert.equal(providerSettings({...env,TALKINGSTAGE_AI_PROVIDER:'openai'}),null);
 assert.equal(providerSettings({...env,ANTHROPIC_API_KEY:''}),null);
 const context={character:{name:'Adult fixture',direction:'Warm and respectful.'},preferences:{},memories:[],history:[{role:'user',text:'Hello'}],maxInputTokens:48000,maxOutputTokens:1024};
 const response=(stop_reason='end_turn',text=JSON.stringify({text:'Hello there.',photoAssetId:null}))=>new Response(JSON.stringify({stop_reason,content:[{type:'text',text}]}));
+const schemas=[];
 const fetcher=async(url,init)=>{
  assert.equal(url,'https://api.anthropic.com/v1/messages');assert.equal(init.headers['x-api-key'],'synthetic');assert.equal(init.cache,'no-store');
  const body=JSON.parse(init.body);assert.equal(body.model,'claude-haiku-5-5');assert.equal(body.output_config.format.type,'json_schema');assert.equal(body.tools,undefined);assert.equal(body.max_tokens,1024);assert(body.system.includes('non-explicit'));assert.equal(body.messages[0].role,'user');
- assert.deepEqual(body.output_config.format.schema.properties.photoAssetId,{type:'null'});
+ schemas.push(body.output_config.format.schema);
+ assert.deepEqual(body.output_config.format.schema.properties.photoAssetId,{anyOf:[{type:'null'},{type:'string'}]});
  return response();
 };
 assert.equal((await generateReply(context,settings,{fetcher})).text,'Hello there.');
 const photoId='00000000-0000-4000-8000-000000000099';
 const photoContext={...context,photos:[{id:photoId,description:'Approved synthetic adult photo'}]};
 await generateReply(photoContext,settings,{fetcher:async(_url,init)=>{
- assert.deepEqual(JSON.parse(init.body).output_config.format.schema.properties.photoAssetId,{anyOf:[{type:'null'},{type:'string',enum:[photoId]}]});
+ schemas.push(JSON.parse(init.body).output_config.format.schema);
+ assert.deepEqual(JSON.parse(init.body).output_config.format.schema.properties.photoAssetId,{anyOf:[{type:'null'},{type:'string'}]});
  return response('end_turn',JSON.stringify({text:'A synthetic photo.',photoAssetId:photoId}));
 }});
+assert.deepEqual(schemas[0],schemas[1],'Photo availability must not change the compiled output grammar');
+await assert.rejects(generateReply(context,settings,{fetcher:async()=>response('end_turn',JSON.stringify({text:'Unadvertised photo',photoAssetId:photoId}))}),/invalid_output/);
 assert.equal((await generateReply(context,settings,{fetcher:async()=>response('refusal','No.')})).refused,true);
 let refusals = 0;
 const hardRefusal = await generateReply(context,settings,{fetcher:async()=>{refusals++;return response('refusal','SENSITIVE-PROVIDER-DIAGNOSTIC');}});

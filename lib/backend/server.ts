@@ -1,4 +1,5 @@
 import "server-only";
+import { cache } from 'react';
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { connection } from "next/server";
@@ -42,3 +43,7 @@ export async function currentAccount({ failOnUnavailable = false }: { failOnUnav
   }
   return { client, user: data.user, profile: profile.data };
 }
+
+// React scopes this to one Server Component render, never another user/request.
+// Mutating actions retain the uncached reader so sign-in/out changes stay fresh.
+export const renderAccount = cache(() => currentAccount({ failOnUnavailable: true }));

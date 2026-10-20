@@ -152,6 +152,8 @@ const accountClient = {
   from: () => ({ select() { return this; }, eq() { return this; }, single: async () => profileResult }),
 };
 dependencies['server-only'] = {};
+// Outside a Server Component render, React.cache deliberately does not memoize.
+dependencies['react'] = { cache: reader => reader };
 dependencies['@supabase/ssr'] = { createServerClient: () => accountClient };
 dependencies['next/headers'] = { cookies: async () => ({ getAll: () => [], set() {} }) };
 dependencies['next/server'].connection = async () => {};

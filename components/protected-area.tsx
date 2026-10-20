@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { headers } from "next/headers";
 import Link from "next/link";
 import { usesSupabase, supabaseConfig } from "@/lib/backend/config";
-import { currentAccount } from "@/lib/backend/server";
+import { renderAccount } from "@/lib/backend/server";
 import { signOutAccount } from "@/lib/backend/account-actions";
 import { AppShell, PublicShell } from "./shells";
 import { Notice, Skeleton } from "./ui/primitives";
@@ -13,7 +13,7 @@ import { ChatLoading } from './chat-loading';
 async function ConnectedArea({ area, children, standalone = false }: { area: string; children: ReactNode; standalone?: boolean }) {
   if (!supabaseConfig()) return <PublicShell><Notice title="Account services are unavailable" tone="warning">Please try again later.</Notice></PublicShell>;
   let account;
-  try { account = await currentAccount({ failOnUnavailable: true }); }
+  try { account = await renderAccount(); }
   catch { return <PublicShell><Notice title="Connection interrupted" tone="warning">We could not check your account. Reload this page to try again. If you confirmed a payment, retry the same attempt once the connection returns.</Notice></PublicShell>; }
   if (!account) redirect("/sign-in");
   if (!account.profile.adult_declared_at) redirect("/onboarding/age");
