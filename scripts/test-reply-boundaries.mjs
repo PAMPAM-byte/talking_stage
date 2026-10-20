@@ -12,7 +12,7 @@ let state;
 function reset() {
   state = { signedIn: true, adult: true, owned: true, firstParty: true,
     scheduleThrows: false, refreshThrows: false, saveFails: false,
-    rpcCalls: 0, replyCalls: 0, scheduled: [], replyState: 'completed', rpcFailure: false };
+    rpcCalls: 0, replyCalls: 0, refreshCalls: 0, scheduled: [], replyState: 'completed', rpcFailure: false };
 }
 function account() {
   if (!state.signedIn) return null;
@@ -32,7 +32,7 @@ function account() {
 }
 const dependencies = {
   'node:crypto': { createHash },
-  'next/cache': { revalidatePath() { if (state.refreshThrows) throw new Error('synthetic cache failure'); } },
+  'next/cache': { revalidatePath() { state.refreshCalls++; if (state.refreshThrows) throw new Error('synthetic cache failure'); } },
   'next/server': { after(work) { if (state.scheduleThrows) throw new Error('synthetic scheduling failure'); state.scheduled.push(work); } },
   './server': { currentAccount: async () => account() },
   '@/lib/backend/server': { currentAccount: async () => account() },
@@ -72,6 +72,12 @@ const form = operation => {
   data.set('messageId', messageId); data.set('clientId', messageId); data.set('generation', '1'); data.set('text', 'Synthetic input');
   return data;
 };
+reset();
+await conversationAction(form('send'));
+assert.equal(state.refreshCalls,0,'Saving must not force a full chat render before the reply starts');
+assert.equal(state.scheduled.length,1);
+await state.scheduled[0]();
+assert.equal(state.replyCalls,1);assert.equal(state.refreshCalls,1,'Refresh after reply processing, before optional summary work');
 for (const failure of ['scheduleThrows', 'refreshThrows']) {
   reset(); state[failure] = true;
   const result = await conversationAction(form('send'));

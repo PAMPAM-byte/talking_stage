@@ -1,5 +1,7 @@
 # TalkingStage design system
 
+Reply status refinement · 20 October: a saved message keeps one tick while its reply is queued, with “Preparing a reply…” in the thread. A confirmed generating job gets double ticks and the typing bubble together. Seen receipts persist after interruption. Failed replies keep recovery beside the message with an explanation; the generic floating failure toast is removed. Existing Manrope, white/blush bubbles, red actions and reduced-motion support remain.
+
 Payment character labels · 20 October: payment headings, review and receipt display “[character] TalkingStage” for every character. “Received by” continues to show the registered merchant supplied by the payment integration.
 
 Payment wording · 20 October: connected chat actions use “Send money”; the payment heading is “Send money to [character]”. Amount entry, review, receipt, history and sandbox labels use payment terminology instead of gift. The separate registered-recipient disclosure and voluntary-payment controls remain.

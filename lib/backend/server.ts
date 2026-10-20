@@ -32,7 +32,7 @@ export async function currentAccount({ failOnUnavailable = false }: { failOnUnav
   if (error || !data.user) {
     // API callers must distinguish an unavailable identity service from a
     // signed-out session. Network/rate-limit failures should be retryable 503s.
-    if (failOnUnavailable && error && ![400, 401, 403].includes(error.status ?? 0)) throw new Error('Identity service unavailable');
+    if (failOnUnavailable && error && error.name !== 'AuthSessionMissingError' && ![400, 401, 403].includes(error.status ?? 0)) throw new Error('Identity service unavailable');
     return null;
   }
   const profile = await observe('account.profile', () => client.from("profiles").select("id,display_name,genders,language,requests_enabled,onboarding_complete,adult_declared_at,version").eq("id", data.user.id).single());

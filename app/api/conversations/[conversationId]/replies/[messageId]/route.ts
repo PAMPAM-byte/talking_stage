@@ -21,7 +21,7 @@ export async function GET(_request: Request, { params }: ReplyParams) {
   try {
     const { conversationId, messageId } = await params;
     if (!uuid.test(conversationId) || !uuid.test(messageId)) return respond('unavailable', 404);
-    const account = await currentAccount();
+    const account = await currentAccount({ failOnUnavailable: true });
     if (!account) return respond('unauthorized', 401);
     if (!account.profile.onboarding_complete || !account.profile.adult_declared_at) return respond('forbidden', 403);
 
@@ -39,7 +39,7 @@ export async function POST(request: Request, { params }: ReplyParams) {
     if (!isFirstPartyOrigin(request)) return respond('forbidden', 403);
     const { conversationId, messageId } = await params;
     if (!uuid.test(conversationId) || !uuid.test(messageId)) return respond('unavailable', 404);
-    const account = await currentAccount();
+    const account = await currentAccount({ failOnUnavailable: true });
     if (!account) return respond('unauthorized', 401);
     if (!account.profile.onboarding_complete || !account.profile.adult_declared_at) return respond('forbidden', 403);
     const owned = await account.client.from('messages').select('id')

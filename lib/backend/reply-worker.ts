@@ -26,7 +26,7 @@ export async function processReply(messageId: string, actorId: string, signal?: 
 
   const { client, settings } = configuration;
   // Claim and completion RPCs independently enforce ownership, leases and budgets.
-  return observeAI('ai.reply', () => runReply(client, messageId, actorId, settings, { signal, userTimeZone, paymentsEnabled: !!bachsSettings() }));
+  return observeAI('ai.reply', () => runReply(client, messageId, actorId, settings, { signal, userTimeZone, paymentsEnabled: !!bachsSettings(), onProviderResponse: (status: number, durationMs: number) => emit('ai.provider', status === 429 || status === 529 ? 'rate_limited' : status >= 500 ? 'unavailable' : status >= 400 ? 'rejected' : 'ok', durationMs) }));
 }
 
 export async function processSummary(messageId: string, actorId: string): Promise<string> {

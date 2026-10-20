@@ -31,6 +31,7 @@ function scheduleReply(messageId: string, actorId: string, userTimeZone: string)
     after(async () => {
       try {
         const state = await processReply(messageId, actorId, undefined, userTimeZone);
+        refreshMessages();
         if (state === 'completed') {
           try { await processSummary(messageId, actorId); }
           catch { emit('ai.summary', 'unexpected'); }
@@ -94,7 +95,10 @@ export async function conversationAction(form: FormData): Promise<ConversationRe
 
     const messageId = operation === 'send' ? result.data?.id as string | undefined : undefined;
     if (messageId) scheduleReply(messageId, account.user.id, String(form.get('timeZone') ?? ''));
-    refreshMessages();
+    // Return the saved message immediately. Revalidating the whole chat here
+    // forces a server render before after() can start the provider request.
+    // The outbox and metadata sync already reconcile this durable message.
+    if (operation !== 'send') refreshMessages();
     return {
       id: operation === 'start' ? result.data : id,
       messageId,

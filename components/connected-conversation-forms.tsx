@@ -29,6 +29,7 @@ export function ReplyRetry({id,messageId,retry=true}:{id:string;messageId:string
  const [cancelling,stop]=useTransition();
  const router=useRouter();
  return <form className="message-reply-actions" hidden={delivery?.active.includes(messageId)} onSubmit={event=>{event.preventDefault();const submitter=(event.nativeEvent as SubmitEvent).submitter as HTMLButtonElement;const operation=submitter?.value??'skip';const data=new FormData(event.currentTarget);data.set('operation',operation);if(operation==='retry')delivery?.watch(messageId);const begin=operation==='skip'?stop:start;begin(async()=>{setResult(operation==='retry'?await requestReply(id,messageId):await conversationAction(data));router.refresh();});}}>
+ <p className="caption muted">The reply could not finish. Your message is saved.</p>
  <input type="hidden" name="id" value={id}/><input type="hidden" name="messageId" value={messageId}/>
  {retry&&<Button name="operation" value="retry" variant="quiet" type="submit" loading={pending} disabled={cancelling}>Retry reply</Button>}<Button name="operation" value="skip" variant="quiet" type="submit" loading={cancelling}>Skip reply</Button>{(result.error||result.message)&&<p className="caption muted" role="status">{result.error||result.message}</p>}</form>;
 }

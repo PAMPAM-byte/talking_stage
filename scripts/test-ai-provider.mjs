@@ -87,4 +87,8 @@ assert.equal((await generateReply(photoContext,settings,{fetcher:photoFetcher}))
 await assert.rejects(generateReply(context,settings,{fetcher:async()=>response([{type:'output_text',text:JSON.stringify({text:'Unadvertised photo.',photoAssetId:photo})}])}),/invalid_output/);
 await assert.rejects(generateReply(photoContext,settings,{fetcher:async()=>response([{type:'output_text',text:JSON.stringify({text:'Wrong character.',photoAssetId:'00000000-0000-4000-8000-000000000098'})}])}),/invalid_output/);
 await assert.rejects(generateReply(photoContext,settings,{fetcher:async()=>response([{type:'output_text',text:JSON.stringify({text:'External photo.',photoAssetId:'https://untrusted.example/photo.jpg'})}])}),/invalid_output/);
-console.log('Offline provider checks passed: disabled/missing-key gates, structured schema, bounded context/output, no tools/storage/history reuse, refusals, failures, cancellation and timeout. No network calls made.');
+const telemetry=[];
+await assert.rejects(generateReply(context,settings,{fetcher:async()=>new Response('PRIVATE_PROVIDER_BODY',{status:429}),onProviderResponse:(...values)=>telemetry.push(values)}),/provider_error/);
+assert.equal(telemetry.length,1);assert.equal(telemetry[0].length,2);assert.equal(telemetry[0][0],429);assert(telemetry[0][1]>=0);assert(!JSON.stringify(telemetry).includes('PRIVATE_PROVIDER_BODY'));
+await assert.rejects(generateReply(context,settings,{fetcher:async()=>new Response(null,{status:503}),onProviderResponse:()=>{throw Error('Sink failed');}}),/provider_error/);
+console.log('Offline provider checks passed: disabled/missing-key gates, structured schema, bounded context/output, no tools/storage/history reuse, refusals, failures, cancellation, timeout and private numeric telemetry. No network calls made.');

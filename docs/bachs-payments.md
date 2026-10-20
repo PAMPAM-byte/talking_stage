@@ -77,6 +77,12 @@ Payment verification remains available during a new-payment pause. Configuration
 
 ## Validation recorded
 
+### Confirmation authentication recovery — 20 October 2026
+
+The proxy previously treated failed identity-service checks as signed-out sessions, and the protected page wrapper also treated account-service outages as missing accounts. Both could redirect a payment handoff to sign-in. The proxy now fails closed with a non-cacheable retryable 503 on identity network/rate-limit/service failures; GET navigation gets a reload action, while POST gets a generic error. Genuine missing or invalid sessions still redirect. The protected wrapper uses strict availability checking and renders connection recovery on dependency failures. This addresses a confirmed code path; the user's exact historical failure cannot be established from a screenshot alone.
+
+Actual local sandbox confirmation with the existing development test account created a NGN 2,000 checkout, reached the owned receipt and displayed the hosted checkout link without redirecting to sign-in. It did not complete a transfer or verify a paid webhook. Injected proxy tests cover successful identity, missing/invalid sessions, thrown network failures, rate limits and 503 responses for GET/POST. Payment suites, TypeScript and scoped ESLint passed.
+
 ### Gift route regression — 20 October 2026
 
 The shared connected account wrapper had no Payments branch, so both gift and receipt routes discarded their children and displayed an old rollout placeholder. Payments now renders its connected content inside the app shell after the existing identity, adult declaration and onboarding checks. A VM regression test exercises this actual wrapper and all three denial paths. The gift page uses a bounded white card, separate amount/review steps and stacked mobile actions; ownership failure offers a return to Messages. A signed-in browser reached the real gift form, reviewed NGN 2,000, enforced the minimum, checked mobile fit and denied an inaccessible receipt without creating checkout. Bachs adapter, disposable database, action-boundary, wrapper, TypeScript and scoped ESLint checks passed.

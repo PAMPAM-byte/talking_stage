@@ -82,3 +82,35 @@ wrapperAccount=null;await assert.rejects(protectedPayment(),/redirect:\/sign-in/
 wrapperAccount={profile:{adult_declared_at:null,onboarding_complete:true}};await assert.rejects(protectedPayment(),/redirect:\/onboarding\/age/);
 wrapperAccount={profile:{adult_declared_at:'synthetic',onboarding_complete:false}};await assert.rejects(protectedPayment(),/redirect:\/onboarding\/preferences/);
 console.log('Protected payment routes passed: gift/receipt children render only after identity, adult and onboarding checks.');
+
+// Actual proxy must distinguish dependency failure from a missing/invalid session.
+let claims={data:null,error:null},claimsThrows=false;
+class TestNextResponse extends Response {
+ cookies={getAll:()=>[],set(){}};
+ static next(){return new TestNextResponse(null,{status:200});}
+ static redirect(url){return new TestNextResponse(null,{status:307,headers:{location:String(url)}});}
+ static json(value,options){return new TestNextResponse(JSON.stringify(value),options);}
+}
+const proxyDeps={
+ '@supabase/ssr':{createServerClient:()=>({auth:{getClaims:async()=>{if(claimsThrows)throw Error('network');return claims;}}})},
+ 'next/server':{NextResponse:TestNextResponse},
+ '@/lib/backend/config':{supabaseConfig:()=>({url:'https://example.com',key:'synthetic'}),usesSupabase:()=>true},
+ '@/lib/backend/dependency-fetch.mjs':{dependencyFetch:()=>{}},
+};
+const proxyModules=new Map();
+for(const [name,exports]of Object.entries(proxyDeps))proxyModules.set(name,new SyntheticModule(Object.keys(exports),function(){for(const [key,value]of Object.entries(exports))this.setExport(key,value);},{context}));
+const proxyCode=ts.transpileModule(readFileSync('proxy.ts','utf8'),{compilerOptions:{module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ES2022}}).outputText;
+const proxyModule=new SourceTextModule(proxyCode,{context});await proxyModule.link(name=>proxyModules.get(name));await proxyModule.evaluate();
+const proxied=method=>proxyModule.namespace.proxy({method,url:'http://localhost:3000/payments/synthetic',nextUrl:new URL('http://localhost:3000/payments/synthetic'),headers:new Headers(),cookies:{getAll:()=>[],set(){}}});
+for(const error of [{name:'AuthRetryableFetchError',status:0},{name:'AuthApiError',status:429},{name:'AuthApiError',status:503}]){
+ claims={data:null,error};
+ for(const method of ['GET','POST']){
+  const response=await proxied(method);assert.equal(response.status,503);assert.equal(response.headers.get('location'),null);assert.equal(response.headers.get('Cache-Control'),'private, no-store');
+ }
+}
+claimsThrows=true;assert.equal((await proxied('GET')).status,503);claimsThrows=false;
+for(const error of [null,{name:'AuthSessionMissingError'},{name:'AuthApiError',status:401}]){
+ claims={data:null,error};const response=await proxied('GET');assert.equal(response.status,307);assert.equal(new URL(response.headers.get('location')).pathname,'/sign-in');
+}
+claims={data:{claims:{sub:'synthetic'}},error:null};assert.equal((await proxied('GET')).status,200);
+console.log('Payment proxy passed: authenticated navigation, signed-out denial, retryable network/rate-limit/outage responses without false sign-in redirects.');

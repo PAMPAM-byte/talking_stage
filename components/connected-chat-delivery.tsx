@@ -26,6 +26,7 @@ type Delivery = {
     outgoing: Outgoing[];
     sending: boolean;
     typing: boolean;
+    preparing: boolean;
     active: string[];
     seen: Set<string>;
     send: (text: string, item?: Outgoing) => Promise<void>;
@@ -54,7 +55,8 @@ export function ConnectedChatDelivery({ id, generation, replies, savedIds, saved
     const [sending, setSending] = useState(false);
     const [watching, setWatching] = useState<string[]>(() => initialReplyWatch(statuses, savedIds, replies));
     // Match typing immediately; stopping or failing a reply must not undo a receipt.
-    const [seen, setSeen] = useState(() => new Set(initialReplyWatch(statuses, savedIds, replies)));
+    const [seen, setSeen] = useState(() => new Set(statuses.filter(item => item.state === 'generating' || item.state === 'completed' || item.attempts > 0).map(item => item.messageId)));
+    const [generating, setGenerating] = useState(() => statuses.filter(item => item.state === 'generating').map(item => item.messageId));
     const recoveryAttempts = useRef(new Set<string>());
     const watchStarted = useRef(new Map<string, number>());
     const [notice, setNotice] = useState('');
@@ -67,7 +69,12 @@ export function ConnectedChatDelivery({ id, generation, replies, savedIds, saved
         const discovered = statuses.filter(item => item.state === 'generating' && observedStatuses.current.get(item.messageId) !== 'generating');
         observedStatuses.current = new Map(statuses.map(item => [item.messageId, item.state]));
         // Server history may discover a job started in another tab after mount.
-        if (discovered.length) setWatching(current => [...new Set([...current, ...discovered.map(item => item.messageId)])]);
+        if (discovered.length) {
+            const ids = discovered.map(item => item.messageId);
+            setWatching(current => [...new Set([...current, ...ids])]);
+            setGenerating(current => [...new Set([...current, ...ids])]);
+            setSeen(current => new Set([...current, ...ids]));
+        }
     }, [statuses]);
     useEffect(() => { mounted.current = true; return () => { mounted.current = false; }; }, []);
     // Poll metadata only. The durable database job, not an optimistic bubble, owns reply state.
@@ -101,6 +108,10 @@ export function ConnectedChatDelivery({ id, generation, replies, savedIds, saved
                     });
                     if (controller.signal.aborted)
                         return;
+                    if (state === 'generating' || state === 'completed') {
+                        setSeen(current => current.has(messageId) ? current : new Set([...current, messageId]));
+                        if (state === 'generating') setGenerating(current => current.includes(messageId) ? current : [...current, messageId]);
+                    }
                     if (state === 'inaccessible') {
                         finished.push(messageId);
                         if (httpStatus === 401) router.replace('/sign-in');
@@ -113,8 +124,7 @@ export function ConnectedChatDelivery({ id, generation, replies, savedIds, saved
                     }
                     if (!['generating', 'earlier_reply_pending'].includes(state)) {
                         finished.push(messageId);
-                        if (!['completed', 'cancelled'].includes(state))
-                            setNotice(state === 'budget_exhausted' ? 'Today’s reply limit has been reached. Your message is saved.' : 'Your message is saved. You can retry the reply below it.');
+                        if (state === 'budget_exhausted') setNotice('Today’s reply limit has been reached. Your message is saved.');
                     }
                 }
                 catch {
@@ -127,12 +137,14 @@ export function ConnectedChatDelivery({ id, generation, replies, savedIds, saved
             if (finished.length) {
                 for (const messageId of finished) watchStarted.current.delete(messageId);
                 setWatching(current => current.filter(value => !finished.includes(value)));
+                setGenerating(current => current.filter(value => !finished.includes(value)));
                 router.refresh();
             }
             const slow = watching.every(messageId => Date.now() - (watchStarted.current.get(messageId) ?? Date.now()) >= replyWatchMs);
             timer = setTimeout(poll, slow ? 10000 : 2000);
         };
-        timer = setTimeout(poll, 1000);
+        // Observe promptly after saving; receipt and typing require a real claim.
+        timer = setTimeout(poll, 150);
         return () => { controller.abort(); clearTimeout(timer); };
     }, [id, replies, router, watching]);
     async function send(text: string, previous?: Outgoing) {
@@ -158,7 +170,6 @@ export function ConnectedChatDelivery({ id, generation, replies, savedIds, saved
                 throw new Error(result.error ?? 'Message not saved. Try again.');
             setOutgoing(current => current.map(value => value.clientId === item.clientId ? { ...value, state: 'saved', messageId: result.messageId } : value));
             if (replies) {
-                setSeen(current => new Set([...current, result.messageId!]));
                 setWatching(current => [...new Set([...current, result.messageId!])]);
             }
         }
@@ -186,6 +197,7 @@ export function ConnectedChatDelivery({ id, generation, replies, savedIds, saved
                 }
             }
             setWatching([]);
+            setGenerating([]);
             for (const messageId of watching) watchStarted.current.delete(messageId);
             router.refresh();
         } catch {
@@ -199,12 +211,11 @@ export function ConnectedChatDelivery({ id, generation, replies, savedIds, saved
         watchStarted.current.set(messageId, Date.now());
         recoveryAttempts.current.add(messageId);
         setNotice('');
-        setSeen(current => new Set([...current, messageId]));
         setWatching(current => [...new Set([...current, messageId])]);
     }
     const value = {
         outgoing: outgoing.filter(item => !savedClientIds.includes(item.clientId) && (!item.messageId || !savedIds.includes(item.messageId))),
-        sending, typing: watching.length > 0, active: watching, seen, send, watch, stop,
+        sending, typing: watching.some(messageId => generating.includes(messageId)), preparing: watching.length > 0 && !watching.some(messageId => generating.includes(messageId)), active: watching, seen, send, watch, stop,
     };
     return <Context.Provider value={value}>{children}{notice && <p className="chat-delivery-notice caption" role="status">{notice}</p>}</Context.Provider>;
 }
@@ -216,13 +227,13 @@ export function ConnectedMessageDelivery({ messageId, status }: { messageId: str
 export function ChatOutbox({ name }: {
     name: string;
 }) {
-    const { outgoing, typing, send, sending, stop } = useDelivery();
+    const { outgoing, typing, preparing, send, sending, stop } = useDelivery();
     const [stopping, setStopping] = useState(false);
     const end = useRef<HTMLElement>(null);
     const newest = outgoing.at(-1)?.clientId;
     useEffect(() => { if (newest)
         end.current?.scrollIntoView({ block: 'end' }); }, [newest]);
-    return <>{outgoing.map(item => <article ref={item.clientId === newest ? end : null} className="message-turn message-turn--user message-turn--outgoing" key={item.clientId} data-delivery={item.state} data-client-id={item.clientId}><ChatMessageContent text={item.text}/><div className="message-meta caption muted"><time dateTime={item.time}>{new Date(item.time).toLocaleTimeString('en-NG', { timeZone: 'Africa/Lagos', hour: '2-digit', minute: '2-digit' })}</time>{item.state === 'saved' && item.messageId ? <ConnectedMessageDelivery messageId={item.messageId}/> : <MessageDelivery state={item.state}/>}</div>{item.state === 'failed' && <div className="message-send-error"><p role="alert" className="caption">{item.error}</p><Button variant="quiet" disabled={sending} onClick={() => void send(item.text, item)}>Retry sending</Button></div>}</article>)}{typing && <><TypingBubble name={name}/><Button className="chat-stop-reply" variant="quiet" loading={stopping} onClick={async () => { setStopping(true); try {
+    return <>{outgoing.map(item => <article ref={item.clientId === newest ? end : null} className="message-turn message-turn--user message-turn--outgoing" key={item.clientId} data-delivery={item.state} data-client-id={item.clientId}><ChatMessageContent text={item.text}/><div className="message-meta caption muted"><time dateTime={item.time}>{new Date(item.time).toLocaleTimeString('en-NG', { timeZone: 'Africa/Lagos', hour: '2-digit', minute: '2-digit' })}</time>{item.state === 'saved' && item.messageId ? <ConnectedMessageDelivery messageId={item.messageId}/> : <MessageDelivery state={item.state}/>}</div>{item.state === 'failed' && <div className="message-send-error"><p role="alert" className="caption">{item.error}</p><Button variant="quiet" disabled={sending} onClick={() => void send(item.text, item)}>Retry sending</Button></div>}</article>)}{preparing && <p className="caption muted" role="status">Preparing a reply…</p>}{(typing || preparing) && <>{typing && <TypingBubble name={name}/>}<Button className="chat-stop-reply" variant="quiet" loading={stopping} onClick={async () => { setStopping(true); try {
         await stop();
     }
     finally {

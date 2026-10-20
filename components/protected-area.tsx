@@ -12,7 +12,9 @@ import { ChatLoading } from './chat-loading';
 
 async function ConnectedArea({ area, children, standalone = false }: { area: string; children: ReactNode; standalone?: boolean }) {
   if (!supabaseConfig()) return <PublicShell><Notice title="Account services are unavailable" tone="warning">Please try again later.</Notice></PublicShell>;
-  const account = await currentAccount();
+  let account;
+  try { account = await currentAccount({ failOnUnavailable: true }); }
+  catch { return <PublicShell><Notice title="Connection interrupted" tone="warning">We could not check your account. Reload this page to try again. If you confirmed a payment, retry the same attempt once the connection returns.</Notice></PublicShell>; }
   if (!account) redirect("/sign-in");
   if (!account.profile.adult_declared_at) redirect("/onboarding/age");
   if (!account.profile.onboarding_complete) redirect("/onboarding/preferences");

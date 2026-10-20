@@ -1,5 +1,20 @@
 import {test,expect} from '@playwright/test';
 
+test('queued replies stay saved until the server confirms generation',async({page})=>{
+ let started=false;
+ await page.route('**/api/conversations/**/replies/**',route=>route.fulfill({json:started?{state:'generating',attempts:1}:{state:'earlier_reply_pending',attempts:0}}));
+ await page.goto('/dev/chat-delivery');
+ await page.getByRole('textbox',{name:'Message Amara'}).fill('A queued message.');
+ await page.getByRole('button',{name:'Send message'}).click();
+ await expect(page.getByText('Preparing a reply…',{exact:true})).toBeVisible();
+ await expect(page.getByLabel('Saved',{exact:true})).toBeVisible();
+ await expect(page.getByLabel('Seen',{exact:true})).toHaveCount(0);
+ await expect(page.locator('.typing-bubble')).toHaveCount(0);
+ started=true;
+ await expect(page.getByLabel('Seen',{exact:true})).toBeVisible();
+ await expect(page.locator('.typing-bubble')).toBeVisible();
+});
+
 test('a saved message keeps one tick when no reply starts',async({page})=>{
  await page.goto('/dev/chat-delivery?scenario=disabled');
  await page.getByRole('textbox',{name:'Message Amara'}).fill('Saved without a reply.');
@@ -97,7 +112,7 @@ test('conversation access loss reconciles automatically without turning delivery
  await page.goto('/dev/chat-delivery');
  await page.getByRole('textbox',{name:'Message Amara'}).fill('A saved message.');
  await page.getByRole('button',{name:'Send message'}).click();
- await expect(page.getByLabel('Seen',{exact:true})).toBeVisible();
+ await expect(page.getByLabel('Saved',{exact:true})).toBeVisible();
  await expect(page.locator('.typing-bubble')).toHaveCount(0);
  await expect(page.getByRole('button',{name:'Retry sending'})).toHaveCount(0);
 });
@@ -154,8 +169,9 @@ test('a failed AI reply does not turn a saved message into a delivery failure',a
  await page.goto('/dev/chat-delivery');
  await page.getByRole('textbox',{name:'Message Amara'}).fill('Delivery and reply are separate.');
  await page.getByRole('button',{name:'Send message'}).click();
- await expect(page.getByText('Your message is saved. You can retry the reply below it.',{exact:true})).toBeVisible();
- await expect(page.getByLabel('Seen',{exact:true})).toBeVisible();
+ await expect(page.getByLabel('Saved',{exact:true})).toBeVisible();
+ await expect(page.locator('.chat-delivery-notice')).toHaveCount(0);
+ await expect(page.getByLabel('Seen',{exact:true})).toHaveCount(0);
  await expect(page.locator('.typing-bubble')).toHaveCount(0);
  await expect(page.getByRole('button',{name:'Retry sending'})).toHaveCount(0);
  expect(postRequests).toBe(0);
