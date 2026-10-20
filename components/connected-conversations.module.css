@@ -1,0 +1,110 @@
+/* Connected chat: a full portrait on a rose ribbon canvas. */
+.atmosphere:global(.connected-chat) :global(.chat-shell) {
+  --chat-rose-line: #e5ced7;
+  background: #f7eaf0;
+}
+.atmosphere:global(.connected-chat) :global(.chat-shell__messages) {
+  background-color: #f7eaf0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='640' height='640' viewBox='0 0 640 640' fill='none' stroke='%23ffffff' stroke-opacity='.58'%3E%3Cpath d='M-180 80C120-160 360 160 140 340S110 760 480 610M-140 110C160-130 400 190 180 370S150 790 520 640M-100 140C200-100 440 220 220 400S190 820 560 670' stroke-width='1.5'/%3E%3C/svg%3E"), radial-gradient(ellipse at 0% 15%, #ebcbd9 0%, transparent 58%), radial-gradient(ellipse at 100% 90%, #efd3de 0%, transparent 60%);
+  background-size: 640px 640px, 100% 100%, 100% 100%;
+}
+.atmosphere:global(.connected-chat) :global(.chat-shell__header) {
+  border-bottom: 1px solid var(--chat-rose-line);
+  background: #fff;
+  box-shadow: 0 5px 22px rgb(77 24 43 / 4%);
+  z-index: 2;
+}
+.atmosphere:global(.connected-chat) :global(.chat-identity .chat-avatar) {
+  border-radius: 15px;
+  box-shadow: 0 0 0 3px white, 0 0 0 4px #eddae2;
+}
+.atmosphere:global(.connected-chat) :global(.connected-chat-welcome--minimal) {
+  padding: 24px;
+}
+.atmosphere:global(.connected-chat) :global(.chat-welcome-photo) {
+  display: block;
+  padding: 8px;
+  border: 1px solid rgb(255 255 255 / 85%);
+  border-radius: 34px;
+  background: rgb(255 255 255 / 85%);
+  box-shadow: 0 28px 64px -22px rgb(97 39 63 / 32%), 0 3px 12px rgb(97 39 63 / 7%);
+}
+.atmosphere:global(.connected-chat) :global(.chat-welcome-photo .chat-avatar) {
+  display: grid;
+  place-items: center;
+  width: clamp(216px, 28vw, 320px);
+  height: clamp(270px, 46dvh, 414px);
+  border: 0;
+  border-radius: 26px;
+  background: #e8ccd8;
+  color: #8b3353;
+  font-size: 68px;
+  box-shadow: none;
+}
+.atmosphere:global(.connected-chat) :global(.chat-welcome-photo .chat-avatar img) {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 30%;
+}
+.atmosphere:global(.connected-chat) :global(.chat-welcome-photo:focus-visible) {
+  outline: 2px solid var(--brand);
+  outline-offset: 6px;
+}
+.atmosphere:global(.connected-chat) :global(.message-bubble) {
+  background: white;
+  border-color: #eadce2;
+  box-shadow: 0 3px 12px rgb(77 24 43 / 4%);
+}
+.atmosphere:global(.connected-chat) :global(.message-turn--user .message-bubble) {
+  background: #b81e43;
+  border-color: #b81e43;
+  color: white;
+  box-shadow: 0 4px 12px rgb(128 25 51 / 10%);
+}
+.atmosphere:global(.connected-chat) :global(.chat-shell__composer) {
+  border-top: 1px solid var(--chat-rose-line);
+  background: #fff;
+  box-shadow: 0 -6px 24px rgb(77 24 43 / 4%);
+}
+.atmosphere:global(.connected-chat) :global(.connected-composer-row) {
+  gap: 8px;
+  padding: 7px;
+  border: 1px solid #e2cbd5;
+  border-radius: 24px;
+  background: #fff;
+  box-shadow: 0 3px 12px rgb(77 24 43 / 5%);
+}
+.atmosphere:global(.connected-chat) :global(.connected-composer-row:focus-within) {
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px rgb(207 36 69 / 8%);
+}
+.atmosphere:global(.connected-chat) :global(.connected-composer-row > .expression-trigger) {
+  background: #f9eaf0;
+  color: #a34f69;
+  border-radius: 50%;
+}
+.atmosphere:global(.connected-chat) :global(.chat-composer .button.composer-send) {
+  border-radius: 16px;
+  background: var(--brand);
+  color: white;
+}
+.atmosphere:global(.connected-chat) :global(.chat-composer .button.composer-send:disabled) {
+  background: #f0dce5;
+  color: #9e687e;
+  box-shadow: none;
+}
+@media (hover: hover) {
+  .atmosphere:global(.connected-chat) :global(.chat-welcome-photo:hover) { border-color: #d9b6c6; }
+  .atmosphere:global(.connected-chat) :global(.chat-composer .button.composer-send:hover:not(:disabled)) { background: var(--brand-hover); }
+}
+@media (max-height: 600px) {
+  .atmosphere:global(.connected-chat) :global(.connected-chat-welcome--minimal) { padding-block: 14px; }
+  .atmosphere:global(.connected-chat) :global(.chat-welcome-photo .chat-avatar) { width: 140px; height: 178px; }
+  .atmosphere:global(.connected-chat) :global(.chat-welcome-photo) { padding: 5px; border-radius: 25px; }
+  .atmosphere:global(.connected-chat) :global(.chat-welcome-photo .chat-avatar) { border-radius: 20px; }
+}
+@media (max-height: 420px) {
+  .atmosphere:global(.connected-chat) :global(.chat-welcome-photo .chat-avatar) { width: 100px; height: 126px; }
+}

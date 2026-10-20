@@ -32,9 +32,23 @@ export async function proxy(request: NextRequest) {
     // An identity-service outage is not evidence that the user signed out.
     // Fail closed without sending an authenticated payment flow back to login.
     if (identityUnavailable) {
+      // Let the standalone chat's independently verified server boundary handle
+      // an unavailable session check. Replacing an RSC refresh with raw HTML
+      // forces a document navigation and discards the mounted chat and draft.
+      // This does not authorize access: renderAccount and the owned-thread RPC
+      // still gate all data, actions and initial conversation renders.
+      const conversationPage = /^\/messages\/[^/]+\/?$/.test(request.nextUrl.pathname);
+      if (request.method === 'GET' && conversationPage) return response;
+      const paymentRoute = ['/payments', '/gifts'].some(prefix => request.nextUrl.pathname === prefix || request.nextUrl.pathname.startsWith(`${prefix}/`));
+      const explanation = paymentRoute
+        ? 'We could not check your session. Your payment status has not been changed by this check.'
+        : 'We could not check your session. Please try again shortly.';
+      const recovery = paymentRoute
+        ? 'Reload this page to try again. Do not start another payment while an earlier attempt is unconfirmed.'
+        : 'Reload this page to try again.';
       const unavailable = request.method === 'GET'
-        ? new NextResponse('<!doctype html><html lang="en"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Connection interrupted | TalkingStage</title><body style="font-family:system-ui;margin:0;padding:48px 24px;color:#242126"><main style="max-width:520px;margin:12vh auto"><h1>Connection interrupted</h1><p>We could not check your session. Your payment status has not been changed by this check.</p><p>Reload this page to try again. Do not start another payment while an earlier attempt is unconfirmed.</p><form method="get"><button type="submit" style="padding:14px 24px;background:#CF2445;color:white;border:0;border-radius:12px;font:inherit">Try again</button></form></main></body></html>', {status:503,headers:{'Content-Type':'text/html; charset=utf-8'}})
-        : NextResponse.json({error:'Session verification is temporarily unavailable. Retry the same payment attempt.'},{status:503});
+        ? new NextResponse(`<!doctype html><html lang="en"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Connection interrupted | TalkingStage</title><body style="font-family:system-ui;margin:0;padding:48px 24px;color:#242126"><main style="max-width:520px;margin:12vh auto"><h1>Connection interrupted</h1><p>${explanation}</p><p>${recovery}</p><form method="get"><button type="submit" style="padding:14px 24px;background:#CF2445;color:white;border:0;border-radius:12px;font:inherit">Try again</button></form></main></body></html>`, {status:503,headers:{'Content-Type':'text/html; charset=utf-8'}})
+        : NextResponse.json({error:paymentRoute?'Session verification is temporarily unavailable. Retry the same payment attempt.':'Session verification is temporarily unavailable. Please try again shortly.'},{status:503});
       unavailable.headers.set('Cache-Control','private, no-store');
       unavailable.headers.set('Retry-After','5');
       response.cookies.getAll().forEach(cookie => unavailable.cookies.set(cookie));
