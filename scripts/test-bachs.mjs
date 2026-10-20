@@ -57,7 +57,7 @@ for(const controls of [{...context.requestControls,muted:true},{...context.reque
  await assert.rejects(generateReply({...context,requestControls:controls},{key:'SYNTHETIC',model:'synthetic'},{fetcher:async()=>respond({status:'completed',output:[{type:'message',content:[{type:'output_text',text:'{"text":"Unallowed request","photoAssetId":null,"requestAmountMinor":250000}'}]}]})}),/invalid_output/);
 }
 // Offering a link is separate from a character-initiated request and never calls Bachs.
-const {GIFT_LINK_TOKEN,giftMessage}=await import('../lib/payments/gift-link.mjs');
+const {GIFT_LINK_TOKEN,giftMessage,PAYMENT_DETAILS_LABEL}=await import('../lib/payments/gift-link.mjs');
 const offer={...context,history:[{role:'user',text:"I'd love to send you some money for skincare"}],requestControls:{...context.requestControls,allowedByUser:false},payments:{...context.payments,requestsEligible:false}};
 const offerReply=(value)=>async(_url,options)=>{
  const schema=JSON.parse(options.body).text.format.schema;
@@ -67,7 +67,14 @@ const offerReply=(value)=>async(_url,options)=>{
 };
 const offered=await generateReply(offer,{key:'SYNTHETIC',model:'synthetic'},{fetcher:offerReply({text:"That's sweet of you 😊 Here's the link.",photoAssetId:null,giftLink:true})});
 assert(offered.text.endsWith(GIFT_LINK_TOKEN));
-assert.deepEqual(giftMessage(offered.text,true),{text:"That's sweet of you 😊 Here's the link.",showLink:true});
+assert.deepEqual(giftMessage(offered.text,true),{text:"That's sweet of you 😊 You can get the transfer details below.",showLink:true});
+assert.equal(PAYMENT_DETAILS_LABEL,'Get transfer details');
+assert.equal(giftMessage(`Thank you. Here's the link to send a gift.\n\n${GIFT_LINK_TOKEN}`,true).text,'Thank you. You can get the transfer details below.');
+assert.equal(giftMessage("Here's the link to send a gift.",true).text,"Here's the link to send a gift.",'Ordinary messages without the trusted token must not be rewritten');
+const detailsInput=buildInput({...offer,history:[{role:'user',text:'Send me your account details'}]})[0].content;
+assert(detailsInput.includes('acknowledge that specific request'));
+assert(detailsInput.includes('no actual bank details have been supplied to you'));
+assert(detailsInput.includes('Never invent account numbers or payment URLs'));
 assert.equal(giftMessage(offered.text,false).showLink,false);
 assert.equal(giftMessage('Hello',true).showLink,false);
 const ordinary=await generateReply(offer,{key:'SYNTHETIC',model:'synthetic'},{fetcher:offerReply({text:'How was your day?',photoAssetId:null,giftLink:false})});

@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import {readFile,writeFile,mkdir} from 'node:fs/promises';
 import {writeFileSync,unlinkSync} from 'node:fs';
 import {randomUUID,createHash} from 'node:crypto';
-import {parseEnv} from 'node:util';
+import {parseEnv,isDeepStrictEqual} from 'node:util';
 import {execFileSync} from 'node:child_process';
 import {resolve} from 'node:path';
 import {createClient} from '@supabase/supabase-js';
@@ -51,7 +51,10 @@ const desired=pack.characters.map(c=>{
  assert(direction.length<=12000);
  return {key:c.key,id:original.id,profile,direction,original};
 });
-if(!process.argv.includes('--publish')){console.log('Read-only filter preflight passed: 50 published baselines match, scoped profile/direction patches prepared and encrypted snapshot verified. No hosted writes.');process.exit(0);}
+if(!process.argv.includes('--publish')){
+ for(const c of desired){const row=current.find(row=>row.id===c.id);assert(isDeepStrictEqual(row.profile,c.original.profile),'Live draft profile changed since baseline');assert.equal(row.direction,c.original.direction,'Live direction changed since baseline');assert.equal(row.version,c.original.version,'Live version changed since baseline');assert.deepEqual(row.public_profile,c.original.public_profile);assert.equal(row.published_direction,c.original.published_direction);}
+ console.log('Read-only filter audit passed: every field, direction, version and published snapshot of all 50 live characters equals the encrypted baseline. Zero outside edits or cast writes.');process.exit(0);
+}
 const options={auth:{persistSession:false,autoRefreshToken:false}};
 const service=createClient(target,env.SUPABASE_SERVICE_ROLE_KEY,options),admin=createClient(target,env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,options);
 function checked(result){if(result.error||result.data?.error)throw Error('Versioned cast command failed; checkpoint retained and no automatic mutation retry.');return result.data;}
@@ -73,8 +76,8 @@ try{
  }
  for(const c of desired){
   const row=drafts.find(row=>row.id===c.id);assert(row);assert.equal(row.status,'published');let version=row.version;
-  const original=row.direction===c.original.direction&&fingerprint(row.profile)===fingerprint(c.original.profile);
-  const already=row.direction===c.direction&&fingerprint(row.profile)===fingerprint(c.profile);
+  const original=row.direction===c.original.direction&&isDeepStrictEqual(row.profile,c.original.profile);
+  const already=row.direction===c.direction&&isDeepStrictEqual(row.profile,c.profile);
   assert(original||already,'Outside cast edit detected; do not overwrite');
   if(!already){assert.equal(version,c.original.version);await command('cast.save_draft',{p_id:c.id,p_version:version,p_profile:c.profile,p_direction:c.direction});version++;}
   if(!state.completed.includes(c.key)){await command('cast.publish',{p_id:c.id,p_version:version,p_attested:true});state.completed.push(c.key);await save();}

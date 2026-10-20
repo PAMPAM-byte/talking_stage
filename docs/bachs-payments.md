@@ -101,6 +101,12 @@ The 25-suite offline core run passed. Subsequent focused payment checks passed a
 
 ## Official references
 
+### Account-details request presentation (20 October)
+
+The character now acknowledges requests for account details and explains that choosing an amount leads to bank-transfer instructions. The attached action reads **Get transfer details**, replacing the generic Send money label in character replies. The legacy stock sentence “Here's the link to send a gift” is corrected only when rendering a character message containing the trusted payment action token; the stored transcript and ordinary messages are unchanged.
+
+This is a presentation correction, not in-chat account-number generation. The downloaded public Bachs OpenAPI schema exposes only a checkout URL from checkout creation. Permanent virtual accounts are one number per business account/currency; they do not identify a conversation or payment intent. Sharing that number would bypass the existing checkout attribution and verified receipt flow. No permanent number is provisioned, no merchant identity is changed, and no fabricated bank details are shown. To send actual bank details in chat, obtain a supported Bachs API for transaction-specific transfer instructions and implement owned intent binding, expiry and reconciliation before enabling it. The current verified route still requires amount selection/review followed by Bachs checkout.
+
 - [Checkout sessions and NGN bank-transfer checkout](https://docs.bachs.io/guides/checkout/checkout-sessions)
 - [Authentication and sandbox/live key separation](https://docs.bachs.io/authentication)
 - [Webhook signatures and rotation](https://docs.bachs.io/guides/webhooks/overview)

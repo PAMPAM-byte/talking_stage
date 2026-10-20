@@ -8,6 +8,9 @@ test('curated personality and interest filters combine to show matching characte
  await expect(page).toHaveURL(/\/discover$/);
  await page.getByRole('button',{name:/Filters/}).click();
  const dialog=page.getByRole('dialog');
+ await expect(dialog.locator('.filter-choice-options').first()).toHaveCSS('max-height','none');
+ await expect(dialog.locator('.filter-choice-options').first()).toHaveCSS('overflow-y','visible');
+ await dialog.locator('.discovery-filter-fields').evaluate(element=>{element.scrollTop=0;});
  await dialog.getByRole('group',{name:'Personality',exact:true}).getByRole('radio',{name:'baddie',exact:true}).check();
  await expect(dialog.getByText(/each character keeps her own temperament/)).toBeVisible();
  await dialog.getByRole('group',{name:'Interest',exact:true}).getByRole('radio',{name:'beauty',exact:true}).check();
@@ -20,6 +23,6 @@ test('curated personality and interest filters combine to show matching characte
   await page.setViewportSize({width,height:844});
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
   await expect(dialog.getByRole('button',{name:'Apply filters',exact:true})).toBeInViewport();
-  if(width===390)await page.screenshot({path:'test-results/curated-filters-390.png'});
+  if(width===390){await dialog.locator('.discovery-filter-fields').evaluate(element=>{element.scrollTop=0;});await page.screenshot({path:'test-results/curated-filters-390.png'});}
  }
 });

@@ -1,6 +1,6 @@
 import { decodeExpression, expressionAsset, type Expression } from '@/lib/chat/expressions';
 import Link from 'next/link';
-import {giftMessage} from '@/lib/payments/gift-link.mjs';
+import {giftMessage,PAYMENT_DETAILS_LABEL} from '@/lib/payments/gift-link.mjs';
 export function ExpressionImage({ expression }: { expression: Expression }) {
   const item = expressionAsset(expression);
   if (!item) return null;
@@ -10,6 +10,6 @@ export function ExpressionImage({ expression }: { expression: Expression }) {
 export function ChatMessageContent({ text, giftHref }: { text: string; giftHref?: string }) {
   const expression = decodeExpression(text);
   const gift=giftMessage(text,!!giftHref);
-  if (!expression) return <p className="message-bubble">{gift.text}{gift.showLink&&<><br/><Link href={giftHref!} className="chat-gift-link">Send money <span aria-hidden="true">↗</span></Link></>}</p>;
+  if (!expression) return <p className="message-bubble">{gift.text}{gift.showLink&&<><br/><Link href={giftHref!} className="chat-gift-link">{PAYMENT_DETAILS_LABEL} <span aria-hidden="true">↗</span></Link></>}</p>;
   return <div className={`message-expression message-expression--${expression.kind}`}><ExpressionImage expression={expression}/>{expression.caption && <p className="message-bubble">{expression.caption}</p>}</div>;
 }

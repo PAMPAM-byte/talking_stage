@@ -462,3 +462,7 @@ The initial exploration considered a conventional blush-heavy dating interface a
 Final cast, branding clearance, age-assurance method, payment limits and gateway, memory retention rules, account deletion exceptions, provider response behaviour, and pilot usage limits remain unresolved. This design system supplies consistent presentation without pretending those decisions have been made.
 
 Light mode is the launch design baseline. Dark mode requires a separately tested token mapping and is not implied by this specification.
+
+### Discover filter clarity
+
+Personality and interest choices use the shared radio-card treatment. Show a short explanation for the selected category, retain one scrolling content area and keep Apply/Clear controls visible. Character assignments follow the canonical [discovery identity review](./cast-50/filter-review.md); style labels do not imply identical temperaments. Combine selected categories rather than displaying unrelated profiles.

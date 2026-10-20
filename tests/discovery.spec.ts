@@ -36,7 +36,7 @@ test('filters apply together, cancel without changing results, reset and handle 
   await page.getByLabel('Discovery scenario').selectOption('offline');
   await expect(page.getByRole('status').filter({ hasText: 'Discovery unavailable' }).or(page.getByRole('alert'))).toBeVisible();
   await page.getByRole('button', { name: 'Try again' }).click();
-  await expect(page.getByRole('alert')).toBeVisible();
+  await expect(page.getByRole('alert').filter({hasText:'Discovery unavailable'})).toBeVisible();
   await page.getByLabel('Discovery scenario').selectOption('ready');
   await expect(page.locator('.character-card')).toHaveCount(1);
 });
