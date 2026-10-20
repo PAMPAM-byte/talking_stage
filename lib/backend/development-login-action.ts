@@ -2,6 +2,7 @@
 import { developmentTestAccount } from './development-test-account';
 import { submitAccount, type AccountResult } from './account-actions';
 import { currentAccount } from './server';
+import { emit } from '@/lib/monitoring/events.mjs';
 
 export async function signInDevelopmentAccount(): Promise<AccountResult> {
   try {
@@ -15,6 +16,9 @@ export async function signInDevelopmentAccount(): Promise<AccountResult> {
     const form = new FormData();
     form.set('email', credentials.email);
     form.set('password', credentials.password);
-    return submitAccount('sign-in', form);
-  } catch { return { error: 'We could not sign in to the test account. Try again or use the sign-in form.' }; }
+    return await submitAccount('sign-in', form);
+  } catch {
+    emit('auth.sign-in', 'unavailable');
+    return { error: 'Test account services are temporarily unavailable. Try again, or use your email and password.' };
+  }
 }

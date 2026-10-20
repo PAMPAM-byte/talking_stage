@@ -63,6 +63,10 @@
 .auth-page .account-footer a { text-underline-offset: 4px; }
 .auth-page .account-form > .caption { font-size: 11px; margin-top: -10px; }
 .auth-page .notice { border-radius: 12px; padding: 14px; }
+.auth-page .development-sign-in { margin-top: 24px; border-top: 1px solid var(--border); padding-top: 16px; }
+.auth-page .development-sign-in > summary { width: fit-content; min-height: 44px; display: list-item; line-height: 44px; cursor: pointer; color: var(--text-secondary); font-size: 13px; }
+.auth-page .development-sign-in > summary:focus-visible { outline: 2px solid var(--brand); outline-offset: 4px; border-radius: 4px; }
+.auth-page .development-sign-in[open] > summary { margin-bottom: 12px; }
 .auth-page .notice .supporting { font-size: 11px; line-height: 1.7; }
 .auth-page .demo-details { font-size: 11px; }
 .auth-page .demo-details summary { font-size: 11px; }

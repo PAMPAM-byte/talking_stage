@@ -1,5 +1,7 @@
 # TalkingStage design system
 
+Sign-in entry · 20 October: the normal email/password form is always visible. Local test login is an explicit action in a collapsed Development options disclosure, with a native marker, keyboard focus, existing secondary button and scoped error notice. Visiting sign-in never triggers the development account automatically.
+
 Interrupted chat recovery · 20 October: initial conversation skeletons include native reload/return links, usable before hydration. Hydrated loading switches after 15 seconds to a bounded, responsive recovery view; conversation render failures share it. One loading boundary owns the standalone chat. Recovery is explicit and does not replay messages. See [review](./reviews/chat-render-recovery.md).
 
 Reply status refinement · 20 October: a saved message keeps one tick while its reply is queued, with “Preparing a reply…” in the thread. A confirmed generating job gets double ticks and the typing bubble together. Seen receipts persist after interruption. Failed replies keep recovery beside the message with an explanation; the generic floating failure toast is removed. Existing Manrope, white/blush bubbles, red actions and reduced-motion support remain.
