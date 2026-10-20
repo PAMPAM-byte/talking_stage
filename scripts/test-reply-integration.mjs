@@ -60,6 +60,21 @@ try{
  await actor(a);const pipelineMessage=await send('Synthetic pipeline input',2);await actor('', 'service_role');
  assert.equal(await runReply(client,pipelineMessage,a,settings,{fetcher,userTimeZone:'Africa/Lagos'}),'completed');assert.equal(networkCalls,1);
  assert.equal(await runReply(client,pipelineMessage,a,settings,{fetcher}),'completed');assert.equal(networkCalls,1);
+ // Both a dropped save request and a lost acknowledgement must reuse the same
+ // output/lease, never generate another reply or duplicate its stored message.
+ for(const lostAck of [false,true]){
+  await actor(a);const pending=await send('Synthetic interrupted save',2);await actor('', 'service_role');
+  await actor(a);const baseline=(await db.query("select count(*)::int as n from public.messages where conversation_id=$1 and role='character'",[c])).rows[0].n;
+  await actor('', 'service_role');const beforeCalls=networkCalls;let saves=0;let payload;
+  const unreliable={rpc:async(name,p)=>{
+   if(name==='claim_reply')return client.rpc(name,p);
+   saves++;if(saves===1){payload={...p};if(lostAck)await client.rpc(name,p);return {status:0,error:{message:'Synthetic fetch failed'}};}
+   assert.deepEqual(p,payload);return client.rpc(name,p);
+  }};
+  assert.equal(await runReply(unreliable,pending,a,settings,{fetcher,commitRetryPause:async()=>{}}),'completed');
+  assert.equal(saves,2);assert.equal(networkCalls,beforeCalls+1);
+  await actor(a);assert.equal((await db.query("select count(*)::int as n from public.messages where conversation_id=$1 and role='character'",[c])).rows[0].n,baseline+1);
+ }
  await actor(a);const staleMessage=await send('Synthetic stale-context input',2);await actor('', 'service_role');
  const staleFetch=async(url,options)=>{
   const response=await fetcher(url,options);await db.exec('reset role');await db.query("update public.profiles set language='english_pidgin' where id=$1",[a]);await actor('', 'service_role');return response;

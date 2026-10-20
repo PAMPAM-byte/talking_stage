@@ -70,7 +70,7 @@ assert.equal(cast.length,50);
 for(const character of cast){
   const input=buildInput({...base,character:{name:character.name,direction:character.bio},history:[{role:'user',text:encodeExpression({kind:'gif',id:'my-person'},'For you')}]});
   assert(input[0].content.includes('Optional reaction replies (all characters)'));
-  assert(input[0].content.includes('my-person | sticker,gif'));
+  assert(input[0].content.includes('my-person | sg'));
   assert(input.at(-1).content.includes('For you'));
   assert(input.at(-1).content.includes(reactions.find(item=>item.id==='my-person').meaning));
 }

@@ -31,6 +31,8 @@ const checks = [
   ['test-conversations-database.mjs'],
   ['test-clear-all-chats.mjs'],
   ['test-reply-integration.mjs'],
+  ['test-reply-commit.mjs'],
+  ['test-reply-prompt-budget.mjs'],
   ['test-photo-replies.mjs'],
   ['test-summaries.mjs'],
   ['test-request-foundations.mjs'],
