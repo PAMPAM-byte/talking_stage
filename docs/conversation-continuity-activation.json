@@ -1,0 +1,18 @@
+{
+  "appliedAt": "2026-10-20T22:46:34.767Z",
+  "migrations": [
+    {
+      "version": "202610200023",
+      "name": "conversation_timeline",
+      "hash": "ce697df4ed57211224ec49c7249043e4e3264b150e3c167b8058bb8dd30b0e6f"
+    },
+    {
+      "version": "202610200024",
+      "name": "character_checkins",
+      "hash": "0c306f1fe673152d4a4b3131b2f31d33fd63317551d1f797d7715219bfb2c8cd"
+    }
+  ],
+  "encryptedDdlSnapshotVerified": true,
+  "serviceOnlyCheckinsVerified": true,
+  "existingUsersDefaultOff": true
+}
