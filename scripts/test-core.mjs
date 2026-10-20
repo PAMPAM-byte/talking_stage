@@ -22,6 +22,8 @@ const checks = [
   ['test-ai-provider.mjs'],
   ['test-conversation-knowledge.mjs'],
   ['test-conversation-intent.mjs'],
+  ['test-conversation-timeline.mjs'],
+  ['test-character-checkins.mjs'],
   ['test-cast-roster.mjs'],
   ['test-cast-evaluation.mjs'],
   ['test-anthropic-provider.mjs'],

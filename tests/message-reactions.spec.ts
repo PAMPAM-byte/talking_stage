@@ -2,7 +2,8 @@ import {test,expect} from '@playwright/test';
 for(const width of [390,1440])test(`message reactions add, replace and remove at ${width}px`,async({page})=>{
  await page.setViewportSize({width,height:900});await page.goto('/dev/chat-delivery?scenario=reactions');
  const user=page.getByTestId('user-message');const character=page.getByTestId('character-message');
- await expect(user.getByRole('button',{name:'❤️ reaction by Amara',exact:true})).toBeVisible();
+ await expect(user.getByRole('img',{name:'❤️ reaction by Amara',exact:true})).toBeVisible();
+ await expect(user.getByRole('button')).toHaveCount(0);
  await character.getByRole('button',{name:'React to message',exact:true}).click();
  await character.getByRole('button',{name:'React ❤️',exact:true}).click();
  await expect(character.getByRole('button',{name:/❤️ reaction by You/})).toHaveAttribute('aria-pressed','true');
@@ -12,10 +13,7 @@ for(const width of [390,1440])test(`message reactions add, replace and remove at
  await expect(character.getByRole('button',{name:/❤️ reaction by You/})).toHaveCount(0);
  await character.getByRole('button',{name:/😂 reaction by You/}).click();
  await expect(character.getByRole('button',{name:/😂 reaction by You/})).toHaveCount(0);
- await user.getByRole('button',{name:'React to message',exact:true}).click();await user.getByRole('button',{name:'React ❤️',exact:true}).click();
- const shared=user.getByRole('button',{name:/❤️ reaction by Amara and You/});
- await expect(shared).toBeEnabled();await expect(shared).toContainText('2');await shared.click();
- await expect(user.getByRole('button',{name:'❤️ reaction by Amara',exact:true})).toBeVisible();
+ await expect(user.getByRole('button',{name:'React to message',exact:true})).toHaveCount(0);
  await page.getByRole('button',{name:'Fail next reaction',exact:true}).click();
  await character.getByRole('button',{name:'React to message',exact:true}).click();await character.getByRole('button',{name:'React 👍',exact:true}).click();
  await expect(character.getByRole('status')).toHaveText('Reaction not saved. Try again.');

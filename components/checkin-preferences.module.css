@@ -1,0 +1,11 @@
+.form { display: grid; gap: var(--space-5); max-width: 640px; }
+.form fieldset { display: grid; gap: 12px; min-width: 0; border: 0; margin: 0; padding: 0; }
+.form legend { padding: 0; margin-bottom: 8px; font-size: 20px; font-weight: 700; }
+.form p, .note { color: var(--text-secondary); line-height: 1.6; }
+.choice { display: flex; align-items: center; gap: 14px; padding: 18px; min-height: 68px; border: 1px solid var(--border); border-radius: 16px; cursor: pointer; background: var(--surface); }
+.choice:has(input:checked) { border-color: var(--brand); background: var(--brand-soft); }
+.choice:focus-within { outline: 2px solid var(--focus); outline-offset: 2px; }
+.choice input { flex: 0 0 auto; width: 20px; height: 20px; accent-color: var(--brand); }
+.choice span { display: grid; gap: 4px; }
+.choice small { color: var(--text-secondary); font-size: 13px; line-height: 1.5; }
+.note { font-size: 13px; }

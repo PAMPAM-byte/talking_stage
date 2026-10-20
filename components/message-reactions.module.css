@@ -7,6 +7,7 @@
 .trigger:hover { opacity: 1; background: white; }
 .pill { gap: 5px; padding: 0 10px; background: white; border-color: var(--border); font-size: 20px; }
 .pill[aria-pressed='true'] { background: var(--brand-soft); border-color: var(--brand); }
+.badge { cursor: default; }
 .count { font-size: 12px; color: var(--text-secondary); }
 .picker { position: relative; z-index: 4; margin-block: 4px; padding: 10px; border: 1px solid var(--border); border-radius: 20px; background: white; box-shadow: 0 8px 28px rgb(50 20 35 / 10%); }
 .quick, .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(40px, 1fr)); gap: 2px; }

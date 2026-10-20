@@ -1,5 +1,15 @@
 # Message reactions · 20 October 2026
 
+## Incoming-message-only amendment
+
+The founder requested removal of reaction controls beneath the user's own sent messages. MessageReactions now requires the message role. Character messages expose the user's add/change/remove picker; outgoing messages show only actual character reactions as non-interactive badges and omit the component entirely when no valid character reaction exists. Legacy self-reactions are filtered from display. The character's model and commit rules already restrict character reactions to user messages.
+
+Migration 022 wraps the existing authenticated mutation RPC, checking owned message role before allowing a non-null reaction. Creating or changing a user self-reaction is rejected. Removal remains allowed for legacy rows, and the existing emoji, ownership, capability and mutation-limit checks remain intact. Existing stored messages/reactions were not deleted. Hosted activation is recorded in ../incoming-message-reactions-activation.json.
+
+Updated database checks verify self-reaction denial, incoming-message add/change/remove, the correct reaction referent in model context, and successful character reactions on user messages. Both 390px and 1440px browser checks verify that character reaction badges on outgoing messages have no buttons while incoming-message reaction editing, failure recovery, search and keyboard behavior continue to work. TypeScript and scoped ESLint passed. No live character generation was needed.
+
+## Initial implementation
+
 The founder requested WhatsApp-style emoji reactions for users and characters. Persisted text, sticker/GIF and photo messages now have a small smile control beneath the bubble. Eight quick choices open a compact white/blush picker; More reactions exposes the existing searchable emoji catalogue. Reaction pills show who reacted, combine matching emoji with a count of two, and mark the user's selection. Choosing the same emoji removes the user's reaction; another emoji replaces it. Character reactions remain intact. Keyboard dismissal, visible focus, touch targets, bounded scrolling, optimistic feedback and failed-save rollback use the existing chat identity. System payment updates do not expose reaction controls.
 
 Migration 020 adds a row per message/actor with a foreign key to the exact shared emoji allowlist. The authenticated mutation RPC independently checks adult/onboarding access, conversation ownership, active/chat capability, message membership and supported kind. It rate-limits updates; clients cannot insert or impersonate character reactions directly. Select RLS isolates other owners and deleted conversations. Reactions disappear with deleted/reset messages. The thread RPC returns reactions only for the owned visible message page. Sync revisions include sorted reaction values, so additions, changes and removals refresh other open views without exposing content in sync metadata.

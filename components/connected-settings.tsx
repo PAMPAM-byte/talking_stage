@@ -7,6 +7,7 @@ export async function ConnectedSettings() {
   if (!account) return null;
   const items: { title: string; description: string; href: string; icon: IconName; detail: string }[] = [
     { title: 'Preferences', description: 'Your name, who you want to meet and your conversation language.', href: '/settings/preferences', icon: 'people', detail: `${(account.profile.genders as string[]).map(g => g === 'woman' ? 'Women' : 'Men').join(' & ')} · ${account.profile.language === 'english_pidgin' ? 'English with Pidgin' : 'English'}` },
+    { title: 'Character check-ins', description: 'Choose whether established chats can leave an occasional message.', href: '/settings/check-ins', icon: 'message', detail: 'Your pace, with an off switch' },
     { title: 'Saved memories', description: 'Choose what each character remembers, or remove a saved detail.', href: '/settings/memories', icon: 'message', detail: 'Managed separately for each character' },
     { title: 'Monetary requests', description: 'Set your overall preference and manage requests in each conversation.', href: '/settings/requests', icon: 'shield', detail: account.profile.requests_enabled ? 'Requests allowed' : 'Requests turned off' },
   ];

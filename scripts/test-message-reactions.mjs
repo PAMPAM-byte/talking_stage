@@ -19,8 +19,12 @@ try{
  await db.exec("update private.ai_configuration set enabled=true,model='synthetic',project_daily_micro_usd=10000000,user_daily_micro_usd=10000000,input_micro_usd_per_million=1000000,output_micro_usd_per_million=1000000;");
  const actor=async(id,role='authenticated')=>db.exec(`reset role;set role ${role};select set_config('request.jwt.claim.sub','${id}',false);`);
  await actor(a);const c=(await db.query('select public.start_conversation($1) as id',[char])).rows[0].id;
+ await db.exec('reset role');
+ const incoming=(await db.query("insert into public.messages(conversation_id,sequence,role,kind,text) values($1,1,'character','text','Good to hear from you.') returning id",[c])).rows[0].id;
+ await db.query('update public.conversations set next_sequence=2 where id=$1',[c]);await actor(a);
  const message=(await db.query("select public.save_user_message($1,gen_random_uuid(),1,'I finally got the job!') as v",[c])).rows[0].v.id;
- const react=emoji=>db.query('select public.set_message_reaction($1,$2,$3)',[c,message,emoji]);
+ const react=emoji=>db.query('select public.set_message_reaction($1,$2,$3)',[c,incoming,emoji]);
+ await assert.rejects(db.query('select public.set_message_reaction($1,$2,$3)',[c,message,'❤️']),/self_reaction_not_allowed/);
  await react('❤️');await react('😂');
  assert.equal((await db.query('select * from public.message_reactions')).rows.length,1);
  assert.equal((await db.query('select emoji from public.message_reactions')).rows[0].emoji,'😂');
@@ -33,8 +37,9 @@ try{
  await actor('', 'service_role');
  const job=(await db.query('select public.claim_reply($1,$2,$3) as v',[message,a,'synthetic'])).rows[0].v;
  assert.equal(job.state,'claimed');assert(job.reactionTargets.some(target=>target.messageId===message));
- assert.deepEqual(job.history.at(-1).reactions,[{actor:'user',emoji:'❤️'}]);
- const input=buildInput(job);assert(input.at(-1).content.includes('Existing reactions: [{"actor":"user","emoji":"❤️"}]'));
+ assert.deepEqual(job.history.at(-1).reactions,[]);
+ assert.deepEqual(job.history.find(item=>item.id===incoming).reactions,[{actor:'user',emoji:'❤️'}]);
+ const input=buildInput(job);assert(input.some(item=>item.role==='assistant'&&item.content.includes('Existing reactions: [{"actor":"user","emoji":"❤️"}]')));
  assert(input[0].content.includes('Message reactions are separate'));
  const settings={provider:'anthropic',key:'SYNTHETIC-NOT-A-KEY',model:'claude-haiku-5-5'};
  const transport=reaction=>({fetcher:async(_url,options)=>{const body=JSON.parse(options.body);assert(body.output_config.format.schema.properties.reaction);return new Response(JSON.stringify({stop_reason:'end_turn',content:[{type:'text',text:JSON.stringify({text:'You did it! Congratulations 🎉',photoAssetId:null,reaction})}]}));}});
@@ -52,7 +57,7 @@ try{
  const committed=await db.query('select public.finish_reaction_reply($1,$2,$3,$4,null,null,$5,$6) as v',[job.job,a,job.lease,'Duplicate',message,'😂']);
  assert.equal(committed.rows[0].v,'completed');
  await actor(a);const after=(await db.query('select public.conversation_thread($1) as v',[c])).rows[0].v;
- assert.equal(after.messages.filter(m=>m.role==='character').length,1);
+ assert.equal(after.messages.filter(m=>m.role==='character').length,2);
  assert.deepEqual(after.reactions.map(r=>[r.actor,r.emoji]).sort(),[['character','🎉'],['user','👍']]);
  await react(null);assert.equal((await db.query('select * from public.message_reactions')).rows[0].actor,'character');
  await db.exec('reset role');
