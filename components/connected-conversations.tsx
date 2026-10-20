@@ -46,14 +46,13 @@ export async function ConnectedThread({id,before,memorySaved=false}:{id:string;b
  const assetIds=messages.filter(m=>m.kind==='photo'&&m.asset_id).map(m=>m.asset_id!);
  // These reads share the verified owner client and have no dependency on one
  // another. Awaiting each in turn delayed displaying an already-saved reply.
- const [availability,statusRows,proposalRows,paymentMessages,photos,portrait,profile,delivery]=await Promise.all([
+ const [availability,statusRows,proposalRows,paymentMessages,photos,portrait,delivery]=await Promise.all([
   model?account.client.rpc('reply_availability',{p_model:model}):Promise.resolve({data:false}),
   account.client.rpc('reply_status',{p_conversation:id,p_before:before?Number(before):null}),
   visibleIds.length?account.client.from('gift_proposals').select('id,message_id,amount_minor,state').eq('conversation_id',id).in('message_id',visibleIds):Promise.resolve({data:[]}),
   paymentMessageIds.length?account.client.from('messages').select('id,payment_intent_id').eq('conversation_id',id).eq('kind','payment').in('id',paymentMessageIds):Promise.resolve({data:[]}),
   assetIds.length?account.client.from('character_assets').select('id,alt_text').in('id',assetIds):Promise.resolve({data:[]}),
   account.client.from('character_assets').select('id').eq('character_id',c.character_id).eq('slot','portrait').limit(1).maybeSingle(),
-  account.client.from('characters').select('conversation_clue').eq('id',c.character_id).maybeSingle(),
   userMessageIds.length?account.client.from('messages').select('client_message_id').eq('conversation_id',id).eq('role','user').in('id',userMessageIds):Promise.resolve({data:[]}),
  ]);
  const available=!!model&&availability.data===true;
@@ -63,7 +62,7 @@ export async function ConnectedThread({id,before,memorySaved=false}:{id:string;b
  const giftRows=paymentIds.length?await account.client.from('payment_intents').select('*').eq('conversation_id',id).in('id',paymentIds):{data:[]};
  const giftIntents=(giftRows.data??[]) as GiftIntent[];
  const tools=<ConversationTools><div className="connected-chat-shortcuts"><Link href={`/characters/${c.character_id}`}>View {c.name}’s profile</Link><Link href={`/settings/memories/${c.character_id}?conversation=${id}`}>Manage memories with {c.name}</Link></div> <div className="stack"><Link href={`/gifts/${id}`}>Send money</Link><Link href="/settings/requests">Manage monetary requests</Link><ConversationControl id={id} version={c.version} operation={c.status==='archived'?'restore':'archive'} label={c.status==='archived'?'Restore conversation':'Archive conversation'}/><ConversationControl id={id} version={c.version} operation="reset" label="Reset conversation"/><ConversationControl id={id} version={c.version} operation="delete" label="Delete conversation"/></div></ConversationTools>;
- const emptyConversation=<section className="connected-chat-welcome connected-chat-welcome--minimal" aria-label={`Start your conversation with ${c.name}`}><div className="chat-welcome-portrait"><ConnectedChatPortrait key={portrait.data?.id??'unavailable'} assetId={portrait.data?.id} name={c.name}/></div>{profile.data?.conversation_clue&&<blockquote>{profile.data.conversation_clue}</blockquote>}</section>;
+ const emptyConversation=<section className="connected-chat-welcome connected-chat-welcome--minimal" aria-label={`Start your conversation with ${c.name}`}><div className="chat-welcome-portrait"><ConnectedChatPortrait key={portrait.data?.id??'unavailable'} assetId={portrait.data?.id} name={c.name}/></div></section>;
  return <ConnectedChatDelivery key={`${id}:${c.generation}`} id={id} generation={c.generation} replies={available&&!blocked&&!before} savedIds={messages.map(m=>m.id)} savedClientIds={(delivery.data??[]).map(m=>m.client_message_id).filter(Boolean)} statuses={statuses??[]}><div className="chat-workspace connected-chat">{!before&&<ConversationSync id={id} revision={conversationRevision({conversation:c,messages,capabilities},statuses??[])}/>}<ChatShell followMessages actions={tools} back={<Link href={`/characters/${c.character_id}`} className="button button--quiet" aria-label={`Back to ${c.name}’s profile`}>Back</Link>} identity={<div className="chat-identity"><Link href={`/characters/${c.character_id}`} aria-label={`View ${c.name}’s profile photo`}><ConnectedChatPortrait key={portrait.data?.id??'unavailable'} assetId={portrait.data?.id} name={c.name}/></Link><div><h1>{c.name}</h1></div></div>} composer={<div className="chat-composer stack">{memorySaved&&<MemorySavedConfirmation/>}{blocked&&<p className="supporting muted">{c.status==='archived'?'Restore this conversation to save new messages.':'Chat is paused. Saved history remains available.'}</p>}<LiveMessageComposer disabled={blocked||!!before} name={c.name}/></div>}>
  <div className="chat-thread stack">{!available&&<Notice title="Replies are not available yet">Your messages are saved. No AI response is being generated.</Notice>}
 
