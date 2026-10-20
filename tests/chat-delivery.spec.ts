@@ -6,10 +6,10 @@ test('queued replies stay saved until the server confirms generation',async({pag
  await page.goto('/dev/chat-delivery');
  await page.getByRole('textbox',{name:'Message Amara'}).fill('A queued message.');
  await page.getByRole('button',{name:'Send message'}).click();
- await expect(page.getByText('Amara is typing…',{exact:true})).toBeVisible();
+ await expect(page.getByText('Amara is typing…',{exact:true})).toHaveCount(0);
  await expect(page.getByLabel('Saved',{exact:true})).toBeVisible();
  await expect(page.getByLabel('Seen',{exact:true})).toHaveCount(0);
- await expect(page.locator('.typing-bubble')).toBeVisible();
+ await expect(page.locator('.typing-bubble')).toHaveCount(0);
  started=true;
  await expect(page.getByLabel('Seen',{exact:true})).toBeVisible();
  await expect(page.locator('.typing-bubble')).toBeVisible();

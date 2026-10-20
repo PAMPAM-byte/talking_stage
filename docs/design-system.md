@@ -1,5 +1,11 @@
 # TalkingStage design system
 
+Memory save feedback - 20 October: confirmed saves show the existing success notice, Memory saved. Entering memory settings from a conversation preserves a verified conversation return target and returns there after saving; a five-second confirmation appears above the composer and consumes its URL flag. Direct Settings visits also resolve and return to the existing character chat. A character-specific Back to chat link is always available when a conversation exists, and successful saves replace the completed form in browser history. Failed saves retain the fact and consent selection; toggles and deletion have distinct confirmation wording.
+
+Chat account recovery - 20 October: temporary account-check failures during refresh retain the open conversation and draft. Initial failures use the existing conversation recovery view with bounded automatic retry. Generic payment instructions are confined to payment screens.
+
+Background chat recovery - 20 October: transient metadata/network failures retry silently, without a floating connection notice. Delivery failures retain their message-specific controls. This supersedes the reconnecting-status presentation recorded below.
+
 Chat viewport - 20 October: standalone conversations occupy a fixed viewport with one scrollable message region. Header and composer stay in view through window resizing and visible-viewport changes from mobile keyboards; sizing no longer depends on a streamed shell's temporary document position. Embedded design-system shells retain their toolbar offset.
 
 Character identity - 20 October: profiles, discovery cards, conversation headers and photo viewers no longer repeat fictional-AI badges or photo disclaimers. Names, ages, occupations, locations, photo navigation and reporting remain. Landing-page, catalogue introduction, onboarding and announcement disclosures remain available.
@@ -8,7 +14,7 @@ Sign-in entry · 20 October: the normal email/password form is always visible. L
 
 Interrupted chat recovery · 20 October: initial conversation skeletons include native reload/return links, usable before hydration. Hydrated loading switches after 15 seconds to a bounded, responsive recovery view; conversation render failures share it. One loading boundary owns the standalone chat. Recovery is explicit and does not replay messages. See [review](./reviews/chat-render-recovery.md).
 
-Reply status refinement · 20 October: a saved message keeps one tick while its reply is queued, with one “[character name] is typing…” indicator and animated dots throughout queued and generating states. A confirmed generating job gets double ticks. Seen receipts persist after interruption. Only failed or unavailable replies show recovery beside the message, with state-specific explanations and Continue without reply; pending and generating jobs never render failure controls, including before hydration; the generic floating failure toast is removed. Existing Manrope, white/blush bubbles, red actions and reduced-motion support remain.
+Reply status refinement · 20 October: a saved message keeps one tick while its reply is queued, without a typing indicator while queued. A confirmed generating job shows double Seen ticks and the “[character name] is typing…” indicator together. No separate preparation label appears. Seen receipts persist after interruption. Only failed or unavailable replies show recovery beside the message, with state-specific explanations and Continue without reply; pending and generating jobs never render failure controls, including before hydration; the generic floating failure toast is removed. Existing Manrope, white/blush bubbles, red actions and reduced-motion support remain.
 
 Payment character labels · 20 October: payment headings, review and receipt display “[character] TalkingStage” for every character. “Received by” continues to show the registered merchant supplied by the payment integration.
 

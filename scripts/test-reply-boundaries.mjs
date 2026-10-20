@@ -178,3 +178,17 @@ for (const status of [0, 429, 503]) {
 profileResult = { data: null, error: { message: 'missing profile' }, status: 404 };
 assert.equal(await realAccount({ failOnUnavailable: true }), null);
 console.log('Private API identity checks passed: valid sessions, signed-out denial and retryable Auth/profile transport/rate-limit failures. No network calls.');
+
+const memoryAction = (await load('lib/backend/memory-actions.ts')).memoryAction;
+for (const [operation, message] of [['save','Memory saved.'],['delete','Memory deleted.'],['enable','Memory is on.'],['disable','Memory is off.']]) {
+  reset();
+  const form = new FormData(); form.set('character', conversationId); form.set('operation', operation); form.set('consent','on');
+  assert.deepEqual(JSON.parse(JSON.stringify(await memoryAction(form))), {message});
+}
+reset(); state.refreshThrows = true;
+const memoryForm = new FormData(); memoryForm.set('character',conversationId); memoryForm.set('operation','save'); memoryForm.set('consent','on');
+assert.equal((await memoryAction(memoryForm)).message,'Memory saved.','Cache failure must not misreport a committed memory save');
+reset(); state.signedIn = false;
+assert((await memoryAction(memoryForm)).error);
+assert.equal(state.rpcCalls,0,'Signed-out callers cannot save memories');
+console.log('Memory feedback checks passed: operation-specific results, committed-save acknowledgement despite cache failure and signed-out denial. No network calls.');

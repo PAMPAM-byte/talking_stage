@@ -28,6 +28,14 @@ for (const c of pack.characters) {
     assert(opening[0].content.includes('Keep the entire reply under 12 words'), `${c.key}: every character needs concise greeting guidance`);
     assert.equal(opening.at(-1).content, greeting);
     assert.deepEqual(input.slice(-3), history.map(m => ({ role: m.role === 'character' ? 'assistant' : 'user', content: m.text })), 'Recent user details and character replies must survive prompt assembly.');
+    const musicInput = buildInput({ character: { name: c.profile.name, direction: c.direction }, preferences: { language: 'english' }, memories: [], history: [{ role: 'character', text: 'Which Wizkid song do you like most?' }, { role: 'user', text: 'Bend' }], maxInputTokens: 48000, maxOutputTokens: 1024 });
+    assert(musicInput[0].content.includes('Bend is a song by Wizkid on Morayo'), `${c.key}: grounded cultural context must reach every character`);
+    assert(musicInput[0].content.includes(c.direction), `${c.key}: grounding must preserve the complete individual voice`);
+    assert.equal(musicInput.at(-1).content, 'Bend', `${c.key}: recent context must survive grounding`);
+    const intentInput = buildInput({ character: { name: c.profile.name, direction: c.direction }, preferences: { language: 'english' }, memories: [], history: [{ role: 'character', text: 'I meant the compliment.' }, { role: 'user', text: 'Are you for real?' }], maxInputTokens: 48000, maxOutputTokens: 1024 });
+    assert(intentInput[0].content.includes('Meaning check for this turn'), `${c.key}: contextual sincerity guidance must reach every character`);
+    assert(intentInput[0].content.includes(c.direction), `${c.key}: interpretation guidance must retain the complete individual voice`);
+    assert.equal(intentInput.at(-1).content, 'Are you for real?');
 }
 const db = new PGlite();
 const admins = ['00000000-0000-4000-8000-000000000001', '00000000-0000-4000-8000-000000000002'];

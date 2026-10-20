@@ -4,5 +4,6 @@ import { Suspense } from 'react';
 import { Memories } from '@/components/personal-space';
 import {usesSupabase} from '@/lib/backend/config';
 import {ConnectedMemories} from '@/components/connected-memories';
-async function Detail({ params }: { params: Promise<{ characterId: string }> }) { const { characterId } = await params; return usesSupabase()?<ConnectedMemories characterId={characterId}/>:<Memories characterId={characterId} />; }
-export default function Page({ params }: { params: Promise<{ characterId: string }> }) { return <Suspense fallback={<LoadingState label="Loading memories…" />}><Detail params={params} /></Suspense>; }
+type Props={params:Promise<{characterId:string}>;searchParams:Promise<{conversation?:string}>};
+async function Detail({ params,searchParams }: Props) { const { characterId } = await params; return usesSupabase()?<ConnectedMemories characterId={characterId} conversation={(await searchParams).conversation}/>:<Memories characterId={characterId} />; }
+export default function Page(props:Props) { return <Suspense fallback={<LoadingState label="Loading memories…" />}><Detail {...props} /></Suspense>; }

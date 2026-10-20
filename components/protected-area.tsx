@@ -9,12 +9,17 @@ import { signOutAccount } from "@/lib/backend/account-actions";
 import { AppShell, PublicShell } from "./shells";
 import { Notice, Skeleton } from "./ui/primitives";
 import { ChatLoading } from './chat-loading';
+import { ConversationContinuity } from './conversation-continuity';
 
 async function ConnectedArea({ area, children, standalone = false }: { area: string; children: ReactNode; standalone?: boolean }) {
   if (!supabaseConfig()) return <PublicShell><Notice title="Account services are unavailable" tone="warning">Please try again later.</Notice></PublicShell>;
+  const path = (await headers()).get("x-talkingstage-path");
   let account;
   try { account = await renderAccount(); }
-  catch { return <PublicShell><Notice title="Connection interrupted" tone="warning">We could not check your account. Reload this page to try again. If you confirmed a payment, retry the same attempt once the connection returns.</Notice></PublicShell>; }
+  catch {
+    if (area === 'Messages' && standalone) return <ConversationContinuity key={path} unavailable />;
+    return <PublicShell><Notice title="Account temporarily unavailable" tone="warning">We could not check your account. Please try again shortly.{area === 'Payments' && ' If you confirmed a payment, retry the same attempt once the connection returns.'}</Notice></PublicShell>;
+  }
   if (!account) redirect("/sign-in");
   if (!account.profile.adult_declared_at) redirect("/onboarding/age");
   if (!account.profile.onboarding_complete) redirect("/onboarding/preferences");
@@ -22,8 +27,7 @@ async function ConnectedArea({ area, children, standalone = false }: { area: str
     const role = await account.client.rpc("is_admin");
     if (role.error || role.data !== true) return <PublicShell><Notice title="Administrator access required">This account doesn’t have access to administration.</Notice></PublicShell>;
   }
-  const path = (await headers()).get("x-talkingstage-path");
-  if(area==='Messages'&&standalone)return <>{children}</>;
+  if(area==='Messages'&&standalone)return <ConversationContinuity key={path}>{children}</ConversationContinuity>;
   if(area==='Payments')return <AppShell items={[{label:'Discover',icon:'discover',href:'/discover'},{label:'Messages',icon:'message',href:'/messages'},{label:'Settings',icon:'settings',href:'/settings'}]} actions={<form action={signOutAccount}><button className="button button--quiet">Sign out</button></form>}>{children}</AppShell>;
   if(area==='Settings')return <AppShell items={[{label:'Discover',icon:'discover',href:'/discover'},{label:'Messages',icon:'message',href:'/messages'},{label:'Settings',icon:'settings',href:'/settings',active:true}]} actions={<form action={signOutAccount}><button className="button button--quiet">Sign out</button></form>}>{children}</AppShell>;
   if(area==='Messages')return <AppShell items={[{label:'Discover',icon:'discover',href:'/discover'},{label:'Messages',icon:'message',href:'/messages',active:true},{label:'Settings',icon:'settings',href:'/settings'}]} actions={<form action={signOutAccount}><button className="button button--quiet">Sign out</button></form>}>{children}</AppShell>;

@@ -6,6 +6,8 @@ import {ChatShell} from '@/components/chat-shell';
 import {ReplyRetry} from '@/components/connected-conversation-forms';
 import {ConversationSync} from '@/components/conversation-sync';
 import {ChatLoading,ConversationLoadRecovery} from '@/components/chat-loading';
+import {MemoryForm} from '@/components/connected-memory-form';
+import {MemorySavedConfirmation} from '@/components/memory-saved-confirmation';
 const id='00000000-0000-4000-8000-000000000001';
 export default function DeliveryPreview({scenario,snapshot=false}:{scenario?:string;snapshot?:boolean}){
  const seeded=['unstarted','generating','failed','attempted'].includes(scenario??'');
@@ -13,6 +15,7 @@ export default function DeliveryPreview({scenario,snapshot=false}:{scenario?:str
  const [saved,setSaved]=useState<{id:string;clientId:string;text:string}[]>(()=>seeded?[{id:seededId,clientId:seededId,text:'Previously saved message.'}]:[]);const fail=useRef(false);const attempts=useRef(new Map<string,string>());
  const statuses=seeded?[{messageId:seededId,state:scenario==='generating'?'generating':scenario==='failed'?'failed':'blocked_provider',attempts:scenario==='unstarted'?0:1}]:[];
  const failStop=useRef(false);
+ if(scenario?.startsWith('memory-'))return scenario==='memory-saved'?<MemorySavedConfirmation/>:<MemoryForm character={id} operation="save" label="Save memory" conversation={scenario==='memory-return'?id:undefined} action={async()=>scenario==='memory-failure'?{error:'Synthetic save unavailable.'}:{message:'Memory saved.'}}/>;
  if(scenario==='loading')return <ChatLoading/>;
  if(scenario==='render-error')return <ConversationLoadRecovery failed/>;
  return <div className="chat-workspace connected-chat"><button style={{position:'fixed',right:8,top:8,zIndex:30,fontSize:10}} onClick={()=>{fail.current=true;}}>Fail next save</button><ConnectedChatDelivery id={id} generation={1} replies={scenario!=='disabled'} savedIds={saved.map(m=>m.id)} savedClientIds={saved.map(m=>m.clientId)} statuses={statuses} action={async form=>{

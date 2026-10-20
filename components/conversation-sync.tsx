@@ -1,12 +1,14 @@
 "use client";
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 
 export function ConversationSync({ id, revision }: { id: string; revision: string }) {
     const router = useRouter();
     const latest = useRef(revision);
-    const [reconnecting, setReconnecting] = useState(false);
+    const [refreshing, startRefresh] = useTransition();
+    const refreshInFlight = useRef(false);
     useEffect(() => { latest.current = revision; }, [revision]);
+    useEffect(() => { refreshInFlight.current = refreshing; }, [refreshing]);
     useEffect(() => {
         const controller = new AbortController();
         let timer: ReturnType<typeof setTimeout>;
@@ -38,18 +40,24 @@ export function ConversationSync({ id, revision }: { id: string; revision: strin
                 if (controller.signal.aborted) return;
                 if (typeof next.revision !== 'string') throw new Error('sync_unavailable');
                 failures = 0;
-                setReconnecting(false);
-                if (next.revision !== latest.current) {
-                    latest.current = next.revision;
-                    // Merge fresh server history while preserving the draft and scroll position.
-                    router.refresh();
+                if (next.revision !== latest.current && !refreshInFlight.current) {
+                    // A successful metadata read is not acknowledgement that the
+                    // refreshed messages rendered. Only the revision prop above
+                    // can confirm that. Keep catching up if refresh is interrupted
+                    // or returns an older snapshot, without regenerating replies.
+                    // Repeated refreshes can cancel a slower server render before
+                    // it commits. Let this transition finish while reads continue.
+                    refreshInFlight.current = true;
+                    startRefresh(() => router.refresh());
                 }
             } catch {
-                if (!controller.signal.aborted) { failures++; setReconnecting(true); }
+                // Background reads can briefly fail without a failed send or
+                // lost reply. Recover silently; delivery owns actionable errors.
+                if (!controller.signal.aborted) failures++;
             } finally {
                 busy = false;
                 if (!stopped && !controller.signal.aborted)
-                    timer = setTimeout(poll, Math.min(30000, 5000 * 2 ** Math.min(failures, 3)));
+                    timer = setTimeout(poll, failures ? Math.min(30000, 1000 * 2 ** Math.min(failures, 5)) : 5000);
             }
         };
         const resume = () => { if (!document.hidden) void poll(); };
@@ -63,6 +71,6 @@ export function ConversationSync({ id, revision }: { id: string; revision: strin
             window.removeEventListener('focus', resume);
             document.removeEventListener('visibilitychange', resume);
         };
-    }, [id, router]);
-    return reconnecting ? <p className="chat-delivery-notice caption" role="status">Connection interrupted. Reconnecting automatically…</p> : null;
+    }, [id, router, startRefresh]);
+    return null;
 }
