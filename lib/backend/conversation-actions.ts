@@ -17,6 +17,7 @@ function mutationFailure(failure: string): ConversationResult {
     return { error: 'This conversation changed. Reload before trying again.' };
   }
   if (failure.includes('rate_limited')) return { error: 'Too many changes. Wait a minute and try again.' };
+  if (failure.includes('invalid_quote')) return {error:'That message is no longer available to reply to. Cancel the quote and try again.'};
   return { error: 'The change was not saved. Reload and try again.' };
 }
 
@@ -73,11 +74,13 @@ export async function conversationAction(form: FormData): Promise<ConversationRe
         case 'start':
           return account.client.rpc('start_conversation', { p_character: id });
         case 'send':
-          return account.client.rpc('save_user_message', {
+          if (form.get('replyTo') && !uuid.test(String(form.get('replyTo')))) return {error:{message:'invalid_quote'}};
+          return account.client.rpc(form.get('replyTo')?'save_quoted_user_message':'save_user_message', {
             p_conversation: id,
             p_client_id: String(form.get('clientId') ?? ''),
             p_generation: Number(form.get('generation')),
             p_text: String(form.get('text') ?? ''),
+            ...(form.get('replyTo')?{p_reply_to:String(form.get('replyTo'))}:{}),
           });
         default:
           if (!lifecycleOperations.has(operation)) return null;

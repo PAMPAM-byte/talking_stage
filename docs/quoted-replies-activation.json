@@ -1,0 +1,11 @@
+{
+  "appliedAt": "2026-10-20T23:23:27.618Z",
+  "migration": {
+    "version": "202610210026",
+    "name": "quoted_replies",
+    "hash": "9cb8a074fb53ca5293c51b17867b8a23ba69f765185974362fa778fe35319e97"
+  },
+  "encryptedDdlSnapshotVerified": true,
+  "ownedQuotesAndServiceOnlyCharacterCommitVerified": true,
+  "noMessagesGenerated": true
+}

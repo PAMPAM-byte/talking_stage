@@ -9,6 +9,9 @@ import { browserTimeZone, initialReplyWatch, pollReply, replyWatchMs } from '@/l
 import { encodeExpression, type Expression } from '@/lib/chat/expressions';
 import { ChatExpressionPicker } from './chat-expression-picker';
 import { ChatMessageContent, ExpressionImage } from './chat-expression';
+import type {MessageQuote} from '@/lib/chat/message-quotes';
+import {QuotedMessage} from './quoted-message';
+import replyStyles from './message-reply.module.css';
 type Outgoing = {
     clientId: string;
     text: string;
@@ -16,6 +19,7 @@ type Outgoing = {
     messageId?: string;
     state: 'sending' | 'saved' | 'failed';
     error?: string;
+    replyTo?: MessageQuote | null;
 };
 type ReplyStatus = {
     messageId: string;
@@ -31,6 +35,8 @@ type Delivery = {
     active: string[];
     canStop: boolean;
     seen: Set<string>;
+    replyTo: MessageQuote | null;
+    selectReply: (message: MessageQuote | null) => void;
     send: (text: string, item?: Outgoing) => Promise<void>;
     watch: (messageId: string) => void;
     stop: () => Promise<void>;
@@ -55,6 +61,7 @@ export function ConnectedChatDelivery({ id, generation, replies, savedIds, saved
     const router = useRouter();
     const [outgoing, setOutgoing] = useState<Outgoing[]>([]);
     const [sending, setSending] = useState(false);
+    const [replyTo,selectReply] = useState<MessageQuote|null>(null);
     const [watching, setWatching] = useState<string[]>(() => initialReplyWatch(statuses, savedIds, replies));
     // Match typing immediately; stopping or failing a reply must not undo a receipt.
     const [seen, setSeen] = useState(() => new Set(statuses.filter(item => item.state === 'generating' || item.state === 'completed' || item.attempts > 0).map(item => item.messageId)));
@@ -170,7 +177,8 @@ export function ConnectedChatDelivery({ id, generation, replies, savedIds, saved
         locked.current = true;
         setSending(true);
         setNotice('');
-        const item = previous ?? { clientId: crypto.randomUUID(), text, time: new Date().toISOString(), state: 'sending' as const };
+        const item = previous ?? { clientId: crypto.randomUUID(), text, time: new Date().toISOString(), state: 'sending' as const, replyTo };
+        if (!previous) selectReply(null);
         setOutgoing(current => previous ? current.map(value => value.clientId === item.clientId ? { ...item, state: 'sending', error: undefined } : value) : [...current, item]);
         const data = new FormData();
         data.set('id', id);
@@ -178,6 +186,7 @@ export function ConnectedChatDelivery({ id, generation, replies, savedIds, saved
         data.set('generation', String(generation));
         data.set('clientId', item.clientId);
         data.set('text', text);
+        if (item.replyTo) data.set('replyTo', item.replyTo.id);
         data.set('timeZone', browserTimeZone());
         try {
             const result = await action(data);
@@ -239,7 +248,7 @@ export function ConnectedChatDelivery({ id, generation, replies, savedIds, saved
     const awaitingHistory = completing.filter(messageId => !settled.has(messageId));
     const value = {
         outgoing: outgoing.filter(item => !savedClientIds.includes(item.clientId) && (!item.messageId || !savedIds.includes(item.messageId))),
-        sending, typing: awaitingHistory.length > 0 || active.some(messageId => generating.includes(messageId)), preparing: active.length > 0 && !active.some(messageId => generating.includes(messageId)), active: [...new Set([...active, ...awaitingHistory])], canStop: active.length > 0, seen, send, watch, stop,
+        sending, typing: awaitingHistory.length > 0 || active.some(messageId => generating.includes(messageId)), preparing: active.length > 0 && !active.some(messageId => generating.includes(messageId)), active: [...new Set([...active, ...awaitingHistory])], canStop: active.length > 0, seen, replyTo, selectReply, send, watch, stop,
     };
     return <Context.Provider value={value}>{children}{notice && <p className="chat-delivery-notice caption" role="status">{notice}</p>}</Context.Provider>;
 }
@@ -257,7 +266,7 @@ export function ChatOutbox({ name }: {
     const newest = outgoing.at(-1)?.clientId;
     useEffect(() => { if (newest)
         end.current?.scrollIntoView({ block: 'end' }); }, [newest]);
-    return <>{outgoing.map(item => <article ref={item.clientId === newest ? end : null} className="message-turn message-turn--user message-turn--outgoing" key={item.clientId} data-delivery={item.state} data-client-id={item.clientId}><ChatMessageContent text={item.text}/><div className="message-meta caption muted"><time dateTime={item.time}>{new Date(item.time).toLocaleTimeString('en-NG', { timeZone: 'Africa/Lagos', hour: '2-digit', minute: '2-digit' })}</time>{item.state === 'saved' && item.messageId ? <ConnectedMessageDelivery messageId={item.messageId}/> : <MessageDelivery state={item.state}/>}</div>{item.state === 'failed' && <div className="message-send-error"><p role="alert" className="caption">{item.error}</p><Button variant="quiet" disabled={sending} onClick={() => void send(item.text, item)}>Retry sending</Button></div>}</article>)}{(typing || preparing) && <>{typing && <TypingBubble name={name}/>} {canStop&&<Button className="chat-stop-reply" variant="quiet" loading={stopping} onClick={async () => { setStopping(true); try {
+    return <>{outgoing.map(item => <article ref={item.clientId === newest ? end : null} className={`message-turn message-turn--user message-turn--outgoing ${replyStyles.user}`} key={item.clientId} data-delivery={item.state} data-client-id={item.clientId}><div className={item.replyTo?replyStyles.quotedContent:undefined}>{item.replyTo&&<QuotedMessage quote={item.replyTo} name={name}/>}<ChatMessageContent text={item.text}/></div><div className="message-meta caption muted"><time dateTime={item.time}>{new Date(item.time).toLocaleTimeString('en-NG', { timeZone: 'Africa/Lagos', hour: '2-digit', minute: '2-digit' })}</time>{item.state === 'saved' && item.messageId ? <ConnectedMessageDelivery messageId={item.messageId}/> : <MessageDelivery state={item.state}/>}</div>{item.state === 'failed' && <div className="message-send-error"><p role="alert" className="caption">{item.error}</p><Button variant="quiet" disabled={sending} onClick={() => void send(item.text, item)}>Retry sending</Button></div>}</article>)}{(typing || preparing) && <>{typing && <TypingBubble name={name}/>} {canStop&&<Button className="chat-stop-reply" variant="quiet" loading={stopping} onClick={async () => { setStopping(true); try {
         await stop();
     }
     finally {
@@ -268,10 +277,11 @@ export function LiveMessageComposer({ disabled, name }: {
     disabled: boolean;
     name: string;
 }) {
-    const { send, sending } = useDelivery();
+    const { send, sending, replyTo, selectReply } = useDelivery();
     const [text, setText] = useState('');
     const [expression, setExpression] = useState<Expression | null>(null);
     const form = useRef<HTMLFormElement>(null);
+    useEffect(() => { if (replyTo && !disabled) form.current?.querySelector('textarea')?.focus(); }, [replyTo,disabled]);
     useEffect(() => { const input = form.current?.querySelector('textarea'); if (input) {
         input.style.height = '0px';
         input.style.height = `${Math.min(144, Math.max(44, input.scrollHeight))}px`;
@@ -288,7 +298,8 @@ export function LiveMessageComposer({ disabled, name }: {
     }
     function submit() { if (disabled || sending || (!text.trim() && !expression) || text.length > limit)
         return; const value = expression ? encodeExpression(expression, text) : text; setText(''); setExpression(null); void send(value); }
-    return <form ref={form} className="connected-message-composer" onSubmit={event => { event.preventDefault(); submit(); }}>
+    return <form ref={form} className="connected-message-composer" onKeyDown={event=>{if(event.key==='Escape'&&replyTo){event.preventDefault();selectReply(null);}}} onSubmit={event => { event.preventDefault(); submit(); }}>
+      {replyTo&&<div className={replyStyles.draft} aria-label="Replying to message"><QuotedMessage quote={replyTo} name={name}/><button className={replyStyles.cancel} type="button" aria-label="Cancel reply" onClick={()=>{selectReply(null);form.current?.querySelector('textarea')?.focus();}}><Icon name="close"/></button></div>}
       {expression && <div className="expression-draft" aria-label="Selected reaction"><ExpressionImage expression={expression}/><span className="caption muted">{text.length > limit ? 'Shorten your caption to send.' : 'Add a caption, or send as it is.'}</span><button className="expression-trigger" type="button" aria-label="Remove reaction" onClick={() => setExpression(null)}><Icon name="close"/></button></div>}
       <div className="connected-composer-row"><ChatExpressionPicker disabled={disabled || sending} onEmoji={addEmoji} onSelect={value => { setExpression(value); requestAnimationFrame(() => form.current?.querySelector('textarea')?.focus()); }}/><TextArea label={`Message ${name}`} value={text} onChange={event => setText(event.target.value)} maxLength={limit} rows={1} disabled={disabled} placeholder={expression ? 'Add a caption…' : `Message ${name}…`} onKeyDown={event => { if (event.key === 'Enter' && !event.shiftKey && !event.nativeEvent.isComposing && event.nativeEvent.keyCode !== 229) {
         event.preventDefault();

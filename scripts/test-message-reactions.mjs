@@ -42,7 +42,7 @@ try{
  const input=buildInput(job);assert(input.some(item=>item.role==='assistant'&&item.content.includes('Existing reactions: [{"actor":"user","emoji":"❤️"}]')));
  assert(input[0].content.includes('Message reactions are separate'));
  const settings={provider:'anthropic',key:'SYNTHETIC-NOT-A-KEY',model:'claude-haiku-5-5'};
- const transport=reaction=>({fetcher:async(_url,options)=>{const body=JSON.parse(options.body);assert(body.output_config.format.schema.properties.reaction);return new Response(JSON.stringify({stop_reason:'end_turn',content:[{type:'text',text:JSON.stringify({text:'You did it! Congratulations 🎉',photoAssetId:null,reaction})}]}));}});
+ const transport=reaction=>({fetcher:async(_url,options)=>{const body=JSON.parse(options.body);assert(body.output_config.format.schema.properties.reaction);return new Response(JSON.stringify({stop_reason:'end_turn',content:[{type:'text',text:JSON.stringify({text:'You did it! Congratulations 🎉',photoAssetId:null,reaction,...(body.output_config.format.schema.properties.replyToMessageId?{replyToMessageId:null}:{})})}]}));}});
  const chosen={messageId:message,emoji:'🎉'};
  assert.deepEqual((await generateReply(job,settings,transport(chosen))).reaction,chosen);
  for(const reaction of [{messageId:b,emoji:'❤️'},{messageId:message,emoji:'fake'},{...chosen,action:'pay'}])await assert.rejects(generateReply(job,settings,transport(reaction)),/invalid_output/);

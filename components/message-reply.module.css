@@ -1,0 +1,23 @@
+.root { position: relative; touch-action: pan-y pinch-zoom; min-width: 0; }
+.root:focus { outline: 2px solid var(--brand); outline-offset: 5px; border-radius: var(--radius-control); }
+.content { position: relative; max-width: 100%; transform: translateX(var(--reply-drag,0px)); transition: transform var(--motion-fast) ease-out; }
+.content[data-dragging] { transition: none; }
+.replyAction { position: absolute; top: 6px; right: -42px; display: grid; place-items: center; width: 38px; height: 38px; border: 1px solid var(--border); border-radius: 50%; background: var(--surface); color: var(--brand); opacity: 0; cursor: pointer; }
+.user .replyAction { right: auto; left: -42px; }
+.root:hover .replyAction,.root:focus-within .replyAction,.replyAction:focus-visible { opacity: 1; }
+.replyAction:focus-visible,.quote:focus-visible { outline: 2px solid var(--brand); outline-offset: 3px; }
+.swipeHint { position: absolute; left: -32px; top: 10px; color: var(--muted); }
+.swipeHint[data-ready] { color: var(--brand); }
+.quotedContent { padding: 7px; border: 1px solid var(--border); border-radius: var(--radius-message); background: var(--surface); overflow: hidden; }
+.quotedContent :global(.message-bubble) { margin: 0; border: 0; box-shadow: none; padding: 10px; border-radius: 12px; }
+.user .quotedContent { background: var(--brand); border-color: var(--brand); color: var(--surface); }
+.quote { display: flex; flex-direction: column; gap: 3px; min-width: 0; padding: 9px 12px; border-left: 3px solid var(--brand); border-radius: 7px; background: var(--brand-soft); color: var(--ink); font-size: 13px; line-height: 1.45; text-align: left; text-decoration: none; overflow-wrap: anywhere; }
+.quote strong { color: var(--brand); font-size: 12px; }
+.quote span { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; white-space: pre-wrap; }
+.user .quote { border-color: currentColor; background: rgb(255 255 255 / 15%); color: var(--surface); }
+.user .quote strong { color: inherit; }
+.draft { display: flex; align-items: center; gap: 12px; padding: 0 10px 10px; width: 100%; min-width: 0; }
+.draft .quote { flex: 1; }
+.cancel { flex: 0 0 44px; display: grid; place-items: center; height: 44px; border: 0; border-radius: 50%; background: var(--surface); color: var(--muted); cursor: pointer; }
+.cancel:focus-visible { outline: 2px solid var(--brand); }
+@media (prefers-reduced-motion: reduce) { .content { transition: none; } }
