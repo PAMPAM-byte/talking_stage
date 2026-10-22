@@ -11,7 +11,7 @@ const messageId = '00000000-0000-4000-8000-000000000002';
 let state;
 function reset() {
   state = { signedIn: true, adult: true, owned: true, firstParty: true,
-    scheduleThrows: false, refreshThrows: false, saveFails: false,
+    scheduleThrows: false, refreshThrows: false, saveFails: false, accountUnavailable: false,
     rpcCalls: 0, replyCalls: 0, refreshCalls: 0, scheduled: [], replyState: 'completed', rpcFailure: false };
 }
 function account() {
@@ -34,7 +34,7 @@ const dependencies = {
   'node:crypto': { createHash },
   'next/cache': { revalidatePath() { state.refreshCalls++; if (state.refreshThrows) throw new Error('synthetic cache failure'); } },
   'next/server': { after(work) { if (state.scheduleThrows) throw new Error('synthetic scheduling failure'); state.scheduled.push(work); } },
-  './server': { currentAccount: async () => account() },
+  './server': { currentAccount: async options => {if(state.accountUnavailable){assert.equal(options?.failOnUnavailable,true);throw Error('Synthetic private account failure');}return account();} },
   '@/lib/backend/server': { currentAccount: async () => account() },
   './reply-worker': { processReply: async (...args) => { state.replyCalls++; state.replyArgs = args; return state.replyState; }, processSummary: async () => 'disabled' },
   '@/lib/monitoring/events.mjs': { emit() {}, observe: async (_operation, work) => work() },
@@ -42,7 +42,7 @@ const dependencies = {
 };
 dependencies['@/lib/backend/reply-worker'] = dependencies['./reply-worker'];
 async function load(path) {
-  const context = createContext({ Response, process: { env: { NODE_ENV: 'test' } } });
+  const context = createContext({ Response, FormData, TextDecoder, process: { env: { NODE_ENV: 'test' } } });
   const source = ts.transpileModule(readFileSync(path, 'utf8'), { compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.ESNext } }).outputText;
   const sourceModule = new SourceTextModule(source, { context });
   await sourceModule.link(specifier => {
@@ -57,6 +57,8 @@ async function load(path) {
 }
 reset();
 const { conversationAction, clearAllChatsAction } = await load('lib/backend/conversation-actions.ts');
+dependencies['@/lib/backend/conversation-actions']={conversationAction};
+const sendRoute=await load('app/api/conversations/[conversationId]/messages/route.ts');
 const route = await load('app/api/conversations/[conversationId]/replies/[messageId]/route.ts');
 dependencies['@/lib/backend/conversation-revision'] = await load('lib/backend/conversation-revision.ts');
 const syncRoute = await load('app/api/conversations/[conversationId]/sync/route.ts');
@@ -88,6 +90,18 @@ assert.match((await conversationAction(form('send'))).error, /conversation chang
 assert.equal(state.scheduled.length, 0);
 reset(); state.signedIn = false;
 assert((await conversationAction(form('send'))).error); assert.equal(state.rpcCalls, 0);
+reset();state.accountUnavailable=true;
+assert.equal((await conversationAction(form('send'))).code,'unavailable');assert.equal(state.rpcCalls,0);
+const sendRequest=body=>new Request('https://synthetic.invalid/api/conversations/'+conversationId+'/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:typeof body==='string'?body:JSON.stringify(body)});
+const sendBody={clientId:messageId,generation:1,text:'Synthetic send',replyTo:null,timeZone:'Africa/Lagos'};
+const sendParams={params:Promise.resolve({conversationId})};
+let apiResult=await sendRoute.POST(sendRequest(sendBody),sendParams);assert.equal(apiResult.status,503);assert.equal((await apiResult.json()).code,'unavailable');
+reset();state.signedIn=false;assert.equal((await sendRoute.POST(sendRequest(sendBody),sendParams)).status,401);assert.equal(state.rpcCalls,0);
+reset();state.adult=false;assert.equal((await sendRoute.POST(sendRequest(sendBody),sendParams)).status,403);assert.equal(state.rpcCalls,0);
+reset();state.firstParty=false;assert.equal((await sendRoute.POST(sendRequest(sendBody),sendParams)).status,403);assert.equal(state.rpcCalls,0);
+for(const invalid of ['{',JSON.stringify({...sendBody,replyTo:['not-a-quote']}),JSON.stringify({...sendBody,generation:0}),JSON.stringify({...sendBody,text:'x'.repeat(17000)})]){reset();const response=await sendRoute.POST(sendRequest(invalid),sendParams);assert([400,413].includes(response.status));assert.equal(state.rpcCalls,0);}
+reset();apiResult=await sendRoute.POST(sendRequest(sendBody),sendParams);assert.equal(apiResult.status,200);assert.equal((await apiResult.json()).messageId,messageId);assert.equal(state.scheduled.length,1);
+assert.equal(apiResult.headers.get('Cache-Control'),'private, no-store');
 reset(); state.adult = false;
 assert((await conversationAction(form('send'))).error); assert.equal(state.rpcCalls, 0);
 const clearForm = new FormData(); clearForm.set('confirmation', 'clear-all-chats');

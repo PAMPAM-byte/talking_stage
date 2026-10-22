@@ -3,6 +3,7 @@ import {MessageDate} from './message-date';
 import { Fragment, createContext, useContext, useEffect, useRef, useState, type ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
 import { conversationAction } from '@/lib/backend/conversation-actions';
+import {sendMessage} from '@/lib/chat/send-message';
 import { Button, TextArea } from './ui/primitives';
 import { Icon } from './ui/icon';
 import { MessageDelivery, TypingBubble } from './message-delivery';
@@ -49,7 +50,8 @@ function useDelivery() {
     return value;
 }
 export function useReplyDelivery() { return useContext(Context); }
-export function ConnectedChatDelivery({ id, generation, replies, savedIds, savedClientIds = [], statuses, children, action = conversationAction }: {
+const chatAction:typeof conversationAction=form=>form.get('operation')==='send'?sendMessage(form):conversationAction(form);
+export function ConnectedChatDelivery({ id, generation, replies, savedIds, savedClientIds = [], statuses, children, action = chatAction }: {
     id: string;
     generation: number;
     replies: boolean;

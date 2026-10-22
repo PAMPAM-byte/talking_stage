@@ -30,7 +30,7 @@ export default function DeliveryPreview({scenario,snapshot=false}:{scenario?:str
  if(scenario?.startsWith('memory-'))return scenario==='memory-saved'?<MemorySavedConfirmation/>:<MemoryForm character={id} operation="save" label="Save memory" conversation={scenario==='memory-return'?id:undefined} action={async()=>scenario==='memory-failure'?{error:'Synthetic save unavailable.'}:{message:'Memory saved.'}}/>;
  if(scenario==='loading')return <ChatLoading/>;
  if(scenario==='render-error')return <ConversationLoadRecovery failed/>;
- return <div className="chat-workspace connected-chat"><button style={{position:'fixed',right:8,top:8,zIndex:30,fontSize:10}} onClick={()=>{fail.current=true;}}>Fail next save</button><ConnectedChatDelivery id={id} generation={1} replies={scenario!=='disabled'} savedIds={[...saved.map(m=>m.id),...(renderedReply&&saved[0]?['preview-output-'+saved[0].id]:[])]} savedClientIds={saved.map(m=>m.clientId)} statuses={statuses} action={async form=>{
+ return <div className="chat-workspace connected-chat"><button style={{position:'fixed',right:8,top:8,zIndex:30,fontSize:10}} onClick={()=>{fail.current=true;}}>Fail next save</button><ConnectedChatDelivery id={id} generation={1} replies={scenario!=='disabled'} savedIds={[...saved.map(m=>m.id),...(renderedReply&&saved[0]?['preview-output-'+saved[0].id]:[])]} savedClientIds={saved.map(m=>m.clientId)} statuses={statuses} action={scenario==='transport'?undefined:async form=>{
   if(form.get('operation')==='skip'){
    if(failStop.current){failStop.current=false;throw new Error('Synthetic interrupted cancellation');}
    return {message:'Reply stopped'};

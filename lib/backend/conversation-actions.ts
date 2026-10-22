@@ -6,7 +6,7 @@ import { currentAccount } from './server';
 import { processReply, processSummary } from './reply-worker';
 import { observe, emit } from '@/lib/monitoring/events.mjs';
 
-export type ConversationResult = { error?: string; id?: string; message?: string; messageId?: string };
+export type ConversationResult = { error?: string; code?: 'unavailable' | 'signed_out' | 'ineligible'; id?: string; message?: string; messageId?: string };
 const uuid = /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i;
 const lifecycleOperations = new Set(['archive', 'restore', 'reset', 'delete']);
 
@@ -48,9 +48,10 @@ function scheduleReply(messageId: string, actorId: string, userTimeZone: string)
 
 export async function conversationAction(form: FormData): Promise<ConversationResult> {
   try {
-    const account = await currentAccount();
-    if (!account?.profile.onboarding_complete || !account.profile.adult_declared_at) {
-      return { error: 'Sign in with an eligible account.' };
+    const account = await currentAccount({ failOnUnavailable: true });
+    if (!account) return { error: 'Sign in again to send your message. Your message is kept here.', code: 'signed_out' };
+    if (!account.profile.onboarding_complete || !account.profile.adult_declared_at) {
+      return { error: 'Complete your account setup before continuing.', code: 'ineligible' };
     }
 
     const id = String(form.get('id') ?? '');
@@ -94,7 +95,11 @@ export async function conversationAction(form: FormData): Promise<ConversationRe
     });
 
     if (!result) return { error: 'Choose an available action.' };
-    if (result.error) return mutationFailure(result.error.message);
+    if (result.error) {
+      const status='status' in result?result.status:undefined;
+      if (status === 0 || status === 429 || (status ?? 0) >= 500) return {error:'Sending is temporarily unavailable. Your message is kept here.',code:'unavailable'};
+      return mutationFailure(result.error.message);
+    }
 
     const messageId = operation === 'send' ? result.data?.id as string | undefined : undefined;
     if (messageId) scheduleReply(messageId, account.user.id, String(form.get('timeZone') ?? ''));
@@ -109,15 +114,16 @@ export async function conversationAction(form: FormData): Promise<ConversationRe
     };
   } catch {
     emit('conversation.change', 'unexpected');
-    return { error: 'Conversation services are unavailable. Please try again later.' };
+    return { error: 'Sending is temporarily unavailable. Your message is kept here.', code: 'unavailable' };
   }
 }
 
 export async function clearAllChatsAction(form: FormData): Promise<ConversationResult> {
   if (form.get('confirmation') !== 'clear-all-chats') return { error: 'Confirm that you want to clear all chats.' };
   try {
-    const account = await currentAccount();
-    if (!account?.profile.onboarding_complete || !account.profile.adult_declared_at) return { error: 'Sign in with an eligible account.' };
+    const account = await currentAccount({ failOnUnavailable: true });
+    if (!account) return {error:'Sign in again to continue.',code:'signed_out'};
+    if (!account.profile.onboarding_complete || !account.profile.adult_declared_at) return {error:'Complete your account setup before continuing.',code:'ineligible'};
     const result = await observe('conversation.change', () => account.client.rpc('clear_all_conversations', { p_clear_memories: form.get('clearMemories') === 'on' }));
     if (result.error) return mutationFailure(result.error.message);
     refreshMessages();

@@ -19,6 +19,7 @@ const checks = [
   ['test-discovery-feed.mjs'],
   ['test-discovery-identities.mjs'],
   ['test-reply-recovery.mjs'],
+  ['test-send-message.mjs'],
   ['--experimental-vm-modules', 'test-reply-boundaries.mjs'],
   ['--experimental-vm-modules', 'test-memory-navigation.mjs'],
   ['test-ai-provider.mjs'],
