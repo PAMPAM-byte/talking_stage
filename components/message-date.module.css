@@ -1,11 +1,22 @@
 .separator {
   display: flex;
+  align-items: center;
+  gap: clamp(12px, 2vw, 24px);
   justify-content: center;
   width: 100%;
   margin-block: 12px 20px;
   pointer-events: none;
 }
+.separator::before,
+.separator::after {
+  content: '';
+  flex: 1;
+  min-width: 0;
+  height: 1px;
+  background: color-mix(in srgb, var(--brand) 24%, transparent);
+}
 .separator time {
+  flex-shrink: 0;
   padding: 6px 14px;
   border: 1px solid var(--border);
   border-radius: 12px;
