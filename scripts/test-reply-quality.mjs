@@ -1,0 +1,36 @@
+import assert from 'node:assert/strict';
+import {replyLanguage,replyQualityGuidance} from '../lib/ai/reply-quality.mjs';
+import {buildInput} from '../lib/ai/provider.mjs';
+import {readFile} from 'node:fs/promises';
+import {encodeExpression} from '../lib/chat/expressions.ts';
+import {cleanConversationReply} from '../lib/ai/reply-cleanup.mjs';
+const user=text=>({role:'user',text});
+assert.equal(replyLanguage([user('okay'),{role:'character',text:'You still dey up?'}]),'english');
+for(const text of ['lol','Hi Seyi','I live in Lagos','okay','Please do not speak Pidgin','Please stop using Pidgin','What does "wetin" mean?','> how you dey\nHello'])assert.equal(replyLanguage([user(text)]),'english',text);
+for(const text of ['how you dey?','Abeg, tell me','Can we speak Pidgin?','Pidgin please'])assert.equal(replyLanguage([user(text)]),'english_pidgin',text);
+assert.equal(replyLanguage([user('how you dey?'),user('English only please')]),'english');
+assert.equal(replyLanguage([user('speak pidgin'),user("Don't use pidgin anymore")]),'english');
+for(const text of ['No slang please','English, please','Use normal English'])assert.equal(replyLanguage([user('how you dey'),user(text)]),'english');
+assert.equal(replyLanguage([user('English only please'),user('I dey okay')]),'english_pidgin');
+assert.equal(replyLanguage([user(encodeExpression({kind:'sticker',id:'wave'}))]),'english');
+assert.equal(replyLanguage([user(encodeExpression({kind:'sticker',id:'wave'},'how you dey'))]),'english_pidgin');
+assert.equal(replyLanguage([{...user('Hello'),replyTo:{text:'how you dey'}}]),'english');
+assert(replyQualityGuidance([{role:'character',text:'Okay Ada, no advice, just company.'},{role:'character',text:'Okay Ada, no advice, just sitting here.'}]).includes('reuse an opening'));
+assert.equal(cleanConversationReply("Okay, I'll take that. What's your name?",[user('okay')]),"What's your name?");
+assert.equal(cleanConversationReply('Okay is a fine answer. What are you doing today?',[user('okay')]),'What are you doing today?');
+assert.equal(cleanConversationReply("Yes, Ada. I don't have a full record of our earlier chats here. How are you feeling?",[user('Do you remember my name?')]),'Yes, Ada. How are you feeling?');
+assert.equal(cleanConversationReply("Okay, no advice. I'm here. What have you been listening to lately?",[user('I want company, not advice.')]),'What have you been listening to lately?');
+assert.equal(cleanConversationReply("Okay, you're giving me short answers. I'll let that slide. What do you do for fun?",[user('okay')]),'What do you do for fun?');
+assert.equal(cleanConversationReply("I can't pull up earlier chats. What would you like me to read?",[user('Can you access earlier chats?')]),"I can't pull up earlier chats. What would you like me to read?");
+assert.equal(cleanConversationReply("Ada, welcome back. I don't have a real diary of yesterday to tell you about. How are you?",[user('Hey, remember my name? How was yesterday?')]),'Ada, welcome back. How are you?');
+for(const [text,input] of [["I don't have a full record of our earlier chats here.",'How does your memory work?'],['I am an AI character, not a human.','Are you AI?'],["I can't find that record anywhere.",'Do you like vinyl?'],["Okay, I'll take that.",'okay'],['I am sorry this has been painful.','I feel awful.']])assert.equal(cleanConversationReply(text,[user(input)]),text);
+const pack=JSON.parse(await readFile('docs/cast-50/characters.json','utf8'));
+for(const c of pack.characters){
+ const input=buildInput({character:{name:c.profile.name,gender:c.profile.gender,direction:c.direction},preferences:{language:'english_pidgin'},history:[user('My name is Ada.'),{role:'character',text:'Ada, how you dey?'},user('okay')],memories:[],maxInputTokens:48000,maxOutputTokens:1024});
+ assert(input[0].content.includes(c.direction));
+ assert(input[0].content.includes('Reply in English only this turn'));
+ assert(input[0].content.indexOf('Final turn direction')>input[0].content.lastIndexOf('Ordinary-turn pacing'));
+ assert(input[0].content.includes('do not explain screens, saved records, retrieval or memory machinery'));
+ assert(input[0].content.includes('Direct AI/human questions still need an honest answer'));
+}
+console.log('Reply quality passed: user-only language cues, English resets, media/quote exclusions, repeated-opening detection and final guidance for all 50 characters. No model calls.');
