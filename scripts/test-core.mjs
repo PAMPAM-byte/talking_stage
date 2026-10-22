@@ -27,6 +27,7 @@ const checks = [
   ['test-conversation-intent.mjs'],
   ['test-conversation-momentum.mjs'],
   ['test-reply-quality.mjs'],
+  ['test-character-intelligence.mjs'],
   ['test-conversation-timeline.mjs'],
   ['test-character-checkins.mjs'],
   ['test-initiative-sync.mjs'],

@@ -1,0 +1,136 @@
+{
+  "archive": "talkingstage-character-intelligence (1).zip",
+  "sha256": "6007861823d4a9b718fcd54ada236abc5c3b6fce6fe29a29459f0f2fa99e6087",
+  "files": [
+    {
+      "path": "talkingstage-intelligence/src/lib/character-intelligence/context.ts",
+      "bytes": 5201,
+      "sha256": "67cb7964eddedd3eb839f58b22478ac360fa5f757215d4ae173912bc434c28a8"
+    },
+    {
+      "path": "talkingstage-intelligence/src/lib/character-intelligence/naija.ts",
+      "bytes": 3715,
+      "sha256": "37ba2b24c90e585d03b571a147282b6103f6d8caa62b0910912273a973518749"
+    },
+    {
+      "path": "talkingstage-intelligence/src/lib/character-intelligence/archetypes.ts",
+      "bytes": 18507,
+      "sha256": "0d32f439ebf07f4c57b54258cd3c6b11b1eb1c9ed2c4626605dac60abe956836"
+    },
+    {
+      "path": "talkingstage-intelligence/src/lib/character-intelligence/index.ts",
+      "bytes": 704,
+      "sha256": "7792d5f4b6bca92a11c5f534fe5a5e6be946d879c5437bfebf076fdb7aaa99d5"
+    },
+    {
+      "path": "talkingstage-intelligence/src/lib/character-intelligence/repetition.ts",
+      "bytes": 3092,
+      "sha256": "135b2a9c67696c09cf7ef7cf3ae0281fe6301b8e8d108139df35163347c8a8a3"
+    },
+    {
+      "path": "talkingstage-intelligence/src/lib/character-intelligence/sampleCharacters.ts",
+      "bytes": 5336,
+      "sha256": "d3492314ee26f8fd14387d9f1b2c38c17d56ea77c7ec62701c62b046f32cf857"
+    },
+    {
+      "path": "talkingstage-intelligence/src/lib/character-intelligence/assign.ts",
+      "bytes": 5528,
+      "sha256": "1b3c322b8bdf76d63d87a2886d6eeec179315d9b7fc420757e64243d330d9216"
+    },
+    {
+      "path": "talkingstage-intelligence/src/lib/character-intelligence/humanizer.ts",
+      "bytes": 4574,
+      "sha256": "d7e9eaea16225f136d217326f866d1e0522dfdffcdb4a9d6d2b32d2709b54f47"
+    },
+    {
+      "path": "talkingstage-intelligence/src/lib/character-intelligence/promptBuilder.ts",
+      "bytes": 11917,
+      "sha256": "395d1cf7931abf87bbebb311881d4917156f3797d9ba94f3c9c084e76f186dc5"
+    },
+    {
+      "path": "talkingstage-intelligence/src/lib/character-intelligence/generateReply.ts",
+      "bytes": 5191,
+      "sha256": "655cfe2d56eee94256a693f664396b2089ad700828fb3dcaa52a7fc5e4345c6f"
+    },
+    {
+      "path": "talkingstage-intelligence/src/lib/character-intelligence/safety.ts",
+      "bytes": 8024,
+      "sha256": "a484e297f3ae628d248419bf4a3d8f515fdf4c11846c245c28d566dbbf286298"
+    },
+    {
+      "path": "talkingstage-intelligence/src/lib/character-intelligence/presence.ts",
+      "bytes": 8483,
+      "sha256": "889804da91f41fb7bd63db7a01e7eb2ab6fc873584d1b85baf754098802a7627"
+    },
+    {
+      "path": "talkingstage-intelligence/src/lib/character-intelligence/types.ts",
+      "bytes": 4149,
+      "sha256": "8beaf613e4c9d32cfaabfb51c4e7b4e0d867817657d538fa3b6e8f7564188bb4"
+    },
+    {
+      "path": "talkingstage-intelligence/supabase/migrations/20261022_character_intelligence.sql",
+      "bytes": 1748,
+      "sha256": "33273defaa0f30d43d5539331adbd5d02ba45c36b3a8e86ffb4ceeac42a0af36"
+    },
+    {
+      "path": "talkingstage-intelligence/README.md",
+      "bytes": 10912,
+      "sha256": "488dcd3624eee569ee4428730f1f413ae61660ebaceb407e512629b2354c898a"
+    },
+    {
+      "path": "talkingstage-intelligence/CLAUDE.md",
+      "bytes": 93,
+      "sha256": "df581a2f624671c625b39c6f48b9c65847749676cffcf85d2debf0956d81e7e4"
+    },
+    {
+      "path": "talkingstage-intelligence/scripts/assign-archetypes.ts",
+      "bytes": 2563,
+      "sha256": "ae10d32dce344a7ddb74f96d2d0c0fffbb71f9772a7fb2533835912deb1d886b"
+    },
+    {
+      "path": "talkingstage-intelligence/examples/app/api/chat/reply/route.ts",
+      "bytes": 3405,
+      "sha256": "ae64e246c4e6aef9c2b7fc765c45c4db9e1bef3a8a317120cf80a53a23689c0c"
+    },
+    {
+      "path": "talkingstage-intelligence/tests/character-intelligence.test.ts",
+      "bytes": 8371,
+      "sha256": "163e5ff0477dd03a66d2af96189e87f8fc1d41bbd559c7507088323398261661"
+    },
+    {
+      "path": "talkingstage-intelligence/tests/assign.test.ts",
+      "bytes": 1361,
+      "sha256": "b1dd8fc86f471783ac8929300f19c46298ff32359710f9efbc784005b8ea160d"
+    },
+    {
+      "path": "talkingstage-intelligence/tests/presence.test.ts",
+      "bytes": 2947,
+      "sha256": "3c6b2cda964939d1bdcd7e2e44c9d8f0c8054f4baac761e3c2bdfe0810112083"
+    },
+    {
+      "path": "talkingstage-intelligence/package.json",
+      "bytes": 467,
+      "sha256": "837bcb462b26f7c497ecf56f84bdd8554402d1cef27fc1ac82f677b35f075177"
+    },
+    {
+      "path": "talkingstage-intelligence/eval/scenarios.ts",
+      "bytes": 4236,
+      "sha256": "972b4b3685dcb2cdac06158d7a522488b85b4d670adbe6ea1719204ff8e9f726"
+    },
+    {
+      "path": "talkingstage-intelligence/eval/run-eval.ts",
+      "bytes": 3891,
+      "sha256": "4e7ecac9b5aca5f3842a4fd3ca7bd19761305b5768652057a2e5d262e058d390"
+    },
+    {
+      "path": "talkingstage-intelligence/AGENTS.md",
+      "bytes": 16978,
+      "sha256": "b4e179c847367429f69f001699801100d354cd1f2ce0f0f2c301a1ca362cba67"
+    },
+    {
+      "path": "talkingstage-intelligence/tsconfig.json",
+      "bytes": 311,
+      "sha256": "3ecb6ec8c95effdf501b462cd61bc1809d9e0f9ae82f96b272bc4fed2efb1001"
+    }
+  ]
+}
