@@ -9,6 +9,7 @@ const checks = [
   ['--experimental-vm-modules','test-payment-boundaries.mjs'],
   ['test-naija-exchanges.mjs'],
   ['test-women-personalities.mjs'],
+  ['test-male-personalities.mjs'],
   ['test-lifestyle-personalities.mjs'],
   ['test-chat-expressions.mjs'],
   ['test-message-reactions.mjs'],

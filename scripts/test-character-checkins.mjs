@@ -25,7 +25,7 @@ try{
   await db.exec('reset role');await db.query("insert into public.messages(conversation_id,sequence,role,kind,text,created_at) select $1,n,case when n%2=1 then 'user' else 'character' end,'text',case when n%2=1 then 'I enjoy reading novels.' else 'A good book can take over an evening.' end,now()-interval '26 hours'+n*interval '1 minute' from generate_series(1,$2::int)n",[c,turns]);
   await db.query("update public.conversations set next_sequence=$2+1,last_message_at=now()-interval '25 hours' where id=$1",[c,turns]);return c;
  };
- const claim=async(onReturn=false)=>{await actor('', 'service_role');return (await db.query('select public.claim_character_checkin($1,$2,$3) as v',[a,'synthetic',onReturn])).rows[0].v;};
+ const claim=async(onReturn=false,conversation=null)=>{await actor('', 'service_role');return (await db.query('select public.claim_character_initiative($1,$2,$3,$4) as v',[a,'synthetic',onReturn,conversation])).rows[0].v;};
  const finish=async(job,text='Hey, did you get back to that novel?')=>{await actor('', 'service_role');return (await db.query('select public.finish_character_checkin($1,$2,$3,$4,null) as v',[job.job,a,job.lease,text])).rows[0].v;};
  await actor(a);assert.equal((await db.query('select public.checkin_settings() as v')).rows[0].v.frequency,'off');assert.equal((await claim()).state,'disabled');
  const c=await seed();await preference('daily',nighttime);assert.equal((await claim()).state,'quiet_hours');
@@ -56,6 +56,22 @@ try{
  }
  await preference();await clearCooldown();await seed();await db.exec('reset role');await db.exec('update private.ai_configuration set user_daily_micro_usd=1');assert.equal((await claim()).state,'budget_exhausted');
  await actor('', 'anon');await assert.rejects(db.query('select public.checkin_settings()'),/permission denied/);
+ // A new, user-opened chat can receive one opt-in hello, including at night
+ // while the user is present. Background follow-ups still respect quiet hours.
+ await db.exec('reset role');await db.exec('update private.ai_configuration set user_daily_micro_usd=10000000');
+ await preference('off',nighttime);await clearCooldown();const openingChat=await seed(0);
+ assert.equal((await claim(true)).state,'disabled');
+ await preference('daily',nighttime);assert.equal((await claim(false)).state,'quiet_hours');
+ const opener=await claim(true,openingChat);assert.equal(opener.state,'claimed');assert.equal(opener.initiative,'opener');assert.deepEqual(opener.history,[]);
+ assert.equal(opener.character.gender,'woman');
+ const openingInput=buildInput(opener);assert(openingInput[0].content.includes('NO shared conversation history'));assert(openingInput[1].content.includes('"defaultCounterpart":"man"'));
+ assert.equal(await finish(opener,'Hey, how are you?'),'completed');assert.equal(await finish(opener,'Hey, how are you?'),'completed');
+ await actor(a);const openingThread=(await db.query('select public.conversation_thread($1) as v',[openingChat])).rows[0].v;
+ assert.equal(openingThread.messages.length,1);assert.equal(openingThread.messages[0].role,'character');
+ assert.equal((await claim(true)).state,'cooldown');await clearCooldown();assert.equal((await claim(true,openingChat)).state,'not_due');
+ const racedChat=await seed(0);const racingOpener=await claim(true,racedChat);assert.equal(racingOpener.initiative,'opener');
+ await actor(a);await db.query("select public.save_user_message($1,gen_random_uuid(),1,'Hi, I got here first')",[racedChat]);
+ assert.equal(await finish(racingOpener),'discarded','A new user message must cancel the stale first hello');
  assert(returnChat);
- console.log('Check-ins passed: opt-in, frequency, quiet hours, ownership, no fake user messages, context, bounded text output, shared budgets, idempotence, no unanswered repeats, opt-out/new-message/archive/reset/pause invalidation. No provider/network calls.');
+ console.log('Check-ins passed: opt-in first hellos, user-first race cancellation, frequency, quiet hours, ownership, no fake user messages, context, bounded text output, shared budgets, idempotence, no unanswered repeats, opt-out/new-message/archive/reset/pause invalidation. No provider/network calls.');
 }finally{await db.close();}
