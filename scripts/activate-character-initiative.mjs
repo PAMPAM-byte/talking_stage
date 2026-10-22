@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {readFile,writeFile,mkdir} from 'node:fs/promises';
+import {readFile,writeFile,mkdir,readdir} from 'node:fs/promises';
 import {execFileSync} from 'node:child_process';
 import {resolve} from 'node:path';
 import {parseEnv} from 'node:util';
@@ -32,4 +32,19 @@ if(before.versions.includes(version)){console.log('Character initiation already 
   await writeFile('docs/character-initiative-activation.json',JSON.stringify({appliedAt:new Date().toISOString(),migration:snapshot.migration,encryptedDdlSnapshotVerified:true,serviceOnlyInitiativeAndGenderContextVerified:true,noMessagesGenerated:true},null,2)+'\n');
   console.log('Character initiation and gender context installed. Existing messages were preserved; no replies generated.');
  }
+}
+
+// A lost response can follow a committed migration. Reconcile and verify on
+// every resume instead of rerunning DDL or claiming an unverified completion.
+const installed=(await query(inspect))[0];
+if(installed.versions.includes(version)){
+ assert(installed.claim.includes('gender'));
+ const privileges=(await query("select to_regclass('private.one_character_opener') is not null as opener_guard,has_function_privilege('authenticated','public.claim_character_initiative(uuid,text,boolean,uuid)','execute') as member,has_function_privilege('service_role','public.claim_character_initiative(uuid,text,boolean,uuid)','execute') as worker;"))[0];
+ assert(privileges.opener_guard);assert.equal(privileges.member,false);assert.equal(privileges.worker,true);
+ const hash=createHash('sha256').update(await readFile(`supabase/migrations/${version}_${name}.sql`,'utf8')).digest('hex');
+ let backupVerified=false;const encryptionKey=await readFile('.local-services/hosted-privacy/encryption.key');
+ for(const file of (await readdir(folder)).filter(file=>file.endsWith('.tshback'))){const snapshot=decryptBundle(await readFile(`${folder}/${file}`),encryptionKey,project);if(snapshot.migration?.hash===hash&&snapshot.migration?.version===version)backupVerified=true;}
+ assert(backupVerified);
+ await writeFile('docs/character-initiative-activation.json',JSON.stringify({verifiedAt:new Date().toISOString(),migration:{version,name,hash},encryptedDdlSnapshotVerified:true,serviceOnlyInitiativeAndGenderContextVerified:true,oneOpenerGuardVerified:true,noMessagesGenerated:true},null,2)+'\n');
+ console.log('Verified deployed first-message guard, gender context and service-only permissions. No replies generated.');
 }

@@ -1,0 +1,12 @@
+{
+  "verifiedAt": "2026-10-22T01:48:08.456Z",
+  "migration": {
+    "version": "202610210027",
+    "name": "character_initiative",
+    "hash": "2fdd2ed921f530df81b44352637dd453db04e9014cb3dade9dcaa9bd723ad28c"
+  },
+  "encryptedDdlSnapshotVerified": true,
+  "serviceOnlyInitiativeAndGenderContextVerified": true,
+  "oneOpenerGuardVerified": true,
+  "noMessagesGenerated": true
+}
