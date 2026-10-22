@@ -205,4 +205,6 @@ assert.equal((await memoryAction(memoryForm)).message,'Memory saved.','Cache fai
 reset(); state.signedIn = false;
 assert((await memoryAction(memoryForm)).error);
 assert.equal(state.rpcCalls,0,'Signed-out callers cannot save memories');
+reset();state.accountUnavailable=true;
+assert.match((await memoryAction(memoryForm)).error,/services are unavailable/);assert.equal(state.rpcCalls,0);
 console.log('Memory feedback checks passed: operation-specific results, committed-save acknowledgement despite cache failure and signed-out denial. No network calls.');

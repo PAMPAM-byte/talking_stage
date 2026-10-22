@@ -3,7 +3,7 @@ import {currentAccount} from './server';
 import {revalidatePath} from 'next/cache';
 export async function requestAction(form:FormData):Promise<{error?:string;message?:string}> {
  try{
-  const account=await currentAccount();if(!account?.profile.onboarding_complete||!account.profile.adult_declared_at)return {error:'Sign in with an eligible account.'};
+  const account=await currentAccount({failOnUnavailable:true});if(!account)return {error:'Sign in again to continue.'};if(!account.profile.onboarding_complete||!account.profile.adult_declared_at)return {error:'Complete your account setup before continuing.'};
   const version=Number(form.get('version'));if(!Number.isSafeInteger(version)||version<1)return {error:'Reload to get your current settings.'};
   const operation=String(form.get('operation')??'');let result;
   if(operation==='preference')result=await account.client.rpc('set_request_preferences',{p_enabled:form.get('enabled')==='on',p_version:version});
