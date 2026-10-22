@@ -8,6 +8,7 @@ import { currentAccount } from '@/lib/backend/server';
 import { EmptyState, Notice } from './ui/primitives';
 import { ConnectedDiscoveryDeck } from './connected-discovery-deck';
 import { loadDiscoveryFeed } from '@/lib/discovery-feed';
+import { featuredCharacterOrder } from '@/lib/character-order';
 import {ConversationControl} from './connected-conversation-forms';
 import {configuredReplyModel} from '@/lib/backend/reply-worker';
 type Filters={gender?:string;interest?:string;personality?:string;page?:string};
@@ -38,7 +39,7 @@ async function eligibleCast(id?: string,filters:Filters={}) {
 export async function ConnectedDiscovery({ filters:requestedFilters }: {filters:Filters}) {
  const data=await eligibleCast(undefined,requestedFilters);
  if(!data) return <Notice title="Discovery unavailable" tone="warning">Reload to try again.</Notice>;
- const rows=data.characters;
+ const rows=featuredCharacterOrder(data.characters);
  const filters=data.filters;
  const genderHref=(gender:string)=>{if(gender==='all')return '/discover?gender=all';const query=new URLSearchParams({gender});for(const key of ['interest','personality'] as const)if(filters[key])query.set(key,filters[key]!);return `/discover?${query}`;};
  return <div className="discovery-page discovery-page--swipe stack"><header className="discovery-heading"><div className="stack"><p className="supporting muted">Welcome, {data.account.profile.display_name}.</p><h1 className="display discovery-title">Find your spark.</h1><p className="muted">Find someone who catches your attention.</p></div></header>

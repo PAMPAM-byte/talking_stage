@@ -4,6 +4,7 @@ import { useId, useState } from 'react';
 import type { PublicCharacter } from '@/lib/contracts';
 import { LandingPhoto } from './landing-photo';
 import { Icon } from './ui/icon';
+import { featuredCharacterOrder } from '@/lib/character-order';
 
 export function PersonalitiesCatalogue({ characters }: { characters: PublicCharacter[] }) {
   const searchId = useId();
@@ -11,8 +12,8 @@ export function PersonalitiesCatalogue({ characters }: { characters: PublicChara
   const [query, setQuery] = useState('');
   const [gender, setGender] = useState('everyone');
   const needle = query.trim().toLocaleLowerCase();
-  const matches = characters.filter(character => (gender === 'everyone' || character.gender === gender)
-    && (!needle || [character.name, character.occupation, character.fictionalLocation, ...character.interests, ...character.personalityTags].join(' ').toLocaleLowerCase().includes(needle)));
+  const matches = featuredCharacterOrder(characters.filter(character => (gender === 'everyone' || character.gender === gender)
+    && (!needle || [character.name, character.occupation, character.fictionalLocation, ...character.interests, ...character.personalityTags].join(' ').toLocaleLowerCase().includes(needle))));
   function clear() { setQuery(''); setGender('everyone'); }
 
   return <div className="personalities-catalogue">
