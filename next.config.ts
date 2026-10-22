@@ -12,7 +12,7 @@ const nextConfig: NextConfig = {
   cacheComponents: true,
   images: { qualities: [75, 90] },
   partialPrefetching: true,
-  experimental: { serverActions: { bodySizeLimit: '6mb' } },
+  experimental: { agentUpgrade: 'security', serverActions: { bodySizeLimit: '6mb' } },
   turbopack: {
     root: process.cwd(),
     resolveAlias: {
