@@ -26,6 +26,7 @@ const checks = [
   ['test-conversation-intent.mjs'],
   ['test-conversation-timeline.mjs'],
   ['test-character-checkins.mjs'],
+  ['test-initiative-sync.mjs'],
   ['test-cast-roster.mjs'],
   ['test-cast-evaluation.mjs'],
   ['test-anthropic-provider.mjs'],

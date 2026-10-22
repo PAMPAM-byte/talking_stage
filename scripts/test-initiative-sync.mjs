@@ -1,0 +1,15 @@
+import assert from 'node:assert/strict';
+import {checkForInitiative,clearInitiativeThrottle} from '../lib/chat/checkin-sync.mjs';
+const values=new Map();const storage={get length(){return values.size;},key:index=>[...values.keys()][index]??null,getItem:key=>values.get(key)??null,setItem:(key,value)=>values.set(key,value),removeItem:key=>values.delete(key)};
+let state='disabled',calls=0,lastHeaders;
+const options={storage,now:()=>1000000,fetcher:async(_url,request)=>{calls++;lastHeaders=request.headers;return Response.json({state});}};
+await checkForInitiative('synthetic-chat',options);await checkForInitiative('synthetic-chat',options);
+assert.equal(calls,2,'An off preference must not delay newly enabled initiation');assert.equal(values.size,0);
+state='scheduled';await checkForInitiative('synthetic-chat',options);assert.equal(calls,3);assert.deepEqual(lastHeaders,{'X-TalkingStage-Conversation':'synthetic-chat'});
+await checkForInitiative('synthetic-chat',options);assert.equal(calls,3,'Suppress duplicate checks in the same tab');
+values.set('unrelated-draft','keep');clearInitiativeThrottle(storage);assert.deepEqual([...values],[['unrelated-draft','keep']]);
+await checkForInitiative('synthetic-chat',options);assert.equal(calls,4);
+clearInitiativeThrottle(storage);let release;let requests=0;
+const pending={...options,fetcher:async()=>{requests++;await new Promise(resolve=>{release=resolve;});return Response.json({state:'scheduled'});}};
+const first=checkForInitiative('pending-chat',pending);await checkForInitiative('pending-chat',pending);assert.equal(requests,1);release();await first;
+console.log('Initiative sync passed: conversation targeting, off-to-on recovery without five-minute delay, duplicate/in-flight suppression and preference changes preserving unrelated drafts. No network/model calls.');

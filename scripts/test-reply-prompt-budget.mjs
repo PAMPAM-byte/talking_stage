@@ -21,4 +21,10 @@ for(const character of pack.characters)for(const text of ['How are you?',encodeE
  assert(input[0].content.includes('Keep conversations non-explicit'));
  assert(input[0].content.includes('answer honestly and briefly'));
 }
-console.log(`Reply prompt budget passed: 450 full-direction cases across all 50 profiles, ordinary replies, next-day returns and check-ins, reactions, quoted messages, maximum-length user input, approved photo and payment eligibility; largest ${largest}/48000 bytes including reserve. No model calls or increased limits.`);
+const compactContext={character:{name:'Synthetic',direction:'Keep the complete individual canon.'},preferences:{},history:[{role:'user',text:'Keep this actual message and its quoted point.',replyTo:{id:'old',role:'character',kind:'text',text:'An older point.'}}],memories:[],maxInputTokens:48000,maxOutputTokens:1024};
+const original=buildInput(compactContext);
+const bounded=buildInput({...compactContext,maxInputTokens:Buffer.byteLength(JSON.stringify(original))+2048-100});
+assert(bounded[0].content.includes('Sticker/GIF output is unavailable this turn'));
+assert(bounded[0].content.includes(compactContext.character.direction));
+assert(bounded.at(-1).content.includes('Keep this actual message'));assert(bounded.at(-1).content.includes('An older point.'));
+console.log(`Reply prompt budget passed: 450 full-direction cases across all 50 profiles, ordinary replies, next-day returns and check-ins, reactions, quoted messages, maximum-length user input, approved photo and payment eligibility; largest ${largest}/48000 bytes including reserve. Bounded media-catalogue fallback preserves canon and current message/quote. No model calls or increased limits.`);

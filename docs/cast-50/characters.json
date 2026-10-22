@@ -1,7 +1,7 @@
 {
   "version": 1,
   "preparedOn": "2026-10-18",
-  "status": "editorial_rework_not_published",
+  "status": "hosted_published_voice_evaluation_pending",
   "sourceFingerprint": "03f58e3655771d8875cc6c01d9bef37292d28d7806a7b416bb7ecf79629bd4ed",
   "contentScope": {
     "version": 1,
@@ -166,7 +166,7 @@
         "ownerReview": "pending",
         "voiceEvaluation": "pending",
         "photos": "existing_photos_retained_as_recorded",
-        "publication": "see_publication_record"
+        "publication": "hosted_published"
       }
     },
     {
@@ -301,7 +301,7 @@
         "ownerReview": "pending",
         "voiceEvaluation": "pending",
         "photos": "existing_photos_retained_as_recorded",
-        "publication": "see_publication_record"
+        "publication": "hosted_published"
       }
     },
     {
@@ -436,7 +436,7 @@
         "ownerReview": "pending",
         "voiceEvaluation": "pending",
         "photos": "existing_photos_retained_as_recorded",
-        "publication": "see_publication_record"
+        "publication": "hosted_published"
       }
     },
     {
@@ -570,7 +570,7 @@
         "ownerReview": "pending",
         "voiceEvaluation": "pending",
         "photos": "existing_photos_retained_as_recorded",
-        "publication": "see_publication_record"
+        "publication": "hosted_published"
       }
     },
     {
@@ -704,7 +704,7 @@
         "ownerReview": "pending",
         "voiceEvaluation": "pending",
         "photos": "existing_photos_retained_as_recorded",
-        "publication": "see_publication_record"
+        "publication": "hosted_published"
       }
     },
     {
@@ -838,7 +838,7 @@
         "ownerReview": "pending",
         "voiceEvaluation": "pending",
         "photos": "existing_photos_retained_as_recorded",
-        "publication": "see_publication_record"
+        "publication": "hosted_published"
       }
     },
     {
@@ -971,7 +971,7 @@
         "ownerReview": "pending",
         "voiceEvaluation": "pending",
         "photos": "existing_photos_retained_as_recorded",
-        "publication": "see_publication_record"
+        "publication": "hosted_published"
       }
     },
     {
@@ -1105,7 +1105,7 @@
         "ownerReview": "pending",
         "voiceEvaluation": "pending",
         "photos": "existing_photos_retained_as_recorded",
-        "publication": "see_publication_record"
+        "publication": "hosted_published"
       }
     },
     {
@@ -1241,7 +1241,7 @@
         "ownerReview": "pending",
         "voiceEvaluation": "pending",
         "photos": "existing_photos_retained_as_recorded",
-        "publication": "see_publication_record"
+        "publication": "hosted_published"
       }
     },
     {
@@ -1377,7 +1377,7 @@
         "ownerReview": "pending",
         "voiceEvaluation": "pending",
         "photos": "existing_photos_retained_as_recorded",
-        "publication": "see_publication_record"
+        "publication": "hosted_published"
       }
     },
     {
@@ -1512,7 +1512,7 @@
         "ownerReview": "pending",
         "voiceEvaluation": "pending",
         "photos": "existing_photos_retained_as_recorded",
-        "publication": "see_publication_record"
+        "publication": "hosted_published"
       }
     },
     {
@@ -1659,7 +1659,7 @@
         "ownerReview": "pending",
         "voiceEvaluation": "pending",
         "photos": "generated_visually_reviewed",
-        "publication": "see_publication_record"
+        "publication": "hosted_published"
       }
     },
     {
@@ -1796,7 +1796,7 @@
         "ownerReview": "pending",
         "voiceEvaluation": "pending",
         "photos": "existing_photos_retained_as_recorded",
-        "publication": "see_publication_record"
+        "publication": "hosted_published"
       }
     },
     {
@@ -1933,7 +1933,7 @@
         "ownerReview": "pending",
         "voiceEvaluation": "pending",
         "photos": "existing_photos_retained_as_recorded",
-        "publication": "see_publication_record"
+        "publication": "hosted_published"
       }
     },
     {
@@ -2068,7 +2068,7 @@
         "ownerReview": "pending",
         "voiceEvaluation": "pending",
         "photos": "existing_photos_retained_as_recorded",
-        "publication": "see_publication_record"
+        "publication": "hosted_published"
       }
     },
     {
@@ -2206,7 +2206,7 @@
         "ownerReview": "pending",
         "voiceEvaluation": "pending",
         "photos": "existing_photos_retained_as_recorded",
-        "publication": "see_publication_record"
+        "publication": "hosted_published"
       }
     },
     {
@@ -2341,7 +2341,7 @@
         "ownerReview": "pending",
         "voiceEvaluation": "pending",
         "photos": "existing_photos_retained_as_recorded",
-        "publication": "see_publication_record"
+        "publication": "hosted_published"
       }
     },
     {
@@ -2478,7 +2478,7 @@
         "ownerReview": "pending",
         "voiceEvaluation": "pending",
         "photos": "existing_photos_retained_as_recorded",
-        "publication": "see_publication_record"
+        "publication": "hosted_published"
       }
     },
     {
@@ -2611,7 +2611,7 @@
         "ownerReview": "pending",
         "voiceEvaluation": "pending",
         "photos": "existing_photos_retained_as_recorded",
-        "publication": "see_publication_record"
+        "publication": "hosted_published"
       }
     },
     {
@@ -2747,7 +2747,7 @@
         "ownerReview": "pending",
         "voiceEvaluation": "pending",
         "photos": "existing_photos_retained_as_recorded",
-        "publication": "see_publication_record"
+        "publication": "hosted_published"
       }
     },
     {
@@ -2885,7 +2885,7 @@
         "ownerReview": "pending",
         "voiceEvaluation": "pending",
         "photos": "existing_photos_retained_as_recorded",
-        "publication": "see_publication_record"
+        "publication": "hosted_published"
       }
     },
     {
@@ -3022,7 +3022,7 @@
         "ownerReview": "pending",
         "voiceEvaluation": "pending",
         "photos": "existing_photos_retained_as_recorded",
-        "publication": "see_publication_record"
+        "publication": "hosted_published"
       }
     },
     {
@@ -3170,7 +3170,7 @@
         "ownerReview": "pending",
         "voiceEvaluation": "pending",
         "photos": "generated_visually_reviewed",
-        "publication": "see_publication_record"
+        "publication": "hosted_published"
       }
     },
     {
@@ -3318,7 +3318,7 @@
         "ownerReview": "pending",
         "voiceEvaluation": "pending",
         "photos": "generated_visually_reviewed",
-        "publication": "see_publication_record"
+        "publication": "hosted_published"
       }
     },
     {
@@ -3465,7 +3465,7 @@
         "ownerReview": "pending",
         "voiceEvaluation": "pending",
         "photos": "generated_visually_reviewed",
-        "publication": "see_publication_record"
+        "publication": "hosted_published"
       }
     },
     {
@@ -3614,7 +3614,7 @@
         "ownerReview": "pending",
         "voiceEvaluation": "pending",
         "photos": "generated_visually_reviewed",
-        "publication": "see_publication_record"
+        "publication": "hosted_published"
       }
     },
     {
@@ -3764,7 +3764,7 @@
         "ownerReview": "pending",
         "voiceEvaluation": "pending",
         "photos": "generated_visually_reviewed",
-        "publication": "see_publication_record"
+        "publication": "hosted_published"
       }
     },
     {
@@ -3911,7 +3911,7 @@
         "ownerReview": "pending",
         "voiceEvaluation": "pending",
         "photos": "generated_visually_reviewed",
-        "publication": "see_publication_record"
+        "publication": "hosted_published"
       }
     },
     {
@@ -4058,7 +4058,7 @@
         "ownerReview": "pending",
         "voiceEvaluation": "pending",
         "photos": "generated_visually_reviewed",
-        "publication": "see_publication_record"
+        "publication": "hosted_published"
       }
     },
     {
@@ -4206,7 +4206,7 @@
         "ownerReview": "pending",
         "voiceEvaluation": "pending",
         "photos": "generated_visually_reviewed",
-        "publication": "see_publication_record"
+        "publication": "hosted_published"
       }
     },
     {
@@ -4353,7 +4353,7 @@
         "ownerReview": "pending",
         "voiceEvaluation": "pending",
         "photos": "generated_visually_reviewed",
-        "publication": "see_publication_record"
+        "publication": "hosted_published"
       }
     },
     {
@@ -4500,7 +4500,7 @@
         "ownerReview": "pending",
         "voiceEvaluation": "pending",
         "photos": "generated_visually_reviewed",
-        "publication": "see_publication_record"
+        "publication": "hosted_published"
       }
     },
     {
@@ -4648,7 +4648,7 @@
         "ownerReview": "pending",
         "voiceEvaluation": "pending",
         "photos": "generated_visually_reviewed",
-        "publication": "see_publication_record"
+        "publication": "hosted_published"
       }
     },
     {
@@ -4794,7 +4794,7 @@
         "ownerReview": "pending",
         "voiceEvaluation": "pending",
         "photos": "generated_visually_reviewed",
-        "publication": "see_publication_record"
+        "publication": "hosted_published"
       }
     },
     {
@@ -4942,7 +4942,7 @@
         "ownerReview": "pending",
         "voiceEvaluation": "pending",
         "photos": "generated_visually_reviewed",
-        "publication": "see_publication_record"
+        "publication": "hosted_published"
       }
     },
     {
@@ -5089,7 +5089,7 @@
         "ownerReview": "pending",
         "voiceEvaluation": "pending",
         "photos": "generated_visually_reviewed",
-        "publication": "see_publication_record"
+        "publication": "hosted_published"
       }
     },
     {
@@ -5235,7 +5235,7 @@
         "ownerReview": "pending",
         "voiceEvaluation": "pending",
         "photos": "generated_visually_reviewed",
-        "publication": "see_publication_record"
+        "publication": "hosted_published"
       }
     },
     {
@@ -5383,7 +5383,7 @@
         "ownerReview": "pending",
         "voiceEvaluation": "pending",
         "photos": "generated_visually_reviewed",
-        "publication": "see_publication_record"
+        "publication": "hosted_published"
       }
     },
     {
@@ -5531,7 +5531,7 @@
         "ownerReview": "pending",
         "voiceEvaluation": "pending",
         "photos": "generated_visually_reviewed",
-        "publication": "see_publication_record"
+        "publication": "hosted_published"
       }
     },
     {
@@ -5677,7 +5677,7 @@
         "ownerReview": "pending",
         "voiceEvaluation": "pending",
         "photos": "generated_visually_reviewed",
-        "publication": "see_publication_record"
+        "publication": "hosted_published"
       }
     },
     {
@@ -5823,7 +5823,7 @@
         "ownerReview": "pending",
         "voiceEvaluation": "pending",
         "photos": "generated_visually_reviewed",
-        "publication": "see_publication_record"
+        "publication": "hosted_published"
       }
     },
     {
@@ -5970,7 +5970,7 @@
         "ownerReview": "pending",
         "voiceEvaluation": "pending",
         "photos": "generated_visually_reviewed",
-        "publication": "see_publication_record"
+        "publication": "hosted_published"
       }
     },
     {
@@ -6116,7 +6116,7 @@
         "ownerReview": "pending",
         "voiceEvaluation": "pending",
         "photos": "generated_visually_reviewed",
-        "publication": "see_publication_record"
+        "publication": "hosted_published"
       }
     },
     {
@@ -6262,7 +6262,7 @@
         "ownerReview": "pending",
         "voiceEvaluation": "pending",
         "photos": "generated_visually_reviewed",
-        "publication": "see_publication_record"
+        "publication": "hosted_published"
       }
     },
     {
@@ -6408,7 +6408,7 @@
         "ownerReview": "pending",
         "voiceEvaluation": "pending",
         "photos": "generated_visually_reviewed",
-        "publication": "see_publication_record"
+        "publication": "hosted_published"
       }
     },
     {
@@ -6556,7 +6556,7 @@
         "ownerReview": "pending",
         "voiceEvaluation": "pending",
         "photos": "generated_visually_reviewed",
-        "publication": "see_publication_record"
+        "publication": "hosted_published"
       }
     },
     {
@@ -6702,7 +6702,7 @@
         "ownerReview": "pending",
         "voiceEvaluation": "pending",
         "photos": "generated_visually_reviewed",
-        "publication": "see_publication_record"
+        "publication": "hosted_published"
       }
     },
     {
@@ -6848,7 +6848,7 @@
         "ownerReview": "pending",
         "voiceEvaluation": "pending",
         "photos": "generated_visually_reviewed",
-        "publication": "see_publication_record"
+        "publication": "hosted_published"
       }
     },
     {
@@ -6994,7 +6994,7 @@
         "ownerReview": "pending",
         "voiceEvaluation": "pending",
         "photos": "generated_visually_reviewed",
-        "publication": "see_publication_record"
+        "publication": "hosted_published"
       }
     },
     {
@@ -7141,7 +7141,7 @@
         "ownerReview": "pending",
         "voiceEvaluation": "pending",
         "photos": "generated_visually_reviewed",
-        "publication": "see_publication_record"
+        "publication": "hosted_published"
       }
     }
   ]
