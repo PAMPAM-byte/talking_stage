@@ -4,3 +4,4 @@ export function emit(operation: Operation, outcome: Outcome, durationMs?: number
 export function failureOutcome(error: unknown): Outcome;
 export function observe<T>(operation: Operation, work: () => PromiseLike<T>): Promise<T>;
 export function observeAI(operation: Operation, work: () => Promise<string>): Promise<string>;
+export function emitReplyQuality(report: { stage: string; repetitionScore: number; flags: string[] }): void;

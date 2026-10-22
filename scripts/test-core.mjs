@@ -28,6 +28,8 @@ const checks = [
   ['test-conversation-momentum.mjs'],
   ['test-reply-quality.mjs'],
   ['test-character-intelligence.mjs'],
+  ['build-character-intelligence.mjs'],
+  ['evaluate-character-intelligence.mjs'],
   ['test-conversation-timeline.mjs'],
   ['test-character-checkins.mjs'],
   ['test-initiative-sync.mjs'],
