@@ -24,6 +24,7 @@ const checks = [
   ['test-ai-provider.mjs'],
   ['test-conversation-knowledge.mjs'],
   ['test-conversation-intent.mjs'],
+  ['test-conversation-momentum.mjs'],
   ['test-conversation-timeline.mjs'],
   ['test-character-checkins.mjs'],
   ['test-initiative-sync.mjs'],
