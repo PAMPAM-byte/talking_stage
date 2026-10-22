@@ -1,0 +1,19 @@
+.separator {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-block: 12px 20px;
+  pointer-events: none;
+}
+.separator time {
+  padding: 6px 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--text-secondary);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.4;
+  box-shadow: 0 2px 6px rgb(77 24 43 / 4%);
+}

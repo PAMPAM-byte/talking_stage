@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+import {messageDay,messageDateLabel} from '../lib/chat/message-dates.ts';
+const now='2026-10-22T10:00:00Z';
+assert.equal(messageDateLabel('2026-10-22T00:00:00Z',now),'Today');
+assert.equal(messageDateLabel('2026-10-21T15:00:00Z',now),'Yesterday');
+assert.equal(messageDateLabel('2026-10-20T15:00:00Z',now),'20 October 2026');
+assert.equal(messageDay('2026-10-21T23:30:00Z'),'2026-10-22');
+assert.notEqual(messageDay('2026-10-21T22:59:00Z'),messageDay('2026-10-21T23:00:00Z'));
+assert.equal(messageDateLabel('2024-02-29T15:00:00Z','2024-03-01T10:00:00Z'),'Yesterday');
+assert.equal(messageDateLabel('2025-12-31T15:00:00Z','2026-01-01T10:00:00Z'),'Yesterday');
+assert.equal(messageDay(undefined),null);assert.equal(messageDateLabel('invalid',now),null);
+console.log('Message dates passed: local midnight, today/yesterday, full dates, leap day, year boundary and missing timestamps.');

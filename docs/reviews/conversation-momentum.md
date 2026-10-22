@@ -1,0 +1,9 @@
+# Conversation momentum, 22 October 2026
+
+The reported Fikayo exchange ended with a thank-you/sign-off after the user said “okay.” Shared cadence guidance repeatedly favoured tiny acknowledgements and discouraged follow-up questions, even when the user had not indicated they wanted to leave. This was a plausible contributor; no provider trace proves a single instruction caused that sentence.
+
+Shared guidance now asks all characters to carry some conversational responsibility: continue a relevant thread, offer a personal opinion or playful observation, or ask one easy question. A bare okay/alright/cool is explicitly distinguished from a farewell. Short pacing remains a guide rather than a reason to withhold curiosity. Names should come up at a natural early opening when unknown across history, summary and permitted facts; known, declined or unanswered name questions must not be repeated. Existing individual voices remain authoritative within product boundaries.
+
+An unanswered question is not a reason to stack more questions. Two recent questions favour a relevant contribution rather than a third interview prompt or an empty acknowledgement. Explicit rest, goodbyes, discomfort, stop requests and declined topics take precedence. Serious disclosures must receive attention rather than a forced topic pivot. No stored facts, relationship state, schedules or paid-call budgets are changed.
+
+Offline validation covers 300 assembled contexts across all 50 characters: acknowledgements, unanswered questions, known/declined names, distress and clear farewells. Existing provider, intent, Nigerian-exchange and female/male personality checks passed, as did 450 prompt-budget cases retaining complete private directions. These checks verify assembled instructions and boundaries, not subjective quality of newly generated dialogue; no live model calls were made.

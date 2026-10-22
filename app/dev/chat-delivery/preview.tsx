@@ -12,6 +12,7 @@ import {encodeExpression} from '@/lib/chat/expressions';
 import {ReactionPreview} from './reaction-preview';
 import {CheckinPreview} from './checkin-preview';
 import {QuotePreview} from './quote-preview';
+import {DatePreview} from './date-preview';
 const id='00000000-0000-4000-8000-000000000001';
 export default function DeliveryPreview({scenario,snapshot=false}:{scenario?:string;snapshot?:boolean}){
  const seeded=['unstarted','generating','failed','attempted'].includes(scenario??'');
@@ -22,6 +23,7 @@ export default function DeliveryPreview({scenario,snapshot=false}:{scenario?:str
  const statuses=(renderedReply||completionKnown)?saved.map(m=>({messageId:m.id,state:'completed',attempts:1,outputMessageId:'preview-output-'+m.id})):seeded?[{messageId:seededId,state:scenario==='generating'?'generating':scenario==='failed'?'failed':'blocked_provider',attempts:scenario==='unstarted'?0:1}]:[];
  const failStop=useRef(false);
  if(scenario==='quotes')return <QuotePreview/>;
+ if(scenario==='dates')return <DatePreview/>;
  if(scenario==='checkins')return <CheckinPreview/>;
  if(scenario==='reactions')return <ReactionPreview/>;
  if(scenario==='expressions')return <ChatShell back={<span>Preview</span>} identity={<h1>Amara · scripted reactions</h1>} composer={<div className="chat-composer">Synthetic media rendering preview</div>}><div role="log" aria-label="Conversation messages" className="chat-log"><article className="message-turn message-turn--user"><ChatMessageContent text="That joke finished me 😂"/></article><article className="message-turn" data-testid="character-gif"><ChatMessageContent text={encodeExpression({kind:'gif',id:'omo-laugh'},'You got me too 😂')}/></article><article className="message-turn" data-testid="character-sticker"><ChatMessageContent text={encodeExpression({kind:'sticker',id:'my-person'})}/></article></div></ChatShell>;

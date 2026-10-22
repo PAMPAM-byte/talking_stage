@@ -12,4 +12,11 @@ await checkForInitiative('synthetic-chat',options);assert.equal(calls,4);
 clearInitiativeThrottle(storage);let release;let requests=0;
 const pending={...options,fetcher:async()=>{requests++;await new Promise(resolve=>{release=resolve;});return Response.json({state:'scheduled'});}};
 const first=checkForInitiative('pending-chat',pending);await checkForInitiative('pending-chat',pending);assert.equal(requests,1);release();await first;
+let interruptedCalls=0;
+await checkForInitiative('interrupted-chat',{...options,fetcher:async(_url,request)=>{
+ interruptedCalls++;assert(request.signal instanceof AbortSignal,'Background checks need a bounded network lifetime');
+ assert.equal(request.signal.aborted,false);throw new DOMException('Synthetic timeout','TimeoutError');
+}});
+await checkForInitiative('interrupted-chat',{...options,fetcher:async()=>{interruptedCalls++;return Response.json({state:'scheduled'});}});
+assert.equal(interruptedCalls,2,'An interrupted check must release its in-flight lock and allow a later retry');
 console.log('Initiative sync passed: conversation targeting, off-to-on recovery without five-minute delay, duplicate/in-flight suppression and preference changes preserving unrelated drafts. No network/model calls.');
