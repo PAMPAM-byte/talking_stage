@@ -47,7 +47,7 @@ img, svg { max-width: 100%; }
 .button--danger { background: var(--danger-soft); color: var(--danger); border-color: var(--danger); }
 .button:disabled { background: var(--disabled-surface); color: var(--disabled-text); border-color: transparent; }
 .button[aria-busy="true"] { cursor: progress; }
-.button--icon { width: 48px; padding: 0; flex: none; }
+.button.button--icon { width: 48px; padding: 0; flex: none; }
 .spinner { width: 16px; height: 16px; flex: none; border: 2px solid currentColor; border-right-color: transparent; border-radius: 50%; animation: spin .8s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 @media (hover: hover) { .button--primary:hover:not(:disabled) { background: var(--brand-hover); } .button--secondary:hover:not(:disabled), .button--quiet:hover:not(:disabled) { background: var(--brand-soft); } }
