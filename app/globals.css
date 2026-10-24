@@ -1,4 +1,9 @@
-@import "tailwindcss";
+/* Scan only UI source for class names. Automatic detection also read scripts/
+   and docs/, which slowed compiles and crashed Turbopack on unreadable files. */
+@import "tailwindcss" source(none);
+@source "../app";
+@source "../components";
+@source "../lib";
 @import "./styles/tokens.css";
 
 @theme inline {
