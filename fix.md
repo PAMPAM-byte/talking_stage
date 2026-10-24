@@ -174,7 +174,10 @@ Follow these for every fix. They come from `AGENTS.md`, `docs/styles.md` and the
 2. **Code: CAPTCHA.**
    - Add the Cloudflare Turnstile widget to the register, sign-in and recover forms in `components/real-account-form.tsx`. Load `https://challenges.cloudflare.com/turnstile/v0/api.js`, already allowed by F02's CSP, and post the token as `captchaToken`.
    - In `submitAccount`, read it with `text(form, "captchaToken")` and pass it as `options: { captchaToken }` to `signUp` and `signInWithPassword`, and as `{ redirectTo, captchaToken }` to `resetPasswordForEmail`.
-   - Use Cloudflare's published test keys in development and tests, so Playwright runs do not depend on the live widget.
+   - Use Cloudflare's published test keys in development and tests, so Playwright runs do not depend on the live widget. Site key `1x00000000000000000000AA` with secret `1x0000000000000000000000000000000AA` always passes; `2x…` variants always fail.
+   - A maintained React wrapper is `@marsidev/react-turnstile` (React 19 supported); render it in a client component.
+   - Supabase verifies the token server-side itself, so the app does not call Cloudflare's `siteverify`.
+   - Tokens are single-use and expire after 300 seconds, so reset the widget after a failed submit.
 3. **Configuration.** In each hosted project:
    - Authentication → Sign In / Providers → Email: enable *Confirm email* and *Secure password change*.
    - Authentication → Attack Protection: enable CAPTCHA with provider Turnstile and paste the secret.
@@ -207,6 +210,18 @@ Follow these for every fix. They come from `AGENTS.md`, `docs/styles.md` and the
 **Steps**
 
 1. **Verified resources (Decision needed).** The founder or a delegate must confirm current Nigerian crisis services directly with each operator: name, number, hours, languages, and the date checked. Store them in `lib/safety/crisis-resources.ts` with a `verifiedOn` date, and show nothing that hasn't been verified. Review them quarterly. International fallback directories: findahelpline.com and the IASP crisis-centre directory. Don't ship this card with unverified numbers.
+
+   Candidates from desk research on 24 October 2026. Each still needs a phone check by the team:
+
+   | Service | Number | Hours stated | Desk-research status |
+   | --- | --- | --- | --- |
+   | National emergency (NCC) | 112 | 24/7, toll-free | Confirmed on ncc.gov.ng; state coverage of call centres may be partial |
+   | Lagos State emergency | 767 or 112 | Toll-free | Confirmed on Lagos State government sites |
+   | She Writes Woman | 0800 800 2000 | 24/7, toll-free | Confirmed on shewriteswoman.org |
+   | SURPIN (Lifeline International member) | 0800 078 7746 | 24 hours | Confirmed on lifeline-international.com; SURPIN's own site not reachable |
+   | Mentally Aware Nigeria Initiative (MANI) | 0809 111 6264 · 0811 168 0686 | Not published; do not label 24/7 | Confirmed on mentallyaware.org/contact |
+
+   Do **not** use the "Nigeria Suicide Prevention Initiative" numbers or the "0700 000 MIND" / "0800 123 4567" Lagos numbers that circulate on blogs. None could be traced to an operator, and one looks like a placeholder.
 2. **Migration `202610240028_safety_signals.sql`:**
    ```sql
    create table private.safety_flags (
@@ -374,13 +389,25 @@ Follow these for every fix. They come from `AGENTS.md`, `docs/styles.md` and the
      Sentry.captureRequestError(error, request, context);
    };
    ```
-3. **Privacy settings** (required; this app handles intimate text):
-   - `sendDefaultPii: false`;
-   - no session replay;
-   - a `beforeSend` that deletes `event.request.data`, `event.request.cookies` and `event.request.headers`, and drops breadcrumbs from `fetch` bodies.
-   
-   Never attach message text, memories or prompts to an error.
-4. Add the ingest host to F02's `connect-src`, or use the SDK's tunnel route so no extra origin is needed.
+3. **Privacy settings** (required; this app handles intimate text).
+   - `@sentry/nextjs` 11.x (peer range includes Next 16; needs Node 20.19+) has **deprecated `sendDefaultPii`** in favour of `dataCollection`.
+   - Its defaults collect user info, cookies, headers, query strings, HTTP bodies and **AI prompts and responses (`genAI`)**. Turn all of them off in `sentry.server.config.ts`, `sentry.edge.config.ts` and `instrumentation-client.ts`:
+   ```ts
+   Sentry.init({
+     dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
+     dataCollection: {
+       userInfo: false, cookies: false, httpHeaders: false, urlQueryParams: false,
+       httpBodies: [],                               // documented way to disable bodies
+       genAI: { inputs: false, outputs: false },     // confirm against the installed 11.x types
+       stackFrameVariables: false, databaseQueryData: false,
+     },
+     beforeSend(event) { delete event.request?.data; delete event.request?.cookies; delete event.request?.headers; delete event.user; return event; },
+   });
+   ```
+   - Do not add the Session Replay integration.
+   - Never attach message text, memories or prompts to an error.
+   - Before going live, trigger a test error from a chat route and inspect the event to confirm no body or AI text arrived.
+4. Use the SDK's `tunnelRoute` option in `withSentryConfig` (imported from `@sentry/nextjs/config` in current docs) so browser events stay same-origin and F02's `connect-src` needs no Sentry host. The tunnel path is not in `proxy.ts`'s explicit matcher list, so no matcher change is needed.
 5. **Alerts.** Create alerts for:
    - a new issue in production;
    - error rate above baseline;
@@ -480,6 +507,9 @@ Depends on F10 for the manifest and on F09 for unread counts. Follow the install
 **Steps**
 
 1. Run `npm.cmd install web-push`, then `npx.cmd web-push generate-vapid-keys`. Add `NEXT_PUBLIC_VAPID_PUBLIC_KEY=`, `VAPID_PRIVATE_KEY=` and `VAPID_SUBJECT=mailto:<support address>` to `.env.example`, and store real values in the host.
+   - The subject must be a real `mailto:` or `https:` address; Apple's push service may reject placeholders such as `mailto:user@localhost`.
+   - Send with a short `TTL` (e.g. 3600) so stale "replied" alerts are not delivered hours later.
+   - If the host restricts outbound traffic, allow `*.push.apple.com`.
 2. **Migration `…_push_subscriptions.sql`:**
    - `private.push_subscriptions(id, user_id, endpoint text unique, p256dh text, auth text, created_at, last_success_at, failure_count)`;
    - `private.notification_preferences(user_id pk, replies boolean default true, checkins boolean default true, quiet_start time default '22:00', quiet_end time default '08:00')`;
@@ -694,6 +724,8 @@ These are scoped in the [review](docs/dating-app-readiness-review.md) and need n
 
 - **Payment policy and model:** A7 gendered money requests and payment wording (Decision needed), G1 Bachs sandbox acceptance, G2 unit economics, G3 payment alerts.
 - **Accounts and safety:** B3 date of birth and stronger age assurance (Decision needed), A8 structured output checks for contact sharing and explicit content.
+  - Age-assurance options with Nigerian coverage, from desk research: Smile ID, Dojah and Prembly check a NIN/BVN against the issuing authority, which yields an authoritative date of birth. Dojah also offers liveness with an age range. Yoti and Veriff offer selfie-only facial age estimation, which is lower friction but probabilistic, so use a buffer age such as 25.
+  - Any option processes biometric or identity data, so it needs F05-style DPIA coverage and a privacy-notice update.
 - **Engagement and chat:** C4 tests against guilt/FOMO wording, D1 persisted Pass (with F19), E1 per-message delete, E2 new-message pill, E3 inline history loading.
 - **AI internals:** F4 narrower context invalidation, F5 consolidate the `claim_reply` chain.
 - **Platform and frontend:** H9 remaining indexes and the hot budget row, I3/I4 CSS consolidation and legacy theme removal, I8 admin dead ends.
