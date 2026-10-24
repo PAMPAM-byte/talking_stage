@@ -71,8 +71,8 @@ test('hosted registration, gender discovery, 100 photos, chat persistence, isola
     } finally { await anonymous.close(); }
     await page.goto('/discover?gender=woman');
     await page.getByRole('button', { name: 'Browse again', exact: true }).click();
-    for (let passed = 0; passed < 12 && !await page.getByRole('heading', { name: 'Amara, 28', exact: true }).count(); passed++) await page.getByRole('button', { name: /^Pass / }).click();
-    await expect(page.getByRole('heading', { name: 'Amara, 28', exact: true })).toBeVisible();
+    for (let passed = 0; passed < 12 && !await page.getByRole('heading', { name: 'Amara, 27', exact: true }).count(); passed++) await page.getByRole('button', { name: /^Pass / }).click();
+    await expect(page.getByRole('heading', { name: 'Amara, 27', exact: true })).toBeVisible();
     await page.getByRole('link', { name: 'View profile', exact: true }).click();
     await expect(page).toHaveURL(new RegExp(`/characters/${state.characters['char-amara'].id}\\?gender=woman$`));
     await expect(page.locator('.gallery-thumbnails button')).toHaveCount(2);

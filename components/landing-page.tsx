@@ -4,6 +4,7 @@ import { Icon } from '@/components/ui/icon';
 import { LandingPhoto } from '@/components/landing-photo';
 import { LandingMotion } from '@/components/landing-motion';
 import cast from '@/lib/mock/public-cast.json';
+import { characterNameAge } from '@/lib/cast-labels';
 import { usesSupabase } from '@/lib/backend/config';
 import styles from '@/components/landing-styles';
 
@@ -47,8 +48,8 @@ export default function Home() {
           <p className={styles.heroNote}>For adults 18+ <span aria-hidden="true">·</span> Fictional characters. Real curiosity.</p>
         </div>
         <div className={styles.heroVisual} aria-label="Meet two of our fictional AI personalities">
-          <figure className={`${styles.heroPortrait} ${styles.portraitOne}`}><LandingPhoto src="/images/characters/char-zuri-gallery-v2.webp" alt="Zuri, a fictional adult AI character, enjoying coconut water at the beach." name="Zuri" sizes="(min-width: 700px) 254px, (min-width: 468px) 194px, calc((100vw - 80px) / 2)" eager /><figcaption><span>Zuri, 29</span><small>Bold. Witty. A little unexpected.</small></figcaption></figure>
-          <figure className={`${styles.heroPortrait} ${styles.portraitTwo}`}><LandingPhoto src="/images/characters/char-kunle-portrait.webp" alt="Kunle, a fictional adult AI character, wearing glasses and a navy shirt." name="Kunle" sizes="(min-width: 700px) 254px, (min-width: 468px) 194px, calc((100vw - 80px) / 2)" eager /><figcaption><span>Kunle, 35</span><small>Grounded, with a curious side.</small></figcaption></figure>
+          <figure className={`${styles.heroPortrait} ${styles.portraitOne}`}><LandingPhoto src="/images/characters/char-zuri-gallery-v2.webp" alt="Zuri, a fictional adult AI character, enjoying coconut water at the beach." name="Zuri" sizes="(min-width: 700px) 254px, (min-width: 468px) 194px, calc((100vw - 80px) / 2)" eager /><figcaption><span>{characterNameAge('Zuri')}</span><small>Bold. Witty. A little unexpected.</small></figcaption></figure>
+          <figure className={`${styles.heroPortrait} ${styles.portraitTwo}`}><LandingPhoto src="/images/characters/char-kunle-portrait.webp" alt="Kunle, a fictional adult AI character, wearing glasses and a navy shirt." name="Kunle" sizes="(min-width: 700px) 254px, (min-width: 468px) 194px, calc((100vw - 80px) / 2)" eager /><figcaption><span>{characterNameAge('Kunle')}</span><small>Grounded, with a curious side.</small></figcaption></figure>
           <div className={styles.sparkSeal} aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M12 21S2 15 2 8.5a5.5 5.5 0 0 1 10-3 5.5 5.5 0 0 1 10 3C22 15 12 21 12 21Z" /></svg></div>
           <div className={styles.heroClue}><span className={styles.quoteMark} aria-hidden="true">“</span><div><p>A good outfit gets attention.<br />What keeps yours?</p><span>Zuri’s conversation clue</span></div></div>
           <p className={styles.photoDisclosure}>Fictional adult characters · AI-generated photography</p>

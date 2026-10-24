@@ -52,7 +52,7 @@ test('real conversation persistence, retries, ownership and lifecycle',async({pa
   const back=page.getByRole('link',{name:'Back to Amara’s profile',exact:true});
   await expect(back).toHaveAttribute('href',`/characters/${character}`);
   await back.click();await expect(page).toHaveURL(new RegExp(`/characters/${character}$`));
-  await expect(page.getByRole('heading',{name:'Amara, 28',exact:true})).toBeVisible();
+  await expect(page.getByRole('heading',{name:'Amara, 27',exact:true})).toBeVisible();
   await page.getByRole('button',{name:'Start conversation',exact:true}).click();
   await expect(page).toHaveURL(new RegExp(`/messages/${id}$`));
   await expect(page.locator('.message-bubble')).toHaveText('A synthetic message that survives refresh.');

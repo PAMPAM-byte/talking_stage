@@ -2,6 +2,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import { Icon } from "./ui/icon";
+import { characterNameAge } from "@/lib/cast-labels";
 function LandingPhoto({ src, alt, name }: { src: string; alt: string; name: string }) {
   const [failed, setFailed] = useState(false);
   return <div className="landing-portrait__panel">
@@ -12,9 +13,9 @@ function LandingPhoto({ src, alt, name }: { src: string; alt: string; name: stri
 export function LandingPortrait() {
   return <figure className="landing-portrait">
     <div className="landing-portrait__image">
-      <LandingPhoto src="/images/characters/char-zuri-gallery-v2.webp" alt="Zuri, 29, a fictional adult AI character, enjoying the beach with coconut water." name="Zuri" />
+      <LandingPhoto src="/images/characters/char-zuri-gallery-v2.webp" alt={`${characterNameAge("Zuri")}, a fictional adult AI character, enjoying the beach with coconut water.`} name="Zuri" />
     </div>
-    <div className="landing-clue"><span className="caption muted">A little clue to the conversation</span><blockquote className="display">“A good outfit gets attention. What keeps yours?”</blockquote><span className="supporting">Zuri, 29 · Fictional AI character</span></div>
-    <figcaption className="landing-photo-caption caption muted">Zuri, 29 · AI-generated fictional character</figcaption>
+    <div className="landing-clue"><span className="caption muted">A little clue to the conversation</span><blockquote className="display">“A good outfit gets attention. What keeps yours?”</blockquote><span className="supporting">{characterNameAge("Zuri")} · Fictional AI character</span></div>
+    <figcaption className="landing-photo-caption caption muted">{characterNameAge("Zuri")} · AI-generated fictional character</figcaption>
   </figure>;
 }
