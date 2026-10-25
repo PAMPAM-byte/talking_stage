@@ -8,7 +8,10 @@
       "Bash(grep -no \".\\\\{100\\\\}Zuri, 29.\\\\{40\\\\}\" components/landing-portrait.tsx)",
       "Bash(grep -no \".\\\\{60\\\\}Kunle, 35.\\\\{20\\\\}\" components/landing-page.tsx)",
       "Bash(node \"C:/Users/OLUWAP~1/AppData/Local/Temp/claude/c--Users-OLUWAPAMILERIN-OneDrive-Desktop-talking-stage/ff3680c4-9060-4435-a155-172436854ece/scratchpad/age-audit.mjs\" .)",
-      "Bash(npx eslint *)"
+      "Bash(npx eslint *)",
+      "Bash(node scripts/test-request-policy.mjs)",
+      "Bash(grep -vE \"^\\\\s*$\")",
+      "Bash(node scripts/configure-local-money-requests.mjs)"
     ]
   }
 }

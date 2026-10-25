@@ -1,5 +1,7 @@
 # Current project status
 
+24 October character money requests: the founder approved request pacing for women characters, applying to any opted-in adult user (no user-gender targeting): first request after 20 completed exchanges, then at most once every 7 days per conversation, within NGN 2,000–1,000,000. The values are in `lib/payments/request-policy.mjs` and verified by the new offline `test-request-policy` suite. `npm run backend:money-requests` enables them on the loopback Docker database only. The hosted dev project and production stay disabled; merchant setup, sandbox end-to-end acceptance and legal review remain open. [Details](./bachs-payments.md#optional-requests).
+
 19 October payment simplification: the founder selected standard single-merchant Bachs checkout. Custom character account names, connected-account provisioning and Connect requirements are removed from the intended scope. Provider-issued merchant/bank details remain authoritative; approved NGN 2,000 to 1,000,000 limits and payment-verification controls remain.
 
 19 October gift limits approved: inclusive NGN 2,000–1,000,000 (200,000–100,000,000 integer minor units) for gifts and optional requests. Migration 018 applies the bounds without enabling payments or requests. Merchant setup, credentials, hosted migration and request cooldown/exchange threshold remain pending.

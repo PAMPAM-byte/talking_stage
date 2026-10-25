@@ -17,6 +17,7 @@
     "test:reports-database": "node scripts/test-reports-database.mjs",
     "test:account-deletion": "node scripts/test-account-deletion.mjs",
     "backend:deletion": "node scripts/configure-local-deletion.mjs",
+    "backend:money-requests": "node scripts/configure-local-money-requests.mjs",
     "backup:create": "node scripts/local-backups.mjs create",
     "backup:restore-check": "node scripts/local-backups.mjs restore-check",
     "backup:sync": "node scripts/local-backups.mjs sync",

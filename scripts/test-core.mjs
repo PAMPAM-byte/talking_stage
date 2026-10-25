@@ -47,6 +47,7 @@ const checks = [
   ['test-photo-replies.mjs'],
   ['test-summaries.mjs'],
   ['test-request-foundations.mjs'],
+  ['test-request-policy.mjs'],
   ['test-reports-database.mjs'],
   ['test-account-deletion.mjs'],
 ];

@@ -71,7 +71,15 @@ User-initiated gift links (20 October): when gifts are available, the reply sche
 
 Requests are independently disabled by default through `private.monetary_request_policy`. A woman character can return a nullable `requestAmountMinor` only when the server advertises eligibility and the user opted in, has not muted/refused, has enough completed exchanges, and is outside the cooldown. The model can always choose null. The database rechecks policy, current capabilities, amount bounds, adult/owner access and the existing reply lease/context before committing a proposal and reserving its cooldown atomically. Gift and request amount ranges are intersected.
 
-Gift and optional-request amounts share the approved NGN 2,000 to 1,000,000 range. `minimum_completed_exchanges` and `cooldown_seconds` still need founder values; requests remain disabled. Other synthetic test values are not defaults. The request card offers **Review gift** and **No thanks**. Reviewing does not debit or initialize a charge. The gift form starts blank so the user can choose an amount. No thanks saves refusal. A narrow, contextual plain-text refusal such as “no thanks” immediately after an open proposal also persists refusal; this is not a general natural-language refusal classifier. Other discomfort is handled by model instructions and the explicit stop/mute controls. Only an explicit settings action can resume requests. Affection, messages and photos never depend on giving.
+Gift and optional-request amounts share the approved NGN 2,000 to 1,000,000 range.
+
+**Founder decision, 24 October 2026:**
+- Women characters may request money from any adult user who has opted in. No user-gender targeting is added; the app does not collect the user's own gender.
+- `minimum_completed_exchanges` is 20 completed replies in the current conversation generation.
+- `cooldown_seconds` is 604800 (7 days) per conversation.
+- The values live in `lib/payments/request-policy.mjs` and are covered by `scripts/test-request-policy.mjs`.
+
+`npm run backend:money-requests` applies them to the loopback Docker database only. Hosted and production request policy remain disabled until merchant setup, sandbox acceptance and legal review are complete. Other synthetic test values are not defaults. The request card offers **Review gift** and **No thanks**. Reviewing does not debit or initialize a charge. The gift form starts blank so the user can choose an amount. No thanks saves refusal. A narrow, contextual plain-text refusal such as “no thanks” immediately after an open proposal also persists refusal; this is not a general natural-language refusal classifier. Other discomfort is handled by model instructions and the explicit stop/mute controls. Only an explicit settings action can resume requests. Affection, messages and photos never depend on giving.
 
 ## Verification and operational boundaries
 
