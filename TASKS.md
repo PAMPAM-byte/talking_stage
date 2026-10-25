@@ -1,0 +1,60 @@
+# Tasks
+
+Source: [fix.md](fix.md) (Phase 0 → Phase 1 → Phase 2). Ordered by priority; each task depends only on tasks above it. One fix per branch `fix/<id>-<name>`; run `check:engineering`, `test`, `build`, `check:production` before each PR and record evidence in `docs/project-status.md`.
+
+## Active
+
+### Phase 0 — before any real user
+
+- [ ] **F01 · Remove committed test credentials (H4)** - no dependencies, start here
+  - Rotate/delete `tester@talkingstage.example` on hosted projects first
+  - `lib/backend/local-test-account.json` → `.example.json`, gitignore the real file, make `components/account-flow.tsx` and the 2 `tests-auth` specs tolerate it missing
+- [ ] **F02 · Security headers (H2)** - CSP, HSTS, framing, referrer in `next.config.ts`
+  - CSP must already allow Turnstile (F04) and `worker-src 'self'` (F11)
+- [ ] **F07 · Hosting, environments and CI (H1, H8)** - blocked on host decision (see Waiting On)
+  - Separate staging + production Supabase projects; CI required on `main`; migrations deployed by workflow
+  - F03/F04 staging verification, F08, F12 and F18 hosted enablement rely on this
+- [ ] **F03 · Production email delivery (B1)** - needs email provider + sending domain/DNS
+  - Verify recovery email on three mailbox providers
+- [ ] **F04 · Email confirmation, CAPTCHA, safe password change (B2, B4)** - after F02 (CSP) and F03 (email)
+  - Turnstile on register/sign-in/recover in `components/real-account-form.tsx`; enable in staging and production
+- [ ] **F08 · Error tracking and alerts (H3, H11)** - after F07; Sentry with `tunnelRoute` so F02 CSP needs no change
+- [ ] **F05 · Safety: crisis resources, model-based signals, durable age flag (A1, A2)** - crisis card blocked on verified resources (see Waiting On); signals/age flag can proceed
+  - Adds `checkins_paused_until`, used later by F12
+- [ ] **F06 · Persistent AI disclosure (A3)** - AI label and reminders; frontend-design skill + design system
+
+### Phase 1 — pilot-ready
+
+- [ ] **F09 · Working unread counts (C2)** - next migration is `202610240028_*`
+- [ ] **F10 · Installable app and link previews (I1, I2)** - manifest, icons, OG metadata
+- [ ] **F11 · Web push notifications (C1)** - after F09 + F10; needs VAPID keys; `public/sw.js`, title/body only, never message text
+- [ ] **F12 · Hosted scheduler for check-ins (C3)** - after F07 (host cron), F05 (pause flag), F11 (push)
+- [ ] **F13 · Prompt caching (F2)** - adds `onUsage` transport hook
+- [ ] **F14 · Settle AI budget to actual usage (F1)** - after F13
+- [ ] **F15 · Provider retries and unblocking failed replies (F3)**
+- [ ] **F16 · Cacheable cast photos (H7)**
+- [ ] **F17 · Cheaper live updates (H6)**
+- [ ] **F18 · Data export and self-service deletion (A4, A5)** - hosted enablement via F07; payment-record handling blocked on decision
+- [ ] **F19 · Product analytics (K1, K2)** - AI-cost-per-user view needs F14
+- [ ] **Phase 0/1 completion check** - tick the checklist at the end of `fix.md`; devices verified on Android + iPhone
+
+## Waiting On
+
+- [ ] **Founder: choose host (Vercel recommended) + production domain** - blocks F07, F12 - since 2026-10-24
+- [ ] **Founder: verified Nigerian crisis services** (name, number, hours, languages, date checked) - blocks F05 crisis card - since 2026-10-24
+- [ ] **Founder: support process for deleting users with payment records** - blocks F18 step 4 - since 2026-10-24
+- [ ] **Accounts/keys** - email provider + DNS (F03), Cloudflare Turnstile (F04), GitHub Actions secrets + staging/prod Supabase (F07), Sentry EU (F08), VAPID keys (F11)
+
+## Someday
+
+Phase 2 — track as issues once Phase 1 is done (see `fix.md` §Phase 2).
+
+- [ ] **Payments: Bachs merchant setup, sandbox end-to-end acceptance (G1), legal review of money requests, A7 wording (Decision needed), G2 unit economics, G3 alerts** - request policy is local-only; hosted dev/prod stay disabled
+- [ ] **Adult text chat** - founder-requested scope; blocked on a compatible provider + explicit-mode controls (`docs/cast-50/adult-chat-scope.md`)
+- [ ] **B3 date of birth / age assurance (Decision needed)** and A8 structured output checks
+- [ ] **Engagement/chat:** C4, D1 persisted Pass, E1 per-message delete, E2 new-message pill, E3 inline history
+- [ ] **AI internals:** F4 context invalidation, F5 consolidate `claim_reply`
+- [ ] **Platform/frontend:** H9 indexes, I3/I4 CSS consolidation, I8 admin dead ends, CSP SRI
+- [ ] **Pilot gate (I10):** manual device + screen-reader review; revised voice-quality and native-speaker evaluation
+
+## Done
