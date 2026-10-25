@@ -1,8 +1,9 @@
 import { test, expect } from '@playwright/test';
-import credentials from '../lib/backend/local-test-account.json';
+import { localTestCredentials } from './local-credentials';
 
 test('local sample credentials replace old details and sign in through normal authentication', async ({ page }) => {
   test.skip(process.env.TALKINGSTAGE_LOCAL_TEST_ACCOUNT !== '1', 'Run npm run backend:test-account first.');
+  const credentials = localTestCredentials();
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/sign-in');
   await page.getByLabel('Email address').fill('old-details@example.test');

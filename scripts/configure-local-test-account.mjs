@@ -1,3 +1,4 @@
+import { randomBytes } from 'node:crypto';
 import { readFile, writeFile } from 'node:fs/promises';
 import { createClient } from '@supabase/supabase-js';
 
@@ -6,7 +7,17 @@ const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
 if (process.env.NODE_ENV === 'production' || !url || !['localhost', '127.0.0.1'].includes(new URL(url).hostname)) {
   throw new Error('Test accounts can only be configured against local Supabase.');
 }
-const credentials = JSON.parse(await readFile(new URL('../lib/backend/local-test-account.json', import.meta.url), 'utf8'));
+const credentialsFile = new URL('../lib/backend/local-test-account.json', import.meta.url);
+let credentials;
+try {
+  credentials = JSON.parse(await readFile(credentialsFile, 'utf8'));
+} catch (error) {
+  if (error.code !== 'ENOENT') throw error;
+  // First run: keep the template email, generate a private password and store it in the git-ignored file.
+  const { email } = JSON.parse(await readFile(new URL('../lib/backend/local-test-account.example.json', import.meta.url), 'utf8'));
+  credentials = { email, password: randomBytes(18).toString('base64url') };
+  await writeFile(credentialsFile, `${JSON.stringify(credentials, null, 2)}\n`, { flag: 'wx' });
+}
 const options = { auth: { persistSession: false, autoRefreshToken: false } };
 const admin = createClient(url, process.env.SUPABASE_SERVICE_ROLE_KEY, options);
 const client = createClient(url, process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY, options);
