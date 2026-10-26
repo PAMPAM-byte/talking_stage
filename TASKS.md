@@ -6,11 +6,8 @@ Source: [fix.md](fix.md) (Phase 0 → Phase 1 → Phase 2). Ordered by priority;
 
 ### Phase 0 — before any real user
 
-- [ ] **F01 · Remove committed test credentials (H4)** - no dependencies, start here
-  - Rotate/delete `tester@talkingstage.example` on hosted projects first
-  - `lib/backend/local-test-account.json` → `.example.json`, gitignore the real file, make `components/account-flow.tsx` and the 2 `tests-auth` specs tolerate it missing
-- [ ] **F02 · Security headers (H2)** - CSP, HSTS, framing, referrer in `next.config.ts`
-  - CSP must already allow Turnstile (F04) and `worker-src 'self'` (F11)
+- [ ] **F02 · Security headers (H2)** - code done (report-only default); finish after F07 staging exists
+  - Left: Safari + Bachs-redirect check, 1 week report-only staging, build with `TALKINGSTAGE_CSP_ENFORCE=1`, securityheaders.com + Observatory scans
 - [ ] **F07 · Hosting, environments and CI (H1, H8)** - blocked on host decision (see Waiting On)
   - Separate staging + production Supabase projects; CI required on `main`; migrations deployed by workflow
   - F03/F04 staging verification, F08, F12 and F18 hosted enablement rely on this
@@ -58,3 +55,5 @@ Phase 2 — track as issues once Phase 1 is done (see `fix.md` §Phase 2).
 - [ ] **Pilot gate (I10):** manual device + screen-reader review; revised voice-quality and native-speaker evaluation
 
 ## Done
+- [x] ~~**F01 · Remove committed test credentials (H4)**~~ (2026-10-26) - code in c1b2375; hosted tester password rotated + sessions revoked
+  - Left: `npm run test:auth` with Docker; re-audit production project after F07

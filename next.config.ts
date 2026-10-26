@@ -1,7 +1,42 @@
 import type { NextConfig } from "next";
 import {networkInterfaces} from 'node:os';
 
+// Header-based CSP: nonces need fully dynamic rendering, which cacheComponents static shells rule out,
+// so Next's inline bootstrap scripts require 'unsafe-inline'. Supabase is only called from the server.
+const isDev = process.env.NODE_ENV === 'development';
+const csp = [
+  "default-src 'self'",
+  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ''} https://challenges.cloudflare.com`,
+  "style-src 'self' 'unsafe-inline'",
+  "img-src 'self' data: blob:",
+  "font-src 'self'",
+  "connect-src 'self'",
+  'frame-src https://challenges.cloudflare.com',
+  "worker-src 'self'",
+  "manifest-src 'self'",
+  "object-src 'none'",
+  "base-uri 'self'",
+  "form-action 'self'",
+  "frame-ancestors 'none'",
+  // Only over HTTPS, so local http://localhost production checks keep loading same-origin assets.
+  ...(process.env.TALKINGSTAGE_SITE_URL?.startsWith('https:') ? ['upgrade-insecure-requests'] : []),
+].join('; ');
+const securityHeaders = [
+  // Report-only until TALKINGSTAGE_CSP_ENFORCE=1 at build time; unset it and rebuild to roll back.
+  { key: process.env.TALKINGSTAGE_CSP_ENFORCE === '1' ? 'Content-Security-Policy' : 'Content-Security-Policy-Report-Only', value: csp },
+  // No preload until the production domain has served HTTPS for some weeks.
+  { key: 'Strict-Transport-Security', value: 'max-age=31536000; includeSubDomains' },
+  { key: 'X-Content-Type-Options', value: 'nosniff' },
+  { key: 'X-Frame-Options', value: 'DENY' },
+  { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+  { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=(), browsing-topics=()' },
+];
+
 const nextConfig: NextConfig = {
+  poweredByHeader: false,
+  async headers() {
+    return [{ source: '/:path*', headers: securityHeaders }];
+  },
   // The floating development badge covers chat controls on narrow screens.
   devIndicators: false,
   allowedDevOrigins: Object.values(networkInterfaces()).flatMap(entries=>
