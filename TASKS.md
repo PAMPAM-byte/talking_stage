@@ -11,7 +11,7 @@ Source: [fix.md](fix.md) (Phase 0 → Phase 1 → Phase 2). Ordered by priority;
 - [ ] **F07 · Hosting, environments and CI (H1, H8)** - blocked on host decision (see Waiting On)
   - Separate staging + production Supabase projects; CI required on `main`; migrations deployed by workflow
   - F03/F04 staging verification, F08, F12 and F18 hosted enablement rely on this
-- [ ] **F03 · Production email delivery (B1)** - needs email provider + sending domain/DNS
+- [ ] **F03 · Production email delivery (B1)** - Resend chosen; needs `mail.talkingstage.buzz` verified in Resend (DNS) + SMTP key
   - Verify recovery email on three mailbox providers
 - [ ] **F04 · Email confirmation, CAPTCHA, safe password change (B2, B4)** - after F02 (CSP) and F03 (email)
   - Turnstile on register/sign-in/recover in `components/real-account-form.tsx`; enable in staging and production
@@ -37,10 +37,10 @@ Source: [fix.md](fix.md) (Phase 0 → Phase 1 → Phase 2). Ordered by priority;
 
 ## Waiting On
 
-- [ ] **Founder: choose host (Vercel recommended) + production domain** - blocks F07, F12 - since 2026-10-24
+- [x] ~~**Founder: choose host + production domain**~~ (2026-10-26) - Vercel, www.talkingstage.buzz
 - [ ] **Founder: verified Nigerian crisis services** (name, number, hours, languages, date checked) - blocks F05 crisis card - since 2026-10-24
 - [ ] **Founder: support process for deleting users with payment records** - blocks F18 step 4 - since 2026-10-24
-- [ ] **Accounts/keys** - email provider + DNS (F03), Cloudflare Turnstile (F04), GitHub Actions secrets + staging/prod Supabase (F07), Sentry EU (F08), VAPID keys (F11)
+- [ ] **Accounts/keys** - Resend domain verification + SMTP key (F03), Cloudflare Turnstile (F04), GitHub Actions secrets + staging/prod Supabase (F07), Sentry EU (F08), VAPID keys (F11)
 
 ## Someday
 
