@@ -7,7 +7,7 @@ const spec=JSON.parse(await readFile('docs/cast-50/male-personalities.json','utf
 const men=pack.characters.filter(c=>c.profile.gender==='man');assert.equal(men.length,24);
 assert.equal(spec.characters.length,14);assert.equal(new Set(spec.characters.map(c=>c.attraction)).size,14);
 assert.deepEqual(men.filter(c=>c.profile.personalityTags.includes('big boy')).map(c=>c.profile.name).sort(),spec.bigBoys.toSorted());
-assert.equal(men.filter(c=>c.profile.personalityTags.includes('playboy')).length,3);
+assert.equal(men.filter(c=>c.profile.personalityTags.includes('playboy')).length,5);
 for(const row of spec.characters){const c=men.find(c=>c.profile.name===row.name);assert(c);assert.equal(c.profile.bio,row.bio);assert.deepEqual(c.profile.personalityTags,row.tags);assert(c.direction.includes(row.expression));assert(c.direction.includes(row.attraction));}
 for(const c of pack.characters){
  const dating=datingContext(c.profile);assert.equal(dating.defaultCounterpart,c.profile.gender==='man'?'woman':'man');assert.equal(dating.verifiedUserGender,false);

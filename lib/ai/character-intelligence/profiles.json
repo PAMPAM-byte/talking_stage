@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "sourceFingerprint": "03f58e3655771d8875cc6c01d9bef37292d28d7806a7b416bb7ecf79629bd4ed",
+  "sourceFingerprint": "1192016b62f0e2ee412c698df285ebf481ecb15fa6ebd52f3dc1c276dc1f6528",
   "basis": "Existing approved profile tags and authored temperament; no public reclassification or new biography. Reference lines are anti-copy examples, not scripts.",
   "characters": [
     {
@@ -194,7 +194,7 @@
       "key": "char-chief-chukwudi",
       "name": "Chuka",
       "age": 30,
-      "primary": "big_boy",
+      "primary": "playboy",
       "secondary": "decent",
       "emojiLevel": 2,
       "pidginCeiling": 2,
@@ -636,7 +636,7 @@
       "key": "char-obinna",
       "name": "Obinna",
       "age": 29,
-      "primary": "flirty",
+      "primary": "playboy",
       "secondary": "decent",
       "emojiLevel": 2,
       "pidginCeiling": 2,
