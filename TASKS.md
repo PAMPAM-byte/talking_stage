@@ -11,7 +11,7 @@ Source: [fix.md](fix.md) (Phase 0 → Phase 1 → Phase 2). Ordered by priority;
 - [ ] **F07 · Hosting, environments and CI (H1, H8)** - blocked on host decision (see Waiting On)
   - Separate staging + production Supabase projects; CI required on `main`; migrations deployed by workflow
   - F03/F04 staging verification, F08, F12 and F18 hosted enablement rely on this
-- [ ] **F03 · Production email delivery (B1)** - Resend chosen; needs `mail.talkingstage.buzz` verified in Resend (DNS) + SMTP key
+- [ ] **F03 · Production email delivery (B1)** - repo part done on `fix/f03-email-delivery`; left: Supabase dashboard SMTP + templates, DMARC record, inbox test (Gmail/Yahoo/Outlook)
   - Verify recovery email on three mailbox providers
 - [ ] **F04 · Email confirmation, CAPTCHA, safe password change (B2, B4)** - after F02 (CSP) and F03 (email)
   - Turnstile on register/sign-in/recover in `components/real-account-form.tsx`; enable in staging and production

@@ -1,10 +1,23 @@
 <!doctype html>
-<html lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1"><meta charset="utf-8"><title>Reset your TalkingStage password</title></head>
-<body style="margin:0;padding:24px 16px;background:#FAF8FA;color:#241C23;font-family:Arial,sans-serif;line-height:1.6">
-<div style="max-width:480px;margin:0 auto;background:#FFFFFF;padding:24px;border-radius:16px;border:1px solid #E8DFE6">
-<p style="color:#682447;font-weight:bold;font-size:20px;margin:0 0 32px">TalkingStage</p>
-<h1 style="font-family:Georgia,serif;font-size:30px;line-height:1.2;margin:0 0 16px">Let’s get you back in.</h1>
-<p>Use this link to choose a new password for your TalkingStage account.</p>
-<p style="margin:28px 0"><a href="{{ .RedirectTo }}?token_hash={{ .TokenHash }}&amp;type=recovery" style="display:inline-block;background:#682447;color:#FFFFFF;padding:12px 20px;border-radius:12px;text-decoration:none;font-weight:bold">Reset password</a></p>
-<p style="color:#716570;font-size:14px">If you didn’t request a password reset, you can ignore this email. Your password will stay the same.</p>
-</div></body></html>
+<html lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1"><meta charset="utf-8"><meta name="color-scheme" content="light"><title>Reset your TalkingStage password</title></head>
+<body style="margin:0;padding:0;background:#FFF1F3;color:#242126;font-family:Manrope,'Segoe UI',Arial,sans-serif;line-height:1.6">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#FFF1F3"><tr><td align="center" style="padding:32px 16px">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:480px;background:#FFFFFF;border:1px solid #ECE7E9;border-radius:20px">
+<tr><td style="padding:28px 28px 0">
+<table role="presentation" cellpadding="0" cellspacing="0"><tr>
+<td width="32" height="32" align="center" valign="middle" style="width:32px;height:32px;background:#CF2445;border-radius:9px;color:#FFFFFF;font-family:Georgia,serif;font-size:22px;font-weight:bold;line-height:32px">&ldquo;</td>
+<td style="padding-left:10px;font-size:18px;font-weight:800;letter-spacing:-0.4px;color:#242126">TalkingStage</td>
+</tr></table>
+</td></tr>
+<tr><td style="padding:32px 28px 28px">
+<h1 style="margin:0 0 12px;font-size:26px;line-height:1.25;font-weight:800;letter-spacing:-0.6px;color:#242126">Let’s get you back in.</h1>
+<p style="margin:0 0 28px;font-size:16px">Choose a new password for your TalkingStage account. This link works once and expires in one hour.</p>
+<table role="presentation" cellpadding="0" cellspacing="0"><tr><td style="background:#CF2445;border-radius:12px">
+<a href="{{ .RedirectTo }}?token_hash={{ .TokenHash }}&amp;type=recovery" style="display:inline-block;padding:14px 24px;color:#FFFFFF;font-size:16px;font-weight:bold;text-decoration:none">Reset password</a>
+</td></tr></table>
+<p style="margin:28px 0 0;color:#6C666E;font-size:14px">Didn’t ask to reset your password? Ignore this email. Your password stays the same.</p>
+</td></tr>
+</table>
+<p style="margin:16px 0 0;color:#6C666E;font-size:12px">TalkingStage · Fictional AI characters for adults 18+</p>
+</td></tr></table>
+</body></html>
