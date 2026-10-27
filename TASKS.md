@@ -11,8 +11,6 @@ Source: [fix.md](fix.md) (Phase 0 → Phase 1 → Phase 2). Ordered by priority;
 - [ ] **F07 · Hosting, environments and CI (H1, H8)** - blocked on host decision (see Waiting On)
   - Separate staging + production Supabase projects; CI required on `main`; migrations deployed by workflow
   - F03/F04 staging verification, F08, F12 and F18 hosted enablement rely on this
-- [ ] **F03 · Production email delivery (B1)** - Resend SMTP, templates, site URL and DMARC (`p=none`) set 27 Oct; Gmail recovery landed in inbox and reset completed
-  - Left: check SPF/DKIM/DMARC `pass` in a received header. Yahoo/Outlook tests skipped (owner has no accounts there); re-test when pilot users on them sign up
 - [ ] **F04 · Email confirmation, CAPTCHA, safe password change (B2, B4)** - after F02 (CSP) and F03 (email)
   - Turnstile on register/sign-in/recover in `components/real-account-form.tsx`; enable in staging and production
 - [ ] **F08 · Error tracking and alerts (H3, H11)** - after F07; Sentry with `tunnelRoute` so F02 CSP needs no change
@@ -58,5 +56,7 @@ Phase 2 — track as issues once Phase 1 is done (see `fix.md` §Phase 2).
 - [ ] **Pilot gate (I10):** manual device + screen-reader review; revised voice-quality and native-speaker evaluation
 
 ## Done
+- [x] ~~**F03 · Production email delivery (B1)**~~ (2026-10-27) - Resend SMTP, templates, site URL and DMARC (`p=none`); Gmail recovery in inbox with SPF, DKIM and DMARC pass, reset completed
+  - Yahoo/Outlook not tested (owner has no accounts there); re-test when pilot users on them sign up. Consider tightening DMARC to `p=quarantine` after a few weeks of clean sending
 - [x] ~~**F01 · Remove committed test credentials (H4)**~~ (2026-10-26) - code in c1b2375; hosted tester password rotated + sessions revoked
   - Left: `npm run test:auth` with Docker; re-audit production project after F07
