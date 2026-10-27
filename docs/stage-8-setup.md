@@ -72,10 +72,10 @@ Stage 12 update: operational local rehearsals now use `npm run backup:create` an
 
 Run `npm run backend:test-account` after starting and configuring local Supabase. This creates a normal, adult-declared sample account, completes its onboarding, and enables a **Use test account** button on the local sign-in page. Restart `npm run dev` if it was already running when the environment flag was added.
 
-- Email: `tester@talkingstage.example`
-- Password: `TalkingStage123!`
+- Email: `tester@talkingstage.example` (from `lib/backend/local-test-account.example.json`)
+- Password: generated randomly on first run and stored only in the git-ignored `lib/backend/local-test-account.json`
 
-Click **Use test account**, then **Sign in** (or press Enter). The button replaces browser-autofilled credentials. The account uses real local authentication and keeps its test data between sessions. Rerunning the command restores its sample password without resetting its preferences or history. It never changes another account or grants administrator access.
+Click **Use test account**, then **Sign in** (or press Enter). The button replaces browser-autofilled credentials. The account uses real local authentication and keeps its test data between sessions. Rerunning the command restores the password from the local file without resetting its preferences or history; delete that file and rerun to rotate it. It never changes another account or grants administrator access.
 
 The setup command refuses hosted Supabase and production mode. The button requires development mode, a loopback Supabase URL, and `TALKINGSTAGE_LOCAL_TEST_ACCOUNT=1`; it is absent in production. These credentials are exclusively for local testing.
 

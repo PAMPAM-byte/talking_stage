@@ -25,7 +25,7 @@ export function ConnectedProfilePhotos({ name, assets }: { name: string; assets:
   </div><div className="gallery-thumbnails" aria-label="Choose photo">{photos.map((asset, photoIndex) => <button type="button" key={asset.id} aria-label={`Show photo ${photoIndex + 1} of ${name}`} aria-pressed={index === photoIndex} onClick={() => setIndex(photoIndex)}>
     {/* eslint-disable-next-line @next/next/no-img-element */}
     <img src={'/api/cast-assets/' + asset.id + '?w=320'} alt={`${name}, ${asset.slot} preview`} loading="lazy" />
-  </button>)}</div><ReportControl target={{ kind: 'photo', id: selected.id }} label={name + '’s ' + selected.slot + ' photo'} buttonLabel="Report photo" preview={selected.alt_text} />{viewing && <Overlay open className="overlay--profile-photo" onClose={() => setViewing(false)} title={name + '’s photos'}>
+  </button>)}</div><ReportControl target={{ kind: 'photo', id: selected.id }} label={name + '’s ' + selected.slot + ' photo'} buttonLabel="Report photo" preview={selected.alt_text} />{viewing && <Overlay open className="overlay--profile-photo" onClose={() => setViewing(false)} title={name + '’s photos'} description="AI-generated photos of a fictional adult character.">
     <FullProfilePhoto key={selected.id} src={'/api/cast-assets/' + selected.id + '?w=1280'} alt={selected.alt_text} />
     <div className="gallery-viewer-controls"><Button variant="secondary" aria-label="Previous photo" disabled={photos.length < 2} onClick={() => navigate(-1)}>←</Button><span className="caption muted" role="status">Photo {index! + 1} of {photos.length}</span><Button variant="secondary" aria-label="Next photo" disabled={photos.length < 2} onClick={() => navigate(1)}>→</Button></div>
   </Overlay>}</>;

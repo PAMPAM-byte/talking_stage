@@ -236,15 +236,17 @@ otp_length = 6
 # Number of seconds before the email OTP expires (defaults to 1 hour).
 otp_expiry = 3600
 
-# Use a production-ready SMTP server
-# [auth.email.smtp]
-# enabled = true
-# host = "smtp.sendgrid.net"
-# port = 587
-# user = "apikey"
-# pass = "env(SENDGRID_API_KEY)"
-# admin_email = "admin@email.com"
-# sender_name = "Admin"
+# Production email (fix.md F03): hosted projects send through Resend, configured in the
+# dashboard (Authentication → Emails → SMTP Settings). Disabled here so local and test
+# mail stays in the local catcher; set enabled = true and SMTP_PASSWORD to try Resend locally.
+[auth.email.smtp]
+enabled = false
+host = "smtp.resend.com"
+port = 465
+user = "resend"
+pass = "env(SMTP_PASSWORD)"
+admin_email = "no-reply@talkingstage.buzz"
+sender_name = "TalkingStage"
 
 # Uncomment to customize email template
 [auth.email.template.confirmation]

@@ -39,6 +39,9 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
+# Local-only synthetic credentials
+/lib/backend/local-test-account.json
+
 # env files (can opt-in for committing if needed)
 .env*
 !.env.example

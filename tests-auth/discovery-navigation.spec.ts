@@ -1,9 +1,10 @@
 import { expect, test } from '@playwright/test';
-import credentials from '../lib/backend/local-test-account.json';
+import { localTestCredentials } from './local-credentials';
 import cast from '../lib/mock/public-cast.json';
 
 test('profile return preserves gender and other filters even after refreshing', async ({ page }) => {
   test.skip(process.env.TALKINGSTAGE_LOCAL_TEST_ACCOUNT !== '1', 'Run npm run backend:test-account first.');
+  const credentials = localTestCredentials();
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/sign-in');
   await page.getByLabel('Email address').fill(credentials.email);
