@@ -16,9 +16,9 @@ Source: [fix.md](fix.md) (Phase 0 → Phase 1 → Phase 2). Ordered by priority;
 - [ ] **F04 · Email confirmation, CAPTCHA, safe password change (B2, B4)** - after F02 (CSP) and F03 (email)
   - Turnstile on register/sign-in/recover in `components/real-account-form.tsx`; enable in staging and production
 - [ ] **F08 · Error tracking and alerts (H3, H11)** - after F07; Sentry with `tunnelRoute` so F02 CSP needs no change
-- [ ] **F05 · Safety: crisis resources, model-based signals, durable age flag (A1, A2)** - crisis card blocked on verified resources (see Waiting On); signals/age flag can proceed
+- [ ] **F05 · Safety: crisis resources, model-based signals, durable age flag (A1, A2)** - crisis card blocked on verified resources (backlogged, see Someday); signals/age flag can proceed
   - Adds `checkins_paused_until`, used later by F12
-- [ ] **F06 · Persistent AI disclosure (A3)** - AI label and reminders; frontend-design skill + design system
+- [ ] **F06 · Persistent AI disclosure (A3)** - built on `fix/f06-ai-disclosure` (27 Oct); left: connected-chat check via `test:auth` (Docker), deploy
 
 ### Phase 1 — pilot-ready
 
@@ -38,13 +38,16 @@ Source: [fix.md](fix.md) (Phase 0 → Phase 1 → Phase 2). Ordered by priority;
 ## Waiting On
 
 - [x] ~~**Founder: choose host + production domain**~~ (2026-10-26) - Vercel, www.talkingstage.buzz
-- [ ] **Founder: verified Nigerian crisis services** (name, number, hours, languages, date checked) - blocks F05 crisis card - since 2026-10-24
 - [ ] **Founder: support process for deleting users with payment records** - blocks F18 step 4 - since 2026-10-24
 - [ ] **Accounts/keys** - Resend domain verification + SMTP key (F03), Cloudflare Turnstile (F04), GitHub Actions secrets + staging/prod Supabase (F07), Sentry EU (F08), VAPID keys (F11)
 
 ## Someday
 
 Phase 2 — track as issues once Phase 1 is done (see `fix.md` §Phase 2).
+
+- [ ] **Verify Nigerian crisis services by phone** - backlogged 2026-10-26; blocks only the F05 crisis card
+  - Call 112, Lagos 767, She Writes Woman 0800 800 2000, SURPIN 0800 078 7746, MANI 0809 111 6264 / 0811 168 0686
+  - Record name, number, hours, languages, date checked; re-check quarterly. Never use the untraceable blog numbers (fix.md F05)
 
 - [ ] **Payments: Bachs merchant setup, sandbox end-to-end acceptance (G1), legal review of money requests, A7 wording (Decision needed), G2 unit economics, G3 alerts** - request policy is local-only; hosted dev/prod stay disabled
 - [ ] **Adult text chat** - founder-requested scope; blocked on a compatible provider + explicit-mode controls (`docs/cast-50/adult-chat-scope.md`)

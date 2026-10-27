@@ -1,0 +1,11 @@
+/* Quieter than the date chip: same type, no box, so it reads as context, not structure. */
+.notice {
+  max-width: 34ch;
+  margin: 4px auto 16px;
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.5;
+  text-align: center;
+  text-wrap: balance;
+}
