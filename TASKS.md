@@ -6,19 +6,19 @@ Source: [fix.md](fix.md) (Phase 0 → Phase 1 → Phase 2). Ordered by priority;
 
 ### Phase 0 — before any real user
 
-- [ ] **F02 · Security headers (H2)** - code done (report-only default); finish after F07 staging exists
+- [ ] **F02 · Security headers (H2)** - live in production since 27 Oct (PR #1, report-only CSP); finish after F07 staging exists
   - Left: Safari + Bachs-redirect check, 1 week report-only staging, build with `TALKINGSTAGE_CSP_ENFORCE=1`, securityheaders.com + Observatory scans
 - [ ] **F07 · Hosting, environments and CI (H1, H8)** - blocked on host decision (see Waiting On)
   - Separate staging + production Supabase projects; CI required on `main`; migrations deployed by workflow
   - F03/F04 staging verification, F08, F12 and F18 hosted enablement rely on this
-- [ ] **F03 · Production email delivery (B1)** - repo part done on `fix/f03-email-delivery`; left: Supabase dashboard SMTP + templates, DMARC record, inbox test (Gmail/Yahoo/Outlook)
-  - Verify recovery email on three mailbox providers
+- [ ] **F03 · Production email delivery (B1)** - Resend SMTP, templates, site URL and DMARC (`p=none`) set 27 Oct; Gmail recovery landed in inbox and reset completed
+  - Left: check SPF/DKIM/DMARC `pass` in a received header. Yahoo/Outlook tests skipped (owner has no accounts there); re-test when pilot users on them sign up
 - [ ] **F04 · Email confirmation, CAPTCHA, safe password change (B2, B4)** - after F02 (CSP) and F03 (email)
   - Turnstile on register/sign-in/recover in `components/real-account-form.tsx`; enable in staging and production
 - [ ] **F08 · Error tracking and alerts (H3, H11)** - after F07; Sentry with `tunnelRoute` so F02 CSP needs no change
 - [ ] **F05 · Safety: crisis resources, model-based signals, durable age flag (A1, A2)** - crisis card blocked on verified resources (backlogged, see Someday); signals/age flag can proceed
   - Adds `checkins_paused_until`, used later by F12
-- [ ] **F06 · Persistent AI disclosure (A3)** - built on `fix/f06-ai-disclosure` (27 Oct); left: connected-chat check via `test:auth` (Docker), deploy
+- [ ] **F06 · Persistent AI disclosure (A3)** - live in production since 27 Oct (PR #1); left: connected-chat check via `test:auth` (Docker)
 
 ### Phase 1 — pilot-ready
 
@@ -39,7 +39,7 @@ Source: [fix.md](fix.md) (Phase 0 → Phase 1 → Phase 2). Ordered by priority;
 
 - [x] ~~**Founder: choose host + production domain**~~ (2026-10-26) - Vercel, www.talkingstage.buzz
 - [ ] **Founder: support process for deleting users with payment records** - blocks F18 step 4 - since 2026-10-24
-- [ ] **Accounts/keys** - Resend domain verification + SMTP key (F03), Cloudflare Turnstile (F04), GitHub Actions secrets + staging/prod Supabase (F07), Sentry EU (F08), VAPID keys (F11)
+- [ ] **Accounts/keys** - Cloudflare Turnstile (F04), GitHub Actions secrets + staging/prod Supabase (F07), Sentry EU (F08), VAPID keys (F11)
 
 ## Someday
 
