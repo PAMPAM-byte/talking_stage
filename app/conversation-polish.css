@@ -100,3 +100,11 @@
 @keyframes typing-dot { 0%, 60%, 100% { transform: translateY(0); opacity: .45; } 30% { transform: translateY(-4px); opacity: 1; } }
 @keyframes message-arrive { from { opacity: .4; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 @media (prefers-reduced-motion: reduce) { .message-turn--outgoing, .typing-bubble > span { animation: none; } }
+/* Character replies texted as a burst: grouped bubbles; fresh ones arrive one after another. */
+.message-burst { display: grid; justify-items: start; gap: 4px; }
+.message-burst .message-bubble { margin: 0; }
+.message-burst .message-bubble:not(:last-child) { border-bottom-left-radius: 6px; }
+.message-burst .message-bubble + .message-bubble { border-top-left-radius: 6px; }
+.message-burst[data-fresh] .message-bubble { animation: message-burst-in 240ms ease-out both; animation-delay: calc(var(--burst-index) * 700ms); }
+@keyframes message-burst-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .message-burst[data-fresh] .message-bubble { animation: none; } }

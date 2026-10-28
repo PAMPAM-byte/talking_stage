@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {ARCHETYPES,characterIntelligence,intelligenceDirection,deriveStage,selectPermittedFacts,repetitionReport} from '../lib/ai/character-intelligence/index.mjs';
 import {assessTurn,unsafeDraft} from '../lib/ai/character-intelligence/safety.mjs';
-import {humanizeText} from '../lib/ai/character-intelligence/humanizer.mjs';
+import {burstText,humanizeText} from '../lib/ai/character-intelligence/humanizer.mjs';
 import {assessRepetition} from '../lib/ai/character-intelligence/repetition.mjs';
 import {buildInput,generateReply} from '../lib/ai/provider.mjs';
 import {emitReplyQuality} from '../lib/monitoring/events.mjs';
@@ -55,4 +55,9 @@ assert(!JSON.stringify(meta).includes('real person'));assert(!Object.hasOwn(meta
 const original=console.info;const logs=[];console.info=value=>logs.push(value);
 try{emitReplyQuality({stage:'PRIVATE',repetitionScore:4,flags:['PRIVATE','distress'],text:'PRIVATE'});}finally{console.info=original;}
 assert(!logs.join('').includes('PRIVATE'));assert.equal(JSON.parse(logs[0]).repetitionScore,1);
+// Phone-chat bursts: short replies stay whole, blank lines collapse, long blocks split at sentence ends, at most three bubbles.
+assert.equal(burstText('haha you wish'),'haha you wish');assert.equal(burstText('lol\n\n okay fine \nbut you owe me'),'lol\nokay fine\nbut you owe me');
+const long='Honestly my day was long, I had three back to back meetings and a client who kept changing the brief. Then traffic on Third Mainland was crazy. I only got home by 9pm. What about you, how was yours?';
+const bubbles=burstText(long).split('\n');assert(bubbles.length>1&&bubbles.length<=3&&bubbles.every(b=>b.length<=140));assert.equal(bubbles.join(' '),long);
+assert.equal(burstText('a\nb\nc\nd'),'a\nb\nc d');assert.equal(burstText('It cost 2.5k at Mr. Biggs'),'It cost 2.5k at Mr. Biggs');
 console.log('Archive intelligence passed: 50 existing identities, 12 voice dimensions, bounded familiarity/memories, repetition and anti-copy checks, contextual safeguards, no paid retry, strict schema and private numeric telemetry. No network calls.');
