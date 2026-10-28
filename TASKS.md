@@ -11,7 +11,10 @@ Source: [fix.md](fix.md) (Phase 0 → Phase 1 → Phase 2). Ordered by priority;
 - [ ] **F07 · Hosting, environments and CI (H1, H8)** - blocked on host decision (see Waiting On)
   - Separate staging + production Supabase projects; CI required on `main`; migrations deployed by workflow
   - F03/F04 staging verification, F08, F12 and F18 hosted enablement rely on this
-- [ ] **F04 · Email confirmation, CAPTCHA, safe password change (B2, B4)** - after F02 (CSP) and F03 (email)
+- [ ] **F04 · Email confirmation, CAPTCHA, safe password change (B2, B4)** - code on `fix/f04-account-protection` (27 Oct): Turnstile on register/sign-in/recover, confirm-email state with resend, signup link to `/auth/confirm`
+  - Left: Turnstile keys; site key in Vercel + redeploy; Supabase CAPTCHA, Confirm email, Secure password change; sign-up test on live site
+  - Password change only exists in the email recovery flow, so no current-password re-check is needed
+  - Follow-up: switch local `enable_confirmations` on once `tests-auth` registration reads the link from the mail catcher (needs Docker)
   - Turnstile on register/sign-in/recover in `components/real-account-form.tsx`; enable in staging and production
 - [ ] **F08 · Error tracking and alerts (H3, H11)** - after F07; Sentry with `tunnelRoute` so F02 CSP needs no change
 - [ ] **F05 · Safety: crisis resources, model-based signals, durable age flag (A1, A2)** - crisis card blocked on verified resources (backlogged, see Someday); signals/age flag can proceed
