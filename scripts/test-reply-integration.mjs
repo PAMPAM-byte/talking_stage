@@ -55,6 +55,7 @@ try{
  await actor('', 'service_role');assert.equal(await finish(resetJob),'discarded');
  await db.exec('reset role');assert.equal(Number((await db.query('select count(*) as n from private.reply_jobs')).rows[0].n),0);assert(Number((await db.query("select amount_micro_usd as n from private.ai_daily_usage where scope='project'")).rows[0].n)>0);
  const client={rpc:async(name,p)=>{
+  if(name==='settle_ai_usage')return {data:(await db.query('select public.settle_ai_usage($1,$2,$3,$4,$5,$6) as v',[p.p_lease,p.p_actor,p.p_input,p.p_cache_write,p.p_cache_read,p.p_output])).rows[0].v,error:null};
   const data=name==='claim_reply'?(await db.query('select public.claim_reply($1,$2,$3) as v',[p.p_message,p.p_actor,p.p_model])).rows[0].v:
    (await db.query('select public.finish_reply($1,$2,$3,$4,$5,$6) as v',[p.p_job,p.p_actor,p.p_lease,p.p_text,p.p_failure,p.p_asset])).rows[0].v;
   return {data,error:null};
@@ -62,9 +63,30 @@ try{
  const settings={key:'SYNTHETIC-NOT-A-KEY',model:'synthetic'};let networkCalls=0;
  const fetcher=async(_url,options)=>{networkCalls++;const body=JSON.parse(options.body);assert(body.input[0].content.includes('SYNTHETIC PRIVATE VOICE'));assert.equal(body.store,false);
  if(networkCalls===1)assert(body.input[0].content.includes('"timeZone":"Africa/Lagos"'),'The full claim/provider pipeline must carry the current local clock.');
- return new Response(JSON.stringify({status:'completed',output:[{type:'message',content:[{type:'output_text',text:JSON.stringify({text:'Synthetic pipeline reply.',photoAssetId:null,...(body.text.format.schema.properties.reaction?{reaction:null}:{}),...(body.text.format.schema.properties.replyToMessageId?{replyToMessageId:null}:{})})}]}]}));};
+ return new Response(JSON.stringify({status:'completed',output:[{type:'message',content:[{type:'output_text',text:JSON.stringify({text:'Synthetic pipeline reply.',photoAssetId:null,...(body.text.format.schema.properties.reaction?{reaction:null}:{}),...(body.text.format.schema.properties.replyToMessageId?{replyToMessageId:null}:{})})}]}],
+  usage:{input_tokens:1000,output_tokens:100,input_tokens_details:{cached_tokens:400}}}));};
+ const usageTotals=async()=>{await db.exec('reset role');const rows=(await db.query("select scope,amount_micro_usd::int as n from private.ai_daily_usage where scope in ('project',$1)",[a])).rows;await actor('', 'service_role');return Object.fromEntries(rows.map(r=>[r.scope==='project'?'project':'user',r.n]));};
+ const lastSettled=async()=>{await db.exec('reset role');const row=(await db.query('select lease,amount_micro_usd::int as reserved,settled_micro_usd::int as settled from private.ai_reservations order by reserved_at desc,id desc limit 1')).rows[0];await actor('', 'service_role');return row;};
  await actor(a);const pipelineMessage=await send('Synthetic pipeline input',2);await actor('', 'service_role');
+ const beforeSettle=await usageTotals();
  assert.equal(await runReply(client,pipelineMessage,a,settings,{fetcher,userTimeZone:'Africa/Lagos'}),'completed');assert.equal(networkCalls,1);
+ // F14: 600 uncached + 400 cache-read input and 100 output tokens at 1 USD/MTok settle to 740 micro-USD.
+ const settled=await lastSettled();assert.equal(settled.reserved,49024);assert.equal(settled.settled,740);
+ const afterSettle=await usageTotals();assert.equal(afterSettle.project,beforeSettle.project+740);assert.equal(afterSettle.user,beforeSettle.user+740);
+ const settle=async(lease,owner,usage=[0,0,0,0])=>(await db.query('select public.settle_ai_usage($1,$2,$3,$4,$5,$6) as v',[lease,owner,...usage])).rows[0].v;
+ assert.equal(await settle(settled.lease,a),'unavailable','A second settlement is a no-op');assert.deepEqual(await usageTotals(),afterSettle);
+ await actor(a);const floorMessage=await send('Synthetic floor input',2);await actor('', 'service_role');const floorJob=await claim(floorMessage);
+ assert.equal(await settle(floorJob.lease,b),'unavailable','Another actor cannot settle a reservation');assert.equal(await settle(floorJob.lease,a,[-1,0,0,0]),'unavailable');
+ await db.exec('reset role');await db.exec("update private.ai_daily_usage set amount_micro_usd=5");await actor('', 'service_role');
+ assert.equal(await settle(floorJob.lease,a),'settled');assert.deepEqual(await usageTotals(),{project:0,user:0},'Settlement never takes a total below zero');
+ assert.equal(await finish(floorJob,null,'provider_error'),'failed');await actor(a);await db.query('select public.cancel_reply($1)',[floorMessage]);await actor('', 'service_role');
+ await db.exec("reset role");
+ await db.query('update private.ai_daily_usage set amount_micro_usd=$1 where scope=$2',[afterSettle.project,'project']);await db.query('update private.ai_daily_usage set amount_micro_usd=$1 where scope=$2',[afterSettle.user,a]);
+ // Summary reservations settle through the same function.
+ const summaryLease='00000000-0000-4000-8000-0000000000aa';await db.query('insert into private.summary_reservations(lease,actor_id,amount_micro_usd) values($1,$2,1000)',[summaryLease,a]);
+ await db.query("update private.ai_daily_usage set amount_micro_usd=amount_micro_usd+1000 where scope in ('project',$1)",[a]);await actor('', 'service_role');
+ assert.equal(await settle(summaryLease,a,[100,0,0,10]),'settled');assert.deepEqual(await usageTotals(),{project:afterSettle.project+110,user:afterSettle.user+110});
+ await actor(a);await assert.rejects(db.query('select public.settle_ai_usage($1,$2,0,0,0,0)',[summaryLease,a]),/permission denied/);await actor('', 'service_role');
  assert.equal(await runReply(client,pipelineMessage,a,settings,{fetcher}),'completed');assert.equal(networkCalls,1);
  // Both a dropped save request and a lost acknowledgement must reuse the same
  // output/lease, never generate another reply or duplicate its stored message.
@@ -73,7 +95,7 @@ try{
   await actor(a);const baseline=(await db.query("select count(*)::int as n from public.messages where conversation_id=$1 and role='character'",[c])).rows[0].n;
   await actor('', 'service_role');const beforeCalls=networkCalls;let saves=0;let payload;
   const unreliable={rpc:async(name,p)=>{
-   if(name==='claim_reply')return client.rpc(name,p);
+   if(name==='claim_reply'||name==='settle_ai_usage')return client.rpc(name,p);
    saves++;if(saves===1){payload={...p};if(lostAck)await client.rpc(name,p);return {status:0,error:{message:'Synthetic fetch failed'}};}
    assert.deepEqual(p,payload);return client.rpc(name,p);
   }};
@@ -87,6 +109,7 @@ try{
  };
  assert.equal(await runReply(client,staleMessage,a,settings,{fetcher:staleFetch}),'discarded');
  assert.equal(await runReply(client,staleMessage,a,settings,{fetcher:async()=>new Response('Private failure',{status:503})}),'failed');
+ assert.equal((await lastSettled()).settled,0,'A non-2xx provider response is unbilled and fully refunded');
  await actor(a);await db.query('select public.cancel_reply($1)',[staleMessage]);const configMessage=await send('Synthetic changed-configuration input',2);await actor('', 'service_role');const configJob=await claim(configMessage);
  await db.exec('reset role');await db.exec('update private.ai_configuration set max_output_tokens=512');await actor('', 'service_role');assert.equal(await finish(configJob),'discarded');
  await actor(a);await db.query('select public.cancel_reply($1)',[configMessage]);const archivedMessage=await send('Synthetic archive input',2);await actor('', 'service_role');const archivedJob=await claim(archivedMessage);
@@ -108,6 +131,11 @@ try{
  assert.equal((await claim(later)).state,'earlier_reply_pending');
  assert.equal(await finish(recovered,null,'provider_error'),'failed');
  assert.equal((await claim(later)).state,'earlier_reply_pending');
+ // Operations spend view: administrators only, aggregate figures without identifiers.
+ await actor(a);await assert.rejects(db.query('select public.admin_ai_spend()'),/forbidden/);
+ await db.exec('reset role');await db.query("insert into private.user_roles(user_id,role) values($1,'admin')",[a]);await actor(a);
+ const spend=(await db.query('select public.admin_ai_spend() as v')).rows[0].v;assert.equal(spend.model,'synthetic');assert.equal(spend.days.length,1);
+ assert(spend.days[0].calls>1&&spend.days[0].settled>0&&spend.days[0].reserved>spend.days[0].settled);assert(!JSON.stringify(spend).includes(a));
  await actor('', 'anon');await assert.rejects(db.query('select public.claim_reply($1,$2,$3)',[message,a,'synthetic']),/permission denied/);
- console.log('Reply integration database checks passed: private context/service role boundary, disabled config, memory consent/isolation/invalidation, atomic budget reservations, lease deduplication/expiry, bounded retries, output idempotency, pauses/cancellation/reset, profile/configuration/archive invalidation and full DB-to-injected-provider-to-commit processing. No network calls made.');
+ console.log('Reply integration database checks passed: private context/service role boundary, disabled config, memory consent/isolation/invalidation, atomic budget reservations, settlement to actual usage (cache reads, idempotent, owner-only, zero floor, summaries, unbilled failures), lease deduplication/expiry, bounded retries, output idempotency, pauses/cancellation/reset, profile/configuration/archive invalidation and full DB-to-injected-provider-to-commit processing. No network calls made.');
 }finally{await db.close();}

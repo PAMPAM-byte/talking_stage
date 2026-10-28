@@ -4,7 +4,7 @@ import { trustedBackendClient } from './trusted-client';
 import { providerSettings } from '@/lib/ai/provider.mjs';
 import { runReply } from '@/lib/ai/reply-pipeline.mjs';
 import { runSummary } from '@/lib/ai/summary-pipeline.mjs';
-import { observeAI, emit, emitReplyQuality } from '@/lib/monitoring/events.mjs';
+import { observeAI, emit, emitAIUsage, emitReplyQuality } from '@/lib/monitoring/events.mjs';
 import { bachsSettings } from '@/lib/payments/bachs.mjs';
 
 export function configuredReplyModel() {
@@ -26,7 +26,7 @@ export async function processReply(messageId: string, actorId: string, signal?: 
 
   const { client, settings } = configuration;
   // Claim and completion RPCs independently enforce ownership, leases and budgets.
-  return observeAI('ai.reply', () => runReply(client, messageId, actorId, settings, { signal, userTimeZone, onQuality: emitReplyQuality, paymentsEnabled: !!bachsSettings(), onCommitAttempt: (outcome: 'ok' | 'unavailable' | 'rejected', durationMs: number) => emit('ai.commit', outcome, durationMs), onProviderResponse: (status: number, durationMs: number) => emit('ai.provider', status === 429 || status === 529 ? 'rate_limited' : status >= 500 ? 'unavailable' : status >= 400 ? 'rejected' : 'ok', durationMs) }));
+  return observeAI('ai.reply', () => runReply(client, messageId, actorId, settings, { signal, userTimeZone, onQuality: emitReplyQuality, onUsage: (usage: Parameters<typeof emitAIUsage>[1]) => emitAIUsage('ai.reply', usage), paymentsEnabled: !!bachsSettings(), onCommitAttempt: (outcome: 'ok' | 'unavailable' | 'rejected', durationMs: number) => emit('ai.commit', outcome, durationMs), onProviderResponse: (status: number, durationMs: number) => emit('ai.provider', status === 429 || status === 529 ? 'rate_limited' : status >= 500 ? 'unavailable' : status >= 400 ? 'rejected' : 'ok', durationMs) }));
 }
 
 export async function processSummary(messageId: string, actorId: string): Promise<string> {
@@ -37,5 +37,5 @@ export async function processSummary(messageId: string, actorId: string): Promis
   }
 
   const { client, settings } = configuration;
-  return observeAI('ai.summary', () => runSummary(client, messageId, actorId, settings));
+  return observeAI('ai.summary', () => runSummary(client, messageId, actorId, settings, { onUsage: (usage: Parameters<typeof emitAIUsage>[1]) => emitAIUsage('ai.summary', usage) }));
 }

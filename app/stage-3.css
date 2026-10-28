@@ -55,3 +55,16 @@
 .overlay--profile-photo { width: min(920px, calc(100% - 32px)); }
 .profile-photo-viewer img { display: block; width: 100%; height: min(60dvh, 760px); object-fit: contain; border-radius: 14px; }
 .profile-photo-viewer + .gallery-viewer-controls { margin-top: 16px; }
+
+/* Admin AI spend: dense tabular figures; the meter shows each day against the site limit. */
+.ai-spend__limits { font-variant-numeric: tabular-nums; color: var(--ink); }
+.ai-spend__scroll { overflow-x: auto; border: 1px solid var(--border); border-radius: 12px; }
+.ai-spend__scroll:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+.ai-spend__table { inline-size: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; font-size: 14px; }
+.ai-spend__table th, .ai-spend__table td { padding: 10px 14px; text-align: end; white-space: nowrap; border-block-end: 1px solid var(--border); }
+.ai-spend__table thead th { font-size: 12px; font-weight: 600; color: var(--text-secondary); background: var(--brand-soft); }
+.ai-spend__table th:first-child { text-align: start; font-weight: 600; }
+.ai-spend__table tbody tr:last-child > * { border-block-end: 0; }
+.ai-spend__amount { display: block; }
+.ai-spend__meter { display: block; margin-block-start: 6px; margin-inline-start: auto; inline-size: 96px; block-size: 4px; border-radius: 4px; background: var(--brand-soft); overflow: hidden; }
+.ai-spend__meter > span { display: block; block-size: 100%; background: var(--brand); }

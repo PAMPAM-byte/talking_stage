@@ -43,6 +43,14 @@ await assert.rejects(generateReply(context,settings,{fetcher:async()=>response('
 await assert.rejects(generateReply(context,settings,{fetcher:async()=>new Response('',{status:429})}),/provider_error/);
 await assert.rejects(generateReply(context,settings,{fetcher:async()=>{throw new DOMException('timeout','TimeoutError');}}),/timeout/);
 await assert.rejects(generateReply(context,{...settings,model:'claude-sonnet-4-5'},{fetcher}),/provider_error/);
+// F13: only numeric token counts are reported; a non-2xx response is unbilled; missing usage is not guessed.
+const usages=[];const onUsage=value=>usages.push(value);
+await generateReply(context,settings,{onUsage,fetcher:async()=>new Response(JSON.stringify({stop_reason:'end_turn',content:[{type:'text',text:JSON.stringify({text:'Hi.',photoAssetId:null})}],usage:{input_tokens:120,cache_creation_input_tokens:900,cache_read_input_tokens:0,output_tokens:30}}))});
+await generateReply(context,settings,{onUsage,fetcher:async()=>new Response(JSON.stringify({stop_reason:'refusal',content:[],usage:{input_tokens:50,cache_read_input_tokens:900,output_tokens:2,service_tier:'standard'}}))});
+await assert.rejects(generateReply(context,settings,{onUsage,fetcher:async()=>new Response('',{status:529})}),/provider_error/);
+await generateReply(context,settings,{onUsage,fetcher:async()=>response()});
+assert.deepEqual(usages,[{input:120,cacheWrite:900,cacheRead:0,output:30},{input:50,cacheWrite:0,cacheRead:900,output:2},{input:0,cacheWrite:0,cacheRead:0,output:0}]);
+assert.equal((await generateReply(context,settings,{onUsage:()=>{throw new Error('sink');},fetcher:async()=>response()})).text,'Hello there.');
 
 // Claude Sonnet 5.5: between_tools (its lowest thinking setting) at low effort, default fallback.
 const sonnet=providerSettings({...env,TALKINGSTAGE_AI_MODEL:'claude-sonnet-5-5'});
@@ -63,4 +71,4 @@ assert.equal((await generateReply(context,sonnet,{fetcher:async()=>sonnetRespons
 await assert.rejects(generateReply(context,sonnet,{fetcher:async()=>sonnetResponse([answer,answer])}),/invalid_output/);
 await assert.rejects(generateReply(context,sonnet,{fetcher:async()=>sonnetResponse([{type:'tool_use',id:'x',name:'x',input:{}},answer])}),/invalid_output/);
 assert.equal((await generateReply(context,sonnet,{fetcher:async()=>new Response(JSON.stringify({stop_reason:'refusal',content:[]}))})).refused,true);
-console.log('Claude offline checks passed: Haiku 5.5 and Sonnet 5.5 request mapping, cached rules block, thinking and effort settings, fallback blocks, structured output, refusal, truncation, invalid output, provider failure and timeout. No live requests made.');
+console.log('Claude offline checks passed: Haiku 5.5 and Sonnet 5.5 request mapping, cached rules block, thinking and effort settings, fallback blocks, structured output, numeric usage reporting (unbilled errors, missing usage, sink isolation), refusal, truncation, invalid output, provider failure and timeout. No live requests made.');
