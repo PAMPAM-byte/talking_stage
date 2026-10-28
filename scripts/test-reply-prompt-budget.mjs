@@ -19,7 +19,7 @@ for(const character of pack.characters)for(const text of ['How are you?',encodeE
  assert(input[0].content.includes(character.direction),'Keep the complete approved private voice, not just the short public biography');
  assert(input.at(-1).content.includes('Message ID: synthetic'));
  assert(input[0].content.includes('Keep conversations non-explicit'));
- assert(input[0].content.includes('answer honestly and briefly'));
+ assert(input[0].content.includes('acknowledge it lightly in your own voice'));
 }
 const compactContext={character:{name:'Synthetic',direction:'Keep the complete individual canon.'},preferences:{},history:[{role:'user',text:'Keep this actual message and its quoted point.',replyTo:{id:'old',role:'character',kind:'text',text:'An older point.'}}],memories:[],maxInputTokens:48000,maxOutputTokens:1024};
 const original=buildInput(compactContext);
