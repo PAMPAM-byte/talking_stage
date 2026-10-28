@@ -96,6 +96,7 @@
     "test:cast-evaluation": "node scripts/test-cast-evaluation.mjs"
   },
   "dependencies": {
+    "@marsidev/react-turnstile": "1.6.2",
     "@supabase/ssr": "^0.12.7",
     "@supabase/supabase-js": "^2.117.3",
     "next": "16.4.2",

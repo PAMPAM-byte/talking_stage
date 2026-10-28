@@ -213,11 +213,13 @@ token_verifications = 30
 # Number of Web3 logins that can be made in a 5 minute interval per IP address.
 web3 = 30
 
-# Configure one of the supported captcha providers: `hcaptcha`, `turnstile`.
-# [auth.captcha]
-# enabled = true
-# provider = "hcaptcha"
-# secret = ""
+# Cloudflare Turnstile (fix.md F04). Hosted projects enable it under Attack Protection. Locally,
+# set enabled = true with Cloudflare's always-pass test secret in TURNSTILE_SECRET and the matching
+# test site key in NEXT_PUBLIC_TURNSTILE_SITE_KEY.
+[auth.captcha]
+enabled = false
+provider = "turnstile"
+secret = "env(TURNSTILE_SECRET)"
 
 [auth.email]
 # Allow/disallow new user signups via email to your project.
@@ -226,8 +228,11 @@ enable_signup = true
 # addresses. If disabled, only the new email is required to confirm.
 double_confirm_changes = true
 # If enabled, users need to confirm their email address before signing in.
+# Hosted projects enable this (fix.md F04). It stays off locally until tests-auth registration
+# flows read the confirmation link from the mail catcher instead of expecting a session.
 enable_confirmations = false
 # If enabled, users will need to reauthenticate or have logged in recently to change their password.
+# Hosted projects enable this. Passwords change only through the email recovery flow.
 secure_password_change = false
 # Controls the minimum amount of time that must pass before sending another signup confirmation or password reset email.
 max_frequency = "1s"

@@ -6,11 +6,12 @@ import { backendClient, currentAccount } from "./server";
 import { setFlowCookie, validFlowCookie } from "./flow-cookie";
 import { observe, emit } from '@/lib/monitoring/events.mjs';
 
-export type AccountResult = { error?: string; message?: string; destination?: string };
+export type AccountResult = { error?: string; message?: string; destination?: string; confirmEmail?: boolean };
 const unavailable = { error: "Account services are unavailable. Please try again later." };
 const existingAccountMessage = "If you already have an account, sign in or reset your password.";
-function providerFailure(error: { status?: number; name?: string }) {
+function providerFailure(error: { status?: number; name?: string; code?: string }) {
   if (error.status === 429) return { error: "Too many attempts. Wait a few minutes and try again." };
+  if (error.code === "captcha_failed") return { error: "The security check didn’t go through. Try again." };
   if ((error.status ?? 0) >= 500 || error.name === "AuthRetryableFetchError") return unavailable;
   return null;
 }
@@ -37,26 +38,29 @@ export async function submitAccount(step: string, form: FormData): Promise<Accou
     if (step === "register" || step === "sign-in" || step === "recover") {
       const email = text(form, "email").trim().toLowerCase();
       const password = text(form, "password");
+      const captchaToken = text(form, "captchaToken") || undefined;
       if (email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return { error: "Enter a valid email address." };
       if (step !== "recover" && (password.length < (step === "register" ? 12 : 1) || password.length > 128)) return { error: step === "register" ? "Use a password between 12 and 128 characters." : "Enter your password." };
       if (step === "register") {
         if (!await validFlowCookie("adult", "18-plus-v1")) return { destination: "/onboarding/age" };
         if (form.get("consent") !== "on") return { error: "Accept the terms and AI disclosure to continue." };
-        const { data, error } = await observe('auth.register', () => client.auth.signUp({ email, password, options: { data: { adult_declaration: "18-plus-v1" } } }));
+        const { data, error } = await observe('auth.register', () => client.auth.signUp({ email, password, options: { data: { adult_declaration: "18-plus-v1" }, emailRedirectTo: `${origin()}/auth/confirm`, captchaToken } }));
         if (error?.code === "user_already_exists") { (await cookies()).delete("ts-adult"); return { message: existingAccountMessage }; }
         if (error) return providerFailure(error) ?? { error: "We couldn’t create your account. Check your details or try again later." };
         (await cookies()).delete("ts-adult");
         if (data.session) return { destination: "/onboarding/preferences" };
-        return { error: "We couldn’t finish signing you in. Try signing in with your email and password." };
+        // With Confirm email on there is no session yet, including for an existing address, so the reply never reveals one.
+        return { confirmEmail: true, message: "Check your email to confirm your address. The link opens TalkingStage and continues your setup." };
       }
       if (step === "sign-in") {
-        const { error } = await observe('auth.sign-in', () => client.auth.signInWithPassword({ email, password }));
+        const { error } = await observe('auth.sign-in', () => client.auth.signInWithPassword({ email, password, options: { captchaToken } }));
+        if (error?.code === "email_not_confirmed") return { error: "Confirm your email address first. Open the link we sent you to finish setting up your account." };
         if (error) return providerFailure(error) ?? { error: "We couldn’t sign you in. Check your email and password, or reset your password." };
         const account = await currentAccount({ failOnUnavailable: true });
         if (!account || !account.profile.adult_declared_at) { await client.auth.signOut(); return { error: "This account needs an accepted adult declaration. Contact support." }; }
         return { destination: account.profile.onboarding_complete ? "/discover" : "/onboarding/preferences" };
       }
-      const recovery = await observe('auth.recover', () => client.auth.resetPasswordForEmail(email, { redirectTo: `${origin()}/auth/confirm` }));
+      const recovery = await observe('auth.recover', () => client.auth.resetPasswordForEmail(email, { redirectTo: `${origin()}/auth/confirm`, captchaToken }));
       if (recovery.error) return providerFailure(recovery.error) ?? { error: "We couldn’t request a recovery link. Wait a moment and try again." };
       return { message: "If an account matches that email, a recovery link will arrive shortly. Check your inbox and spam folder." };
     }
@@ -90,6 +94,19 @@ export async function submitAccount(step: string, form: FormData): Promise<Accou
     }
     return { error: "This action is unavailable." };
   } catch { emit('account.profile', 'unexpected'); return unavailable; }
+}
+export async function resendConfirmation(email: string, captchaToken: string): Promise<AccountResult> {
+  try {
+    const address = email.trim().toLowerCase();
+    if (address.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(address)) return { error: "Enter a valid email address." };
+    const client = await backendClient();
+    if (!client) return unavailable;
+    const { error } = await observe('auth.resend', () => client.auth.resend({ type: "signup", email: address, options: { emailRedirectTo: `${origin()}/auth/confirm`, captchaToken: captchaToken || undefined } }));
+    const failure = error && providerFailure(error);
+    if (failure) return failure;
+    // One reply for every address, so this never reveals whether an account exists.
+    return { message: "If that address still needs confirming, a new link is on its way. Check your inbox and spam folder." };
+  } catch { emit('auth.resend', 'unexpected'); return unavailable; }
 }
 export async function resetOnboardingDraft() {
   (await cookies()).delete("ts-adult");
