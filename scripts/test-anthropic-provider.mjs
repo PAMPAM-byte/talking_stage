@@ -11,7 +11,11 @@ const response=(stop_reason='end_turn',text=JSON.stringify({text:'Hello there.',
 const schemas=[];
 const fetcher=async(url,init)=>{
  assert.equal(url,'https://api.anthropic.com/v1/messages');assert.equal(init.headers['x-api-key'],'synthetic');assert.equal(init.cache,'no-store');
- const body=JSON.parse(init.body);assert.equal(body.model,'claude-haiku-5-5');assert.equal(body.output_config.format.type,'json_schema');assert.equal(body.tools,undefined);assert.equal(body.max_tokens,1024);assert(body.system.includes('non-explicit'));assert.equal(body.messages[0].role,'user');
+ const body=JSON.parse(init.body);assert.equal(body.model,'claude-haiku-5-5');assert.equal(body.output_config.format.type,'json_schema');assert.equal(body.tools,undefined);assert.equal(body.max_tokens,1024);assert.equal(body.messages[0].role,'user');
+ assert.deepEqual(body.thinking,{type:'disabled'});assert.equal(body.fallbacks,undefined);assert.equal(init.headers['anthropic-beta'],undefined);
+ // Rules and published direction are one cached block; per-turn guidance follows uncached.
+ assert.equal(body.system.length,2);assert.deepEqual(body.system[0].cache_control,{type:'ephemeral'});assert.equal(body.system[1].cache_control,undefined);
+ assert(body.system[0].text.includes('non-explicit')&&body.system[0].text.endsWith('Warm and respectful.'));assert(!JSON.stringify(body).includes('prompt-cache-break'));
  schemas.push(body.output_config.format.schema);
  assert.deepEqual(body.output_config.format.schema.properties.photoAssetId,{anyOf:[{type:'null'},{type:'string'}]});
  return response();
@@ -39,4 +43,24 @@ await assert.rejects(generateReply(context,settings,{fetcher:async()=>response('
 await assert.rejects(generateReply(context,settings,{fetcher:async()=>new Response('',{status:429})}),/provider_error/);
 await assert.rejects(generateReply(context,settings,{fetcher:async()=>{throw new DOMException('timeout','TimeoutError');}}),/timeout/);
 await assert.rejects(generateReply(context,{...settings,model:'claude-sonnet-4-5'},{fetcher}),/provider_error/);
-console.log('Claude Haiku offline checks passed: model restriction, request mapping, structured output, refusal, truncation, invalid output, provider failure and timeout. No live requests made.');
+
+// Claude Sonnet 5.5: between_tools (its lowest thinking setting) at low effort, default fallback.
+const sonnet=providerSettings({...env,TALKINGSTAGE_AI_MODEL:'claude-sonnet-5-5'});
+assert.equal(sonnet.model,'claude-sonnet-5-5');
+const sonnetBodies=[];
+const sonnetResponse=content=>new Response(JSON.stringify({stop_reason:'end_turn',content}));
+const answer={type:'text',text:JSON.stringify({text:'Hello there.',photoAssetId:null})};
+assert.equal((await generateReply(context,sonnet,{fetcher:async(_url,init)=>{
+ const body=JSON.parse(init.body);sonnetBodies.push(body);
+ assert.equal(init.headers['anthropic-beta'],'server-side-fallback-2026-07-01');
+ return sonnetResponse([answer]);
+}})).text,'Hello there.');
+const [sonnetBody]=sonnetBodies;
+assert.equal(sonnetBody.model,'claude-sonnet-5-5');assert.deepEqual(sonnetBody.thinking,{type:'between_tools'});assert.equal(sonnetBody.output_config.effort,'low');assert.equal(sonnetBody.fallbacks,'default');
+assert.equal(sonnetBody.temperature,undefined);assert.equal(sonnetBody.system.length,2);assert.deepEqual(sonnetBody.system[0].cache_control,{type:'ephemeral'});
+// Blocks are read by type: progress thinking and fallback markers never become reply text.
+assert.equal((await generateReply(context,sonnet,{fetcher:async()=>sonnetResponse([{type:'thinking',thinking:''},{type:'fallback',from:{model:'claude-sonnet-5-5'},to:{model:'claude-sonnet-5'}},answer])})).text,'Hello there.');
+await assert.rejects(generateReply(context,sonnet,{fetcher:async()=>sonnetResponse([answer,answer])}),/invalid_output/);
+await assert.rejects(generateReply(context,sonnet,{fetcher:async()=>sonnetResponse([{type:'tool_use',id:'x',name:'x',input:{}},answer])}),/invalid_output/);
+assert.equal((await generateReply(context,sonnet,{fetcher:async()=>new Response(JSON.stringify({stop_reason:'refusal',content:[]}))})).refused,true);
+console.log('Claude offline checks passed: Haiku 5.5 and Sonnet 5.5 request mapping, cached rules block, thinking and effort settings, fallback blocks, structured output, refusal, truncation, invalid output, provider failure and timeout. No live requests made.');

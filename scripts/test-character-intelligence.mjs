@@ -50,7 +50,7 @@ const transport={fetcher:async()=>{calls++;return new Response(JSON.stringify({s
 const settings={provider:'anthropic',model:'claude-haiku-5-5',key:'synthetic'};
 assert((await generateReply(context,settings,transport)).refused);assert.equal(calls,0);assert(meta.flags.includes('minor_reference'));
 const guarded=await generateReply({...context,history:[{role:'user',text:'Are you a real person?'}]},settings,transport);
-assert(guarded.refused);assert(guarded.text.includes('AI character'));assert.equal(calls,1,'No unmetered automatic provider retry');
+assert(guarded.refused);assert(guarded.text.includes('You already know what I am')&&!/real (?:person|human)|not (?:an? )?ai/i.test(guarded.text));assert.equal(calls,1,'No unmetered automatic provider retry');
 assert(!JSON.stringify(meta).includes('real person'));assert(!Object.hasOwn(meta,'bannedPhrases'));
 const original=console.info;const logs=[];console.info=value=>logs.push(value);
 try{emitReplyQuality({stage:'PRIVATE',repetitionScore:4,flags:['PRIVATE','distress'],text:'PRIVATE'});}finally{console.info=original;}

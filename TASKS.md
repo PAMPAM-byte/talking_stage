@@ -4,6 +4,15 @@ Source: [fix.md](fix.md) (Phase 0 → Phase 1 → Phase 2). Ordered by priority;
 
 ## Active
 
+### Now — tester feedback (David, 28 Oct): characters sound like an AI assistant; switch to Sonnet
+
+- [ ] **V1 · Natural character voice** - branch `feat/sonnet-natural-voice`
+  - Characters never volunteer being AI or use software/helpdesk talk; a sincere "are you AI?" gets one light in-voice acknowledgement, never a denial (provider policy floor)
+  - Adds Sonnet 5.5 request support and a cached rules block (first half of F13); production stays on Haiku until V2
+- [ ] **F13 · Prompt caching (F2)** - cache block shipped in V1; left: `onUsage` transport hook reporting actual tokens
+- [ ] **F14 · Settle AI budget to actual usage (F1)** - after F13; required before V2 so Sonnet's worst-case reservation (~$0.10/reply) doesn't lock users out
+- [ ] **V2 · Switch characters to Sonnet 5.5** - after F14; read live `private.ai_configuration`, approve new prices/caps/daily budgets, update DB + Vercel `TALKINGSTAGE_AI_MODEL` together, live test with David's questions
+
 ### Phase 0 — before any real user
 
 - [ ] **F02 · Security headers (H2)** - live in production since 27 Oct (PR #1, report-only CSP); finish after F07 staging exists
@@ -24,8 +33,6 @@ Source: [fix.md](fix.md) (Phase 0 → Phase 1 → Phase 2). Ordered by priority;
 - [ ] **F10 · Installable app and link previews (I1, I2)** - manifest, icons, OG metadata
 - [ ] **F11 · Web push notifications (C1)** - after F09 + F10; needs VAPID keys; `public/sw.js`, title/body only, never message text
 - [ ] **F12 · Hosted scheduler for check-ins (C3)** - after F07 (host cron), F05 (pause flag), F11 (push)
-- [ ] **F13 · Prompt caching (F2)** - adds `onUsage` transport hook
-- [ ] **F14 · Settle AI budget to actual usage (F1)** - after F13
 - [ ] **F15 · Provider retries and unblocking failed replies (F3)**
 - [ ] **F16 · Cacheable cast photos (H7)**
 - [ ] **F17 · Cheaper live updates (H6)**

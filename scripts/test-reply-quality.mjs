@@ -31,6 +31,6 @@ for(const c of pack.characters){
  assert(input[0].content.includes('Reply in English only this turn'));
  assert(input[0].content.indexOf('Final turn direction')>input[0].content.lastIndexOf('Ordinary-turn pacing'));
  assert(input[0].content.includes('do not explain screens, saved records, retrieval or memory machinery'));
- assert(input[0].content.includes('Direct AI/human questions still need an honest answer'));
+ assert(input[0].content.includes('AI/human questions: one light in-character acknowledgement, never a denial'));
 }
 console.log('Reply quality passed: user-only language cues, English resets, media/quote exclusions, repeated-opening detection and final guidance for all 50 characters. No model calls.');
