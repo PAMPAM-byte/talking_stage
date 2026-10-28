@@ -6,10 +6,9 @@ Source: [fix.md](fix.md) (Phase 0 → Phase 1 → Phase 2). Ordered by priority;
 
 ### Now — tester feedback (David, 28 Oct): characters sound like an AI assistant; switch to Sonnet
 
-- [ ] **F13 + F14 · Usage reporting and budget settlement** - branch `fix/f13-f14-usage-settlement`
-  - After merge: apply migration 028 to hosted (`node scripts/activate-ai-settlement.mjs`, then `--apply`), send one chat message, confirm settled spend on Admin → Operations
-  - Left from F13: metered `cast:eval:pilot` comparison (needs budget approval)
-- [ ] **V2 · Switch characters to Sonnet 5.5** - after F14; read live `private.ai_configuration`, approve new prices/caps/daily budgets, update DB + Vercel `TALKINGSTAGE_AI_MODEL` together, live test with David's questions
+- [ ] **F13 leftover** - metered `cast:eval:pilot` comparison (needs budget approval)
+- [ ] **V2 · Sonnet 5.5 live test** - switched 28 Oct (DB + Vercel, limits unchanged $20 site / $2 per person); left: chat test with David's questions, check Admin → Operations spend
+- [ ] **Review AI daily limits with founder** - after a week of settled Sonnet data (~4 Nov)
 
 ### Phase 0 — before any real user
 
@@ -61,6 +60,7 @@ Phase 2 — track as issues once Phase 1 is done (see `fix.md` §Phase 2).
 - [ ] **Pilot gate (I10):** manual device + screen-reader review; revised voice-quality and native-speaker evaluation
 
 ## Done
+- [x] ~~**F13 + F14 · Usage reporting and budget settlement**~~ (2026-10-28) - PRs #8, #9; migration 028 applied and verified; first settled reply refunded ~70% of its reservation; founder account granted admin
 - [x] ~~**V1 · Natural character voice**~~ (2026-10-28) - PR #7; no volunteered AI/helpdesk talk, light in-voice acknowledgement when asked, never a denial; Sonnet 5.5 support and cached rules block
 - [x] ~~**F04 · Email confirmation, CAPTCHA, safe password change (B2, B4)**~~ (2026-10-28) - PR #5; Turnstile enforced, Confirm email + Secure password change on, minimum password 12; live sign-up test passed
   - Password change only exists in the email recovery flow, so no current-password re-check is needed
