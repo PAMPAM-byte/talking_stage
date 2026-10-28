@@ -18,7 +18,7 @@ for(const name of Object.keys(datingManners)){
  assert(input[0].content.includes('No manufactured response delays'));
  assert(input[0].content.includes('Never become colder because a user declines spending'));
  assert(input[0].content.includes('Payment requests are disabled'));
- assert(input[0].content.includes('roughly 3–18 words'));
+ assert(input[0].content.includes('roughly 3–15 words'));
  assert.equal(input.at(-1).content,text);
  assert(!input[0].content.includes('I am broke'),'Unselected sample text must not leak into context.');
 }
