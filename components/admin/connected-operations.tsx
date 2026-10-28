@@ -5,7 +5,7 @@ import {Badge,Card,EmptyState,Notice} from '@/components/ui/primitives';
 import {ControlsForm} from './connected-controls-form';
 type SpendDay={day:string;charged:number;reserved:number;settled:number;calls:number;unsettled:number};
 type Spend={model:string;enabled:boolean;projectDailyMicroUsd:number;userDailyMicroUsd:number;days:SpendDay[]};
-const usd=(micro:number)=>`${(micro/1e6).toFixed(micro<1e6?4:2)}`;
+const usd=(micro:number)=>`$${(micro/1e6).toFixed(micro<1e6?4:2)}`;
 async function AISpend({client}:{client:NonNullable<Awaited<ReturnType<typeof currentAccount>>>['client']}){
  const result=await client.rpc('admin_ai_spend');
  if(result.error)return <Notice title="AI spend unavailable" tone="warning">Reload to try again.</Notice>;
@@ -20,7 +20,7 @@ async function AISpend({client}:{client:NonNullable<Awaited<ReturnType<typeof cu
     <th scope="row">{d.day}</th><td>{d.calls}</td>
     <td><span className="ai-spend__amount">{usd(d.charged)}</span><span className="ai-spend__meter" role="img" aria-label={`${share}% of the site limit`}><span style={{inlineSize:`${share}%`}}/></span></td>
     <td>{usd(d.reserved)}</td><td>{d.unsettled?<Badge>{d.unsettled}</Badge>:'0'}</td></tr>;})}</tbody></table></div>}
-  <p className="caption muted">Calls awaiting settlement timed out or lost their connection; they stay at the worst case.</p></Card>;
+  <p className="caption muted">Settlement started on 28 October. Earlier calls, and calls that timed out or lost their connection, stay at the worst case. Older days can count more than they reserved because deleted chats remove their reservations, not the spend.</p></Card>;
 }
 export async function ConnectedOperations() {
  const account=await currentAccount();if(!account)return null;
