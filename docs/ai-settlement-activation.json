@@ -1,0 +1,12 @@
+{
+  "verifiedAt": "2026-10-28T20:11:15.663Z",
+  "migration": {
+    "version": "202610280028",
+    "name": "ai_settlement",
+    "hash": "22173bd8d4e6299be16c8151aee9be35b13f3f0bd2b37011fe6e05a92a8f5f34"
+  },
+  "serviceOnlySettlementVerified": true,
+  "adminOnlySpendViewVerified": true,
+  "existingTotalsUnchanged": true,
+  "noMessagesGenerated": true
+}
