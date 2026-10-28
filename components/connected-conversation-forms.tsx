@@ -1,5 +1,6 @@
 "use client";
 import {useState,useTransition} from 'react';
+import { replyLimitNotice } from '@/lib/reply-limit';
 import {useRouter} from 'next/navigation';
 import {conversationAction} from '@/lib/backend/conversation-actions';
 import {Button,Checkbox,Notice} from './ui/primitives';
@@ -11,7 +12,7 @@ async function requestReply(id:string,messageId:string,signal?:AbortSignal):Prom
  const zone=browserTimeZone(); if(zone)headers['X-TalkingStage-Timezone']=zone;
  const response=await fetch(`/api/conversations/${id}/replies/${messageId}`,{method:'POST',credentials:'same-origin',signal,headers});
  const {state}=await response.json();
- return {message:state==='completed'?'Reply saved.':state==='earlier_reply_pending'?'Retry or skip the earlier reply first.':state==='budget_exhausted'?'Today’s reply limit has been reached. Your message is saved.':state==='generating'?'':state==='cancelled'||state==='discarded'?'The reply was stopped. Your message is saved.':'Your message is saved. A reply is unavailable; try again later.'};
+ return {message:state==='completed'?'Reply saved.':state==='earlier_reply_pending'?'Retry or skip the earlier reply first.':state==='budget_exhausted'?replyLimitNotice():state==='generating'?'':state==='cancelled'||state==='discarded'?'The reply was stopped. Your message is saved.':'Your message is saved. A reply is unavailable; try again later.'};
  }catch{return {message:signal?.aborted?'The reply was stopped. Your message is saved.':'Your message is saved. Checking for the reply automatically.'};}
 }
 export function ConversationControl({id,operation,version,label}:{id:string;operation:string;version?:number;label:string}) {

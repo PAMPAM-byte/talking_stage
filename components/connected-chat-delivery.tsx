@@ -1,5 +1,6 @@
 "use client";
 import {MessageDate} from './message-date';
+import { replyLimitNotice } from '@/lib/reply-limit';
 import { Fragment, createContext, useContext, useEffect, useRef, useState, type ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
 import { conversationAction } from '@/lib/backend/conversation-actions';
@@ -150,7 +151,7 @@ export function ConnectedChatDelivery({ id, generation, replies, savedIds, saved
                     }
                     if (!['generating', 'earlier_reply_pending'].includes(state)) {
                         finished.push(messageId);
-                        if (state === 'budget_exhausted') setNotice('Today’s reply limit has been reached. Your message is saved.');
+                        if (state === 'budget_exhausted') setNotice(replyLimitNotice());
                     }
                 }
                 catch {

@@ -6,11 +6,9 @@ Source: [fix.md](fix.md) (Phase 0 → Phase 1 → Phase 2). Ordered by priority;
 
 ### Now — tester feedback (David, 28 Oct): characters sound like an AI assistant; switch to Sonnet
 
-- [ ] **V1 · Natural character voice** - branch `feat/sonnet-natural-voice`
-  - Characters never volunteer being AI or use software/helpdesk talk; a sincere "are you AI?" gets one light in-voice acknowledgement, never a denial (provider policy floor)
-  - Adds Sonnet 5.5 request support and a cached rules block (first half of F13); production stays on Haiku until V2
-- [ ] **F13 · Prompt caching (F2)** - cache block shipped in V1; left: `onUsage` transport hook reporting actual tokens
-- [ ] **F14 · Settle AI budget to actual usage (F1)** - after F13; required before V2 so Sonnet's worst-case reservation (~$0.10/reply) doesn't lock users out
+- [ ] **F13 + F14 · Usage reporting and budget settlement** - branch `fix/f13-f14-usage-settlement`
+  - After merge: apply migration 028 to hosted (`node scripts/activate-ai-settlement.mjs`, then `--apply`), send one chat message, confirm settled spend on Admin → Operations
+  - Left from F13: metered `cast:eval:pilot` comparison (needs budget approval)
 - [ ] **V2 · Switch characters to Sonnet 5.5** - after F14; read live `private.ai_configuration`, approve new prices/caps/daily budgets, update DB + Vercel `TALKINGSTAGE_AI_MODEL` together, live test with David's questions
 
 ### Phase 0 — before any real user
@@ -63,6 +61,7 @@ Phase 2 — track as issues once Phase 1 is done (see `fix.md` §Phase 2).
 - [ ] **Pilot gate (I10):** manual device + screen-reader review; revised voice-quality and native-speaker evaluation
 
 ## Done
+- [x] ~~**V1 · Natural character voice**~~ (2026-10-28) - PR #7; no volunteered AI/helpdesk talk, light in-voice acknowledgement when asked, never a denial; Sonnet 5.5 support and cached rules block
 - [x] ~~**F04 · Email confirmation, CAPTCHA, safe password change (B2, B4)**~~ (2026-10-28) - PR #5; Turnstile enforced, Confirm email + Secure password change on, minimum password 12; live sign-up test passed
   - Password change only exists in the email recovery flow, so no current-password re-check is needed
 - [x] ~~**F03 · Production email delivery (B1)**~~ (2026-10-27) - Resend SMTP, templates, site URL and DMARC (`p=none`); Gmail recovery in inbox with SPF, DKIM and DMARC pass, reset completed
