@@ -1,0 +1,13 @@
+{
+  "verifiedAt": "2026-10-29T03:00:55.584Z",
+  "migration": {
+    "version": "202610290029",
+    "name": "quoted_bubbles",
+    "hash": "eedcdb4d34991087c65903dc54d12b513adc8eff1a1be39a5b2644f483e65ece"
+  },
+  "memberOnlySaveVerified": true,
+  "serviceOnlyClaimVerified": true,
+  "privateWrappersClosed": true,
+  "existingMessagesUnchanged": true,
+  "noMessagesGenerated": true
+}
