@@ -17,7 +17,7 @@ export default async function Image() {
     <div style={{ width: '100%', height: '100%', display: 'flex', background: '#ffffff', color: '#242126' }}>
       <div style={{ width: 600, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: '56px 48px 48px 64px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 14, fontSize: 30, fontWeight: 700 }}>
-          <div style={{ width: 44, height: 44, borderRadius: 14, background: '#682447', color: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'DM Serif Display', fontSize: 34 }}>“</div>
+          <div style={{ width: 44, height: 44, borderRadius: 14, background: '#cf2445', color: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'DM Serif Display', fontSize: 34 }}>“</div>
           TalkingStage
         </div>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
