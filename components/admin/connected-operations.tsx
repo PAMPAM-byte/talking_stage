@@ -10,8 +10,11 @@ async function AISpend({client}:{client:NonNullable<Awaited<ReturnType<typeof cu
  const result=await client.rpc('admin_ai_spend');
  if(result.error)return <Notice title="AI spend unavailable" tone="warning">Reload to try again.</Notice>;
  const spend=result.data as Spend;const limit=spend.projectDailyMicroUsd;
+ // Replies stop for everyone at the site limit, so warn well before it.
+ const today=spend.days.find(d=>d.day===new Date().toISOString().slice(0,10));const used=limit>0&&today?Math.round(today.charged/limit*100):0;
  return <Card className="stack ai-spend"><h2>AI spend</h2>
   <p className="muted">Daily cost in US dollars by UTC day. Each reply first reserves its worst case, then is charged what it actually used.</p>
+  {used>=75&&<Notice title={used>=100?'Site AI limit reached':`Today is at ${used}% of the site AI limit`} tone="warning">{used>=100?'Replies are paused for everyone':'Replies pause for everyone at 100%'} until midnight UTC (1am in Lagos). Raise the site limit to keep chats going.</Notice>}
   <p className="caption ai-spend__limits">{spend.enabled?'Model':'Paused'} {spend.model||'not set'} · Site limit {usd(limit)} a day · Per-person limit {usd(spend.userDailyMicroUsd)} a day</p>
   {!spend.days.length?<EmptyState title="No AI replies in the last 14 days">Spend appears here after the next reply.</EmptyState>:
   <div className="ai-spend__scroll" tabIndex={0} role="region" aria-label="AI spend by day"><table className="ai-spend__table">

@@ -75,6 +75,10 @@ const detailsInput=buildInput({...offer,history:[{role:'user',text:'Send me your
 assert(detailsInput.includes('acknowledge that specific request'));
 assert(detailsInput.includes('no actual bank details have been supplied to you'));
 assert(detailsInput.includes('Never invent account numbers or payment URLs'));
+// Playful billing: small obvious wants, never invented hardship or pressure; absent unless requests are eligible.
+{const {paymentDirection}=await import('../lib/payments/character-context.mjs');const controls={actionsEnabled:true,allowedByUser:true,muted:false,refused:false};const payments={available:true,recent:[],requestsEligible:true,requestMinimum:200000,requestMaximum:100000000};
+ const billing=paymentDirection(payments,controls);for(const phrase of ['shawarma craving','itemised bill','never reuse a recent format','Never invent emergencies, rent, illness','never guilt, compare, test love','no sulking, no repeat'])assert(billing.includes(phrase),phrase);
+ assert(!paymentDirection({...payments,requestsEligible:false},controls).includes('shawarma'));assert(!paymentDirection(payments,{...controls,refused:true}).includes('shawarma'));}
 assert.equal(giftMessage(offered.text,false).showLink,false);
 assert.equal(giftMessage('Hello',true).showLink,false);
 const ordinary=await generateReply(offer,{key:'SYNTHETIC',model:'synthetic'},{fetcher:offerReply({text:'How was your day?',photoAssetId:null,giftLink:false})});

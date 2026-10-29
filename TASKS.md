@@ -10,6 +10,12 @@ Source: [fix.md](fix.md) (Phase 0 → Phase 1 → Phase 2). Ordered by priority;
 - [ ] **V2 · Sonnet 5.5 live test** - switched 28 Oct (DB + Vercel, limits unchanged $20 site / $2 per person); left: chat test with David's questions, check Admin → Operations spend
 - [ ] **Review AI daily limits with founder** - after a week of settled Sonnet data (~4 Nov)
 
+### Launch — Saturday 31 Oct
+
+- [ ] **Launch-weekend AI site limit** - raise $20 → $60/day for Sat 31 Oct – Mon 2 Nov (founder runs the SQL in the Supabase SQL editor); Admin AI spend warns at 75%
+- [ ] **Lower the site limit again** - Tue 3 Nov, back to $20 or a value set from launch data
+- [ ] **Playful billing styles** - in prompt (offline-tested); character requests stay disabled live and payments stay in Bachs sandbox until the founder enables them
+
 ### Phase 0 — before any real user
 
 - [ ] **F02 · Security headers (H2)** - live in production since 27 Oct (PR #1, report-only CSP); finish after F07 staging exists
