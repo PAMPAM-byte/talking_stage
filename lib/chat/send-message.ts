@@ -1,7 +1,7 @@
 import type {ConversationResult} from '@/lib/backend/conversation-actions';
 const unavailable='Sending is temporarily unavailable. Your message is kept here. Try sending again.';
 export async function sendMessage(form:FormData,{fetcher=fetch,wait=(ms:number)=>new Promise<void>(resolve=>setTimeout(resolve,ms))}={}):Promise<ConversationResult>{
- const body=JSON.stringify({clientId:form.get('clientId'),generation:Number(form.get('generation')),text:form.get('text'),replyTo:form.get('replyTo'),timeZone:form.get('timeZone')});
+ const body=JSON.stringify({clientId:form.get('clientId'),generation:Number(form.get('generation')),text:form.get('text'),replyTo:form.get('replyTo'),replyPart:form.get('replyPart')==null?undefined:Number(form.get('replyPart')),timeZone:form.get('timeZone')});
  for(let attempt=0;attempt<2;attempt++){
   try{
    const response=await fetcher(`/api/conversations/${encodeURIComponent(String(form.get('id')))}/messages`,{method:'POST',credentials:'same-origin',redirect:'error',cache:'no-store',headers:{'Content-Type':'application/json'},body,signal:AbortSignal.timeout(15000)});
