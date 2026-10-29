@@ -1,15 +1,24 @@
 "use client";
-import { useEffect, useRef, type ReactNode, type UIEventHandler } from "react";
+import { useEffect, useRef, useState, type ReactNode, type UIEventHandler } from "react";
 
 export function ChatShell({ identity, actions, back, children, composer, onMessagesScroll, followMessages = false }: { identity: ReactNode; actions?: ReactNode; back: ReactNode; children: ReactNode; composer: ReactNode; onMessagesScroll?: UIEventHandler<HTMLElement>; followMessages?: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
+  const [unseen, setUnseen] = useState(false);
   useEffect(() => {
     if (!followMessages) return;
     const main = ref.current?.querySelector<HTMLElement>('.chat-shell__messages');
     if (!main) return;
     let following = true;
-    const track = () => { following = main.scrollHeight - main.scrollTop - main.clientHeight < 80; };
-    const observer = new MutationObserver(() => { if (following) main.scrollTop = main.scrollHeight; });
+    const newest = () => [...main.querySelectorAll('.message-turn')].at(-1);
+    let last = newest();
+    const track = () => { following = main.scrollHeight - main.scrollTop - main.clientHeight < 80; if (following) setUnseen(false); };
+    // Scrolled up reading older messages: a new character message raises the pill instead of jumping.
+    const observer = new MutationObserver(() => {
+      if (following) main.scrollTop = main.scrollHeight;
+      const current = newest();
+      if (current !== last && !following && current && !current.classList.contains('message-turn--user')) setUnseen(true);
+      last = current;
+    });
     observer.observe(main, { childList: true, subtree: true });
     main.scrollTop = main.scrollHeight;
     main.addEventListener('scroll', track, { passive: true });
@@ -43,5 +52,5 @@ export function ChatShell({ identity, actions, back, children, composer, onMessa
       element.style.removeProperty('height');
     };
   }, []);
-  return <div ref={ref} className="chat-shell"><header className="chat-shell__header">{back}<div className="chat-shell__identity">{identity}</div>{actions}</header><main id="main-content" className="chat-shell__messages" onScroll={onMessagesScroll}>{children}</main><footer className="chat-shell__composer">{composer}</footer></div>;
+  return <div ref={ref} className="chat-shell"><header className="chat-shell__header">{back}<div className="chat-shell__identity">{identity}</div>{actions}</header><main id="main-content" className="chat-shell__messages" onScroll={onMessagesScroll}>{children}</main><footer className="chat-shell__composer">{unseen && <button type="button" className="chat-shell__new" onClick={() => { const main = ref.current?.querySelector('.chat-shell__messages'); main?.scrollTo({ top: main.scrollHeight, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }); }}>New message <span aria-hidden="true">↓</span></button>}{composer}</footer></div>;
 }

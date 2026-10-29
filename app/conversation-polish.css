@@ -109,3 +109,11 @@
 .message-burst[data-fresh] .message-bubble { animation: message-burst-in 240ms ease-out both; animation-delay: calc(var(--burst-index) * 700ms); }
 @keyframes message-burst-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) { .message-burst[data-fresh] .message-bubble { animation: none; } .message-burst .message-bubble { transition: none; } }
+
+/* E2: shown when a character message arrives while the user is scrolled up. */
+.chat-shell__composer { position: relative; }
+.chat-shell__new { position: absolute; bottom: calc(100% + 12px); left: 50%; translate: -50% 0; z-index: 5; min-height: 40px; padding: 0 16px; border: 0; border-radius: 999px; background: var(--brand); color: #fff; font: 600 13px/1 var(--font-interface); box-shadow: 0 6px 18px rgb(36 33 38 / 0.18); cursor: pointer; animation: chat-new-in 180ms ease-out; }
+.chat-shell__new:hover { background: var(--brand-hover); }
+.chat-shell__new:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+@keyframes chat-new-in { from { opacity: 0; translate: -50% 6px; } }
+@media (prefers-reduced-motion: reduce) { .chat-shell__new { animation: none; } }
