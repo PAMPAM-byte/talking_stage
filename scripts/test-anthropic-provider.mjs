@@ -71,4 +71,15 @@ assert.equal((await generateReply(context,sonnet,{fetcher:async()=>sonnetRespons
 await assert.rejects(generateReply(context,sonnet,{fetcher:async()=>sonnetResponse([answer,answer])}),/invalid_output/);
 await assert.rejects(generateReply(context,sonnet,{fetcher:async()=>sonnetResponse([{type:'tool_use',id:'x',name:'x',input:{}},answer])}),/invalid_output/);
 assert.equal((await generateReply(context,sonnet,{fetcher:async()=>new Response(JSON.stringify({stop_reason:'refusal',content:[]}))})).refused,true);
-console.log('Claude offline checks passed: Haiku 5.5 and Sonnet 5.5 request mapping, cached rules block, thinking and effort settings, fallback blocks, structured output, numeric usage reporting (unbilled errors, missing usage, sink isolation), refusal, truncation, invalid output, provider failure and timeout. No live requests made.');
+// F15: one retry for a busy or unreachable provider, never for a request the provider rejected.
+const sequence=(...steps)=>{let calls=0;const fetcher=async()=>{const step=steps[calls++];if(step instanceof Error)throw step;return step??response();};return {fetcher,calls:()=>calls};};
+for(const busy of [new Response('',{status:529}),new Response('',{status:429,headers:{'retry-after':'1'}}),new TypeError('fetch failed')]){
+ const run=sequence(busy,response());assert.equal((await generateReply(context,settings,{fetcher:run.fetcher})).text,'Hello there.');assert.equal(run.calls(),2);
+}
+const twice=sequence(new Response('',{status:529}),new Response('',{status:529}));await assert.rejects(generateReply(context,settings,{fetcher:twice.fetcher}),/provider_error/);assert.equal(twice.calls(),2);
+for(const final of [new Response('',{status:400}),new Response('',{status:529,headers:{'x-should-retry':'false'}})]){
+ const run=sequence(final,response());await assert.rejects(generateReply(context,settings,{fetcher:run.fetcher}),/provider_error/);assert.equal(run.calls(),1);
+}
+const stopped=new AbortController();const pending=generateReply(context,settings,{signal:stopped.signal,fetcher:async()=>{setTimeout(()=>stopped.abort(),10);return new Response('',{status:529,headers:{'retry-after':'2'}});}});
+await assert.rejects(pending,/timeout/);
+console.log('Claude offline checks passed: Haiku 5.5 and Sonnet 5.5 request mapping, cached rules block, thinking and effort settings, fallback blocks, structured output, one retry for busy/unreachable provider (529, 429 retry-after, network) but not for 400, x-should-retry false or cancellation, numeric usage reporting (unbilled errors, missing usage, sink isolation), refusal, truncation, invalid output, provider failure and timeout. No live requests made.');
