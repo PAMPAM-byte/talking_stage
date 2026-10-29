@@ -9,8 +9,12 @@
 .swipeHint { position: absolute; left: -32px; top: 10px; color: var(--muted); }
 .swipeHint[data-ready] { color: var(--brand); }
 .quotedContent { padding: 7px; border: 1px solid var(--border); border-radius: var(--radius-message); background: var(--surface); overflow: hidden; }
-.quotedContent :global(.message-bubble) { margin: 0; border: 0; box-shadow: none; padding: 10px; border-radius: 12px; }
+.quotedContent :global(.message-bubble:not(.message-burst > *)) { margin: 0; border: 0; box-shadow: none; padding: 10px; border-radius: 12px; }
 .user .quotedContent { background: var(--brand); border-color: var(--brand); color: var(--surface); }
+/* A texted burst keeps its separate bubbles; the quote heads the stack as its own small card. */
+.quotedContent:has(:global(.message-burst)) { display: grid; justify-items: start; gap: 4px; padding: 0; border: 0; background: none; overflow: visible; }
+.quotedContent:has(:global(.message-burst)) .quote { max-width: 100%; border-radius: 12px 12px 12px 6px; }
+.quotedContent :global(.message-burst .message-bubble:first-child) { border-top-left-radius: 6px; }
 .quote { display: flex; flex-direction: column; gap: 3px; min-width: 0; padding: 9px 12px; border-left: 3px solid var(--brand); border-radius: 7px; background: var(--brand-soft); color: var(--ink); font-size: 13px; line-height: 1.45; text-align: left; text-decoration: none; overflow-wrap: anywhere; }
 .quote strong { color: var(--brand); font-size: 12px; }
 .quote span { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; white-space: pre-wrap; }

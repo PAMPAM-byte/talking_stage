@@ -58,6 +58,7 @@ assert(!logs.join('').includes('PRIVATE'));assert.equal(JSON.parse(logs[0]).repe
 // Phone-chat bursts: short replies stay whole, blank lines collapse, long blocks split at sentence ends, at most three bubbles.
 assert.equal(burstText('haha you wish'),'haha you wish');assert.equal(burstText('lol\n\n okay fine \nbut you owe me'),'lol\nokay fine\nbut you owe me');
 const long='Honestly my day was long, I had three back to back meetings and a client who kept changing the brief. Then traffic on Third Mainland was crazy. I only got home by 9pm. What about you, how was yours?';
-const bubbles=burstText(long).split('\n');assert(bubbles.length>1&&bubbles.length<=3&&bubbles.every(b=>b.length<=140));assert.equal(bubbles.join(' '),long);
-assert.equal(burstText('a\nb\nc\nd'),'a\nb\nc d');assert.equal(burstText('It cost 2.5k at Mr. Biggs'),'It cost 2.5k at Mr. Biggs');
+const bubbles=burstText(long).split('\n');assert(bubbles.length>1&&bubbles.length<=3&&bubbles.every(b=>b.length<=120));assert.equal(bubbles.join(' '),long);
+assert.equal(burstText('a\nb\nc\nd'),'a\nb\nc\nd');assert.equal(burstText('aaa\nb\nc\ndd\neee'),'aaa\nb c\ndd\neee');
+const story='Sure, a small true one.\nI spent a whole afternoon hunting for the perfect phrase for a translation, found it, felt very distinguished.\nThen someone paid me a simple compliment and I replied with the most tangled sentence of my life. Still thinking about it. Now your turn: what kind of story did you have in mind?';assert(burstText(story).split('\n').every(b=>b.length<=120),'No swollen final bubble');assert.equal(burstText('It cost 2.5k at Mr. Biggs'),'It cost 2.5k at Mr. Biggs');
 console.log('Archive intelligence passed: 50 existing identities, 12 voice dimensions, bounded familiarity/memories, repetition and anti-copy checks, contextual safeguards, no paid retry, strict schema and private numeric telemetry. No network calls.');
