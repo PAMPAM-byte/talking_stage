@@ -8,6 +8,11 @@ const displayFont = localFont({ src: "./fonts/DMSerifDisplay.ttf", variable: "--
 export const metadata: Metadata = {
   title: { default: "TalkingStage", template: "%s · TalkingStage" },
   description: "A Nigerian AI dating experience with fictional adult characters.",
+  metadataBase: new URL(process.env.TALKINGSTAGE_SITE_URL ?? "https://www.talkingstage.buzz"),
+  applicationName: "TalkingStage",
+  appleWebApp: { title: "TalkingStage", statusBarStyle: "default" },
+  openGraph: { type: "website", siteName: "TalkingStage", title: "TalkingStage — A little banter. A little chemistry.", description: "Meet fictional adult AI personalities with Nigerian flavour. Free to chat.", locale: "en_NG" },
+  twitter: { card: "summary_large_image", title: "TalkingStage — A little banter. A little chemistry.", description: "Meet fictional adult AI personalities with Nigerian flavour. Free to chat." },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

@@ -33,7 +33,6 @@ Source: [fix.md](fix.md) (Phase 0 → Phase 1 → Phase 2). Ordered by priority;
 ### Phase 1 — pilot-ready
 
 - [ ] **F09 · Working unread counts (C2)** - next migration is `202610240028_*`
-- [ ] **F10 · Installable app and link previews (I1, I2)** - manifest, icons, OG metadata
 - [ ] **F11 · Web push notifications (C1)** - after F09 + F10; needs VAPID keys; `public/sw.js`, title/body only, never message text
 - [ ] **F12 · Hosted scheduler for check-ins (C3)** - after F07 (host cron), F05 (pause flag), F11 (push)
 - [ ] **F15 · Provider retries and unblocking failed replies (F3)**
@@ -66,6 +65,7 @@ Phase 2 — track as issues once Phase 1 is done (see `fix.md` §Phase 2).
 - [ ] **Pilot gate (I10):** manual device + screen-reader review; revised voice-quality and native-speaker evaluation
 
 ## Done
+- [x] ~~**F10 · Installable app and link previews (I1, I2)**~~ (2026-10-29) - share card for X/WhatsApp (`app/opengraph-image.tsx`), web manifest with home-screen icons, Apple touch icon
 - [x] ~~**F13 + F14 · Usage reporting and budget settlement**~~ (2026-10-28) - PRs #8, #9; migration 028 applied and verified; first settled reply refunded ~70% of its reservation; founder account granted admin
 - [x] ~~**V1 · Natural character voice**~~ (2026-10-28) - PR #7; no volunteered AI/helpdesk talk, light in-voice acknowledgement when asked, never a denial; Sonnet 5.5 support and cached rules block
 - [x] ~~**F04 · Email confirmation, CAPTCHA, safe password change (B2, B4)**~~ (2026-10-28) - PR #5; Turnstile enforced, Confirm email + Secure password change on, minimum password 12; live sign-up test passed
