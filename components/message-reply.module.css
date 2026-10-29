@@ -2,12 +2,16 @@
 .root:focus { outline: 2px solid var(--brand); outline-offset: 5px; border-radius: var(--radius-control); }
 .content { position: relative; max-width: 100%; transform: translateX(var(--reply-drag,0px)); transition: transform var(--motion-fast) ease-out; }
 .content[data-dragging] { transition: none; }
-.replyAction { position: absolute; top: 6px; right: -42px; display: grid; place-items: center; width: 38px; height: 38px; border: 1px solid var(--border); border-radius: 50%; background: var(--surface); color: var(--brand); opacity: 0; cursor: pointer; }
+.replyAction,.burstAction { position: absolute; top: 6px; right: -42px; display: grid; place-items: center; width: 38px; height: 38px; border: 1px solid var(--border); border-radius: 50%; background: var(--surface); color: var(--brand); opacity: 0; cursor: pointer; }
 .user .replyAction { right: auto; left: -42px; }
 .root:hover .replyAction,.root:focus-within .replyAction,.replyAction:focus-visible { opacity: 1; }
-.replyAction:focus-visible,.quote:focus-visible { outline: 2px solid var(--brand); outline-offset: 3px; }
+.replyAction:focus-visible,.burstAction:focus-visible,.quote:focus-visible { outline: 2px solid var(--brand); outline-offset: 3px; }
 .swipeHint { position: absolute; left: -32px; top: 10px; color: var(--muted); }
 .swipeHint[data-ready] { color: var(--brand); }
+/* Each bubble of a texted burst has its own reply; the whole-message button steps aside. */
+.burstAction { top: 50%; translate: 0 -50%; }
+:global(.message-bubble):hover > .burstAction,.burstAction:focus-visible { opacity: 1; }
+.content:has(:global(.message-burst)) > .replyAction { display: none; }
 .quotedContent { padding: 7px; border: 1px solid var(--border); border-radius: var(--radius-message); background: var(--surface); overflow: hidden; }
 .quotedContent :global(.message-bubble:not(.message-burst > *)) { margin: 0; border: 0; box-shadow: none; padding: 10px; border-radius: 12px; }
 .user .quotedContent { background: var(--brand); border-color: var(--brand); color: var(--surface); }

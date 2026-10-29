@@ -50,3 +50,21 @@ for(const width of [320,390,768,1440])test(`quoted messages and composer fit ${w
  expect(await page.locator(`#message-${first}`).locator('[data-dragging]').count()).toBe(0);
  await page.screenshot({path:`.local-services/message-quotes-${width}.png`});
 });
+test('each bubble of a texted burst can be quoted on its own',async({page})=>{
+ await page.setViewportSize({width:390,height:844});await page.goto('/dev/chat-delivery?scenario=quotes');
+ const burst=page.locator('#message-00000000-0000-4000-8000-000000000015');const draft=page.getByLabel('Replying to message',{exact:true});
+ await expect(burst.locator('.message-bubble')).toHaveCount(3);await expect(burst.getByRole('button',{name:'Reply to Amara’s message'})).toBeHidden();
+ const bubble=burst.locator('.message-bubble').nth(1);await expect(bubble.getByRole('button')).toBeEnabled();await bubble.scrollIntoViewIfNeeded();const box=(await bubble.boundingBox())!;
+ const session=await page.context().newCDPSession(page);const x=box.x+20,y=box.y+box.height/2;
+ await session.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x,y}]});
+ for(let step=1;step<=5;step++)await session.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:x+70*step/5,y}]});
+ await session.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});await session.detach();
+ await expect(draft).toContainText('I burnt the jollof last night');await expect(draft).not.toContainText('small confession');
+ await page.getByRole('button',{name:'Cancel reply'}).click();
+ await burst.getByRole('button',{name:/Reply to Amara’s text: Okay small confession/}).click();
+ await expect(draft).toContainText('Okay small confession');await expect(draft).not.toContainText('jollof');
+ const input=page.getByRole('textbox',{name:'Message Amara'});await input.fill('Tell me everything');await input.press('Enter');
+ const saved=page.locator('.message-turn--user').filter({hasText:'Tell me everything'});await expect(saved).toHaveCount(1);
+ await expect(saved).toContainText('Okay small confession');await expect(saved).not.toContainText('jollof');
+ await page.screenshot({path:'.local-services/message-quotes-burst-390.png'});
+});

@@ -76,12 +76,14 @@ export async function conversationAction(form: FormData): Promise<ConversationRe
           return account.client.rpc('start_conversation', { p_character: id });
         case 'send':
           if (form.get('replyTo') && !uuid.test(String(form.get('replyTo')))) return {error:{message:'invalid_quote'}};
-          return account.client.rpc(form.get('replyTo')?'save_quoted_user_message':'save_user_message', {
+          if (form.get('replyPart') && !/^[0-3]$/.test(String(form.get('replyPart')))) return {error:{message:'invalid_quote'}};
+          return account.client.rpc(form.get('replyPart')?'save_quoted_part_message':form.get('replyTo')?'save_quoted_user_message':'save_user_message', {
             p_conversation: id,
             p_client_id: String(form.get('clientId') ?? ''),
             p_generation: Number(form.get('generation')),
             p_text: String(form.get('text') ?? ''),
             ...(form.get('replyTo')?{p_reply_to:String(form.get('replyTo'))}:{}),
+            ...(form.get('replyPart')?{p_reply_part:Number(form.get('replyPart'))}:{}),
           });
         default:
           if (!lifecycleOperations.has(operation)) return null;

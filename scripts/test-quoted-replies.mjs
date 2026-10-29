@@ -70,6 +70,23 @@ try{
  await db.query("select public.manage_conversation($1,$2,'reset')",[c,current.conversation.version]);
  await actor('', 'service_role');assert.equal(await finish(pendingJob,pending.id),'discarded');
  await actor(a);await assert.rejects(send(older,'Deleted target',null,2),/invalid_quote/);
+ // One bubble of a texted burst can be quoted; the chat and the model see only that bubble.
+ await db.exec('reset role');const next=Number((await db.query('select next_sequence from public.conversations where id=$1',[c])).rows[0].next_sequence);
+ const burst=await seed(c,next,'character','Sure, a small true one.\n\nI spent an afternoon hunting for a phrase.\n[[talkingstage:gift]]\nYour turn: what story?');
+ const single=await seed(c,next+1,'character','Just one bubble.');
+ await db.query('update public.conversations set next_sequence=$2 where id=$1',[c,next+2]);
+ const sendPart=async(part,client=null,target=burst)=>(await db.query('select public.save_quoted_part_message($1,coalesce($2::uuid,gen_random_uuid()),2,$3,$4,$5) as v',[c,client,'That afternoon!',target,part])).rows[0].v;
+ await actor(a);const partClient=(await db.query('select gen_random_uuid() as id')).rows[0].id;
+ const bubbleReply=await sendPart(1,partClient);assert.equal((await sendPart(1,partClient)).id,bubbleReply.id);
+ await assert.rejects(sendPart(2,partClient),/idempotency_conflict/);
+ await assert.rejects(sendPart(3),/invalid_quote/);await assert.rejects(sendPart(0,null,single),/invalid_quote/);await assert.rejects(sendPart(null),/invalid_quote/);
+ const bubbleThread=(await db.query('select public.conversation_thread($1) as v',[c])).rows[0].v;
+ const bubbleQuote=bubbleThread.messages.find(m=>m.id===bubbleReply.id).replyTo;
+ assert.equal(bubbleQuote.id,burst);assert.equal(bubbleQuote.part,1);assert.equal(bubbleQuote.text,'I spent an afternoon hunting for a phrase.');
+ await actor(b);await assert.rejects(sendPart(0),/not_found/);
+ await actor('', 'service_role');const bubbleJob=await claim(bubbleReply.id);
+ assert.equal(bubbleJob.history.at(-1).replyTo.text,'I spent an afternoon hunting for a phrase.');
+ const bubbleInput=buildInput(bubbleJob).at(-1).content;assert(bubbleInput.includes('Replying to')&&bubbleInput.includes('hunting for a phrase')&&!bubbleInput.slice(bubbleInput.indexOf('Replying to')).includes('small true one'));
  await actor('', 'anon');await assert.rejects(send(null),/permission denied/);
- console.log('Quoted replies passed: old-text/photo targets, both authors, idempotence, owned bounded previews, cross-owner denial, strict model targets, atomic quote+reaction/photo commits, duplicate completion and reset invalidation. No network/model calls.');
+ console.log('Quoted replies passed: old-text/photo targets, both authors, idempotence, owned bounded previews, cross-owner denial, strict model targets, atomic quote+reaction/photo commits, duplicate completion, reset invalidation and single-bubble quotes. No network/model calls.');
 }finally{await db.close();}

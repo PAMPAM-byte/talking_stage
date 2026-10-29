@@ -191,6 +191,7 @@ export function ConnectedChatDelivery({ id, generation, replies, savedIds, saved
         data.set('clientId', item.clientId);
         data.set('text', text);
         if (item.replyTo) data.set('replyTo', item.replyTo.id);
+        if (item.replyTo?.part != null) data.set('replyPart', String(item.replyTo.part));
         data.set('timeZone', browserTimeZone());
         try {
             const result = await action(data);
