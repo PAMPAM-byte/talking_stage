@@ -40,3 +40,11 @@
   .shell--user .shell__header, .shell--admin .shell__header { justify-content: flex-end; }
   .shell__header > .brand-mark { display: none; }
 }
+/* Back to top: a quiet red circle at the end of long pages, lifted above the phone navigation pill. */
+.back-to-top { position: fixed; z-index: 30; right: 20px; bottom: calc(24px + env(safe-area-inset-bottom)); display: grid; place-items: center; width: 48px; height: 48px; border: 0; border-radius: 50%; background: var(--brand); color: white; box-shadow: 0 8px 32px rgb(94 22 40 / 18%); cursor: pointer; opacity: 0; visibility: hidden; transform: translateY(8px); transition: opacity 200ms ease, transform 200ms ease, visibility 0s 200ms, background-color 160ms ease; }
+.back-to-top.is-shown { opacity: 1; visibility: visible; transform: none; transition: opacity 200ms ease, transform 200ms ease, visibility 0s, background-color 160ms ease; }
+.back-to-top svg { width: 22px; height: 22px; }
+.back-to-top:hover { background: var(--brand-hover); }
+.back-to-top:active { background: var(--brand-pressed); }
+.back-to-top:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+@media (max-width: 899px) { body:has(.shell--user) .back-to-top { bottom: calc(100px + env(safe-area-inset-bottom)); right: 16px; } }
