@@ -1,0 +1,14 @@
+{
+  "verifiedAt": "2026-10-30T00:47:28.726Z",
+  "migration": {
+    "version": "202610300030",
+    "name": "bubble_reactions",
+    "hash": "776d78f572cb84af7ecbd57ae3069b376c21ecd244c108a7ff98eff54a489b3e"
+  },
+  "memberOnlyReactVerified": true,
+  "rowSecurityVerified": true,
+  "serviceOnlyClaimVerified": true,
+  "privateWrappersClosed": true,
+  "existingReactionsUnchanged": true,
+  "noMessagesGenerated": true
+}
