@@ -1,9 +1,10 @@
+import { pageMetadata } from '@/lib/seo';
 import Link from 'next/link';
 import { PublicShell } from '@/components/shells';
 import { Icon } from '@/components/ui/icon';
 import { StructuredData } from '@/lib/structured-data';
 
-export const metadata = { title: 'Frequently asked questions', description: 'Answers about TalkingStage’s fictional AI personalities, adult access, discovery, conversations, memory, and voluntary payments.', alternates: { canonical: '/faqs' } };
+export const metadata = pageMetadata({ path: '/faqs', title: "FAQs", description: "Answers about TalkingStage, the Nigerian AI dating and chat app: who the characters are, adult access, how Meet and Discover work, memories, privacy and optional gifts." });
 const topics = [
   { id: 'getting-started', title: 'Getting started', description: 'The experience and your first introduction.', questions: [
     ['What is TalkingStage?', 'TalkingStage is an AI dating experience for adults, with operator-created fictional personalities and non-explicit text conversations. Character names, stories, settings, and AI-generated photos are fictional.'],
