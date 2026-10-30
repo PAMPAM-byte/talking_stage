@@ -1,22 +1,28 @@
 "use client";
 import Link from 'next/link';
 import { useState, useTransition } from 'react';
-import { deleteOwnAccount } from '@/lib/backend/deletion-actions';
+import { scheduleAccountDeletion } from '@/lib/backend/deletion-actions';
 import { Button, Notice, TextField } from './ui/primitives';
 import { Overlay } from './ui/overlay';
+import { erasureDate } from '@/lib/account/erasure-date';
 
 export function ConnectedAccountDeletion({ enabled }: { enabled: boolean }) {
   const [open,setOpen] = useState(false), [confirmation,setConfirmation] = useState(''), [error,setError] = useState('');
   const [pending,start] = useTransition();
+  const [preview] = useState(() => erasureDate(new Date(Date.now() + 30 * 864e5).toISOString()));
   return <section className="space-page stack">
     <Link className="profile-back" href="/settings">Back to settings</Link>
     <h1 className="display page-title">Delete account</h1>
-    <p className="muted">Review what will be removed before you decide.</p>
-    <article className="card stack"><h2>What deletion removes</h2><ul><li>Your account, sign-in access and preferences.</li><li>Your chat history, including delivered photo messages, and saved memories.</li><li>Your AI summaries, pending replies and submitted reports, including saved report evidence.</li></ul><p className="supporting muted">Character profiles and shared character photos remain available to other users.</p></article>
-    <Notice title="About backups and retained records">Deletion removes your data from the active service. Existing backups may still contain it; backup expiry is awaiting the final retention policy. Accounts with financial or operator records require support-assisted deletion.</Notice>
-    {enabled ? <div className="account-danger stack"><h2>This cannot be undone</h2><p className="supporting muted">You can keep your account and change your preferences instead.</p><Button variant="danger" onClick={()=>setOpen(true)}>Review account deletion</Button></div> : <Notice title="Account deletion is not available here yet">Contact <Link href="/support">support</Link> for help with your account.</Notice>}
-    <Overlay open={open} onClose={()=>{if(!pending)setOpen(false);}} title="Delete your account?" description="Your account and the data listed on this page will be permanently removed from the active service. You will be signed out.">
-      <form className="stack" onSubmit={event=>{event.preventDefault();if(pending)return;const data=new FormData(event.currentTarget);setError('');start(async()=>{try{const result=await deleteOwnAccount(data);if(result.deleted){window.location.replace('/account-deleted');return;}setError(result.error??'Your account was not deleted.');}catch{setError('We could not confirm deletion. Check your connection and sign in again to check your account.');}});}}>
+    <p className="muted">Your account is paused for 30 days first, in case you change your mind.</p>
+    <article className="card stack"><h2>What happens</h2><ol className="deletion-steps">
+      <li><strong>Right away.</strong> You’re signed out on every device. Your profile, chats and memories are hidden, and characters stop messaging you.</li>
+      <li><strong>For 30 days.</strong> Sign in with your email and password to restore everything as it was.</li>
+      <li><strong>After 30 days.</strong> Your account, chat history, photos shared in chats, saved memories, AI summaries and reports are permanently erased.</li>
+    </ol></article>
+    <Notice title="What we keep">If you sent a gift, its payment record (amount, date and reference) is kept for accounting, without your name, email or chats. Character profiles stay for other users. Backups may still hold your data until they expire.</Notice>
+    {enabled ? <div className="account-danger stack"><h2>Ready to go?</h2><p className="supporting muted">You can also keep your account and just change your preferences.</p><Button variant="danger" onClick={()=>setOpen(true)}>Delete my account</Button></div> : <Notice title="Account deletion is not available here yet">Contact <Link href="/support">support</Link> for help with your account.</Notice>}
+    <Overlay open={open} onClose={()=>{if(!pending)setOpen(false);}} title="Delete your account?" description={`You’ll be signed out everywhere. Your account will be erased on ${preview} unless you sign in and restore it before then.`}>
+      <form className="stack" onSubmit={event=>{event.preventDefault();if(pending)return;const data=new FormData(event.currentTarget);setError('');start(async()=>{try{const result=await scheduleAccountDeletion(data);if(result.until){window.location.replace(`/account-deleted?until=${encodeURIComponent(result.until)}`);return;}setError(result.error??'Your account was not deleted.');}catch{setError('We could not confirm deletion. Check your connection and sign in again to check your account.');}});}}>
         <TextField name="confirmation" label="Type DELETE to confirm" value={confirmation} onChange={e=>setConfirmation(e.target.value)} autoComplete="off" disabled={pending} required />
         <TextField name="password" label="Current password" type="password" autoComplete="current-password" maxLength={128} required disabled={pending} />
         {error && <Notice title="Account not deleted" tone="danger" live>{error}</Notice>}

@@ -14,6 +14,9 @@ try {
  await db.exec("update public.profiles set display_name='Synthetic',genders=array['woman'],onboarding_complete=true,ai_consent_at=now();");
  const actor=async(id,role='authenticated',age=0)=>{await db.exec(`reset role;set role ${role};`);await db.query("select set_config('request.jwt.claim.sub',$1,false),set_config('request.jwt.claims',$2,false)",[id,JSON.stringify({iat:Math.floor(Date.now()/1000)-age})]);};
  const erase=()=>db.query("select public.delete_own_account('DELETE')");
+ // Migration 031 switches deletion on; the operator switch still turns it off.
+ await actor(a);assert.equal((await db.query('select public.account_deletion_status() as enabled')).rows[0].enabled,true);
+ await db.exec('reset role;update private.privacy_configuration set account_deletion_enabled=false;');
  await actor(a);assert.equal((await db.query('select public.account_deletion_status() as enabled')).rows[0].enabled,false);
  await assert.rejects(erase(),/deletion_unavailable/);
  await db.exec('reset role;update private.privacy_configuration set account_deletion_enabled=true;');
