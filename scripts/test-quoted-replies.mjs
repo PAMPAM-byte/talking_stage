@@ -84,9 +84,26 @@ try{
  const bubbleQuote=bubbleThread.messages.find(m=>m.id===bubbleReply.id).replyTo;
  assert.equal(bubbleQuote.id,burst);assert.equal(bubbleQuote.part,1);assert.equal(bubbleQuote.text,'I spent an afternoon hunting for a phrase.');
  await actor(b);await assert.rejects(sendPart(0),/not_found/);
+ // Each bubble of a burst takes its own reaction; the chat and the model see which bubble.
+ await db.exec('reset role;delete from private.request_limits;');await actor(a);
+ const react=(part,emoji,target=burst)=>db.query('select public.set_message_part_reaction($1,$2,$3,$4)',[c,target,part,emoji]);
+ await react(0,'❤️');await react(2,'😂');await react(2,'🔥');
+ await assert.rejects(react(3,'❤️'),/invalid_part/);await assert.rejects(react(-1,'❤️'),/invalid_part/);
+ await assert.rejects(react(0,'❤️',single),/invalid_part/);await assert.rejects(react(0,'❤️',bubbleReply.id),/not_found/);
+ await assert.rejects(react(0,'not an emoji'),/invalid_reaction/);
+ const reacted=(await db.query('select public.conversation_thread($1) as v',[c])).rows[0].v;
+ assert.deepEqual(reacted.partReactions.map(r=>[r.messageId,r.part,r.emoji]),[[burst,0,'❤️'],[burst,2,'🔥']]);
+ assert(!reacted.reactions.some(r=>r.messageId===burst),'Bubble reactions stay out of whole-message reactions');
+ await react(0,null);assert.deepEqual((await db.query('select public.conversation_thread($1) as v',[c])).rows[0].v.partReactions.map(r=>r.part),[2]);
+ await actor(b);await assert.rejects(react(1,'❤️'),/not_found/);
+ assert.equal((await db.query('select count(*)::int as n from public.message_part_reactions')).rows[0].n,0,'Another member cannot read the reactions');
  await actor('', 'service_role');const bubbleJob=await claim(bubbleReply.id);
+ const reactedItem=bubbleJob.history.find(m=>m.id===burst);
+ assert.deepEqual(reactedItem.reactions,[{actor:'user',emoji:'🔥',bubble:3,bubbleText:'Your turn: what story?'}]);
+ assert(buildInput(bubbleJob).some(m=>String(m.content).includes('"bubble":3')));
  assert.equal(bubbleJob.history.at(-1).replyTo.text,'I spent an afternoon hunting for a phrase.');
  const bubbleInput=buildInput(bubbleJob).at(-1).content;assert(bubbleInput.includes('Replying to')&&bubbleInput.includes('hunting for a phrase')&&!bubbleInput.slice(bubbleInput.indexOf('Replying to')).includes('small true one'));
- await actor('', 'anon');await assert.rejects(send(null),/permission denied/);
- console.log('Quoted replies passed: old-text/photo targets, both authors, idempotence, owned bounded previews, cross-owner denial, strict model targets, atomic quote+reaction/photo commits, duplicate completion, reset invalidation and single-bubble quotes. No network/model calls.');
+ await actor('', 'anon');await assert.rejects(react(1,'❤️'),/permission denied/);
+ await actor('', 'anon');await assert.rejects(send(null),/permission denied/);await assert.rejects(db.query('select public.set_message_part_reaction($1,$2,0::smallint,$3)',[c,burst,'❤️']),/permission denied/);
+ console.log('Quoted replies passed: old-text/photo targets, both authors, idempotence, owned bounded previews, cross-owner denial, strict model targets, atomic quote+reaction/photo commits, duplicate completion, reset invalidation, single-bubble quotes and per-bubble reactions (owned, bounded, visible to the model). No network/model calls.');
 }finally{await db.close();}

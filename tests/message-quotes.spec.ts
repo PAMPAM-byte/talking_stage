@@ -54,14 +54,16 @@ test('each bubble of a texted burst can be quoted on its own',async({page})=>{
  await page.setViewportSize({width:390,height:844});await page.goto('/dev/chat-delivery?scenario=quotes');
  const burst=page.locator('#message-00000000-0000-4000-8000-000000000015');const draft=page.getByLabel('Replying to message',{exact:true});
  await expect(burst.locator('.message-bubble')).toHaveCount(3);await expect(burst.getByRole('button',{name:'Reply to Amara’s message'})).toBeHidden();
- const bubble=burst.locator('.message-bubble').nth(1);await expect(bubble.getByRole('button')).toBeEnabled();await bubble.scrollIntoViewIfNeeded();const box=(await bubble.boundingBox())!;
- const session=await page.context().newCDPSession(page);const x=box.x+20,y=box.y+box.height/2;
- await session.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x,y}]});
- for(let step=1;step<=5;step++)await session.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:x+70*step/5,y}]});
- await session.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});await session.detach();
+ const swipeBubble=async(index:number)=>{const bubble=burst.locator('.message-bubble').nth(index);await expect(bubble.getByRole('button',{name:/React to Amara’s text/})).toBeEnabled();await bubble.scrollIntoViewIfNeeded();const box=(await bubble.boundingBox())!;
+  const session=await page.context().newCDPSession(page);const x=box.x+20,y=box.y+box.height/2;
+  await session.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x,y}]});
+  for(let step=1;step<=5;step++)await session.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:x+70*step/5,y}]});
+  await session.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});await session.detach();};
+ await swipeBubble(1);
  await expect(draft).toContainText('I burnt the jollof last night');await expect(draft).not.toContainText('small confession');
  await page.getByRole('button',{name:'Cancel reply'}).click();
- await burst.getByRole('button',{name:/Reply to Amara’s text: Okay small confession/}).click();
+ // On touch the per-bubble reply button gives way to the react button; swiping replies.
+ await expect(burst.getByRole('button',{name:/Reply to Amara’s text/}).first()).toBeHidden();await swipeBubble(0);
  await expect(draft).toContainText('Okay small confession');await expect(draft).not.toContainText('jollof');
  const input=page.getByRole('textbox',{name:'Message Amara'});await input.fill('Tell me everything');await input.press('Enter');
  const saved=page.locator('.message-turn--user').filter({hasText:'Tell me everything'});await expect(saved).toHaveCount(1);

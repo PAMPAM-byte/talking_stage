@@ -29,3 +29,12 @@
 .cancel { flex: 0 0 44px; display: grid; place-items: center; height: 44px; border: 0; border-radius: 50%; background: var(--surface); color: var(--muted); cursor: pointer; }
 .cancel:focus-visible { outline: 2px solid var(--brand); }
 @media (prefers-reduced-motion: reduce) { .content { transition: none; } }
+/* A burst bubble can be reacted to on its own: the smile sits beside its reply button on
+   desktop; on touch, swiping replies, so the smile takes the reply button's place. */
+.burstReact { right: -84px; }
+@media (hover: none) { .burstAction:not(.burstReact) { display: none; } .burstReact { right: -42px; } }
+.bubbleReaction { position: absolute; right: 10px; bottom: -15px; z-index: 1; display: grid; place-items: center; min-width: 30px; height: 26px; padding: 0 6px; border: 1px solid var(--border); border-radius: 999px; background: var(--surface); font-size: 15px; line-height: 1; box-shadow: 0 2px 6px rgb(50 20 35 / 10%); cursor: pointer; }
+.bubbleReaction::after { content: ''; position: absolute; inset: -9px; }
+.bubbleReaction:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+.bubbleReaction:disabled { cursor: default; }
+:global(.message-burst) > :global(.message-bubble[data-reacted]) { margin-bottom: 14px; }
