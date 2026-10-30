@@ -89,3 +89,22 @@
   .deck-action:active:not(:disabled) .deck-action__icon { transform: scale(.94); }
 }
 @media (prefers-reduced-motion: reduce) { .deck-action__icon { transition: none; } .deck-action:hover:not(:disabled) .deck-action__icon, .deck-action:active:not(:disabled) .deck-action__icon { transform: none; } }
+/* First-visit swipe guide: the card nudges right then left while the matching arrow lights up. */
+.discovery-deck__card-wrap { position: relative; }
+.discovery-deck__card.is-guiding { animation: discover-guide-nudge 3.6s ease-in-out 500ms infinite; }
+.discovery-guide { position: absolute; inset: 0; z-index: 3; pointer-events: none; border-radius: 28px; background: linear-gradient(180deg, rgb(20 12 37 / 0%) 35%, rgb(20 12 37 / 72%) 100%); animation: discover-guide-in 260ms ease-out both; }
+.discovery-guide__arrow { position: absolute; top: 42%; display: inline-flex; align-items: center; gap: 2px; padding: 9px 14px; border-radius: 999px; font-size: 15px; font-weight: 800; letter-spacing: .02em; box-shadow: 0 6px 18px rgb(20 12 37 / 22%); opacity: .55; animation: 3.6s ease-in-out 500ms infinite both; }
+.discovery-guide__arrow svg { width: 20px; height: 20px; }
+.discovery-guide__arrow.is-pass { left: 12px; background: #fff; color: var(--ink); animation-name: discover-guide-pass; }
+.discovery-guide__arrow.is-meet { right: 12px; background: var(--brand); color: #fff; animation-name: discover-guide-meet; }
+.discovery-guide__panel { position: absolute; left: 16px; right: 16px; bottom: 16px; display: flex; align-items: center; gap: 12px; padding: 12px 12px 12px 16px; border-radius: 20px; background: #fff; color: var(--ink); box-shadow: 0 10px 28px rgb(20 12 37 / 25%); }
+.discovery-guide__panel p { margin: 0; flex: 1; font-size: 14px; line-height: 1.35; }
+.discovery-guide__panel strong { color: var(--brand); }
+.discovery-guide__done { pointer-events: auto; flex: none; min-height: 44px; padding: 0 18px; border: 0; border-radius: 999px; background: var(--brand); color: #fff; font: 700 14px/1 var(--font-interface); cursor: pointer; }
+.discovery-guide__done:hover { background: var(--brand-hover); }
+.discovery-guide__done:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+@keyframes discover-guide-in { from { opacity: 0; } }
+@keyframes discover-guide-nudge { 0%, 8%, 34%, 42%, 68%, 100% { transform: none; } 18%, 26% { transform: translateX(44px) rotate(5deg); } 52%, 60% { transform: translateX(-44px) rotate(-5deg); } }
+@keyframes discover-guide-meet { 0%, 8%, 34%, 100% { opacity: .55; transform: none; } 18%, 26% { opacity: 1; transform: translateX(4px) scale(1.08); } }
+@keyframes discover-guide-pass { 0%, 42%, 68%, 100% { opacity: .55; transform: none; } 52%, 60% { opacity: 1; transform: translateX(-4px) scale(1.08); } }
+@media (prefers-reduced-motion: reduce) { .discovery-deck__card.is-guiding, .discovery-guide, .discovery-guide__arrow { animation: none; } .discovery-guide__arrow { opacity: 1; } }

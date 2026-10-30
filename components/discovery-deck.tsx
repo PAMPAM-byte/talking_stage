@@ -12,6 +12,8 @@ export type DiscoveryCard = {
   clue: string; bio?: string; interests: string[]; href: string; photo: ReactNode;
 };
 
+const guideKey = 'talkingstage:discover-guide:v1';
+
 /** Pass browses locally; Meet starts or resumes the existing conversation flow. */
 export function DiscoveryDeck({ cards, scope, onMeet }: { cards: DiscoveryCard[]; scope: string; onMeet: (id: string) => Promise<{ id?: string; error?: string }> }) {
   const router = useRouter();
@@ -29,6 +31,17 @@ export function DiscoveryDeck({ cards, scope, onMeet }: { cards: DiscoveryCard[]
   // Old twelve-card completion markers must not hide the rest of the full cast.
   const storageKey = `talkingstage:discovery-deck:v2:${scope}`;
   const card = cards[index];
+  // First visit on this device: the card demonstrates the swipe until the user tries it.
+  const [guide, setGuide] = useState(false);
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => { try { if (!localStorage.getItem(guideKey)) setGuide(true); } catch { /* No guide without storage. */ } });
+    return () => cancelAnimationFrame(frame);
+  }, []);
+  function dismissGuide() {
+    if (!guide) return;
+    setGuide(false);
+    try { localStorage.setItem(guideKey, 'seen'); } catch { /* Shown again next visit. */ }
+  }
 
   useEffect(() => {
     // Restore after hydration; storage is optional and contains only a cast ID.
@@ -48,6 +61,7 @@ export function DiscoveryDeck({ cards, scope, onMeet }: { cards: DiscoveryCard[]
   }
   function choose(direction: 'pass' | 'meet') {
     if (!card || locked.current) return;
+    dismissGuide();
     locked.current = true; origin.current = null; setError(''); setExit(direction);
     if (direction === 'meet') showMeetFeedback(document.querySelector('.deck-action--meet')?.getBoundingClientRect());
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -72,6 +86,7 @@ export function DiscoveryDeck({ cards, scope, onMeet }: { cards: DiscoveryCard[]
   }
   function start(event: PointerEvent<HTMLDivElement>) {
     if (!event.isPrimary || event.button !== 0 || locked.current || (event.target as HTMLElement).closest('a, button')) return;
+    dismissGuide();
     origin.current = { id: event.pointerId, x: event.clientX, y: event.clientY };
     event.currentTarget.setPointerCapture(event.pointerId);
   }
@@ -99,7 +114,8 @@ export function DiscoveryDeck({ cards, scope, onMeet }: { cards: DiscoveryCard[]
       <div className="discovery-deck__meta"><span className="caption muted">{index + 1} of {cards.length} to discover</span></div>
       <div className="discovery-deck__layout">
         <div className="discovery-deck__stage">
-          <div className={`discovery-deck__card character-card${drag ? ' is-dragging' : ''}${exit ? ` is-exiting-${exit}` : ''}`} style={style} onPointerDown={start} onPointerMove={update} onPointerUp={finish} onPointerCancel={() => { origin.current = null; setDrag(0); }} onLostPointerCapture={() => { origin.current = null; setDrag(0); }} onKeyDown={event => {
+          <div className="discovery-deck__card-wrap">
+          <div className={`discovery-deck__card character-card${drag ? ' is-dragging' : ''}${exit ? ` is-exiting-${exit}` : ''}${guide && !drag && !exit ? ' is-guiding' : ''}`} style={style} onPointerDown={start} onPointerMove={update} onPointerUp={finish} onPointerCancel={() => { origin.current = null; setDrag(0); }} onLostPointerCapture={() => { origin.current = null; setDrag(0); }} onKeyDown={event => {
             if (event.target !== event.currentTarget) return;
             if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') { event.preventDefault(); choose(event.key === 'ArrowLeft' ? 'pass' : 'meet'); }
             if (event.key === 'Escape') { origin.current = null; setDrag(0); }
@@ -108,6 +124,12 @@ export function DiscoveryDeck({ cards, scope, onMeet }: { cards: DiscoveryCard[]
             <span className="discovery-deck__badge">✦ AI character</span>
             {Math.abs(drag) > 24 && <span aria-hidden="true" className={`discovery-deck__verdict ${drag > 0 ? 'is-meet' : 'is-pass'}`}>{drag > 0 ? 'Meet' : 'Pass'}</span>}
             <div className="discovery-deck__identity"><h2>{card.name}<span>, {card.age}</span></h2><p>{card.location}</p><Link href={card.href} className="discovery-deck__profile">View profile </Link></div>
+          </div>
+          {guide && <div className="discovery-guide" role="note" aria-label="How Discover works">
+            <span className="discovery-guide__arrow is-pass" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M15 5l-7 7 7 7" /></svg>Pass</span>
+            <span className="discovery-guide__arrow is-meet" aria-hidden="true">Meet<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M9 5l7 7-7 7" /></svg></span>
+            <div className="discovery-guide__panel"><p><strong>Swipe right to Meet</strong> and start chatting. Swipe left to pass.</p><button type="button" className="discovery-guide__done" onClick={dismissGuide}>Got it</button></div>
+          </div>}
           </div>
           <div className="discovery-deck__actions">
             <button type="button" className="deck-action deck-action--undo" disabled={index === 0 || !!exit || opening} onClick={() => { setAnnouncement('Last pass undone.'); move(index - 1); }} aria-label="Undo last pass"><span className="deck-action__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M4 10a8 8 0 1 1 1 9M4 4v6h6" /></svg></span><span className="deck-action__label">Undo</span></button>
