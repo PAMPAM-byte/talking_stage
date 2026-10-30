@@ -1,8 +1,10 @@
+import { pageMetadata } from '@/lib/seo';
 import Link from 'next/link';
 import { PublicShell } from '@/components/shells';
 import { Icon } from '@/components/ui/icon';
+import { StructuredData } from '@/lib/structured-data';
 
-export const metadata = { title: 'Frequently asked questions', description: 'Answers about TalkingStage’s fictional AI personalities, adult access, discovery, conversations, memory, and voluntary payments.' };
+export const metadata = pageMetadata({ path: '/faqs', title: "FAQs", description: "Answers about TalkingStage, the Nigerian AI dating and chat app: who the characters are, adult access, how Meet and Discover work, memories, privacy and optional gifts." });
 const topics = [
   { id: 'getting-started', title: 'Getting started', description: 'The experience and your first introduction.', questions: [
     ['What is TalkingStage?', 'TalkingStage is an AI dating experience for adults, with operator-created fictional personalities and non-explicit text conversations. Character names, stories, settings, and AI-generated photos are fictional.'],
@@ -29,8 +31,11 @@ const topics = [
     ['How can I get help with my account?', 'Support links to account recovery and other existing controls. A verified production support channel, response expectations, and escalation guidance are still pending. The Support page does not submit a support request.'],
   ], link: '/payment-information', action: 'Read Payment Information' },
 ];
+// The same answers as structured data, so search results can show them directly.
+const faqData = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: topics.flatMap(topic => topic.questions.map(([name, text]) => ({ '@type': 'Question', name, acceptedAnswer: { '@type': 'Answer', text } }))) };
 export default function FAQs() {
   return <PublicShell actions={<Link className="button button--quiet" href="/sign-in">Sign in</Link>} footer={<div className="information-footer"><p className="caption muted">TalkingStage · Fictional AI personalities · Adults 18+</p><nav className="row" aria-label="Information pages"><Link href="/terms">Terms</Link><Link href="/privacy">Privacy</Link><Link href="/payment-information">Payments</Link><Link href="/support">Support</Link></nav></div>}>
+    <StructuredData data={faqData} />
     <div className="faq-page"><header className="policy-hero"><p className="policy-eyebrow">A little clarity, before your first hello</p><h1>Frequently asked questions</h1><p className="policy-tagline">Good questions. Clear answers.</p><p className="policy-introduction">Get to know the experience, understand your choices, and find the guidance you need. Choose a topic to start.</p></header>
       <nav className="faq-topic-nav" aria-label="FAQ topics">{topics.map(topic => <a key={topic.id} href={`#${topic.id}`}>{topic.title}</a>)}</nav>
       <div className="faq-document">{topics.map(topic => <section id={topic.id} key={topic.id} className="faq-topic" tabIndex={-1} aria-labelledby={`${topic.id}-title`}><div className="faq-topic-heading"><h2 id={`${topic.id}-title`}>{topic.title}</h2><p>{topic.description}</p><Link href={topic.link}>{topic.action} </Link></div><div className="tsl-faqList">{topic.questions.map(([question, answer]) => <details key={question}><summary>{question}<span aria-hidden="true">+</span></summary><p>{answer}</p></details>)}</div></section>)}</div>
