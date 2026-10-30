@@ -4,7 +4,7 @@ import { Icon } from '@/components/ui/icon';
 import { LandingPhoto } from '@/components/landing-photo';
 import { characterNameAge } from '@/lib/cast-labels';
 
-export const metadata = { title: 'How it works', description: 'Explore the TalkingStage journey: adult onboarding, fictional AI personalities, direct conversations, and controls for your experience.' };
+export const metadata = { title: 'How it works', description: 'Explore the TalkingStage journey: adult onboarding, fictional AI personalities, direct conversations, and controls for your experience.', alternates: { canonical: '/how-it-works' } };
 const questions = [
   ['Do I need to match before chatting?', 'Meet starts or resumes your conversation with a fictional AI character directly. There is no mutual human matching step. You can open a profile separately when you want to learn more.'],
   ['Can I return to a conversation?', 'Yes. Return through Messages to continue an existing thread. Conversation controls also let you archive, reset, or delete a thread.'],
