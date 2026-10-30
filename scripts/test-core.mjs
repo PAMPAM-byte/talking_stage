@@ -50,6 +50,7 @@ const checks = [
   ['test-request-policy.mjs'],
   ['test-reports-database.mjs'],
   ['test-account-deletion.mjs'],
+  ['test-soft-account-deletion.mjs'],
 ];
 
 const root = fileURLToPath(new URL('../', import.meta.url));

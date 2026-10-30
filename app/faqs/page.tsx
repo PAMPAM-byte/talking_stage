@@ -1,8 +1,10 @@
+import { pageMetadata } from '@/lib/seo';
 import Link from 'next/link';
 import { PublicShell } from '@/components/shells';
 import { Icon } from '@/components/ui/icon';
+import { StructuredData } from '@/lib/structured-data';
 
-export const metadata = { title: 'Frequently asked questions', description: 'Answers about TalkingStage’s fictional AI personalities, adult access, discovery, conversations, memory, and voluntary payments.' };
+export const metadata = pageMetadata({ path: '/faqs', title: "FAQs", description: "Answers about TalkingStage, the Nigerian AI dating and chat app: who the characters are, adult access, how Meet and Discover work, memories, privacy and optional gifts." });
 const topics = [
   { id: 'getting-started', title: 'Getting started', description: 'The experience and your first introduction.', questions: [
     ['What is TalkingStage?', 'TalkingStage is an AI dating experience for adults, with operator-created fictional personalities and non-explicit text conversations. Character names, stories, settings, and AI-generated photos are fictional.'],
@@ -20,7 +22,7 @@ const topics = [
     ['Can I choose what a character remembers?', 'Review saved memories in Settings, turn memory off for a character, or delete saved facts. Conversation history and saved memories are separate.'],
     ['Does deleting a conversation clear its memories?', 'Memories are kept by default when resetting or deleting a conversation. Use the explicit option to clear that character’s memories, or review them separately in Settings.'],
     ['What if a message or photo concerns me?', 'Use Report on the message, photo, or character profile. The launch experience is non-explicit. Local preview reports demonstrate the flow and do not reach a real moderation team.'],
-    ['Where can I read about data and deletion?', 'Privacy explains the existing controls, local preview storage, and unresolved policy details. Account deletion can be reviewed in Settings. Final live retention periods and privacy contact procedures still require review.'],
+    ['Where can I read about data and deletion?', 'Privacy explains the existing controls, local preview storage, and unresolved policy details. Delete your account in Settings: it is paused for 30 days, so you can sign in and restore it, then erased. Final live retention periods and privacy contact procedures still require review.'],
   ], link: '/privacy', action: 'Read Privacy' },
   { id: 'payments-help', title: 'Payments & help', description: 'Optional support, payment status, and guidance.', questions: [
     ['Are payments required?', 'Any supported payment is voluntary support for TalkingStage’s operator. You can decline, ignore, or disable monetary requests. A payment does not buy an item or guarantee a romantic response.'],
@@ -29,8 +31,11 @@ const topics = [
     ['How can I get help with my account?', 'Support links to account recovery and other existing controls. A verified production support channel, response expectations, and escalation guidance are still pending. The Support page does not submit a support request.'],
   ], link: '/payment-information', action: 'Read Payment Information' },
 ];
+// The same answers as structured data, so search results can show them directly.
+const faqData = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: topics.flatMap(topic => topic.questions.map(([name, text]) => ({ '@type': 'Question', name, acceptedAnswer: { '@type': 'Answer', text } }))) };
 export default function FAQs() {
   return <PublicShell actions={<Link className="button button--quiet" href="/sign-in">Sign in</Link>} footer={<div className="information-footer"><p className="caption muted">TalkingStage · Fictional AI personalities · Adults 18+</p><nav className="row" aria-label="Information pages"><Link href="/terms">Terms</Link><Link href="/privacy">Privacy</Link><Link href="/payment-information">Payments</Link><Link href="/support">Support</Link></nav></div>}>
+    <StructuredData data={faqData} />
     <div className="faq-page"><header className="policy-hero"><p className="policy-eyebrow">A little clarity, before your first hello</p><h1>Frequently asked questions</h1><p className="policy-tagline">Good questions. Clear answers.</p><p className="policy-introduction">Get to know the experience, understand your choices, and find the guidance you need. Choose a topic to start.</p></header>
       <nav className="faq-topic-nav" aria-label="FAQ topics">{topics.map(topic => <a key={topic.id} href={`#${topic.id}`}>{topic.title}</a>)}</nav>
       <div className="faq-document">{topics.map(topic => <section id={topic.id} key={topic.id} className="faq-topic" tabIndex={-1} aria-labelledby={`${topic.id}-title`}><div className="faq-topic-heading"><h2 id={`${topic.id}-title`}>{topic.title}</h2><p>{topic.description}</p><Link href={topic.link}>{topic.action} </Link></div><div className="tsl-faqList">{topic.questions.map(([question, answer]) => <details key={question}><summary>{question}<span aria-hidden="true">+</span></summary><p>{answer}</p></details>)}</div></section>)}</div>

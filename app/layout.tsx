@@ -7,10 +7,11 @@ const displayFont = localFont({ src: "./fonts/DMSerifDisplay.ttf", variable: "--
 
 export const metadata: Metadata = {
   title: { default: "TalkingStage", template: "%s · TalkingStage" },
-  description: "A Nigerian AI dating experience with fictional adult characters.",
+  description: "TalkingStage is a Nigerian AI dating and chat app for adults: text fictional AI characters with real Naija personality. Free to chat, 18+.",
   metadataBase: new URL(process.env.TALKINGSTAGE_SITE_URL ?? "https://www.talkingstage.buzz"),
   applicationName: "TalkingStage",
   appleWebApp: { title: "TalkingStage", statusBarStyle: "default" },
+  // Pages set their own url via lib/seo; a shared url here would point every page at home.
   openGraph: { type: "website", siteName: "TalkingStage", title: "TalkingStage — A little banter. A little chemistry.", description: "Meet fictional adult AI personalities with Nigerian flavour. Free to chat.", locale: "en_NG" },
   twitter: { card: "summary_large_image", title: "TalkingStage — A little banter. A little chemistry.", description: "Meet fictional adult AI personalities with Nigerian flavour. Free to chat." },
 };
@@ -18,7 +19,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
-      lang="en"
+      lang="en-NG"
       className={`${interfaceFont.variable} ${displayFont.variable}`}
     >
       <body><a className="skip-link" href="#main-content">Skip to content</a>{children}</body>

@@ -1,3 +1,4 @@
+import { pageMetadata } from '@/lib/seo';
 import Link from 'next/link';
 import { Brand } from '@/components/shells';
 import { Icon } from '@/components/ui/icon';
@@ -6,7 +7,7 @@ import cast from '@/lib/mock/public-cast.json';
 import type { PublicCharacter } from '@/lib/contracts';
 import { PersonalitiesCatalogue } from '@/components/personalities-catalogue';
 
-export const metadata = { title: 'The personalities', description: 'Explore TalkingStage’s fictional adult AI personalities, their interests, and conversation clues.' };
+export const metadata = pageMetadata({ path: '/personalities', title: "Meet the characters", description: "Meet TalkingStage’s fictional Nigerian AI characters: baddies, big girls, playboys and quiet thinkers from Lagos, Abuja, Port Harcourt and beyond, each with their own story and texting style." });
 export default function Personalities() {
   return <div className="tsl-site personalities-page"><header className="tsl-container tsl-header"><Brand /><nav className="row" aria-label="Personalities navigation"><Link className="tsl-textLink personalities-guide-link" href="/how-it-works">How it works</Link><Link className="tsl-signIn" href="/sign-in">Sign in</Link></nav></header>
     <main id="main-content"><section className="tsl-container personalities-hero" aria-labelledby="personalities-page-title"><div><p className="tsl-eyebrow">The personalities · Meet the cast</p><h1 id="personalities-page-title">Your kind of<br /><em>interesting.</em></h1><p>A sharp sense of humour. A thoughtful question. A music opinion worth debating. Meet fictional AI personalities with their own stories and a little Nigerian flavour.</p><div className="personalities-hero-actions"><a className="tsl-cta" href="#introductions">Meet the personalities </a><Link className="tsl-textLink" href="/onboarding/age">Get started </Link></div><p className="personalities-disclosure">Adults 18+ · Fictional AI characters · AI-generated photos</p></div><figure className="personalities-feature"><div className="personalities-feature-photo"><LandingPhoto src="/images/characters/char-zuri-gallery-v2.webp" name="Zuri" sizes="(min-width: 478px) 430px, calc(100vw - 48px)" eager alt="Zuri, a fictional adult AI character, enjoying coconut water at the beach." /></div><figcaption><p className="tsl-eyebrow">A conversation clue from Zuri</p><blockquote>“A good outfit gets attention. What keeps yours?”</blockquote><span>Personality starts with a little curiosity.</span></figcaption></figure></section>

@@ -10,6 +10,7 @@ import { AppShell, PublicShell } from "./shells";
 import { Notice, Skeleton } from "./ui/primitives";
 import { ChatLoading } from './chat-loading';
 import { ConversationContinuity } from './conversation-continuity';
+import { AccountRestore } from './account-restore';
 
 async function ConnectedArea({ area, children, standalone = false }: { area: string; children: ReactNode; standalone?: boolean }) {
   if (!supabaseConfig()) return <PublicShell><Notice title="Account services are unavailable" tone="warning">Please try again later.</Notice></PublicShell>;
@@ -21,6 +22,8 @@ async function ConnectedArea({ area, children, standalone = false }: { area: str
     return <PublicShell><Notice title="Account temporarily unavailable" tone="warning">We could not check your account. Please try again shortly.{area === 'Payments' && ' If you confirmed a payment, retry the same attempt once the connection returns.'}</Notice></PublicShell>;
   }
   if (!account) redirect("/sign-in");
+  // A scheduled deletion freezes the account; the owner can only restore it or sign out.
+  if (account.profile.deletion_scheduled_for) return <PublicShell><AccountRestore until={account.profile.deletion_scheduled_for} /></PublicShell>;
   if (!account.profile.adult_declared_at) redirect("/onboarding/age");
   if (!account.profile.onboarding_complete) redirect("/onboarding/preferences");
   if (area === "Admin") {

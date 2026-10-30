@@ -1,0 +1,33 @@
+# TalkingStage
+
+> TalkingStage (https://www.talkingstage.buzz) is a Nigerian AI dating and chat app for adults (18+). Users chat with fictional AI characters who text like real Naija people, in English or English with Pidgin. It is free to chat.
+
+## What it is
+
+- A web app, also installable on Android and iPhone from the browser ("Add to Home Screen"). No app store download needed.
+- Users browse fictional characters one at a time on Discover, tap Meet, and start texting. There is no matching with real people and no real-world dates.
+- Characters have their own personalities, jobs, home cities and stories across Nigeria (Lagos, Abuja, Port Harcourt, Ibadan and more), plus some in the diaspora.
+- Replies arrive like real texts: short, sometimes as two or three bubbles. Users can reply to or react to a single bubble, send emojis, stickers and GIFs, and characters can share AI-generated photos.
+- Characters can remember details a user chooses to keep, and users manage those memories in Settings.
+
+## Honesty and safety
+
+- Every character is fictional and AI-powered. The chat header labels each one "AI character", and all photos are AI-generated.
+- Conversations are flirty but non-explicit.
+- Adults only. Users confirm they are 18 or older before entering.
+- Users can report any message, photo or character, and can archive, reset or delete a chat.
+- Users can delete their account in Settings. It is paused for 30 days, during which signing in restores it, and is then erased.
+
+## Pricing
+
+- Chatting is free.
+- Sending a gift is optional, voluntary support for the TalkingStage team. Gifts are never required, and the characters themselves receive no money.
+
+## Key pages
+
+- [Home](https://www.talkingstage.buzz/): what TalkingStage is
+- [How it works](https://www.talkingstage.buzz/how-it-works): sign-up, Discover, Meet and chatting
+- [The personalities](https://www.talkingstage.buzz/personalities): the fictional characters
+- [FAQs](https://www.talkingstage.buzz/faqs): common questions
+- [Payment information](https://www.talkingstage.buzz/payment-information): how optional gifts work
+- [Privacy](https://www.talkingstage.buzz/privacy) and [Terms](https://www.talkingstage.buzz/terms)

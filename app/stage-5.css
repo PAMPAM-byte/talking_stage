@@ -46,3 +46,5 @@
 .chat-personal-space { margin-top: 24px; }
 .chat-personal-space .payment-card { max-width: 440px; }
 @media (min-width: 768px) { .settings-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.deletion-steps { display: grid; gap: 12px; margin: 0; padding-left: 20px; }
+.deletion-steps strong { color: var(--ink); }

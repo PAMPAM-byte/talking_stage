@@ -7,11 +7,10 @@ import cast from '@/lib/mock/public-cast.json';
 import { characterNameAge } from '@/lib/cast-labels';
 import { usesSupabase } from '@/lib/backend/config';
 import styles from '@/components/landing-styles';
+import { StructuredData, siteGraph } from '@/lib/structured-data';
+import { pageMetadata } from '@/lib/seo';
 
-export const metadata = {
-  title: { absolute: 'TalkingStage — A little banter. A little chemistry.' },
-  description: 'Meet fictional adult AI personalities with Nigerian flavour. Discover your kind of banter, start a conversation, and take it at your own pace.',
-};
+export const metadata = pageMetadata({ path: '/', title: 'TalkingStage: Nigerian AI dating and chat app', absoluteTitle: true, description: 'TalkingStage is a Nigerian AI dating and chat app for adults. Text fictional AI characters with real Naija personality, in English or Pidgin. Free to chat, 18+.' });
 const introductions = ['char-amara', 'char-idris', 'char-zuri', 'char-kunle'].map(id => cast.find(character => character.id === id)!);
 const steps = [
   { title: 'Make a little space for you.', text: 'Create your account, confirm you’re 18 or older, and choose the personalities and conversation language you prefer.', icon: 'people' as const },
@@ -32,6 +31,7 @@ function EntryLink({ children = 'Get started', light = false }: { children?: Rea
 
 export default function Home() {
   return <div className={styles.site}>
+    <StructuredData data={siteGraph} />
     <LandingMotion />
     <header className={`${styles.container} ${styles.header}`}>
       <Brand />

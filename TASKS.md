@@ -37,7 +37,7 @@ Source: [fix.md](fix.md) (Phase 0 → Phase 1 → Phase 2). Ordered by priority;
 - [ ] **F15 · Provider retries and unblocking failed replies (F3)**
 - [ ] **F16 · Cacheable cast photos (H7)**
 - [ ] **F17 · Cheaper live updates (H6)**
-- [ ] **F18 · Data export and self-service deletion (A4, A5)** - hosted enablement via F07; payment-record handling blocked on decision
+- [ ] **F18 · Data export and self-service deletion (A4, A5)** - soft deletion built 30 Oct (30-day restore, daily erase, payment records kept without the account; founder decision); export still to do
 - [ ] **F19 · Product analytics (K1, K2)** - AI-cost-per-user view needs F14
 - [ ] **Phase 0/1 completion check** - tick the checklist at the end of `fix.md`; devices verified on Android + iPhone
 
@@ -65,7 +65,7 @@ Phase 2 — track as issues once Phase 1 is done (see `fix.md` §Phase 2).
 
 ## Done
 - [x] ~~**Launch-weekend AI site limit**~~ (2026-10-29) - raised $20 → $60/day by the founder in the Supabase SQL editor; Admin AI spend warns at 75%
-- [x] ~~**F10 · Installable app and link previews (I1, I2)**~~ (2026-10-29) - share card for X/WhatsApp (`app/opengraph-image.tsx`), web manifest with home-screen icons, Apple touch icon
+- [x] ~~**F10 · Installable app and link previews (I1, I2)**~~ (2026-10-29) - share card for X/WhatsApp (static `app/opengraph-image.jpg`, 64 KB), web manifest with home-screen icons, Apple touch icon
 - [x] ~~**F13 + F14 · Usage reporting and budget settlement**~~ (2026-10-28) - PRs #8, #9; migration 028 applied and verified; first settled reply refunded ~70% of its reservation; founder account granted admin
 - [x] ~~**V1 · Natural character voice**~~ (2026-10-28) - PR #7; no volunteered AI/helpdesk talk, light in-voice acknowledgement when asked, never a denial; Sonnet 5.5 support and cached rules block
 - [x] ~~**F04 · Email confirmation, CAPTCHA, safe password change (B2, B4)**~~ (2026-10-28) - PR #5; Turnstile enforced, Confirm email + Secure password change on, minimum password 12; live sign-up test passed
