@@ -68,7 +68,7 @@ const wrapperDeps={
  '@/lib/backend/account-actions':{signOutAccount:async()=>{}},
  './shells':{AppShell:shell,PublicShell:()=>null},
  './ui/primitives':{Notice:()=>null,Skeleton:()=>null},'./chat-loading':{ChatLoading:()=>null},
- './conversation-continuity':{ConversationContinuity:()=>null},
+ './conversation-continuity':{ConversationContinuity:()=>null},'./account-restore':{AccountRestore:()=>null},
 };
 const wrapperModules=new Map();
 for(const [name,exports]of Object.entries(wrapperDeps))wrapperModules.set(name,new SyntheticModule(Object.keys(exports),function(){for(const [key,value]of Object.entries(exports))this.setExport(key,value);},{context}));

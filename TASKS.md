@@ -37,7 +37,7 @@ Source: [fix.md](fix.md) (Phase 0 → Phase 1 → Phase 2). Ordered by priority;
 - [ ] **F15 · Provider retries and unblocking failed replies (F3)**
 - [ ] **F16 · Cacheable cast photos (H7)**
 - [ ] **F17 · Cheaper live updates (H6)**
-- [ ] **F18 · Data export and self-service deletion (A4, A5)** - hosted enablement via F07; payment-record handling blocked on decision
+- [ ] **F18 · Data export and self-service deletion (A4, A5)** - soft deletion built 30 Oct (30-day restore, daily erase, payment records kept without the account; founder decision); export still to do
 - [ ] **F19 · Product analytics (K1, K2)** - AI-cost-per-user view needs F14
 - [ ] **Phase 0/1 completion check** - tick the checklist at the end of `fix.md`; devices verified on Android + iPhone
 

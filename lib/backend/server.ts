@@ -36,7 +36,7 @@ export async function currentAccount({ failOnUnavailable = false }: { failOnUnav
     if (failOnUnavailable && error && error.name !== 'AuthSessionMissingError' && ![400, 401, 403].includes(error.status ?? 0)) throw new Error('Identity service unavailable');
     return null;
   }
-  const profile = await observe('account.profile', () => client.from("profiles").select("id,display_name,genders,language,requests_enabled,onboarding_complete,adult_declared_at,version").eq("id", data.user.id).single());
+  const profile = await observe('account.profile', () => client.from("profiles").select("id,display_name,genders,language,requests_enabled,onboarding_complete,adult_declared_at,version,deletion_scheduled_for").eq("id", data.user.id).single());
   if (profile.error || !profile.data) {
     if (failOnUnavailable && (profile.status === 0 || profile.status === 429 || profile.status >= 500)) throw new Error('Account service unavailable');
     return null;

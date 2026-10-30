@@ -20,7 +20,7 @@ const topics = [
     ['Can I choose what a character remembers?', 'Review saved memories in Settings, turn memory off for a character, or delete saved facts. Conversation history and saved memories are separate.'],
     ['Does deleting a conversation clear its memories?', 'Memories are kept by default when resetting or deleting a conversation. Use the explicit option to clear that character’s memories, or review them separately in Settings.'],
     ['What if a message or photo concerns me?', 'Use Report on the message, photo, or character profile. The launch experience is non-explicit. Local preview reports demonstrate the flow and do not reach a real moderation team.'],
-    ['Where can I read about data and deletion?', 'Privacy explains the existing controls, local preview storage, and unresolved policy details. Account deletion can be reviewed in Settings. Final live retention periods and privacy contact procedures still require review.'],
+    ['Where can I read about data and deletion?', 'Privacy explains the existing controls, local preview storage, and unresolved policy details. Delete your account in Settings: it is paused for 30 days, so you can sign in and restore it, then erased. Final live retention periods and privacy contact procedures still require review.'],
   ], link: '/privacy', action: 'Read Privacy' },
   { id: 'payments-help', title: 'Payments & help', description: 'Optional support, payment status, and guidance.', questions: [
     ['Are payments required?', 'Any supported payment is voluntary support for TalkingStage’s operator. You can decline, ignore, or disable monetary requests. A payment does not buy an item or guarantee a romantic response.'],

@@ -1,0 +1,13 @@
+{
+  "verifiedAt": "2026-10-30T13:39:46.717Z",
+  "migration": {
+    "version": "202610300031",
+    "name": "soft_account_deletion",
+    "hash": "46a4a3795b53c562104cb57165b6825e7bb3c4f8575655d5a629c19ac5494040"
+  },
+  "deletionEnabled": true,
+  "dailyErasureScheduled": true,
+  "memberOnlyRequestVerified": true,
+  "serviceOnlyErasureVerified": true,
+  "noAccountScheduledOrErased": true
+}
