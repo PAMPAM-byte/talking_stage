@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./styles.css";
+import { BackToTop } from "@/components/back-to-top";
 
 const interfaceFont = localFont({ src: "./fonts/Manrope.ttf", variable: "--font-interface", display: "swap", weight: "200 800", fallback: ["system-ui", "sans-serif"] });
 const displayFont = localFont({ src: "./fonts/DMSerifDisplay.ttf", variable: "--font-display", display: "swap", weight: "400", fallback: ["Georgia", "serif"] });
@@ -22,7 +23,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en-NG"
       className={`${interfaceFont.variable} ${displayFont.variable}`}
     >
-      <body><a className="skip-link" href="#main-content">Skip to content</a>{children}</body>
+      <body><a className="skip-link" href="#main-content">Skip to content</a>{children}<BackToTop /></body>
     </html>
   );
 }
