@@ -32,3 +32,11 @@
 @media (prefers-reduced-motion: no-preference) {
   .button, .shell__nav-item { transition: background-color 180ms ease, color 180ms ease, border-color 180ms ease; }
 }
+/* The sidebar's top corner carries the logo on wide screens; phones keep it in the header. */
+.shell__nav-brand { display: none; }
+@media (min-width: 900px) {
+  .shell__nav-brand { display: block; position: absolute; top: 32px; left: 24px; }
+  .shell__nav-brand .brand-mark { color: var(--ink); }
+  .shell--user .shell__header, .shell--admin .shell__header { justify-content: flex-end; }
+  .shell__header > .brand-mark { display: none; }
+}
