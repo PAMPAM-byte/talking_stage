@@ -65,7 +65,7 @@ Phase 2 — track as issues once Phase 1 is done (see `fix.md` §Phase 2).
 
 ## Done
 - [x] ~~**Launch-weekend AI site limit**~~ (2026-10-29) - raised $20 → $60/day by the founder in the Supabase SQL editor; Admin AI spend warns at 75%
-- [x] ~~**F10 · Installable app and link previews (I1, I2)**~~ (2026-10-29) - share card for X/WhatsApp (`app/opengraph-image.tsx`), web manifest with home-screen icons, Apple touch icon
+- [x] ~~**F10 · Installable app and link previews (I1, I2)**~~ (2026-10-29) - share card for X/WhatsApp (static `app/opengraph-image.jpg`, 64 KB), web manifest with home-screen icons, Apple touch icon
 - [x] ~~**F13 + F14 · Usage reporting and budget settlement**~~ (2026-10-28) - PRs #8, #9; migration 028 applied and verified; first settled reply refunded ~70% of its reservation; founder account granted admin
 - [x] ~~**V1 · Natural character voice**~~ (2026-10-28) - PR #7; no volunteered AI/helpdesk talk, light in-voice acknowledgement when asked, never a denial; Sonnet 5.5 support and cached rules block
 - [x] ~~**F04 · Email confirmation, CAPTCHA, safe password change (B2, B4)**~~ (2026-10-28) - PR #5; Turnstile enforced, Confirm email + Secure password change on, minimum password 12; live sign-up test passed
