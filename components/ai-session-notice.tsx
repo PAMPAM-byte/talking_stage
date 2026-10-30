@@ -2,8 +2,9 @@
 import {useEffect, useState} from 'react';
 import styles from './ai-session-notice.module.css';
 
-// Companion-chat disclosure (fix.md F06): once per browser session per conversation,
-// and again after every three hours of visible use. Rendered outside role="log".
+// Companion-chat disclosure (fix.md F06): a reminder after every three hours of visible use,
+// beside the header's AI character badge. The founder removed the opening line on 30 Oct.
+// Rendered outside role="log".
 export const AI_REMINDER_MS = 3 * 60 * 60 * 1000;
 const TICK_MS = 60 * 1000;
 

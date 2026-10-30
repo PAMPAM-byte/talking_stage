@@ -15,15 +15,13 @@ async function openChat(page: Page) {
 const start = 'You’re chatting with Amara, a fictional AI character.';
 
 for (const width of [320, 1440]) {
-  test(`AI character label, session notice and photo viewer disclosure at ${width}px`, async ({ page }) => {
+  test(`AI character label and photo viewer disclosure at ${width}px, no opening line`, async ({ page }) => {
     await page.setViewportSize({ width, height: 844 });
     await signIn(page); await openChat(page);
     const label = page.locator('.chat-shell__header').getByText('AI character', { exact: true });
     await expect(label).toBeVisible();
-    const notice = page.getByText(start, { exact: true });
-    await expect(notice).toBeVisible();
-    // Never announced as a new message.
-    await expect(page.getByRole('log').getByText(start)).toHaveCount(0);
+    // The founder removed the opening "You're chatting with" line on 30 Oct.
+    await expect(page.getByText(start, { exact: true })).toHaveCount(0);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
 
     await page.getByRole('textbox', { name: 'Message Amara' }).fill('Show me a character photo.');
@@ -34,10 +32,6 @@ for (const width of [320, 1440]) {
     await expect(viewer.getByText('AI-generated photo of a fictional adult character.')).toBeVisible();
     await page.keyboard.press('Escape');
 
-    // Once per browser session: a reload keeps the label but not the start notice.
-    await page.reload();
-    await expect(label).toBeVisible();
-    await expect(page.getByText(start, { exact: true })).toHaveCount(0);
   });
 }
 
