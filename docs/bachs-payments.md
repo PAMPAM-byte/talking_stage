@@ -2,6 +2,10 @@
 
 19 October 2026. Implemented integration code; not configured or activated against Bachs or the hosted database. No real or sandbox gateway transaction has been performed. The founder selected Bachs. The approved inclusive gift range is NGN 2,000 to 1,000,000. Registered merchant identity and optional-request frequency/exchange threshold remain inputs.
 
+## Live activation — 31 October 2026
+
+Bachs verified the merchant account. The founder set the live key, organization and webhook signing secret in Vercel Production and redeployed. `node scripts/activate-bachs-live.mjs --org acct_… --apply` then switched `private.bachs_configuration` from sandbox to production for the live organization, with the approved NGN 2,000–1,000,000 limits and the recipient name "PamPamé". Character money requests stay off. No payment was made by the activation (`docs/bachs-live-activation.json`). The live webhook `https://www.talkingstage.buzz/api/webhooks/bachs` answers 405 to GET and 400 to an unsigned POST, so the runtime settings are complete. A real ₦2,000 end-to-end gift (paid receipt, character thank-you, 200 webhook delivery) is the remaining acceptance step.
+
 ## User experience
 
 The conversation menu offers **Send a voluntary gift**. `/gifts/[conversationId]` asks for an NGN amount, then shows a separate confirmation with **Gift for Amara** (or the current character) and **Received by [registered merchant]**. Confirmation creates an owned intent and hosted Bachs checkout. A lost response retries the same intent and gateway idempotency key. The standard merchant checkout uses the beneficiary details supplied by Bachs.

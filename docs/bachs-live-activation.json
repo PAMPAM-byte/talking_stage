@@ -1,0 +1,10 @@
+{
+  "verifiedAt": "2026-10-31T12:23:02.545Z",
+  "environment": "production",
+  "organizationPrefix": "acct_skl",
+  "recipient": "PamPamé",
+  "minimumMinor": 200000,
+  "maximumMinor": 100000000,
+  "characterRequestsEnabled": false,
+  "paymentsMade": 0
+}
