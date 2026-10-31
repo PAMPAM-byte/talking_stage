@@ -24,6 +24,8 @@
 .support-contact .policy-eyebrow { margin-bottom: 12px; }
 .support-contact h2 { font-size: 24px; line-height: 1.4; letter-spacing: -.6px; font-weight: 750; margin-bottom: 16px; }
 .support-contact p:not(.policy-eyebrow) { font-size: 14px; line-height: 1.85; color: var(--text-secondary); max-width: 72ch; }
+.support-contact a:not(.button) { color: var(--brand); font-weight: 700; }
+.support-contact-action { margin-top: 20px; width: fit-content; }
 .support-contact-label { display: block; color: var(--brand); font-size: 11px; font-weight: 700; line-height: 1.8; margin-top: 20px; }
 @media (min-width: 600px) { .support-topics { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (min-width: 1000px) { .support-topics { grid-template-columns: repeat(4, minmax(0, 1fr)); } .support-guides, .support-faq { grid-template-columns: 1fr 1.7fr; gap: 80px; } .support-contact { padding: 40px; } }

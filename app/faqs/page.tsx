@@ -28,7 +28,7 @@ const topics = [
     ['Are payments required?', 'Any supported payment is voluntary support for TalkingStage’s operator. You can decline, ignore, or disable monetary requests. A payment does not buy an item or guarantee a romantic response.'],
     ['Who receives a payment?', 'TalkingStage’s operator receives it. The character is fictional and has no bank account. Final merchant and checkout details must be supplied before public launch.'],
     ['Does returning from checkout confirm a payment?', 'Only a verified payment result confirms success. A checkout redirect or screenshot alone is not confirmation. Local preview payment outcomes are simulated and no money moves.'],
-    ['How can I get help with my account?', 'Support links to account recovery and other existing controls. A verified production support channel, response expectations, and escalation guidance are still pending. The Support page does not submit a support request.'],
+    ['How can I get help with my account?', 'Start with the Support page for account recovery and other controls. If you still need help, email support@talkingstage.buzz from the address you signed up with.'],
   ], link: '/payment-information', action: 'Read Payment Information' },
 ];
 // The same answers as structured data, so search results can show them directly.

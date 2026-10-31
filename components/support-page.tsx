@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { PublicShell } from './shells';
 import { Icon, type IconName } from './ui/icon';
+import { supportEmail } from '@/lib/support';
 
 const topics: { id: string; title: string; description: string; icon: IconName; link: string; action: string; guidance: string }[] = [
   { id: 'account', title: 'Account & access', description: 'Find your way back to your account.', icon: 'people', link: '/recover', action: 'Review account recovery', guidance: 'Use account recovery if you need help signing in. In the local preview, recovery demonstrates the flow without sending an email. TalkingStage is for adults aged 18 and older.' },
@@ -12,8 +13,8 @@ const faqs = [
   ['How do I recover account access?', 'Open account recovery and follow the steps shown. In local mock mode, the flow is a demonstration and no recovery email is sent.'],
   ['Does deleting a conversation clear its memories?', 'Memories are kept by default when resetting or deleting a conversation. Use the explicit option to clear that character’s saved memories, or review memories separately in Settings.'],
   ['Do I have to respond to monetary requests?', 'No. Requests are optional. You can decline, ignore, or disable them in Settings. Characters are fictional; any supported payment is received by the operator.'],
-  ['What should I check if a payment is pending?', 'Review the recorded payment status and keep the reference for any support enquiry. A return from checkout or a screenshot alone is not confirmation. The local preview uses simulated outcomes; final payment-support procedures remain pending.'],
-  ['Can I contact a support agent here?', 'A verified production support channel, response expectations, and escalation process have not been supplied yet. This page provides guidance and existing controls; it does not submit a support request.'],
+  ['What should I check if a payment is pending?', `Review the recorded status in Payment history. A return from checkout or a screenshot alone is not confirmation. If it stays pending, email ${supportEmail} with the payment reference. The local preview uses simulated outcomes.`],
+  ['How do I contact the team?', `Email ${supportEmail} from the address you signed up with and describe what happened. For a payment, include its reference. Never send your password.`],
 ];
 
 export function SupportPage() {
@@ -23,7 +24,7 @@ export function SupportPage() {
       <nav className="support-topics" aria-label="Help topics">{topics.map(topic => <a key={topic.id} href={`#help-${topic.id}`}><Icon name={topic.icon} /><h2>{topic.title}</h2><p>{topic.description}</p><span>Explore this topic </span></a>)}</nav>
       <section className="support-guides" aria-labelledby="guides-title"><div className="support-section-heading"><p className="policy-eyebrow">A useful place to start</p><h2 id="guides-title">Your options, explained.</h2><p>Practical guidance for the parts of your talking stage you control.</p></div><div className="support-guide-list">{topics.map(topic => <article key={topic.id} id={`help-${topic.id}`} tabIndex={-1} aria-labelledby={`help-${topic.id}-title`}><Icon name={topic.icon} /><div><h3 id={`help-${topic.id}-title`}>{topic.title}</h3><p>{topic.guidance}</p><Link href={topic.link}>{topic.action} </Link>{topic.id === 'payments' && <div className="support-extra-links"><Link href="/settings/payments">Review payment history</Link><Link href="/settings/requests">Manage monetary requests</Link></div>}{topic.id === 'conversations' && <div className="support-extra-links"><Link href="/settings/account">Review account deletion</Link><Link href="/privacy">Read Privacy</Link></div>}</div></article>)}</div></section>
       <section className="support-faq" aria-labelledby="support-faq-title"><div className="support-section-heading"><p className="policy-eyebrow">Common questions</p><h2 id="support-faq-title">A few helpful answers.</h2></div><div className="tsl-faqList">{faqs.map(([question, answer]) => <details key={question}><summary>{question}<span aria-hidden="true">+</span></summary><p>{answer}</p></details>)}</div></section>
-      <section className="support-contact" aria-labelledby="contact-title"><Icon name="info" /><div><p className="policy-eyebrow">Support availability</p><h2 id="contact-title">About contacting the team</h2><p>The verified production support channel is still being selected. This page does not submit a support request. Contact details, response expectations, and escalation guidance must be published before public launch.</p><span className="support-contact-label">Product review draft · No support request submitted</span></div></section>
+      <section className="support-contact" aria-labelledby="contact-title"><Icon name="info" /><div><p className="policy-eyebrow">Contact us</p><h2 id="contact-title">Still need help? Email the team.</h2><p>Write to <a href={`mailto:${supportEmail}`}>{supportEmail}</a> from the address you signed up with, and tell us what happened. For a payment, include its reference from Payment history. We will never ask for your password.</p><a className="button button--primary support-contact-action" href={`mailto:${supportEmail}`}>Email support</a></div></section>
     </div>
   </PublicShell>;
 }
