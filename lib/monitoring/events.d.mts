@@ -5,4 +5,5 @@ export function failureOutcome(error: unknown): Outcome;
 export function observe<T>(operation: Operation, work: () => PromiseLike<T>): Promise<T>;
 export function observeAI(operation: Operation, work: () => Promise<string>): Promise<string>;
 export function emitAIUsage(operation: 'ai.reply' | 'ai.summary', usage: { input: number; cacheWrite: number; cacheRead: number; output: number }): void;
+export function emitGiftFailure(stage: 'configuration' | 'reserve' | 'checkout' | 'bind', error: unknown): void;
 export function emitReplyQuality(report: { stage: string; repetitionScore: number; flags: string[] }): void;
