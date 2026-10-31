@@ -151,11 +151,10 @@ test('real local registration, declarations, ownership, preferences, roles, reco
     await test.step('preference changes survive refresh and expose conflict safely', async () => {
       await pa.goto('/settings/preferences');
       await pa.getByLabel('Preferred name').fill('Stage eight updated');
-      await pa.getByRole('checkbox', { name: 'Allow optional monetary requests' }).check();
       await pa.getByRole('button', { name: 'Save preferences' }).click();
       await expect.poll(async () => (await cauth.from('profiles').select('display_name').single()).data?.display_name).toBe('Stage eight updated');
       await pa.reload(); await expect(pa.getByLabel('Preferred name')).toHaveValue('Stage eight updated');
-      await expect(pa.getByRole('checkbox', { name: 'Allow optional monetary requests' })).toBeChecked();
+      await expect(pa.getByRole('checkbox', { name: 'Allow optional monetary requests' })).toHaveCount(0);
       const conflict = await cauth.rpc('save_preferences', { p_name: 'Stale', p_genders: ['man'], p_language: 'english', p_requests: false, p_version: 1 }); expect(!!conflict.error).toBe(true);
       expect((await bauth.from('profiles').select('display_name').single()).data?.display_name).toBe('Stage eight B');
       expect(await pa.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
