@@ -4,7 +4,7 @@
 
 ## Live activation — 31 October 2026
 
-Bachs verified the merchant account. The founder set the live key, organization and webhook signing secret in Vercel Production and redeployed. `node scripts/activate-bachs-live.mjs --org acct_… --apply` then switched `private.bachs_configuration` from sandbox to production for the live organization, with the approved NGN 2,000–1,000,000 limits and the recipient name "PamPamé". Character money requests stay off. No payment was made by the activation (`docs/bachs-live-activation.json`). The live webhook `https://www.talkingstage.buzz/api/webhooks/bachs` answers 405 to GET and 400 to an unsigned POST, so the runtime settings are complete. A real ₦2,000 end-to-end gift (paid receipt, character thank-you, 200 webhook delivery) is the remaining acceptance step.
+Bachs verified the merchant account. The founder set the live key, organization and webhook signing secret in Vercel Production and redeployed. `node scripts/activate-bachs-live.mjs --org acct_… --apply` then switched `private.bachs_configuration` from sandbox to production for the live organization, with the approved NGN 2,000–1,000,000 limits and the recipient name "PamPamé" (changed to "Talking Stage" the same day at the founder's request, matching the Bachs account name). Character money requests stay off. No payment was made by the activation (`docs/bachs-live-activation.json`). The live webhook `https://www.talkingstage.buzz/api/webhooks/bachs` answers 405 to GET and 400 to an unsigned POST, so the runtime settings are complete. A real ₦2,000 end-to-end gift (paid receipt, character thank-you, 200 webhook delivery) is the remaining acceptance step.
 
 ## User experience
 
