@@ -10,7 +10,7 @@ import styles from '@/components/landing-styles';
 import { StructuredData, siteGraph } from '@/lib/structured-data';
 import { pageMetadata } from '@/lib/seo';
 
-export const metadata = pageMetadata({ path: '/', title: 'TalkingStage (Talking Stage): Nigerian AI dating and chat app', absoluteTitle: true, description: 'TalkingStage, also written Talking Stage, is a Nigerian AI dating and chat app for adults. Text fictional AI characters with real Naija personality, in English or Pidgin. Free to chat, 18+.' });
+export const metadata = pageMetadata({ path: '/', title: 'TalkingStage.buzz: Nigerian AI dating and chat app', absoluteTitle: true, description: 'TalkingStage.buzz is a Nigerian AI dating and chat app for adults. Text fictional AI characters with real Naija personality, in English or Pidgin. Free to chat, 18+.' });
 const introductions = ['char-amara', 'char-idris', 'char-zuri', 'char-kunle'].map(id => cast.find(character => character.id === id)!);
 const steps = [
   { title: 'Make a little space for you.', text: 'Create your account, confirm you’re 18 or older, and choose the personalities and conversation language you prefer.', icon: 'people' as const },

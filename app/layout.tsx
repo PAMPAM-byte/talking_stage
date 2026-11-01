@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   applicationName: "TalkingStage",
   appleWebApp: { title: "TalkingStage", statusBarStyle: "default" },
   // Pages set their own url via lib/seo; a shared url here would point every page at home.
-  openGraph: { type: "website", siteName: "TalkingStage", title: "TalkingStage — A little banter. A little chemistry.", description: "Meet fictional adult AI personalities with Nigerian flavour. Free to chat.", locale: "en_NG" },
+  openGraph: { type: "website", siteName: "TalkingStage.buzz", title: "TalkingStage — A little banter. A little chemistry.", description: "Meet fictional adult AI personalities with Nigerian flavour. Free to chat.", locale: "en_NG" },
   twitter: { card: "summary_large_image", title: "TalkingStage — A little banter. A little chemistry.", description: "Meet fictional adult AI personalities with Nigerian flavour. Free to chat." },
 };
 

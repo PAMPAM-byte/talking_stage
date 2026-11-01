@@ -10,7 +10,7 @@ export function pageMetadata({ path, title, description, absoluteTitle = false }
     title: absoluteTitle ? { absolute: title } : title,
     description,
     alternates: { canonical: path },
-    openGraph: { type: 'website', siteName: 'TalkingStage', locale: 'en_NG', url: path, title: fullTitle, description, images: [image] },
+    openGraph: { type: 'website', siteName: 'TalkingStage.buzz', locale: 'en_NG', url: path, title: fullTitle, description, images: [image] },
     twitter: { card: 'summary_large_image', title: fullTitle, description, images: [image] },
   };
 }
