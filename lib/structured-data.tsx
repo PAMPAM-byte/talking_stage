@@ -11,6 +11,6 @@ export const siteGraph = {
     { '@type': 'Organization', '@id': `${siteUrl}/#organization`, name: 'TalkingStage', url: siteUrl, logo: `${siteUrl}/icons/icon-512.png`, email: 'support@talkingstage.buzz', contactPoint: { '@type': 'ContactPoint', contactType: 'customer support', email: 'support@talkingstage.buzz', availableLanguage: ['English'] } },
     { '@type': 'WebSite', '@id': `${siteUrl}/#website`, name: 'TalkingStage', alternateName: 'talkingstage.buzz', url: siteUrl, description: siteSummary, inLanguage: 'en-NG', publisher: { '@id': `${siteUrl}/#organization` } },
     { '@type': 'WebApplication', name: 'TalkingStage', url: siteUrl, description: siteSummary, applicationCategory: 'LifestyleApplication', operatingSystem: 'Web, Android, iOS', isAccessibleForFree: true,
-      offers: { '@type': 'Offer', price: '0', priceCurrency: 'NGN' }, audience: { '@type': 'PeopleAudience', suggestedMinAge: 18 }, image: `${siteUrl}/opengraph-image.jpg`, publisher: { '@id': `${siteUrl}/#organization` } },
+      offers: { '@type': 'Offer', price: '0', priceCurrency: 'NGN' }, audience: { '@type': 'PeopleAudience', suggestedMinAge: 18 }, image: `${siteUrl}/opengraph-image.jpg?v=2`, publisher: { '@id': `${siteUrl}/#organization` } },
   ],
 };
