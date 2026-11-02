@@ -15,6 +15,9 @@ import { ChatMessageContent, ExpressionImage } from './chat-expression';
 import type {MessageQuote} from '@/lib/chat/message-quotes';
 import {QuotedMessage} from './quoted-message';
 import replyStyles from './message-reply.module.css';
+// On phones the first tap on Send would blur the field; the keyboard closes, the layout jumps and
+// the tap misses. Keeping focus lets one tap send, and the keyboard stays open for the next message.
+const keepComposerFocus=(event:{preventDefault:()=>void})=>event.preventDefault();
 type Outgoing = {
     clientId: string;
     text: string;
@@ -311,5 +314,5 @@ export function LiveMessageComposer({ disabled, name }: {
         event.preventDefault();
         if (!event.repeat)
             submit();
-    } }}/><Button type="submit" className="composer-send" disabled={disabled || sending || (!text.trim() && !expression) || text.length > limit} aria-label="Send message"><Icon name="arrow"/></Button></div></form>;
+    } }}/><Button type="submit" className="composer-send" onPointerDown={keepComposerFocus} disabled={disabled || sending || (!text.trim() && !expression) || text.length > limit} aria-label="Send message"><Icon name="arrow"/></Button></div></form>;
 }
