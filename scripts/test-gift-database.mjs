@@ -46,6 +46,7 @@ try{
  await actor('','service_role');assert.equal(await apply('review','evt_dispute'),'paid');assert.equal(await apply('paid','evt_repeated_success'),'paid');
  await actor();assert.equal((await db.query('select needs_review from public.payment_intents')).rows[0].needs_review,true);
  await actor('','service_role');assert.equal(await apply('refunded','evt_refund'),'refunded');assert.equal(await apply('paid','evt_late_success'),'refunded');
+ await db.exec('reset role');assert((await db.query('select bool_and(requests_enabled) v from public.profiles')).rows[0].v,'Monetary requests are on by default');
  await db.exec("reset role;update public.profiles set requests_enabled=true;update private.monetary_request_policy set enabled=true,minimum_completed_exchanges=1,minimum_amount_minor=10000,maximum_amount_minor=1000000,cooldown_seconds=3600;update private.ai_configuration set enabled=true,model='synthetic',project_daily_micro_usd=100,user_daily_micro_usd=100,input_micro_usd_per_million=1,output_micro_usd_per_million=1;");
  await db.query("insert into private.character_direction(character_id,direction) values($1,'Synthetic adult direction')",[char]);
  const send=async(text='Hello')=>{await actor();return (await db.query('select public.save_user_message($1,gen_random_uuid(),1,$2) v',[c,text])).rows[0].v.id;};
@@ -56,9 +57,21 @@ try{
  const finish=async()=>(await db.query("select public.finish_gift_reply($1,$2,$3,'Would you like to send a small gift? No pressure.',null,null,250000) v",[job.job,a,job.lease])).rows[0].v;
  assert.equal(await finish(),'completed');assert.equal(await finish(),'completed');
  await actor();const proposals=(await db.query('select * from public.gift_proposals')).rows;assert.equal(proposals.length,1);
- const noThanks=await send('no thanks');const declined=await claim(noThanks);assert.equal(declined.requestControls.refused,true);assert.equal(declined.payments.requestsEligible,false);
+ const noThanks=await send('no thanks');const declined=await claim(noThanks);assert.equal(declined.requestControls.refused,false,'No thanks skips to the next milestone instead of stopping the chat');assert.equal(declined.payments.requestsEligible,false);
  await actor();assert.equal((await db.query('select state from public.gift_proposals')).rows[0].state,'declined');
  await actor(b);assert.equal((await db.query('select * from public.gift_proposals')).rows.length,0);await assert.rejects(db.query('select public.decline_gift_proposal($1)',[proposals[0].id]),/not_found/);
+ // Billing milestones (3 Nov): 20, then +30, +50, then every +30 replies; any character gender.
+ await actor('','service_role');await db.query("select public.finish_reply($1,$2,$3,'No wahala at all.')",[declined.job,a,declined.lease]);
+ await db.exec('reset role');
+ assert.deepEqual((await db.query('select array_agg(private.request_milestone(20,k) order by k) v from generate_series(0,4) k')).rows[0].v,[20,50,100,130,160]);
+ const eligibility=async()=>{await db.exec('reset role');return (await db.query('select private.monetary_request_eligibility($1,$2) v',[c,a])).rows[0].v;};
+ assert.deepEqual([(await eligibility()).reason,(await eligibility()).asked],['early_chat',1],'After one request the next milestone is 30 replies later');
+ await db.exec("reset role;delete from public.gift_proposals;update public.conversations set last_monetary_request_at=null;update public.characters set gender='man' where name='Synthetic adult';");
+ const male=await claim(await send('Tell me about your weekend'));assert.equal(male.payments.requestsEligible,true,'Male characters may bill too');
+ await db.query("select public.finish_reply($1,$2,$3,'It was a good one.')",[male.job,a,male.lease]);
+ await send('stop asking');await db.exec('reset role');assert.equal((await db.query('select requests_refused v from public.conversations where id=$1',[c])).rows[0].v,true,'An explicit stop still stops requests in this chat');
+ assert.equal((await eligibility()).reason,'refused');
+ await db.exec("reset role;update public.conversations set requests_refused=false;update public.characters set gender='woman' where name='Synthetic adult';");
  // Automatic acknowledgements are driven by the verified ledger, not chat claims.
  await db.exec("reset role;update private.bachs_configuration set environment='production';update public.characters set personality=array['playful'] where name='Synthetic adult';");
  const fresh=async()=>{

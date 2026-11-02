@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import {readFile,readdir} from 'node:fs/promises';
 import {PGlite} from '@electric-sql/pglite';
-import {approvedRequestPolicy,approvedRequestPolicySql} from '../lib/payments/request-policy.mjs';
+import {approvedRequestPolicySql} from '../lib/payments/request-policy.mjs';
 // Exercises the founder-approved pacing against the full migration chain.
 const db=new PGlite();const a='00000000-0000-4000-8000-000000000001';
 try{
@@ -27,31 +27,38 @@ try{
  await db.exec('reset role');
  await db.exec(approvedRequestPolicySql());
  const policy=(await db.query('select * from private.monetary_request_policy')).rows[0];
- assert.equal(policy.enabled,true);assert.equal(policy.minimum_completed_exchanges,20);assert.equal(policy.cooldown_seconds,604800);
- assert.equal(Number(policy.minimum_amount_minor),approvedRequestPolicy.minimumAmountMinor);assert.equal(Number(policy.maximum_amount_minor),approvedRequestPolicy.maximumAmountMinor);
+ assert.equal(policy.enabled,true);assert.equal(policy.minimum_completed_exchanges,20);assert.equal(policy.cooldown_seconds,3600);
+ assert.equal(Number(policy.minimum_amount_minor),200000);assert.equal(Number(policy.maximum_amount_minor),1000000,'Requests suggest at most NGN 10,000');
  // A completed reply job is one exchange; insert the minimum rows the counter reads.
- const exchange=async c=>{
+ const exchange=async(c,count=1)=>{for(let i=0;i<count;i++){
   const row=(await db.query('select generation,next_sequence from public.conversations where id=$1',[c])).rows[0];
   const message=(await db.query("insert into public.messages(conversation_id,sequence,role,kind,text) values($1,$2,'user','text','hello') returning id",[c,row.next_sequence])).rows[0].id;
   await db.query('update public.conversations set next_sequence=next_sequence+1 where id=$1',[c]);
   await db.query("insert into private.reply_jobs(conversation_id,user_message_id,generation,state) values($1,$2,$3,'completed')",[c,message,row.generation]);
+ }};
+ // A request as finish_gift_reply records it: a proposal on a character message.
+ const ask=async c=>{
+  const row=(await db.query('select next_sequence from public.conversations where id=$1',[c])).rows[0];
+  const message=(await db.query("insert into public.messages(conversation_id,sequence,role,kind,text) values($1,$2,'character','text','Shawarma money?') returning id",[c,row.next_sequence])).rows[0].id;
+  await db.query('update public.conversations set next_sequence=next_sequence+1,last_monetary_request_at=now()-interval \'2 hours\' where id=$1',[c]);
+  await db.query('insert into public.gift_proposals(conversation_id,user_id,message_id,amount_minor) values($1,$2,$3,300000)',[c,a,message]);
  };
  const reason=async c=>(await db.query('select private.monetary_request_eligibility($1,$2) v',[c,a])).rows[0].v.reason;
- for(let i=0;i<19;i++)await exchange(withWoman);
- assert.equal(await reason(withWoman),'early_chat','19 exchanges must be too early');
- await exchange(withWoman);
- assert.equal(await reason(withWoman),null,'20 completed exchanges must be eligible');
- await db.query("update public.conversations set last_monetary_request_at=now()-interval '6 days' where id=$1",[withWoman]);
- assert.equal(await reason(withWoman),'cooldown','a request within 7 days must be blocked');
- await db.query("update public.conversations set last_monetary_request_at=now()-interval '7 days 1 minute' where id=$1",[withWoman]);
- assert.equal(await reason(withWoman),null,'a request after 7 days must be allowed again');
- // Mirrors the claim condition in migration 017: policy eligibility AND a female character.
- for(let i=0;i<20;i++)await exchange(withMan);
- assert.equal(await reason(withMan),null,'the pacing policy itself is gender-neutral');
- const offered=async c=>(await db.query("select ch.gender='woman' and (private.monetary_request_eligibility(v.id,$2)->>'eligible')::boolean ok from public.conversations v join public.characters ch on ch.id=v.character_id where v.id=$1",[c,a])).rows[0].ok;
- assert.equal(await offered(withWoman),true);
- assert.equal(await offered(withMan),false,'male characters must never be offered money requests');
- const genderRule=(await readFile('supabase/migrations/202610190017_bachs_payments.sql','utf8')).match(/gender='woman'/g)?.length??0;
- assert(genderRule>=2,'claim and finish must both keep the female-character rule');
- console.log('Request policy passed: approved 20-exchange minimum, 7-day cooldown, NGN 2,000-1,000,000 limits, opted-in user, female-character-only offers.');
+ // Milestones 20, 50, 100, then every 30 replies, for women and men alike.
+ for(const c of [withWoman,withMan]){
+  let done=0;
+  for(const milestone of [20,50,100,130,160]){
+   await exchange(c,milestone-1-done);done=milestone-1;
+   assert.equal(await reason(c),'early_chat',`${done} replies must be before the milestone at ${milestone}`);
+   await exchange(c);done++;
+   assert.equal(await reason(c),null,`${milestone} replies must allow a request`);
+   await ask(c);
+  }
+ }
+ await db.query('update public.conversations set last_monetary_request_at=now() where id=$1',[withWoman]);
+ await exchange(withWoman,30);
+ assert.equal(await reason(withWoman),'cooldown','two requests never land in the same hour');
+ const migration=await readFile('supabase/migrations/202611030033_billing_milestones.sql','utf8');
+ assert(!/gender='woman'/.test(migration.replace(/^--.*$/gm,'')),'claim and finish must not restrict requests to women');
+ console.log('Request policy passed: founder-approved milestones 20/50/100 then every 30 replies, male and female characters, one-hour spacing, NGN 2,000-10,000 suggestions, requests on by default.');
 }finally{await db.close();}

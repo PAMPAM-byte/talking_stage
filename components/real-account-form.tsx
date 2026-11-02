@@ -128,8 +128,8 @@ export function RealAccountForm({ step, configured, profile, expired = false, lo
         {genders.map(gender => <input key={gender} type="hidden" name="genders" value={gender} />)}
         <fieldset className="preference-options"><legend>Who would you like to meet?</legend><div className="row">{[["woman", "Women"], ["man", "Men"]].map(([value, label]) => <Chip key={value} selected={genders.includes(value)} onClick={() => setGenders(current => current.includes(value) ? current.filter(gender => gender !== value) : [...current, value])}>{label}</Chip>)}</div></fieldset>
         <SelectField label="Conversation language" name="language" defaultValue={profile?.language ?? "english"}><option value="english">English</option><option value="english_pidgin">English with Pidgin</option></SelectField>
-        {/* No opt-in here (founder, 31 Oct): gifts are part of the product. Keep any saved choice unchanged. */}
-        {profile?.requests_enabled && <input type="hidden" name="requests" value="on" />}
+        {/* No opt-in here (founder, 31 Oct): requests are on by default (3 Nov). Keep a saved opt-out unchanged. */}
+        {profile?.requests_enabled !== false && <input type="hidden" name="requests" value="on" />}
       </>}
       {step === "complete" && <><div className="onboarding-summary"><p>{profile?.display_name}</p><p className="supporting muted">{profile?.genders.map(gender => gender === "woman" ? "Women" : "Men").join(" and ")} · {profile?.language === "english_pidgin" ? "English with Pidgin" : "English"}</p></div><Checkbox name="consent" label="I understand the characters and their photos are AI generated, and relationships are fictional." required /></>}
       {checksHuman && <HumanCheck widgetRef={humanCheck} onToken={setCaptchaToken} onFailure={humanCheckFailed} />}
