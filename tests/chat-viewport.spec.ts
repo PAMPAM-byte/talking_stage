@@ -40,3 +40,18 @@ test('chat follows the visible viewport when a mobile keyboard reduces its heigh
     await expect(page.locator('.chat-shell__header')).toBeInViewport();
   }
 });
+
+test('one tap on Send sends while the keyboard is open and keeps the field focused', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/dev/chat-delivery?scenario=disabled');
+  const field = page.getByRole('textbox').last();
+  await field.fill('Sent with the keyboard open');
+  await expect(field).toBeFocused();
+  // A pointer press on Send must not blur the field (which closes a phone keyboard and moves the button).
+  const send = page.getByRole('button', { name: 'Send message' });
+  await send.dispatchEvent('pointerdown');
+  await expect(field).toBeFocused();
+  await send.click();
+  await expect(page.getByText('Sent with the keyboard open').first()).toBeVisible();
+  await expect(field).toBeFocused();
+});
