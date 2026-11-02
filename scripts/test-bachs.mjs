@@ -43,6 +43,9 @@ const checkout={checkout_id:'chk_synthetic',reference:intent.reference,currency:
 const payment={payment_id:'pay_synthetic',checkout_id:'chk_synthetic',reference:intent.reference,currency:'NGN',amount:'5000.00',amount_paid:'5000.00',amount_remaining:'0.00',status:'succeeded',updated_at:'2026-10-19T12:00:00Z'};
 const reader=(overrides={})=>async url=>respond(url.includes('/payments/')?{...payment,...overrides}:checkout);
 assert.equal((await verifyCheckout(settings,intent,{fetcher:reader()})).status,'paid');
+assert.equal((await verifyCheckout(settings,intent,{fetcher:reader({reference:undefined,checkout_id:undefined,amount:5000})})).status,'paid','Optional payment back-links and numeric amounts are accepted');
+await assert.rejects(verifyCheckout(settings,intent,{fetcher:reader({amount:'4000.00'})}),error=>error.code==='payment_mismatch'&&error.reason==='payment_amount');
+await assert.rejects(verifyCheckout(settings,intent,{fetcher:reader({reference:'TS-other'})}),error=>error.reason==='payment_reference');
 assert.equal((await verifyCheckout(settings,intent,{fetcher:reader({status:'processing'})})).status,'pending');
 {const ahead=await verifyCheckout(settings,intent,{fetcher:reader({updated_at:'2099-01-01T00:00:00Z'})},()=>Date.parse('2026-11-02T18:00:00Z'));assert.equal(ahead.verifiedAt,'2026-11-02T18:00:00.000Z','Future gateway times are clamped so the ledger accepts the check');}
 assert.equal((await verifyCheckout(settings,intent,{fetcher:reader({status:'failed'})})).status,'failed');
