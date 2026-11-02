@@ -13,15 +13,17 @@ export async function startGift(actor:string,conversation:string,amount:number,o
  const reserved=await client.rpc('reserve_gift',{p_actor:actor,p_conversation:conversation,p_amount:amount,p_operation:operation,p_environment:settings.environment,p_organization:settings.organizationId});
  if(reserved.error)emitGiftFailure('reserve',{code:'reserve_failed'});
  if(reserved.error)throw new Error(/invalid_amount/.test(reserved.error.message)?'Choose an amount within the payment limits.':/conflict/.test(reserved.error.message)?'This attempt has different details. Reload before trying again.':'This payment is unavailable. Reload to check availability.');
- const intent=reserved.data as GiftIntent;
+ let intent=reserved.data as GiftIntent;
  if(!intent.gateway_checkout_id){
   // A lost response retries the same intent and Bachs idempotency key.
   const checkout=await createCheckout(settings,intent,process.env.TALKINGSTAGE_SITE_URL,{allowLocalSandboxReturn:process.env.NODE_ENV==='development'}).catch(error=>{emitGiftFailure('checkout',error);throw error;});
   const bound=await client.rpc('bind_gift_checkout',{p_intent:intent.id,p_checkout:checkout.checkoutId,p_url:checkout.checkoutUrl,p_expires:checkout.expiresAt});
   if(bound.error)emitGiftFailure('bind',{code:'bind_failed'});
   if(bound.error)throw new Error('Checkout could not be confirmed. Retry this same attempt.');
+  intent={...intent,gateway_checkout_id:checkout.checkoutId,checkout_url:checkout.checkoutUrl,expires_at:checkout.expiresAt};
  }
- return {id:intent.id};
+ // The caller sends the user straight to this checkout; null falls back to the payment page.
+ return {id:intent.id,checkout:safeGiftCheckout(intent)};
 }
 export async function reconcileGift(intent:GiftIntent,event?:{id:string;type:string}) {
  const settings=bachsSettings();

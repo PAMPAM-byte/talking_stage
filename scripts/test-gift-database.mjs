@@ -28,11 +28,17 @@ try{
  assert.equal(await apply(),'paid');assert.equal(await apply(),'paid');assert.equal(await apply('failed','evt_failure'),'paid');
  await actor();assert.equal((await db.query('select * from public.payment_intents')).rows.length,1);
  const receipts=(await db.query("select * from public.messages where kind='payment'")).rows;assert.equal(receipts.length,1);assert.equal(receipts[0].role,'system');
- const acknowledgements=(await db.query("select * from public.messages where role='character' and kind='text'")).rows;
+ // Verification leaves the thanks pending; without AI the fixed thanks follows the receipt.
+ assert.equal((await db.query("select * from public.messages where role='character' and kind='text'")).rows.length,0);
+ await actor('','service_role');assert.equal((await db.query("select public.claim_payment_thanks($1,'synthetic') v",[intent.id])).rows[0].v.state,'fallback');
+ assert.equal((await db.query('select public.payment_thanks_fallback($1) v',[intent.id])).rows[0].v,'posted');
+ assert.equal((await db.query('select public.payment_thanks_fallback($1) v',[intent.id])).rows[0].v,'skipped');
+ await actor();const acknowledgements=(await db.query("select * from public.messages where role='character' and kind='text'")).rows;
  assert.equal(acknowledgements.length,1);assert(acknowledgements[0].text.startsWith('Test payment confirmed.'));
  assert(acknowledgements[0].text.includes('No real money was transferred.'));assert.equal(Number(acknowledgements[0].sequence),Number(receipts[0].sequence)+1);
  await assert.rejects(db.query('select * from private.payment_acknowledgements'),/permission denied/);
  await assert.rejects(db.query("select public.apply_gift_verification($1,'chk_synthetic',null,'paid',now())",[intent.id]),/permission denied/);
+ await assert.rejects(db.query("select public.claim_payment_thanks($1,'synthetic')",[intent.id]),/permission denied/);await assert.rejects(db.query('select public.payment_thanks_fallback($1)',[intent.id]),/permission denied/);
  await actor(b);assert.equal((await db.query('select * from public.payment_intents')).rows.length,0);await assert.rejects(db.query('select public.gift_settings($1)',[c]),/not_found/);
  await assert.rejects(db.query('select public.admin_gift_ledger()'),/forbidden/);
  await db.exec(`reset role;insert into private.user_roles(user_id,role) values('${b}','admin');`);await actor(b);
@@ -67,17 +73,30 @@ try{
  const paid=await fresh();await verify(paid,'pending');assert.equal(await ackCount(),1);
  await actor('','service_role');await verify(paid,'paid','evt_new_paid');await verify(paid,'paid','evt_new_paid');await verify(paid,'paid','evt_another_paid');
  assert.equal(await ackCount(),2);
- const thanks=(await db.query('select m.* from public.messages m join private.payment_acknowledgements a on a.message_id=m.id where a.intent_id=$1',[paid.id])).rows[0];
- assert(thanks.text.startsWith('Payment confirmed!'));assert(thanks.text.includes('Thank you'));assert(!thanks.text.includes('Test payment'));assert.equal(thanks.role,'character');
- const failed=await fresh();await verify(failed,'failed');assert.equal(await ackCount(),2);
- const reviewed=await fresh();await verify(reviewed,'review');await verify(reviewed,'paid');assert.equal(await ackCount(),2);
- const archived=await fresh();await db.exec("reset role;update public.conversations set status='archived';");await actor('','service_role');await verify(archived,'paid');assert.equal(await ackCount(),2);
+ // The character's AI writes the thanks once; a live attempt blocks the fallback.
+ const claimThanks=async row=>(await db.query("select public.claim_payment_thanks($1,'synthetic') v",[row.id])).rows[0].v;
+ const thanksJob=await claimThanks(paid);assert.equal(thanksJob.state,'claimed');assert.equal(thanksJob.initiative,'payment_thanks');assert.equal(Number(thanksJob.payment.amountMinor),500000);
+ assert.equal((await claimThanks(paid)).state,'generating');assert.equal((await db.query('select public.payment_thanks_fallback($1) v',[paid.id])).rows[0].v,'skipped');
+ assert.equal((await db.query("select public.finish_payment_thanks($1,$2,$3,'Ahh I see it! Thank you for the ₦5,000, you just made my evening.') v",[thanksJob.job,thanksJob.lease,paid.id])).rows[0].v,'completed');
+ assert.equal((await claimThanks(paid)).state,'done');
+ await db.exec('reset role');const thanks=(await db.query('select m.* from public.messages m join private.payment_acknowledgements a on a.message_id=m.id where a.intent_id=$1',[paid.id])).rows[0];
+ assert(thanks.text.startsWith('Ahh I see it!'));assert.equal(thanks.role,'character');
+ // A failed AI attempt falls back to the fixed trait-based thanks.
+ await actor('','service_role');const missed=await fresh();await verify(missed,'paid','evt_missed_paid');const missedJob=await claimThanks(missed);assert.equal(missedJob.state,'claimed');
+ assert.equal((await db.query("select public.finish_payment_thanks($1,$2,$3,null,'provider_error') v",[missedJob.job,missedJob.lease,missed.id])).rows[0].v,'failed');
+ await db.exec('reset role');const fixed=(await db.query('select m.* from public.messages m join private.payment_acknowledgements a on a.message_id=m.id where a.intent_id=$1',[missed.id])).rows[0];
+ assert(fixed.text.startsWith('Payment confirmed!'));assert(fixed.text.includes('Thank you'));assert(!fixed.text.includes('Test payment'));
+ await actor('','service_role');assert.equal((await claimThanks(missed)).state,'done');assert.equal(await ackCount(),3);
+ const failed=await fresh();await verify(failed,'failed');assert.equal(await ackCount(),3);
+ const reviewed=await fresh();await verify(reviewed,'review');await verify(reviewed,'paid');assert.equal(await ackCount(),3);
+ const archived=await fresh();await db.exec("reset role;update public.conversations set status='archived';");await actor('','service_role');await verify(archived,'paid');assert.equal(await ackCount(),3);
  await db.exec("update public.conversations set status='active';");
- const stale=await fresh();await db.exec('reset role;update public.conversations set generation=generation+1;');await actor('','service_role');await verify(stale,'paid');assert.equal(await ackCount(),2);
+ const stale=await fresh();await db.exec('reset role;update public.conversations set generation=generation+1;');await actor('','service_role');await verify(stale,'paid');assert.equal(await ackCount(),3);
  // A reset may erase the message, but replay must never bring the thanks back.
  await db.query('delete from public.messages where id=$1',[thanks.id]);
- await actor('','service_role');await verify(paid,'paid','evt_after_reset');assert.equal(await ackCount(),2);
+ await actor('','service_role');await verify(paid,'paid','evt_after_reset');assert.equal(await ackCount(),3);
  assert.equal((await db.query('select message_id from private.payment_acknowledgements where intent_id=$1',[paid.id])).rows[0].message_id,null);
- console.log('Payment acknowledgements passed: sandbox/live wording, warm trait-based replies, receipt order, webhook/manual deduplication, no thanks for failures/review, archive/reset isolation and private permissions.');
+ await actor('','service_role');assert.equal((await claimThanks(paid)).state,'done');assert.equal((await db.query('select public.payment_thanks_fallback($1) v',[paid.id])).rows[0].v,'skipped');
+ console.log('Payment acknowledgements passed: AI-written thanks once per payment, fixed sandbox/live fallback, receipt order, webhook/manual deduplication, no thanks for failures/review, archive/reset isolation and private permissions.');
  console.log('Gift database passed: disabled defaults, bounded/owned/idempotent intents, service-only verification, actor isolation, deduplicated receipts and non-regressing verified states. Disposable database only.');
 }finally{await db.close();}

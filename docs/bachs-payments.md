@@ -131,3 +131,13 @@ This is a presentation correction, not in-chat account-number generation. The do
 - [Payment object and lifecycle](https://docs.bachs.io/api-reference/payments/object)
 - [Virtual accounts versus checkout-specific transfers](https://docs.bachs.io/guides/virtual-accounts/overview)
 - [Supported businesses](https://docs.bachs.io/for-you/supported-businesses)
+
+## Return to chat and AI thanks — 2 November 2026
+
+- **Checkout return.** Checkout sessions use `success_url` and `cancel_url` of `/messages/{conversation}?payment={intent}`. The chat calls `checkGiftAction`, which verifies the checkout with Bachs directly, so the receipt can appear before the webhook arrives. The query parameter only identifies the attempt; payment status always comes from Bachs and the ledger.
+- **Thank-you.** `apply_gift_verification` now records the receipt and a *pending* acknowledgement. Whichever path sees the paid status first (the webhook through `after()`, or the chat return check) calls `thankForPayment`.
+  - `claim_payment_thanks` reserves AI budget and a check-in job anchored to the receipt, so each payment gets at most one AI attempt.
+  - `finish_payment_thanks` saves the reply (at most 280 characters, no media or links).
+  - Any failure, missing AI configuration or exhausted budget posts the fixed trait-based thanks instead (`payment_thanks_fallback`).
+  - `thanked_at` marks completion, so a reset chat or a replayed webhook never repeats the thanks.
+- **Deploy order.** Merge and deploy the code first. Then run `node scripts/activate-payment-thanks.mjs` (preflight), and after approval run it with `--apply`. Until the migration is applied, the database keeps posting the fixed thanks itself, and the new code finds nothing pending.

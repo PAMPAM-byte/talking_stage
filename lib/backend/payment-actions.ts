@@ -4,8 +4,9 @@ import { currentAccount } from './server';
 import { startGift, reconcileGift, type GiftIntent } from './payment-service';
 import { parseNaira } from '@/lib/format';
 import {trustedBackendClient} from './trusted-client';
+import {thankForPayment} from './payment-thanks';
 const uuid=/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i;
-export async function createGiftAction(form:FormData):Promise<{id?:string;error?:string}> {
+export async function createGiftAction(form:FormData):Promise<{id?:string;checkout?:string|null;error?:string}> {
  try{
   const account=await currentAccount({failOnUnavailable:true});
   if(!account?.profile.onboarding_complete||!account.profile.adult_declared_at)return {error:'Sign in with an eligible account.'};
@@ -16,16 +17,18 @@ export async function createGiftAction(form:FormData):Promise<{id?:string;error?
   return result;
  }catch{return {error:'Checkout could not be confirmed. Retry this same attempt; your payment will not be duplicated.'};}
 }
-export async function checkGiftAction(form:FormData):Promise<{error?:string}> {
+export async function checkGiftAction(form:FormData):Promise<{status?:string;error?:string}> {
  try{
   const id=String(form.get('id')??'');if(!uuid.test(id))return {error:'Payment unavailable.'};
   const account=await currentAccount({failOnUnavailable:true});
   if(!account?.profile.onboarding_complete||!account.profile.adult_declared_at)return {error:'Sign in with an eligible account.'};
   const owned=await account.client.from('payment_intents').select('*').eq('id',id).eq('user_id',account.user.id).maybeSingle();
   if(owned.error||!owned.data)return {error:'Payment unavailable.'};
-  await reconcileGift(owned.data as GiftIntent);
+  const status=await reconcileGift(owned.data as GiftIntent);
+  // Returning from checkout can beat the webhook; the database still posts one thank-you.
+  if(status==='paid')await thankForPayment(id);
   try{revalidatePath(`/payments/${id}`);revalidatePath('/settings/payments');revalidatePath(`/messages/${owned.data.conversation_id}`);}catch{/* Ledger state remains authoritative. */}
-  return {};
+  return {status};
  }catch{return {error:'Verification is temporarily unavailable. The last known payment status is unchanged.'};}
 }
 export async function declineGiftAction(form:FormData):Promise<{error?:string}> {
