@@ -52,3 +52,10 @@ test('receipts lead with the verified state and keep ledger facts readable',asyn
  await page.setViewportSize({width:390,height:844});expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
  await receipts.screenshot({path:'test-results/gift-receipts-390.png'});
 });
+test('the trusted payment action in chat is a button labelled Send money',async({page})=>{
+ const example=page.getByLabel('Payment button example');
+ const action=example.getByRole('link',{name:'Send money'});
+ await expect(action).toBeVisible();await expect(action).toHaveCSS('text-decoration-line','none');
+ await expect(example).not.toContainText('[[talkingstage:gift]]');
+ await page.setViewportSize({width:390,height:844});await example.screenshot({path:'test-results/chat-payment-button-390.png'});
+});
