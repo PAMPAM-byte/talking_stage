@@ -44,6 +44,7 @@ const payment={payment_id:'pay_synthetic',checkout_id:'chk_synthetic',reference:
 const reader=(overrides={})=>async url=>respond(url.includes('/payments/')?{...payment,...overrides}:checkout);
 assert.equal((await verifyCheckout(settings,intent,{fetcher:reader()})).status,'paid');
 assert.equal((await verifyCheckout(settings,intent,{fetcher:reader({status:'processing'})})).status,'pending');
+{const ahead=await verifyCheckout(settings,intent,{fetcher:reader({updated_at:'2099-01-01T00:00:00Z'})},()=>Date.parse('2026-11-02T18:00:00Z'));assert.equal(ahead.verifiedAt,'2026-11-02T18:00:00.000Z','Future gateway times are clamped so the ledger accepts the check');}
 assert.equal((await verifyCheckout(settings,intent,{fetcher:reader({status:'failed'})})).status,'failed');
 assert.equal((await verifyCheckout(settings,intent,{fetcher:reader({status:'partially_refunded'})})).status,'review');
 assert.equal((await verifyCheckout(settings,intent,{fetcher:reader({status:'refunded'})})).status,'refunded');
