@@ -30,7 +30,7 @@ try{
  await actor(a);assert.equal((await db.query('select public.checkin_settings() as v')).rows[0].v.frequency,'off');assert.equal((await claim()).state,'disabled');
  const c=await seed();await preference('daily',nighttime);assert.equal((await claim()).state,'quiet_hours');
  await preference();const job=await claim();assert.equal(job.state,'claimed');assert.equal(job.replyMode,'checkin');assert(job.history.every(m=>m.created_at));
- const input=buildInput(job);assert(input[0].content.includes('NO new user message'));assert(!input[0].content.includes('Available reactions'));
+ const input=buildInput(job);assert(input[0].content.includes('NO new user message'));assert.equal(input.at(-1).role,'user','Claude rejects a conversation ending on the assistant; a check-in after the character must end on a user cue');assert.equal(input.at(-2).role,'assistant');assert(!input[0].content.includes('Available reactions'));
  const response=text=>async()=>Response.json({status:'completed',output:[{type:'message',content:[{type:'output_text',text:JSON.stringify({text,photoAssetId:null})}]}]});
  const settings={key:'SYNTHETIC-NOT-A-KEY',model:'synthetic'};
  await assert.rejects(generateReply(job,settings,{fetcher:response('[[ts:gif:wave]]')}),/invalid_output/);

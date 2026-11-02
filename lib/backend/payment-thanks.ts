@@ -5,6 +5,6 @@ import {trustedBackendClient} from './trusted-client';
 import {emit,emitAIUsage,emitReplyQuality} from '@/lib/monitoring/events.mjs';
 /** Runs after a verified payment from the webhook or the chat return check; the database posts it once. */
 export async function thankForPayment(intentId:string){
- try{return await runPaymentThanks(trustedBackendClient(),intentId,providerSettings(),{onQuality:emitReplyQuality,onUsage:(usage:Parameters<typeof emitAIUsage>[1])=>emitAIUsage('ai.reply',usage)});}
+ try{return await runPaymentThanks(trustedBackendClient(),intentId,providerSettings(),{onQuality:emitReplyQuality,onUsage:(usage:Parameters<typeof emitAIUsage>[1])=>emitAIUsage('ai.reply',usage),onProviderResponse:(status:number,durationMs:number)=>emit('ai.provider',status===429||status===529?'rate_limited':status>=500?'unavailable':status>=400?'rejected':'ok',durationMs)});}
  catch{emit('ai.reply','unavailable');return 'unavailable';}
 }
