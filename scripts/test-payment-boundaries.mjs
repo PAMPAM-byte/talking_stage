@@ -5,13 +5,14 @@ import ts from 'typescript';
 import {createHmac} from 'node:crypto';
 import {verifyBachsEvent,PaymentError} from '../lib/payments/bachs.mjs';
 const id='00000000-0000-4000-8000-000000000001';
-let signedIn=true,adult=true,owned=true,admin=false,starts=0,verifications=0,declines=0;
+let signedIn=true,adult=true,owned=true,admin=false,starts=0,verifications=0,declines=0,thanks=0;const deferred=[];
 const account=()=>signedIn?{user:{id},profile:{onboarding_complete:adult,adult_declared_at:adult?'yes':null},client:{from:()=>({select(){return this;},eq(){return this;},async maybeSingle(){return {data:owned?{id,conversation_id:id}:null};}}),rpc:async name=>name==='is_admin'?{data:admin}:name==='decline_gift_proposal'?(declines++,{data:null}):{error:{message:'unknown'}}}}:null;
 const context=createContext({FormData,Request,Response,Headers,Buffer,AbortSignal,process,URL});
 const dependencies={
  'next/cache':{revalidatePath(){}},'./server':{currentAccount:async()=>account()},
  './trusted-client':{trustedBackendClient:()=>({from:()=>({select(){return this;},eq(){return this;},async maybeSingle(){return {data:{id,conversation_id:id}};}})})},
  './payment-service':{startGift:async()=>{starts++;return {id};},reconcileGift:async()=>{verifications++;return 'paid';}},
+ './payment-thanks':{thankForPayment:async()=>{thanks++;return 'completed';}},
  '@/lib/format':{parseNaira:value=>/^\d+(\.\d{1,2})?$/.test(value)?Number(value)*100:null},
 };
 const modules=new Map();
@@ -24,7 +25,7 @@ signedIn=true;adult=false;assert((await actionModule.namespace.createGiftAction(
 adult=true;const unconfirmed=form();unconfirmed.delete('confirmed');assert((await actionModule.namespace.createGiftAction(unconfirmed)).error);assert.equal(starts,0);
 assert.equal((await actionModule.namespace.createGiftAction(form())).id,id);assert.equal(starts,1);
 owned=false;assert((await actionModule.namespace.checkGiftAction(form())).error);assert.equal(verifications,0);
-owned=true;assert.deepEqual(JSON.parse(JSON.stringify(await actionModule.namespace.checkGiftAction(form()))),{});assert.equal(verifications,1);
+owned=true;assert.deepEqual(JSON.parse(JSON.stringify(await actionModule.namespace.checkGiftAction(form()))),{status:'paid'});assert.equal(verifications,1);assert.equal(thanks,1,'A paid return triggers the character thank-you');
 assert((await actionModule.namespace.adminCheckGiftAction(form())).error);assert.equal(verifications,1);
 admin=true;await actionModule.namespace.adminCheckGiftAction(form());assert.equal(verifications,2);
 await actionModule.namespace.declineGiftAction(form());assert.equal(declines,1);
@@ -35,6 +36,8 @@ const webhookDeps={
  '@/lib/payments/bachs.mjs':{verifyBachsEvent,PaymentError,bachsSettings:()=>webhookSettings},
  '@/lib/backend/trusted-client':dependencies['./trusted-client'],
  '@/lib/backend/payment-service':dependencies['./payment-service'],
+ 'next/server':{after:task=>{deferred.push(task);}},
+ '@/lib/backend/payment-thanks':dependencies['./payment-thanks'],
 };
 const webhookModules=new Map();
 for(const [name,exports]of Object.entries(webhookDeps))webhookModules.set(name,new SyntheticModule(Object.keys(exports),function(){for(const [key,value]of Object.entries(exports))this.setExport(key,value);},{context}));
@@ -49,6 +52,7 @@ const prior=verifications;
 assert.equal((await webhookModule.namespace.POST(request(payload,{}))).status,400);assert.equal(verifications,prior);
 assert.equal((await webhookModule.namespace.POST(request('x'.repeat(262145)))).status,413);assert.equal(verifications,prior);
 assert.equal((await webhookModule.namespace.POST(request())).status,204);assert.equal(verifications,prior+1);
+assert.equal(deferred.length,1,'The thank-you runs after the webhook response');const thanked=thanks;await deferred[0]();assert.equal(thanks,thanked+1);
 console.log('Payment action boundaries passed: identity/adult/amount-confirmation gates, ownership denial before reconciliation, independent admin authorization, and authenticated refusal. No network calls.');
 
 // Exercise the actual shared wrapper: connected payment pages must render

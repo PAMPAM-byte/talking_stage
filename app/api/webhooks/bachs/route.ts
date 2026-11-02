@@ -2,6 +2,8 @@ import { verifyBachsEvent, bachsSettings, PaymentError } from '@/lib/payments/ba
 import { trustedBackendClient } from '@/lib/backend/trusted-client';
 import { reconcileGift, type GiftIntent } from '@/lib/backend/payment-service';
 import { revalidatePath } from 'next/cache';
+import { after } from 'next/server';
+import { thankForPayment } from '@/lib/backend/payment-thanks';
 export const maxDuration=60;
 export async function POST(request:Request) {
  const settings=bachsSettings();if(!settings)return new Response('Unavailable',{status:503});
@@ -24,7 +26,9 @@ export async function POST(request:Request) {
    const pending=await client.from('payment_intents').select('id').eq('gateway_environment',settings.environment).eq('gateway_organization_id',settings.organizationId).eq('reference',event.data.reference).maybeSingle();
    return pending.error||pending.data?new Response('Checkout not bound',{status:503}):new Response(null,{status:204});
   }
-  const intent=result.data as GiftIntent;await reconcileGift(intent,{id:event.id,type:event.type});
+  const intent=result.data as GiftIntent;const status=await reconcileGift(intent,{id:event.id,type:event.type});
+  // Answer Bachs first; the character's thank-you is written after the response.
+  if(status==='paid')after(async()=>{await thankForPayment(intent.id);try{revalidatePath(`/messages/${intent.conversation_id}`);}catch{/* The thank-you is saved either way. */}});
   try{revalidatePath(`/payments/${intent.id}`);revalidatePath(`/messages/${intent.conversation_id}`);revalidatePath('/settings/payments');}catch{/* A verified commit is not reversed by cache failure. */}
   return new Response(null,{status:204});
  }catch(error){

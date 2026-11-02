@@ -8,18 +8,19 @@ for(const override of [{TALKINGSTAGE_PAYMENTS_ENABLED:'false'},{BACHS_ENVIRONMEN
 assert.equal(minorToDecimal(123456),'1234.56');assert.equal(decimalToMinor('1234.56'),123456);
 for(const value of ['1e3','-1','1.001','90071992547410.00',3,null])assert.throws(()=>decimalToMinor(value),/invalid_amount/);
 for(const value of ['https://evil.example/','https://checkout.bachs.io.evil.example/','javascript:alert(1)','https://user@checkout.bachs.io/','http://checkout.bachs.io/'])assert.throws(()=>checkoutURL(value),/invalid_checkout/);
-const intent={id:'00000000-0000-4000-8000-000000000001',reference:'TS-synthetic',amount_minor:500000,gateway_checkout_id:'chk_synthetic'};
+const intent={id:'00000000-0000-4000-8000-000000000001',conversation_id:'00000000-0000-4000-8000-000000000002',reference:'TS-synthetic',amount_minor:500000,gateway_checkout_id:'chk_synthetic'};
 const respond=value=>new Response(JSON.stringify(value),{headers:{'Content-Type':'application/json'}});
 let creates=0;
 const fetcher=async(url,options)=>{
  if(url.endsWith('/accounts/me'))return respond({id:settings.organizationId,is_active:true});
  creates++;assert.equal(url,'https://sandbox-api.bachs.io/v1/checkout-sessions');assert.equal(options.headers['Idempotency-Key'],`gift-${intent.id}`);
- const body=JSON.parse(options.body);assert.deepEqual(body.pricing,{currency:'NGN',amount:'5000.00'});assert.equal(body.reference,intent.reference);assert.equal(body.customer,undefined);assert.equal(body.save_payment_method,undefined);assert.equal(body.metadata.talkingstage_intent,intent.id);
+ const body=JSON.parse(options.body);assert.deepEqual(body.pricing,{currency:'NGN',amount:'5000.00'});assert.equal(body.success_url,`https://example.com/messages/${intent.conversation_id}?payment=${intent.id}`);assert.equal(body.cancel_url,body.success_url);assert.equal(body.reference,intent.reference);assert.equal(body.customer,undefined);assert.equal(body.save_payment_method,undefined);assert.equal(body.metadata.talkingstage_intent,intent.id);
  assert.equal(options.headers['X-Account-Id'],undefined,'Standard checkout must use the configured merchant, without connected-account routing.');
  assert.equal(body.transfer_data,undefined);assert.equal(body.platform_fee,undefined);assert.equal(body.account_name,undefined,'Bank beneficiary details must be supplied by Bachs, not invented by the application.');
  return respond({checkout_id:'chk_synthetic',checkout_url:'https://checkout.bachs.io/c/synthetic',reference:intent.reference,expires_at:'2026-10-19T12:30:00Z'});
 };
-assert.equal((await createCheckout(settings,intent,'https://example.com',{fetcher})).checkoutId,'chk_synthetic');assert.equal(creates,1);
+assert.equal((await createCheckout(settings,intent,'https://example.com',{fetcher})).checkoutId,'chk_synthetic');
+await assert.rejects(createCheckout(settings,{...intent,conversation_id:'../admin'},'https://example.com',{fetcher}),/invalid_checkout/);assert.equal(creates,1);
 await assert.rejects(createCheckout(settings,intent,'http://localhost:3000',{fetcher}),/public_return_url_required/);
 await createCheckout(settings,intent,'http://localhost:3000',{allowLocalSandboxReturn:true,fetcher:async(url,options)=>{
  if(url.endsWith('/accounts/me'))return respond({id:settings.organizationId,is_active:true});
