@@ -68,9 +68,9 @@ const offerReply=(value)=>async(_url,options)=>{
 };
 const offered=await generateReply(offer,{key:'SYNTHETIC',model:'synthetic'},{fetcher:offerReply({text:"That's sweet of you 😊 Here's the link.",photoAssetId:null,giftLink:true})});
 assert(offered.text.endsWith(GIFT_LINK_TOKEN));
-assert.deepEqual(giftMessage(offered.text,true),{text:"That's sweet of you 😊 Tap Send money below.",showLink:true});
+assert.deepEqual(giftMessage(offered.text,true),{text:"That's sweet of you 😊",showLink:true});
 assert.equal(PAYMENT_DETAILS_LABEL,'Send money');
-assert.equal(giftMessage(`Thank you. Here's the link to send a gift.\n\n${GIFT_LINK_TOKEN}`,true).text,'Thank you. Tap Send money below.');
+assert.equal(giftMessage(`Thank you. Here's the link to send a gift.\n\n${GIFT_LINK_TOKEN}`,true).text,'Thank you.');
 assert.equal(giftMessage("Here's the link to send a gift.",true).text,"Here's the link to send a gift.",'Ordinary messages without the trusted token must not be rewritten');
 const detailsInput=buildInput({...offer,history:[{role:'user',text:'Send me your account details'}]})[0].content;
 assert(detailsInput.includes('acknowledge that specific request'));
