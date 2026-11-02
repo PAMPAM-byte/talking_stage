@@ -43,7 +43,7 @@ export function ConnectedGiftForm({conversation,name,recipient,minimum,maximum,s
   </dl>
   <p className="caption muted">Giving is optional. It doesn’t buy affection, messages or photos.</p>
   {error&&<Notice title="Checkout didn’t open" tone="warning" live>{error}</Notice>}
-  <Button type="submit" className="gift-form__pay" loading={busy}>{error?'Retry payment':valid&&minor!==null?`Pay ${formatNaira(minor)}`:'Pay'}</Button>
+  <Button type="submit" className="gift-form__pay" loading={busy}>{busy?'Opening secure checkout…':error?'Retry payment':valid&&minor!==null?`Pay ${formatNaira(minor)}`:'Pay'}</Button>
   <p className="caption muted gift-form__note">You’ll pay on Bachs’ secure checkout, then come straight back to your chat with {name}.</p>
  </form>;
 }

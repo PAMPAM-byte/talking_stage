@@ -1,5 +1,6 @@
 import { decodeExpression, expressionAsset, type Expression } from '@/lib/chat/expressions';
 import Link from 'next/link';
+import { Icon } from './ui/icon';
 import { BurstBubble } from './burst-bubble';
 import Image from 'next/image';
 import {giftMessage,PAYMENT_DETAILS_LABEL} from '@/lib/payments/gift-link.mjs';
@@ -20,7 +21,7 @@ export function ChatMessageContent({ text, giftHref, burst = false, fresh = fals
   const gift=giftMessage(text,!!giftHref);
   // A character's reply is texted as separate bubbles, one per line; new ones arrive in turn.
   const parts = burst && !expression ? String(gift.text).split('\n').map(part => part.trim()).filter(Boolean) : [];
-  if (parts.length > 1) return <div className="message-burst" data-fresh={fresh || undefined}>{parts.map((part, index) => <BurstBubble key={index} index={index} text={part}>{part}{index === parts.length - 1 && gift.showLink && <><br/><Link href={giftHref!} className="chat-gift-link">{PAYMENT_DETAILS_LABEL} <span aria-hidden="true">↗</span></Link></>}</BurstBubble>)}</div>;
-  if (!expression) return <p className="message-bubble">{gift.text}{gift.showLink&&<><br/><Link href={giftHref!} className="chat-gift-link">{PAYMENT_DETAILS_LABEL} <span aria-hidden="true">↗</span></Link></>}</p>;
+  if (parts.length > 1) return <div className="message-burst" data-fresh={fresh || undefined}>{parts.map((part, index) => <BurstBubble key={index} index={index} text={part}>{part}{index === parts.length - 1 && gift.showLink && <Link href={giftHref!} className="chat-gift-link"><Icon name="payment" />{PAYMENT_DETAILS_LABEL}</Link>}</BurstBubble>)}</div>;
+  if (!expression) return <p className="message-bubble">{gift.text}{gift.showLink&&<Link href={giftHref!} className="chat-gift-link"><Icon name="payment" />{PAYMENT_DETAILS_LABEL}</Link>}</p>;
   return <div className={`message-expression message-expression--${expression.kind}`}><ExpressionImage expression={expression}/>{expression.caption && <p className="message-bubble">{expression.caption}</p>}</div>;
 }

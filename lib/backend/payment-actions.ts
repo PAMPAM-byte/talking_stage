@@ -12,9 +12,9 @@ export async function createGiftAction(form:FormData):Promise<{id?:string;checko
   if(!account?.profile.onboarding_complete||!account.profile.adult_declared_at)return {error:'Sign in with an eligible account.'};
   const conversation=String(form.get('conversation')??''),operation=String(form.get('operation')??''),amount=parseNaira(String(form.get('amount')??''));
   if(!uuid.test(conversation)||!uuid.test(operation)||!amount||form.get('confirmed')!=='yes')return {error:'Review and confirm the amount and recipient.'};
-  const result=await startGift(account.user.id,conversation,amount,operation);
-  try{revalidatePath('/settings/payments');}catch{/* A cache failure cannot undo a reservation. */}
-  return result;
+  // No revalidatePath here: it re-renders this page while the browser is leaving for checkout,
+  // and the interrupted refresh briefly showed the error screen. Payment pages read fresh data.
+  return await startGift(account.user.id,conversation,amount,operation);
  }catch{return {error:'Checkout could not be confirmed. Retry this same attempt; your payment will not be duplicated.'};}
 }
 export async function checkGiftAction(form:FormData):Promise<{status?:string;error?:string}> {
