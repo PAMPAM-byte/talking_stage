@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url';
 const checks = [
   ['test-bachs.mjs'],
   ['test-gift-database.mjs'],
+  ['test-memory-notes.mjs'],
   ['--experimental-vm-modules','test-payment-boundaries.mjs'],
   ['test-naija-exchanges.mjs'],
   ['test-women-personalities.mjs'],
