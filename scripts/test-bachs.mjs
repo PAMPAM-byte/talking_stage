@@ -81,6 +81,7 @@ assert.equal(PAYMENT_DETAILS_LABEL,'Send money');
 assert.equal(giftMessage(`Thank you. Here's the link to send a gift.\n\n${GIFT_LINK_TOKEN}`,true).text,'Thank you.');
 assert.equal(giftMessage("Here's the link to send a gift.",true).text,"Here's the link to send a gift.",'Ordinary messages without the trusted token must not be rewritten');
 const detailsInput=buildInput({...offer,history:[{role:'user',text:'Send me your account details'}]})[0].content;
+{const named=buildInput({...offer,user:{preferredName:'Tolu'}});assert(named[0].content.includes('never ask for their name again'));assert(named[1].content.includes('"preferredName":"Tolu"'));assert(!buildInput(offer)[0].content.includes('preferredName'));}
 assert(detailsInput.includes('acknowledge that specific request'));
 assert(detailsInput.includes('no actual bank details have been supplied to you'));
 assert(detailsInput.includes('Never invent account numbers or payment URLs'));

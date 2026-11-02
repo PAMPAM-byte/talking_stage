@@ -51,7 +51,7 @@ try{
  await db.query("insert into private.character_direction(character_id,direction) values($1,'Synthetic adult direction')",[char]);
  const send=async(text='Hello')=>{await actor();return (await db.query('select public.save_user_message($1,gen_random_uuid(),1,$2) v',[c,text])).rows[0].v.id;};
  const claim=async(message)=>{await actor('','service_role');return (await db.query("select public.claim_reply($1,$2,'synthetic') v",[message,a])).rows[0].v;};
- const first=await claim(await send());assert.equal(first.payments.requestsEligible,false);
+ const first=await claim(await send());assert.equal(first.payments.requestsEligible,false);assert.equal(first.user.preferredName,'Synthetic','Every reply knows the onboarding preferred name');
  await db.query("select public.finish_reply($1,$2,$3,'A normal response')",[first.job,a,first.lease]);
  const job=await claim(await send('How are you?'));assert.equal(job.payments.requestsEligible,true);assert.equal(job.requestControls.actionsEnabled,true);
  const finish=async()=>(await db.query("select public.finish_gift_reply($1,$2,$3,'Would you like to send a small gift? No pressure.',null,null,250000) v",[job.job,a,job.lease])).rows[0].v;
