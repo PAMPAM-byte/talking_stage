@@ -69,7 +69,8 @@ test('settings links render their own pages and saved controls survive navigatio
     await page.getByRole('button', { name: 'Start conversation', exact: true }).click();
     await expect(page).toHaveURL(/\/messages\/[a-f0-9-]+$/);
     await page.getByRole('link', { name: /^Manage memories with / }).click();
-    await page.getByRole('button', { name: 'Turn memory on', exact: true }).click();
+    // Memory is on by default (3 Nov).
+    await expect(page.getByRole('button', { name: 'Turn memory off', exact: true })).toBeVisible();
     await page.getByRole('textbox', { name: 'A fact to remember', exact: true }).fill('Synthetic settings memory.');
     await page.getByRole('checkbox', { name: 'I give permission to save this fact and use it in future chats with this character.' }).check();
     await page.getByRole('button', { name: 'Save memory', exact: true }).click();
@@ -78,7 +79,7 @@ test('settings links render their own pages and saved controls survive navigatio
     await expect(page.getByText('Synthetic settings memory.', { exact: true })).toBeVisible();
     await page.screenshot({ path: 'docs/reviews/settings/memories-390.png', fullPage: true });
     await page.getByRole('button', { name: 'Delete memory', exact: true }).click();
-    await expect(page.getByText('No saved facts for this character.', { exact: true })).toBeVisible();
+    await expect(page.getByText('Nothing yet. Facts you share in chat will appear here.', { exact: true })).toBeVisible();
     await page.getByRole('button', { name: 'Turn memory off', exact: true }).click();
     await expect(page.getByRole('button', { name: 'Turn memory on', exact: true })).toBeVisible();
     await page.getByRole('link', { name: 'Back to saved memories', exact: true }).click();

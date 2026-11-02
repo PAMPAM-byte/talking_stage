@@ -18,7 +18,7 @@ try{
  const send=async(text='Synthetic input',generation=1)=>(await db.query('select public.save_user_message($1,gen_random_uuid(),$2,$3) as v',[c,generation,text])).rows[0].v.id;
  const memory=async(op,content=null,id=null,consent=false)=>db.query('select public.manage_memory($1,$2,$3,$4,$5)',[char,op,content,id,consent]);
  const message=await send();
- await assert.rejects(memory('save','Fact',null,true),/memory_disabled/);await memory('enable');await assert.rejects(memory('save','Fact'),/consent_required/);await memory('save','Synthetic remembered fact',null,true);
+ await memory('disable');await assert.rejects(memory('save','Fact',null,true),/memory_disabled/,'Memory turned off refuses saves');await memory('enable');await assert.rejects(memory('save','Fact'),/consent_required/);await memory('save','Synthetic remembered fact',null,true);
  const fact=(await db.query('select id from public.memories')).rows[0].id;
  await assert.rejects(db.query('select public.claim_reply($1,$2,$3)',[message,a,'synthetic']),/permission denied/);
  await actor(b);await assert.rejects(memory('delete',null,fact),/not_found/);assert.equal((await db.query('select * from public.memories')).rows.length,0);await assert.rejects(db.query('select public.reply_status($1)',[c]),/not_found/);

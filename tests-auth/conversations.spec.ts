@@ -106,7 +106,7 @@ test('real conversation persistence, retries, ownership and lifecycle',async({pa
   await page.getByRole('heading',{name:'Monetary requests',exact:true}).click();
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);await page.screenshot({path:'docs/reviews/stage-10/requests-390.png',fullPage:true,caret:'initial'});
   await page.goto(`/messages/${id}`);await page.getByRole('link',{name:'Manage memories with Amara'}).click();
-  await expect(page.getByText('Memory is off',{exact:true})).toBeVisible();await page.getByRole('button',{name:'Turn memory on',exact:true}).click();
+  await expect(page.getByText('Memory is on',{exact:true})).toBeVisible();await expect(page.getByRole('button',{name:'Turn memory off',exact:true})).toBeVisible();
   await page.getByLabel('A fact to remember').fill('Synthetic fact to delete.');
   await page.getByRole('checkbox',{name:'I give permission to save this fact and use it in future chats with this character.'}).check();await page.getByRole('button',{name:'Save memory',exact:true}).click();
   await expect(page.getByText('Synthetic fact to delete.',{exact:true})).toBeVisible();
