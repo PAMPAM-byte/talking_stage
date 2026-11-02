@@ -5,6 +5,7 @@ import { startGift, reconcileGift, type GiftIntent } from './payment-service';
 import { parseNaira } from '@/lib/format';
 import {trustedBackendClient} from './trusted-client';
 import {thankForPayment} from './payment-thanks';
+import {emitGiftFailure} from '@/lib/monitoring/events.mjs';
 const uuid=/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i;
 export async function createGiftAction(form:FormData):Promise<{id?:string;checkout?:string|null;error?:string}> {
  try{
@@ -23,7 +24,7 @@ export async function checkGiftAction(form:FormData):Promise<{status?:string;err
   const account=await currentAccount({failOnUnavailable:true});
   if(!account?.profile.onboarding_complete||!account.profile.adult_declared_at)return {error:'Sign in with an eligible account.'};
   const owned=await account.client.from('payment_intents').select('*').eq('id',id).eq('user_id',account.user.id).maybeSingle();
-  if(owned.error||!owned.data)return {error:'Payment unavailable.'};
+  if(owned.error||!owned.data){emitGiftFailure('verify',{code:'not_found'});return {error:'Payment unavailable.'};}
   const status=await reconcileGift(owned.data as GiftIntent);
   // Returning from checkout can beat the webhook; the database still posts one thank-you.
   if(status==='paid')await thankForPayment(id);
