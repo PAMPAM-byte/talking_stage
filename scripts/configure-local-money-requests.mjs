@@ -7,7 +7,6 @@ const psql=sql=>execFileSync('docker',['exec','-i','supabase_db_talking_stage','
 psql(approvedRequestPolicySql());
 const bachs=psql("select enabled||'|'||environment from private.bachs_configuration where singleton;");
 const [bachsEnabled,environment]=bachs.split('|');
-const days=approvedRequestPolicy.cooldownSeconds/86400;
-console.log(`Local money requests enabled: female characters may ask opted-in users after ${approvedRequestPolicy.minimumCompletedExchanges} completed exchanges, at most once every ${days} days per conversation.`);
+console.log(`Local money requests enabled: characters may ask after ${approvedRequestPolicy.minimumCompletedExchanges}, 50 and 100 replies, then every 30, at most once an hour per conversation.`);
 if(bachsEnabled!=='t'||environment!=='sandbox'||process.env.TALKINGSTAGE_PAYMENTS_ENABLED!=='true'||process.env.BACHS_ENVIRONMENT!=='sandbox')
   console.log('Requests stay hidden until local Bachs sandbox is configured: TALKINGSTAGE_PAYMENTS_ENABLED=true, BACHS_ENVIRONMENT=sandbox and sandbox credentials in .env.local, and private.bachs_configuration enabled in sandbox. See docs/bachs-payments.md.');

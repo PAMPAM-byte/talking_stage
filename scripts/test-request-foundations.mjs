@@ -15,14 +15,15 @@ try{
  const actor=async(id=a,role='authenticated')=>db.exec(`reset role;set role ${role};select set_config('request.jwt.claim.sub','${id}',false);`);
  const settings=async(page=1)=>(await db.query('select public.request_settings($1) v',[page])).rows[0].v;
  await actor();const c=(await db.query('select public.start_conversation($1) id',[char])).rows[0].id;
- let view=await settings();assert.equal(view.enabled,false);assert.equal(view.actionsAvailable,false);assert.equal(view.conversations.length,1);
+ let view=await settings();assert.equal(view.enabled,true,'Requests are on by default (3 Nov); Settings remains the opt-out');assert.equal(view.actionsAvailable,false);assert.equal(view.conversations.length,1);
  const initialVersion=view.version;
+ await db.query('select public.set_request_preferences(false,$1)',[view.version]);view=await settings();assert.equal(view.enabled,false,'Users can opt out');
+ await assert.rejects(db.query('select public.set_request_preferences(true,$1)',[initialVersion]),/conflict/);
  await db.query('select public.set_request_preferences(true,$1)',[view.version]);view=await settings();assert.equal(view.enabled,true);
- await assert.rejects(db.query('select public.set_request_preferences(false,$1)',[initialVersion]),/conflict/);
  const control=async(op)=>{await actor();const row=(await settings()).conversations.find(row=>row.id===c);await db.query('select public.manage_conversation_requests($1,$2,$3)',[c,op,row.version]);};
  const state=async()=>{await db.exec('reset role');return (await db.query('select * from public.conversations where id=$1',[c])).rows[0];};
  const before=await state();await control('mute');await control('decline');let current=await state();assert.equal(current.requests_muted,true);assert.equal(current.requests_refused,true);assert.equal(current.relationship_stage,before.relationship_stage);assert.equal(current.generation,before.generation);assert(Number(current.context_revision)>Number(before.context_revision));
- await actor(b);assert.equal((await settings()).conversations.length,0);assert.equal((await settings()).enabled,false);await assert.rejects(db.query("select public.manage_conversation_requests($1,'resume',$2)",[c,current.version]),/not_found/);
+ await actor(b);assert.equal((await settings()).conversations.length,0);assert.equal((await settings()).enabled,true);await assert.rejects(db.query("select public.manage_conversation_requests($1,'resume',$2)",[c,current.version]),/not_found/);
  await actor();await assert.rejects(db.query("select public.manage_conversation_requests($1,'resume',$2)",[c,before.version]),/conflict/);await assert.rejects(settings(0),/invalid_page/);
  await control('unmute');current=await state();assert.equal(current.requests_refused,true);assert.equal(current.requests_muted,false);
  const eligible=async()=>{await db.exec('reset role');return (await db.query('select private.monetary_request_eligibility($1,$2) v',[c,a])).rows[0].v;};

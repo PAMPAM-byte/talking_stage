@@ -141,3 +141,15 @@ This is a presentation correction, not in-chat account-number generation. The do
   - Any failure, missing AI configuration or exhausted budget posts the fixed trait-based thanks instead (`payment_thanks_fallback`).
   - `thanked_at` marks completion, so a reset chat or a replayed webhook never repeats the thanks.
 - **Deploy order.** Merge and deploy the code first. Then run `node scripts/activate-payment-thanks.mjs` (preflight), and after approval run it with `--apply`. Until the migration is applied, the database keeps posting the fixed thanks itself, and the new code finds nothing pending.
+
+## Character billing milestones — 3 November 2026 (founder decision)
+
+Supersedes the 24 October pacing (female characters only, opted-in users, 7-day cooldown).
+- **Who:** male and female characters may make one playful request in a gender-fitting style (`paymentDirection(payments, controls, gender)`).
+- **When:** reply milestones per chat, from `private.request_milestone`: after 20 answered messages, then 30 more, then 50 more, then every 30 (20, 50, 100, 130, 160 …). Only ordinary replies count; check-ins and payment thanks don't. A chat reset deletes earlier requests with their messages, so the schedule restarts.
+  - A one-hour cooldown prevents two requests in one sitting.
+  - At a milestone, the character asks unless the user is sad, serious, uncomfortable or mentions money trouble.
+- **Declining:** "No thanks" (button or typed) declines that request and moves on to the next milestone. "Stop asking" / "Don't ask" or Settings › Monetary requests stops requests in that chat. Chat never depends on paying, and the character never sulks.
+- **Default:** requests are on for every profile, and Settings › Monetary requests opts out.
+- **Amounts:** requests suggest NGN 2,000–10,000 (`monetary_request_policy`). User-initiated payments keep the NGN 2,000–1,000,000 checkout limits.
+- **Activation:** after the code deploys, run `node scripts/activate-billing-milestones.mjs` (preflight), then run it again with `--apply` after approval. It applies migration `202611030033` and sets `lib/payments/request-policy.mjs`.
