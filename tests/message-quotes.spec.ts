@@ -20,7 +20,7 @@ test('desktop reply, cancel, keyboard and quote navigation preserve the draft',a
 });
 test('a quoted send and retry retain the original quote without overwriting a new selection',async({page})=>{
  await page.goto('/dev/chat-delivery?scenario=quotes');await page.getByRole('button',{name:'Fail next quoted save'}).click();
- await page.locator(`#message-${first}`).getByRole('button').click();const input=page.getByRole('textbox',{name:'Message Amara'});await input.fill('Yes, about that coffee.');await input.press('Enter');
+ await page.locator(`#message-${first}`).getByRole('button').click();const input=page.getByRole('textbox',{name:'Message Amara'});await input.fill('Yes, about that coffee.');await input.press('Control+Enter');
  const failed=page.locator('[data-delivery="failed"]');await expect(failed).toContainText('Coffee tomorrow');await expect(failed).toContainText('Yes, about that coffee.');
  await page.locator('#message-00000000-0000-4000-8000-000000000014').getByRole('button').click();
  await expect(page.getByLabel('Replying to message',{exact:true})).toContainText('Sticker');
@@ -65,7 +65,7 @@ test('each bubble of a texted burst can be quoted on its own',async({page})=>{
  // On touch the per-bubble reply button gives way to the react button; swiping replies.
  await expect(burst.getByRole('button',{name:/Reply to Amara’s text/}).first()).toBeHidden();await swipeBubble(0);
  await expect(draft).toContainText('Okay small confession');await expect(draft).not.toContainText('jollof');
- const input=page.getByRole('textbox',{name:'Message Amara'});await input.fill('Tell me everything');await input.press('Enter');
+ const input=page.getByRole('textbox',{name:'Message Amara'});await input.fill('Tell me everything');await input.press('Control+Enter');
  const saved=page.locator('.message-turn--user').filter({hasText:'Tell me everything'});await expect(saved).toHaveCount(1);
  await expect(saved).toContainText('Okay small confession');await expect(saved).not.toContainText('jollof');
  await page.screenshot({path:'.local-services/message-quotes-burst-390.png'});

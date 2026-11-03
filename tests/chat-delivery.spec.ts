@@ -153,7 +153,7 @@ test('interrupted cancellation preserves observation, delivery and the next draf
  await page.route('**/api/conversations/**/replies/**',route=>route.fulfill({json:{state:'generating'}}));
  await page.goto('/dev/chat-delivery');
  const input=page.getByRole('textbox',{name:'Message Amara'});
- await input.fill('Already saved.');await input.press('Enter');
+ await input.fill('Already saved.');await input.press('Control+Enter');
  await expect(page.locator('.typing-bubble')).toBeVisible();
  await input.fill('My next thought.');
  await page.getByRole('button',{name:'Fail next stop'}).click();
@@ -225,7 +225,7 @@ test('pending clock becomes double ticks alongside typing before a reply arrives
  await page.route('**/api/conversations/**/replies/**',route=>route.fulfill({json:{state:'generating'}}));
  await page.goto('/dev/chat-delivery');
  const input=page.getByRole('textbox',{name:'Message Amara'});
- await input.fill('A little hello.');await input.press('Enter');
+ await input.fill('A little hello.');await input.press('Control+Enter');
  await expect(page.getByText('A little hello.',{exact:true})).toBeVisible();
  await expect(page.getByLabel('Sending',{exact:true})).toBeVisible();
  await expect(input).toHaveValue('');
@@ -286,7 +286,7 @@ test('stopping a reply preserves delivery and the next draft',async({page})=>{
  await page.route('**/api/conversations/**/replies/**',route=>route.fulfill({json:{state:'generating'}}));
  await page.goto('/dev/chat-delivery');
  const input=page.getByRole('textbox',{name:'Message Amara'});
- await input.fill('Hello again.');await input.press('Enter');
+ await input.fill('Hello again.');await input.press('Control+Enter');
  await expect(page.locator('.typing-bubble')).toBeVisible();await input.fill('My next thought.');
  await page.getByRole('button',{name:'Stop reply'}).click();
  await expect(page.locator('.typing-bubble')).toHaveCount(0);
