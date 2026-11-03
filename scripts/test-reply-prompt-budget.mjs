@@ -14,7 +14,7 @@ for(const character of pack.characters)for(const text of ['How are you?',encodeE
   context.history.at(-1).created_at=new Date().toISOString();
  }
  // Maximum chat memory (3 Nov) must be trimmed, never push a reply over the limit.
- context.chatMemory={recap:'R'.repeat(1200),topicsCovered:Array.from({length:12},(_,i)=>`topic ${i} `.padEnd(40,'x')),questionsYouAlreadyAsked:Array.from({length:25},(_,i)=>`${i} `.padEnd(139,'q')+'?'),exchanges:30};
+ context.chatMemory={story:'S'.repeat(2400),recent:'R'.repeat(1000),topicsCovered:Array.from({length:40},(_,i)=>`topic ${i} `.padEnd(40,'x')),questionsYouAlreadyAsked:Array.from({length:40},(_,i)=>`${i} `.padEnd(99,'q')+'?'),questionsAskedTotal:300,exchanges:900};
  if(mode==='checkin')context.replyMode='checkin';
  else{context.quoteTargets=[{messageId:'synthetic',role:'user',kind:'text',text}];context.history.at(-1).replyTo={id:'older',role:'character',kind:'text',text:'A previously sent message with context.'.repeat(12)};}
  const input=buildInput(context);const bytes=Buffer.byteLength(JSON.stringify(input),'utf8')+2048;

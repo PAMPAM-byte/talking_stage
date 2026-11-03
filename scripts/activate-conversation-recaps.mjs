@@ -41,7 +41,7 @@ const sql=migration.replace('begin;','begin;\nset local lock_timeout=\'5s\';\nse
 await query(sql);
 const after=(await query(inspect))[0];assert(after.installed);assert(after.versions.includes(version));
 assert(after.definition.includes('claim_before_recap')&&after.definition.includes('chatMemory'));
-const permissions=(await query(`select has_function_privilege('authenticated','public.claim_recap(uuid,uuid,text)','execute') as user_can_claim,has_function_privilege('service_role','public.claim_recap(uuid,uuid,text)','execute') as service_can_claim,has_function_privilege('authenticated','public.finish_recap(uuid,uuid,uuid,text,jsonb,text)','execute') as user_can_finish;`))[0];
+const permissions=(await query(`select has_function_privilege('authenticated','public.claim_recap(uuid,uuid,text)','execute') as user_can_claim,has_function_privilege('service_role','public.claim_recap(uuid,uuid,text)','execute') as service_can_claim,has_function_privilege('authenticated','public.finish_recap(uuid,uuid,uuid,text,text,jsonb,text)','execute') as user_can_finish;`))[0];
 assert.equal(permissions.user_can_claim,false);assert.equal(permissions.service_can_claim,true);assert.equal(permissions.user_can_finish,false);
 await writeFile('docs/conversation-recaps-activation.json',JSON.stringify({version,appliedAt:new Date().toISOString(),migrationHash:hash(migration),encryptedDdlSnapshotVerified:true,serviceOnlyRecapVerified:true},null,2)+'\n');
-console.log('Installed conversation recaps: every reply now receives the chat recap, topics covered and questions already asked; the recap refreshes every 12 messages. Service-only functions confirmed.');
+console.log('Installed long-term memory: every reply now receives the compacted story, recent chapter, topics covered and the all-time question log; memory refreshes every 12 messages and existing chats catch up from the first message. Service-only functions confirmed.');
