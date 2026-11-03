@@ -3,6 +3,7 @@ import {currentAccount} from '@/lib/backend/server';
 import type {Control,AuditEvent} from '@/lib/backend/operations-types';
 import {Badge,Card,EmptyState,Notice} from '@/components/ui/primitives';
 import {ControlsForm} from './connected-controls-form';
+import {AutoRefresh} from './auto-refresh';
 type SpendDay={day:string;charged:number;reserved:number;settled:number;calls:number;unsettled:number};
 type Spend={model:string;enabled:boolean;projectDailyMicroUsd:number;userDailyMicroUsd:number;days:SpendDay[]};
 const usd=(micro:number)=>`$${(micro/1e6).toFixed(micro<1e6?4:2)}`;
@@ -25,12 +26,31 @@ async function AISpend({client}:{client:NonNullable<Awaited<ReturnType<typeof cu
     <td>{usd(d.reserved)}</td><td>{d.unsettled?<Badge>{d.unsettled}</Badge>:'0'}</td></tr>;})}</tbody></table></div>}
   <p className="caption muted">Settlement started on 28 October. Earlier calls, and calls that timed out or lost their connection, stay at the worst case. Older days can count more than they reserved because deleted chats remove their reservations, not the spend.</p></Card>;
 }
+type Activity={users:number;newToday:number;activeNow:number;activeToday:number;messagesSent:number;messagesToday:number;characterReplies:number;checkedAt:string};
+const count=(value:number)=>new Intl.NumberFormat('en-NG').format(value);
+async function UsersActivity({client}:{client:NonNullable<Awaited<ReturnType<typeof currentAccount>>>['client']}){
+ const result=await client.rpc('admin_activity_stats');
+ if(result.error)return <Notice title="Activity unavailable" tone="warning">Reload to try again.</Notice>;
+ const a=result.data as Activity;
+ const checked=new Intl.DateTimeFormat('en-NG',{hour:'numeric',minute:'2-digit',timeZone:'Africa/Lagos'}).format(new Date(a.checkedAt));
+ return <Card className="stack activity"><AutoRefresh/>
+  <div className="activity__head"><h2>Users and activity</h2><p className="caption muted">Updated {checked} Lagos time · refreshes every minute</p></div>
+  <div className="activity__live" role="status"><span className={`activity__pulse${a.activeNow?' is-live':''}`} aria-hidden="true"/><strong className="activity__now">{count(a.activeNow)}</strong><span><b>Active now</b><span className="muted"> · sent a message in the last 10 minutes</span></span></div>
+  <dl className="activity__grid">
+   <div><dt>Users</dt><dd>{count(a.users)}</dd><p className="caption muted">{a.newToday?`+${count(a.newToday)} joined today`:'No new sign-ups today'}</p></div>
+   <div><dt>Active today</dt><dd>{count(a.activeToday)}</dd><p className="caption muted">sent at least one message</p></div>
+   <div><dt>Messages sent</dt><dd>{count(a.messagesSent)}</dd><p className="caption muted">{count(a.messagesToday)} today</p></div>
+   <div><dt>Character replies</dt><dd>{count(a.characterReplies)}</dd><p className="caption muted">all time</p></div>
+  </dl>
+  <p className="caption muted">Counts only; no names or message text. Users excludes accounts scheduled for deletion. Today means the Lagos calendar day.</p></Card>;
+}
 export async function ConnectedOperations() {
  const account=await currentAccount();if(!account)return null;
  const result=await account.client.rpc('admin_list_controls');
  if(result.error)return <Notice title="Operations unavailable" tone="warning">Reload to try again.</Notice>;
  const controls=result.data as {global:Control;characters:Control[]};
  return <div className="stack"><h1 className="display page-title">Keep the experience in control.</h1><p className="muted">Pause chat, photos or payments independently. Existing history stays available.</p>
+  <UsersActivity client={account.client}/>
   <Notice title="Global pauses take priority">Character settings cannot override a global pause. Chat and payments remain unavailable until their integrations are complete.</Notice>
   <Card className="stack"><h2>Across TalkingStage</h2><p className="muted">These controls apply to every character.</p><ControlsForm control={controls.global}/></Card>
   <AISpend client={account.client}/>

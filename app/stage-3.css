@@ -68,3 +68,18 @@
 .ai-spend__amount { display: block; }
 .ai-spend__meter { display: block; margin-block-start: 6px; margin-inline-start: auto; inline-size: 96px; block-size: 4px; border-radius: 4px; background: var(--brand-soft); overflow: hidden; }
 .ai-spend__meter > span { display: block; block-size: 100%; background: var(--brand); }
+/* Users and activity (3 November): one live figure, then quiet totals. */
+.activity__head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 16px; }
+.activity__live { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; padding: 16px 18px; border-radius: 14px; background: var(--brand-soft); }
+.activity__now { font-size: 40px; line-height: 1; font-weight: 700; letter-spacing: -.02em; font-variant-numeric: tabular-nums; color: var(--brand); }
+.activity__pulse { position: relative; inline-size: 12px; block-size: 12px; border-radius: 50%; background: var(--text-secondary); }
+.activity__pulse.is-live { background: var(--success); }
+.activity__pulse.is-live::after { content: ""; position: absolute; inset: -4px; border-radius: 50%; border: 2px solid var(--success); opacity: 0; animation: activity-pulse 2s ease-out infinite; }
+@keyframes activity-pulse { 0% { transform: scale(.6); opacity: .8; } 100% { transform: scale(1.6); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .activity__pulse.is-live::after { animation: none; } }
+.activity__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 0; }
+.activity__grid > div { padding: 14px 16px; border: 1px solid var(--border); border-radius: 12px; }
+.activity__grid dt { font-size: 13px; color: var(--text-secondary); }
+.activity__grid dd { margin: 4px 0 2px; font-size: 26px; font-weight: 700; line-height: 1.15; font-variant-numeric: tabular-nums; color: var(--ink); }
+.activity__grid .caption { margin: 0; }
+@media (min-width: 900px) { .activity__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }

@@ -1,0 +1,31 @@
+import assert from 'node:assert/strict';
+import {readFile,readdir} from 'node:fs/promises';
+import {PGlite} from '@electric-sql/pglite';
+// Admin users and activity (3 Nov): counts only, admins only, active now = a message in the last 10 minutes.
+const db=new PGlite();const a='00000000-0000-4000-8000-000000000001',b='00000000-0000-4000-8000-000000000002';
+try{
+ await db.exec(`create role anon;create role authenticated;create role service_role;create schema auth;create table auth.users(id uuid primary key,raw_user_meta_data jsonb not null default '{}');create function auth.uid() returns uuid language sql stable as $$select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid$$;grant usage on schema auth,public to anon,authenticated,service_role;grant execute on function auth.uid() to anon,authenticated,service_role;`);
+ for(const file of (await readdir('supabase/migrations')).filter(f=>f.endsWith('.sql')).sort())await db.exec(await readFile(`supabase/migrations/${file}`,'utf8'));
+ await db.exec(`insert into auth.users values('${a}','{"adult_declaration":"18-plus-v1"}'),('${b}','{"adult_declaration":"18-plus-v1"}');update public.profiles set display_name='Synthetic',genders=array['woman'],ai_consent_at=now(),onboarding_complete=true;`);
+ const char=(await db.query("insert into public.characters(name,age,gender,status) values('Synthetic adult',28,'woman','published') returning id")).rows[0].id;
+ for(const slot of ['portrait','gallery'])await db.query("insert into public.character_assets(character_id,slot,storage_path,published,review_state,review_attested,source_hash) values($1,$2,$3,true,'approved',true,$4)",[char,slot,`${char}/${slot}.webp`,'a'.repeat(64)]);
+ await db.query("insert into private.character_direction(character_id,direction) values($1,'Synthetic adult direction')",[char]);
+ await db.exec("update private.ai_configuration set enabled=true,model='synthetic',project_daily_micro_usd=100000,user_daily_micro_usd=100000,input_micro_usd_per_million=1,output_micro_usd_per_million=1");
+ const actor=async(id=a,role='authenticated')=>db.exec(`reset role;set role ${role};select set_config('request.jwt.claim.sub','${id}',false);`);
+ await actor();const c=(await db.query('select public.start_conversation($1) id',[char])).rows[0].id;
+ const send=async text=>{await db.exec('reset role;delete from private.request_limits');await actor();return (await db.query('select public.save_user_message($1,gen_random_uuid(),1,$2) v',[c,text])).rows[0].v.id;};
+ await send('Hello');await send('Are you there?');
+ await db.exec('reset role');await db.query("insert into public.messages(conversation_id,sequence,role,kind,text) values($1,99,'character','text','Hey!')",[c]);
+ // A message from an hour ago counts as active today (when still the same Lagos day) but not active now.
+ await db.query("update public.messages set created_at=now()-interval '20 minutes' where text='Hello'");
+ await actor();await assert.rejects(db.query('select public.admin_activity_stats()'),/forbidden|admin/,'Only administrators can read activity');
+ await db.exec(`reset role;insert into private.user_roles(user_id,role) values('${b}','admin');`);
+ await actor(b);const stats=(await db.query('select public.admin_activity_stats() v')).rows[0].v;
+ assert.equal(stats.users,2);assert.equal(stats.newToday,2);assert.equal(stats.messagesSent,2);assert.equal(stats.characterReplies,1);
+ assert.equal(stats.activeNow,1,'One person sent a message in the last 10 minutes');assert(stats.activeToday>=1);assert(stats.messagesToday>=1);
+ await db.exec(`reset role;update public.messages set created_at=now()-interval '11 minutes' where role='user';update public.profiles set deletion_scheduled_for=now()+interval '30 days' where id='${a}';`);
+ await actor(b);const later=(await db.query('select public.admin_activity_stats() v')).rows[0].v;
+ assert.equal(later.activeNow,0,'Older than 10 minutes is not active now');assert.equal(later.users,1,'Accounts scheduled for deletion are not counted');
+ assert.deepEqual(Object.keys(later).sort(),['activeNow','activeToday','characterReplies','checkedAt','messagesSent','messagesToday','newToday','users'],'Counts only');
+ console.log('Admin activity passed: admins only, users excluding scheduled deletions, new today, active now (10 minutes), active today, messages sent and today, character replies, counts only.');
+}finally{await db.close();}

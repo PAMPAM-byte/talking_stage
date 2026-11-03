@@ -8,6 +8,7 @@ const checks = [
   ['test-gift-database.mjs'],
   ['test-memory-notes.mjs'],
   ['test-conversation-recaps.mjs'],
+  ['test-admin-activity.mjs'],
   ['--experimental-vm-modules','test-payment-boundaries.mjs'],
   ['test-naija-exchanges.mjs'],
   ['test-women-personalities.mjs'],
