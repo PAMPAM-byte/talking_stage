@@ -3,7 +3,7 @@ import { supabaseConfig } from './config';
 import { trustedBackendClient } from './trusted-client';
 import { providerSettings } from '@/lib/ai/provider.mjs';
 import { runReply } from '@/lib/ai/reply-pipeline.mjs';
-import { runSummary } from '@/lib/ai/summary-pipeline.mjs';
+import { runRecap } from '@/lib/ai/recap-pipeline.mjs';
 import { observeAI, emit, emitAIUsage, emitReplyQuality } from '@/lib/monitoring/events.mjs';
 import { bachsSettings } from '@/lib/payments/bachs.mjs';
 
@@ -37,5 +37,6 @@ export async function processSummary(messageId: string, actorId: string): Promis
   }
 
   const { client, settings } = configuration;
-  return observeAI('ai.summary', () => runSummary(client, messageId, actorId, settings, { onUsage: (usage: Parameters<typeof emitAIUsage>[1]) => emitAIUsage('ai.summary', usage) }));
+  // The running chat recap (3 Nov) replaces the excerpt summary for continuity.
+  return observeAI('ai.summary', () => runRecap(client, messageId, actorId, settings, { onUsage: (usage: Parameters<typeof emitAIUsage>[1]) => emitAIUsage('ai.summary', usage) }));
 }

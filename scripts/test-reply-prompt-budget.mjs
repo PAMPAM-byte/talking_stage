@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {buildInput} from '../lib/ai/provider.mjs';
+import {MEMORY_ALLOWANCE_BYTES} from '../lib/ai/chat-memory.mjs';
 import {encodeExpression} from '../lib/chat/expressions.ts';
 const pack=JSON.parse(await readFile(new URL('../docs/cast-50/characters.json',import.meta.url),'utf8'));
 assert.equal(pack.characters.length,50);
@@ -12,10 +13,13 @@ for(const character of pack.characters)for(const text of ['How are you?',encodeE
   context.history.unshift({id:'previous',role:'character',text:'Hope you sleep well.',created_at:new Date(Date.now()-36*3600000).toISOString()});
   context.history.at(-1).created_at=new Date().toISOString();
  }
+ // Maximum chat memory (3 Nov) must be trimmed, never push a reply over the limit.
+ context.chatMemory={recap:'R'.repeat(1200),topicsCovered:Array.from({length:12},(_,i)=>`topic ${i} `.padEnd(40,'x')),questionsYouAlreadyAsked:Array.from({length:25},(_,i)=>`${i} `.padEnd(139,'q')+'?'),exchanges:30};
  if(mode==='checkin')context.replyMode='checkin';
  else{context.quoteTargets=[{messageId:'synthetic',role:'user',kind:'text',text}];context.history.at(-1).replyTo={id:'older',role:'character',kind:'text',text:'A previously sent message with context.'.repeat(12)};}
  const input=buildInput(context);const bytes=Buffer.byteLength(JSON.stringify(input),'utf8')+2048;
- assert(bytes<=context.maxInputTokens);largest=Math.max(largest,bytes);
+ // Chat memory has a bounded allowance above maxInputTokens; check-ins carry no memory.
+ assert(bytes<=context.maxInputTokens+(mode==='checkin'?0:MEMORY_ALLOWANCE_BYTES));largest=Math.max(largest,bytes);
  assert(input[0].content.includes(character.direction),'Keep the complete approved private voice, not just the short public biography');
  assert(input.at(-1).content.includes('Message ID: synthetic'));
  assert(input[0].content.includes('Keep conversations non-explicit'));
