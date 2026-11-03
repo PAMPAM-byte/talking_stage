@@ -83,3 +83,7 @@
 .activity__grid dd { margin: 4px 0 2px; font-size: 26px; font-weight: 700; line-height: 1.15; font-variant-numeric: tabular-nums; color: var(--ink); }
 .activity__grid .caption { margin: 0; }
 @media (min-width: 900px) { .activity__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+/* Most popular characters (3 November). Reuses the AI spend table and meter. */
+.popularity__table th[scope="row"] { text-align: start; }
+.popularity__rank { display: inline-block; min-inline-size: 2ch; margin-inline-end: 8px; color: var(--text-secondary); font-variant-numeric: tabular-nums; }
+.popularity__quiet { color: var(--text-secondary); }

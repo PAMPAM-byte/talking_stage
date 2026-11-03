@@ -27,5 +27,12 @@ try{
  await actor(b);const later=(await db.query('select public.admin_activity_stats() v')).rows[0].v;
  assert.equal(later.activeNow,0,'Older than 10 minutes is not active now');assert.equal(later.users,1,'Accounts scheduled for deletion are not counted');
  assert.deepEqual(Object.keys(later).sort(),['activeNow','activeToday','characterReplies','checkedAt','messagesSent','messagesToday','newToday','users'],'Counts only');
- console.log('Admin activity passed: admins only, users excluding scheduled deletions, new today, active now (10 minutes), active today, messages sent and today, character replies, counts only.');
+ // Most popular characters: published only, ranked by people this week, counts only.
+ await db.exec('reset role');const quiet=(await db.query("insert into public.characters(name,age,gender,status) values('Quiet character',30,'man','published') returning id")).rows[0].id;
+ await actor(b);const popular=(await db.query('select public.admin_character_popularity() v')).rows[0].v;
+ assert.deepEqual(popular.map(r=>r.name),['Synthetic adult','Quiet character']);
+ assert.deepEqual([popular[0].people,popular[0].messages,popular[0].thisWeek],[1,2,1]);assert(popular[0].minutesSinceLast>=11);
+ assert.deepEqual([popular[1].people,popular[1].messages,popular[1].minutesSinceLast],[0,0,null]);assert.equal(popular[1].id,quiet);
+ await actor();await assert.rejects(db.query('select public.admin_character_popularity()'),/forbidden|admin/,'Only administrators');
+ console.log('Admin activity passed: character popularity ranking, admins only, users excluding scheduled deletions, new today, active now (10 minutes), active today, messages sent and today, character replies, counts only.');
 }finally{await db.close();}
