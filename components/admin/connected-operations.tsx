@@ -44,6 +44,24 @@ async function UsersActivity({client}:{client:NonNullable<Awaited<ReturnType<typ
   </dl>
   <p className="caption muted">Counts only; no names or message text. Users excludes accounts scheduled for deletion. Today means the Lagos calendar day.</p></Card>;
 }
+type Popularity={id:string;name:string;gender:string;people:number;thisWeek:number;messages:number;minutesSinceLast:number|null};
+async function CharacterPopularity({client}:{client:NonNullable<Awaited<ReturnType<typeof currentAccount>>>['client']}){
+ const result=await client.rpc('admin_character_popularity');
+ if(result.error)return <Notice title="Character popularity unavailable" tone="warning">Reload to try again.</Notice>;
+ const rows=result.data as Popularity[];const chatted=rows.filter(r=>r.people>0);
+ const top=Math.max(1,...rows.map(r=>r.thisWeek||r.people));
+ const ago=(minutes:number|null)=>{if(minutes===null)return 'never';return minutes<60?`${Math.max(1,minutes)} min ago`:minutes<1440?`${Math.round(minutes/60)} h ago`:`${Math.round(minutes/1440)} d ago`;};
+ return <Card className="stack popularity"><h2>Most popular characters</h2>
+  <p className="muted">Ranked by people chatting this week, then all time. {chatted.length} of {rows.length} characters have had a conversation.</p>
+  {!chatted.length?<EmptyState title="No conversations yet">Characters appear here once people start chatting.</EmptyState>:
+  <div className="ai-spend__scroll" tabIndex={0} role="region" aria-label="Character popularity"><table className="ai-spend__table popularity__table">
+   <thead><tr><th scope="col">Character</th><th scope="col">People this week</th><th scope="col">People all time</th><th scope="col">Messages received</th><th scope="col">Last message</th></tr></thead>
+   <tbody>{rows.map((r,index)=><tr key={r.id} className={r.people?undefined:'popularity__quiet'}>
+    <th scope="row"><span className="popularity__rank">{index+1}</span>{r.name}<span className="caption muted"> · {r.gender==='woman'?'F':'M'}</span></th>
+    <td><span className="ai-spend__amount">{count(r.thisWeek)}</span><span className="ai-spend__meter" role="img" aria-label={`${Math.round((r.thisWeek||0)/top*100)}% of the busiest character`}><span style={{inlineSize:`${Math.round((r.thisWeek||0)/top*100)}%`}}/></span></td>
+    <td>{count(r.people)}</td><td>{count(r.messages)}</td><td>{ago(r.minutesSinceLast)}</td></tr>)}</tbody></table></div>}
+  <p className="caption muted">People counts each person once per character. Counts only; no names or message text.</p></Card>;
+}
 export async function ConnectedOperations() {
  const account=await currentAccount();if(!account)return null;
  const result=await account.client.rpc('admin_list_controls');
@@ -51,6 +69,7 @@ export async function ConnectedOperations() {
  const controls=result.data as {global:Control;characters:Control[]};
  return <div className="stack"><h1 className="display page-title">Keep the experience in control.</h1><p className="muted">Pause chat, photos or payments independently. Existing history stays available.</p>
   <UsersActivity client={account.client}/>
+  <CharacterPopularity client={account.client}/>
   <Notice title="Global pauses take priority">Character settings cannot override a global pause. Chat and payments remain unavailable until their integrations are complete.</Notice>
   <Card className="stack"><h2>Across TalkingStage</h2><p className="muted">These controls apply to every character.</p><ControlsForm control={controls.global}/></Card>
   <AISpend client={account.client}/>
