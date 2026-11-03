@@ -120,3 +120,7 @@
 .chat-shell__new:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 @keyframes chat-new-in { from { opacity: 0; translate: -50% 6px; } }
 @media (prefers-reduced-motion: reduce) { .chat-shell__new { animation: none; } }
+/* Older messages load in place above the chat (3 November). */
+.older-messages-link { display: inline-flex; align-items: center; gap: 8px; align-self: center; min-height: 44px; padding: 8px 16px; color: var(--brand); font-weight: 650; text-decoration: none; }
+.older-messages-link[aria-busy="true"] { color: var(--text-secondary); pointer-events: none; }
+.chat-shell__messages { overflow-anchor: auto; }
