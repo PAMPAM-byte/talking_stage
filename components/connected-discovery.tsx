@@ -9,7 +9,7 @@ import { currentAccount } from '@/lib/backend/server';
 import { EmptyState, Notice } from './ui/primitives';
 import { ConnectedDiscoveryDeck } from './connected-discovery-deck';
 import { loadDiscoveryFeed } from '@/lib/discovery-feed';
-import { featuredCharacterOrder } from '@/lib/character-order';
+import { shuffledCharacterOrder, shuffleKey } from '@/lib/character-order';
 import {ConversationControl} from './connected-conversation-forms';
 import {configuredReplyModel} from '@/lib/backend/reply-worker';
 type Filters={gender?:string;interest?:string;personality?:string;page?:string};
@@ -40,13 +40,15 @@ async function eligibleCast(id?: string,filters:Filters={}) {
 export async function ConnectedDiscovery({ filters:requestedFilters }: {filters:Filters}) {
  const data=await eligibleCast(undefined,requestedFilters);
  if(!data) return <Notice title="Discovery unavailable" tone="warning">Reload to try again.</Notice>;
- const rows=featuredCharacterOrder(data.characters);
+ // A new order on every sign-in, kept for the session; each filter has its own shuffle.
  const filters=data.filters;
+ const seed=`${data.account.user.id}:${data.account.user.last_sign_in_at??''}`;
+ const rows=shuffledCharacterOrder(data.characters,`${seed}:${JSON.stringify(filters)}`);
  const genderHref=(gender:string)=>{if(gender==='all')return '/discover?gender=all';const query=new URLSearchParams({gender});for(const key of ['interest','personality'] as const)if(filters[key])query.set(key,filters[key]!);return `/discover?${query}`;};
  return <div className="discovery-page discovery-page--swipe stack"><header className="discovery-heading"><div className="stack"><p className="supporting muted">Welcome, {data.account.profile.display_name}.</p><h1 className="display discovery-title">Find your spark.</h1><p className="muted">Find someone who catches your attention.</p></div></header>
  <nav className="row" aria-label="Character gender">{[['all','Everyone'],['woman','Women'],['man','Men']].map(([gender,label])=><Link key={gender} className="chip" href={genderHref(gender)} aria-current={filters.gender===gender?'page':undefined}>{label}</Link>)}</nav>
  <ConnectedDiscoveryFilters filters={filters} interests={data.collection.interests} personalities={data.collection.personalities} />
- {rows.length ? <ConnectedDiscoveryDeck key={JSON.stringify(filters)} scope={`${data.account.profile.id}:${JSON.stringify(filters)}${filters.gender==='man'?'':':zuri-first'}`} cards={rows.map(c => {
+ {rows.length ? <ConnectedDiscoveryDeck key={JSON.stringify(filters)} scope={`${data.account.profile.id}:${JSON.stringify(filters)}:${shuffleKey(seed)}`} cards={rows.map(c => {
    const photo = data.assets.find(a => a.character_id === c.id && a.slot === 'portrait');
    return { id: c.id, name: c.name, age: c.age, location: c.fictional_location, occupation: c.occupation, clue: c.conversation_clue, bio: c.bio, interests: c.interests, href: characterHref(c.id, filters), photo: photo ?
      // eslint-disable-next-line @next/next/no-img-element
