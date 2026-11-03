@@ -1,0 +1,8 @@
+{
+  "version": "202611030033",
+  "appliedAt": "2026-11-03T10:54:07.081Z",
+  "migrationHash": "1e9b4e7b5681a90b74eb86baa026577c28d7ce5f4a4fee8bc177e2fe9f2cbe7d",
+  "encryptedDdlSnapshotVerified": true,
+  "policy": "20/50/100 then every 30 replies, 1h spacing, NGN 2,000-10,000",
+  "requestsOnByDefault": true
+}
