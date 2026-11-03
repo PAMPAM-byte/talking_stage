@@ -1,0 +1,8 @@
+{
+  "version": "202611030035",
+  "appliedAt": "2026-11-03T10:55:37.593Z",
+  "migrationHash": "687a70037c747a81e71396290ad7c0b89f5f9e656d23535ca6b5a0f4f6e68742",
+  "encryptedDdlSnapshotVerified": true,
+  "serviceOnlySaveVerified": true,
+  "existingMemoriesUnchanged": true
+}
