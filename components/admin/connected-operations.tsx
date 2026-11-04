@@ -4,6 +4,7 @@ import type {Control,AuditEvent} from '@/lib/backend/operations-types';
 import {Badge,Card,EmptyState,Notice} from '@/components/ui/primitives';
 import {ControlsForm} from './connected-controls-form';
 import {AutoRefresh} from './auto-refresh';
+import {formatNaira} from '@/lib/format';
 type SpendDay={day:string;charged:number;reserved:number;settled:number;calls:number;unsettled:number};
 type Spend={model:string;enabled:boolean;projectDailyMicroUsd:number;userDailyMicroUsd:number;days:SpendDay[]};
 const usd=(micro:number)=>`$${(micro/1e6).toFixed(micro<1e6?4:2)}`;
@@ -44,6 +45,26 @@ async function UsersActivity({client}:{client:NonNullable<Awaited<ReturnType<typ
   </dl>
   <p className="caption muted">Counts only; no names or message text. Users excludes accounts scheduled for deletion. Today means the Lagos calendar day.</p></Card>;
 }
+type Money={totalMinor:number;payments:number;payers:number;todayMinor:number;todayPayments:number;weekMinor:number;monthMinor:number;largestMinor:number;lastPaidAt:string|null;refundedMinor:number;refunds:number;needsReview:number;topCharacters:{name:string;amountMinor:number;payments:number}[]};
+async function MoneyReceived({client}:{client:NonNullable<Awaited<ReturnType<typeof currentAccount>>>['client']}){
+ const result=await client.rpc('admin_payment_totals');
+ if(result.error)return <Notice title="Money received unavailable" tone="warning">Reload to try again.</Notice>;
+ const m=result.data as Money;const naira=(minor:number)=>formatNaira(Number(minor));
+ const last=m.lastPaidAt?new Intl.DateTimeFormat('en-NG',{day:'numeric',month:'short',hour:'numeric',minute:'2-digit',timeZone:'Africa/Lagos'}).format(new Date(m.lastPaidAt)):null;
+ return <Card className="stack activity"><div className="activity__head"><h2>Money received</h2><Link className="caption" href="/admin/payments">See every payment</Link></div>
+  <div className="activity__live"><strong className="activity__now">{naira(m.totalMinor)}</strong><span><b>Received in total</b><span className="muted"> · {count(m.payments)} payments from {count(m.payers)} {m.payers===1?'person':'people'}</span></span></div>
+  <dl className="activity__grid">
+   <div><dt>Today</dt><dd>{naira(m.todayMinor)}</dd><p className="caption muted">{m.todayPayments?`${count(m.todayPayments)} payment${m.todayPayments===1?'':'s'}`:'No payments yet today'}</p></div>
+   <div><dt>Last 7 days</dt><dd>{naira(m.weekMinor)}</dd><p className="caption muted">{last?`Latest ${last}`:'No payments yet'}</p></div>
+   <div><dt>This month</dt><dd>{naira(m.monthMinor)}</dd><p className="caption muted">Lagos calendar month</p></div>
+   <div><dt>Largest payment</dt><dd>{naira(m.largestMinor)}</dd><p className="caption muted">{m.payments?`Average ${naira(Math.round(m.totalMinor/m.payments))}`:'—'}</p></div>
+  </dl>
+  {(m.needsReview>0||m.refunds>0)&&<Notice title="Not counted above" tone="warning">{m.needsReview?`${count(m.needsReview)} payment${m.needsReview===1?' needs':'s need'} review. `:''}{m.refunds?`${naira(m.refundedMinor)} refunded or disputed across ${count(m.refunds)} payment${m.refunds===1?'':'s'}.`:''}</Notice>}
+  {m.topCharacters.length>0&&<div className="ai-spend__scroll" tabIndex={0} role="region" aria-label="Money received by character"><table className="ai-spend__table popularity__table">
+   <thead><tr><th scope="col">Top earning characters</th><th scope="col">Received</th><th scope="col">Payments</th></tr></thead>
+   <tbody>{m.topCharacters.map((c,index)=><tr key={c.name}><th scope="row"><span className="popularity__rank">{index+1}</span>{c.name}</th><td>{naira(c.amountMinor)}</td><td>{count(c.payments)}</td></tr>)}</tbody></table></div>}
+  <p className="caption muted">Confirmed live payments only, before Bachs fees. Test payments are excluded. Today means the Lagos calendar day.</p></Card>;
+}
 type Popularity={id:string;name:string;gender:string;people:number;thisWeek:number;messages:number;minutesSinceLast:number|null};
 async function CharacterPopularity({client}:{client:NonNullable<Awaited<ReturnType<typeof currentAccount>>>['client']}){
  const result=await client.rpc('admin_character_popularity');
@@ -69,6 +90,7 @@ export async function ConnectedOperations() {
  const controls=result.data as {global:Control;characters:Control[]};
  return <div className="stack"><h1 className="display page-title">Keep the experience in control.</h1><p className="muted">Pause chat, photos or payments independently. Existing history stays available.</p>
   <UsersActivity client={account.client}/>
+  <MoneyReceived client={account.client}/>
   <CharacterPopularity client={account.client}/>
   <Notice title="Global pauses take priority">Character settings cannot override a global pause. Chat and payments remain unavailable until their integrations are complete.</Notice>
   <Card className="stack"><h2>Across TalkingStage</h2><p className="muted">These controls apply to every character.</p><ControlsForm control={controls.global}/></Card>

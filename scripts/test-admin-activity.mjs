@@ -34,5 +34,18 @@ try{
  assert.deepEqual([popular[0].people,popular[0].messages,popular[0].thisWeek],[1,2,1]);assert(popular[0].minutesSinceLast>=11);
  assert.deepEqual([popular[1].people,popular[1].messages,popular[1].minutesSinceLast],[0,0,null]);assert.equal(popular[1].id,quiet);
  await actor();await assert.rejects(db.query('select public.admin_character_popularity()'),/forbidden|admin/,'Only administrators');
+ // Money received (4 Nov): live confirmed payments only, gross, admins only.
+ await db.exec('reset role');
+ const intent=(amount,status,environment='production',review=false,ago='0 minutes')=>db.query(`insert into public.payment_intents(user_id,conversation_id,character_id,amount_minor,reference,idempotency_key,recipient_disclosure,status,gateway_environment,needs_review,verified_at)
+  values($1,$2,$3,$4,gen_random_uuid()::text,gen_random_uuid()::text,'Synthetic operator',$5,$6,$7,now()-$8::interval)`,[a,c,char,amount,status,environment,review,ago]);
+ await intent(200000,'paid');await intent(500000,'paid','production',false,'10 days');await intent(900000,'paid','sandbox');
+ await intent(300000,'failed');await intent(400000,'paid','production',true);await intent(700000,'refunded');
+ await actor();await assert.rejects(db.query('select public.admin_payment_totals()'),/forbidden|admin/,'Only administrators see money');
+ await actor(b);const money=(await db.query('select public.admin_payment_totals() v')).rows[0].v;
+ assert.deepEqual([money.totalMinor,money.payments,money.payers,money.largestMinor],[700000,2,1,500000],'Live confirmed payments only: no sandbox, failed, review or refunds');
+ assert.deepEqual([money.todayMinor,money.todayPayments,money.weekMinor],[200000,1,200000]);
+ assert.deepEqual([money.needsReview,money.refunds,money.refundedMinor],[1,1,700000]);
+ assert.deepEqual(money.topCharacters,[{name:'Synthetic adult',amountMinor:700000,payments:2}]);
+ console.log('Money received passed: live confirmed totals, today/week, review and refunds kept apart, sandbox excluded, top characters, admins only.');
  console.log('Admin activity passed: character popularity ranking, admins only, users excluding scheduled deletions, new today, active now (10 minutes), active today, messages sent and today, character replies, counts only.');
 }finally{await db.close();}
