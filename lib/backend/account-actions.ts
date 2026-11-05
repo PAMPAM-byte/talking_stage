@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { backendClient, currentAccount } from "./server";
 import { setFlowCookie, validFlowCookie } from "./flow-cookie";
+import { googleLanding } from "./google-landing";
 import { observe, emit } from '@/lib/monitoring/events.mjs';
 
 export type AccountResult = { error?: string; message?: string; destination?: string; confirmEmail?: boolean };
@@ -110,6 +111,22 @@ export async function startGoogleSignIn(): Promise<AccountResult> {
     const { data, error } = await observe('auth.sign-in', () => client.auth.signInWithOAuth({ provider: "google", options: { redirectTo: `${origin()}/auth/callback`, skipBrowserRedirect: true, queryParams: { prompt: "select_account" } } }));
     if (error || !data.url || new URL(data.url).protocol !== "https:") return providerFailure(error ?? {}) ?? { error: "Google sign-in isn’t available right now. Use your email instead." };
     return { destination: data.url };
+  } catch { emit('auth.sign-in', 'unexpected'); return unavailable; }
+}
+/**
+ * On-page Google button (5 Nov 2026): Google's popup names talkingstage.buzz rather than the
+ * Supabase address. Google returns a signed ID token; Supabase verifies it against the
+ * configured client ID and the nonce, whose SHA-256 was given to Google.
+ */
+export async function signInWithGoogleToken(credential: string, nonce: string): Promise<AccountResult> {
+  try {
+    if (typeof credential !== "string" || credential.length > 8192 || credential.split(".").length !== 3 || typeof nonce !== "string" || !/^[A-Za-z0-9-]{16,128}$/.test(nonce)) return { error: "Google sign-in didn’t go through. Try again." };
+    const client = await backendClient();
+    if (!client) return unavailable;
+    const { error } = await observe('auth.sign-in', () => client.auth.signInWithIdToken({ provider: "google", token: credential, nonce }));
+    if (error) return providerFailure(error) ?? { error: "Google sign-in didn’t go through. Try again, or use your email." };
+    const destination = await googleLanding();
+    return destination ? { destination } : unavailable;
   } catch { emit('auth.sign-in', 'unexpected'); return unavailable; }
 }
 export async function resendConfirmation(email: string, captchaToken: string): Promise<AccountResult> {

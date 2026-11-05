@@ -3,7 +3,8 @@ import Link from "next/link";
 import { AccountPage, AccountIntro, AccountPasswordField } from "./account-presentation";
 import { useRouter } from "next/navigation";
 import { useRef, useState, useTransition, type FormEvent } from "react";
-import { resendConfirmation, resetOnboardingDraft, startGoogleSignIn, submitAccount } from "@/lib/backend/account-actions";
+import { resendConfirmation, resetOnboardingDraft, signInWithGoogleToken, startGoogleSignIn, submitAccount } from "@/lib/backend/account-actions";
+import { GoogleButton } from "./google-button";
 import type { TurnstileInstance } from "@marsidev/react-turnstile";
 import { HumanCheck, humanCheckSiteKey } from "./human-check";
 import type { FlowStep } from "./mock-account-flow";
@@ -105,6 +106,19 @@ export function RealAccountForm({ step, configured, profile, expired = false, lo
       setPendingAction(null);
     });
   }
+  function finishGoogle(credential: string, nonce: string) {
+    if (busy) return;
+    setError(""); setMessage(""); setPendingAction("google");
+    startTransition(async () => {
+      try {
+        const result = await signInWithGoogleToken(credential, nonce);
+        // A full navigation so every page reads the new session cookies.
+        if (result.destination) { window.location.assign(result.destination); return; }
+        setError(result.error ?? "Google sign-in didn’t go through. Try again, or use your email.");
+      } catch { setError("We couldn’t connect. Please try again."); }
+      setPendingAction(null);
+    });
+  }
   function useDifferentEmail() { setConfirmationEmail(""); setError(""); setMessage(""); }
   function declareUnderage() {
     if (busy) return;
@@ -133,7 +147,8 @@ export function RealAccountForm({ step, configured, profile, expired = false, lo
       {step === "sign-in" && localTestAccount && <Notice title="Testing locally"><p>Use the sample account to explore TalkingStage.</p><p className="caption">Email: {localTestAccount.email}<br />Password: {localTestAccount.password}</p><Button variant="secondary" disabled={busy} onClick={fillTestAccount}>Use test account</Button></Notice>}
       {step === "age" && <><Checkbox name="adult" label="I am 18 or older" checked={adult} disabled={busy} onChange={e => setAdult(e.target.checked)} required aria-describedby="adult-hint" /><p id="adult-hint" className="caption muted">This is your declaration, not independent age verification.</p></>}
       {["register", "sign-in"].includes(step) && <div className="google-entry">
-        <button type="button" className="google-button" onClick={continueWithGoogle} disabled={busy || !configured} aria-busy={busy && pendingAction === "google"}><GoogleMark />{busy && pendingAction === "google" ? "Opening Google…" : "Continue with Google"}</button>
+        <GoogleButton disabled={busy || !configured} onCredential={finishGoogle} fallback={<button type="button" className="google-button" onClick={continueWithGoogle} disabled={busy || !configured} aria-busy={busy && pendingAction === "google"}><GoogleMark />{busy && pendingAction === "google" ? "Opening Google…" : "Continue with Google"}</button>} />
+        {busy && pendingAction === "google" && <p className="caption muted" role="status">Signing you in…</p>}
         <p className="caption muted">By continuing with Google you accept the <Link href="/terms">Terms</Link> and understand you’ll talk with fictional AI characters.</p>
         <p className="google-entry__divider caption"><span>or use your email</span></p>
       </div>}
