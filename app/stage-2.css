@@ -36,14 +36,10 @@
 .google-entry { display: grid; gap: 10px; }
 .google-entry .caption { margin: 0; }
 .google-button { display: inline-flex; justify-content: center; align-items: center; gap: 12px; inline-size: 100%; min-height: 52px; padding: 12px 16px; border: 1px solid #747775; border-radius: var(--radius-control); background: #fff; color: #1f1f1f; font: inherit; font-size: var(--type-control); font-weight: 600; cursor: pointer; transition: background var(--motion-fast); }
-/* Google renders its own button inside; reserve its height so the form doesn't jump while it loads. */
-.google-gsi { display: flex; justify-content: center; min-block-size: 44px; }
+/* Google renders its own button inside; it has no height until Google shows it. */
+.google-gsi { display: flex; justify-content: center; }
 .google-gsi__button { inline-size: 100%; max-inline-size: 400px; display: flex; justify-content: center; }
-.google-gsi[data-disabled] { pointer-events: none; opacity: .6; }
-/* Laid out off-screen while Google decides whether to show its button. */
-.google-gsi.is-pending { position: absolute; inset-inline-start: -10000px; inline-size: min(400px, calc(100vw - 40px)); visibility: hidden; }
-.google-entry { position: relative; }
-.google-button__mark { inline-size: 20px; block-size: 20px; flex: none; }
+.google-gsi[data-disabled] { pointer-events: none; opacity: .6; }.google-button__mark { inline-size: 20px; block-size: 20px; flex: none; }
 .google-button:disabled { opacity: .6; cursor: not-allowed; }
 @media (hover: hover) { .google-button:hover:not(:disabled) { background: #f2f2f2; } }
 .google-entry__divider { display: flex; align-items: center; gap: 12px; margin-top: 6px; color: var(--text-secondary); }
