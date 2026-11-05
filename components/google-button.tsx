@@ -56,6 +56,7 @@ export function GoogleButton({ disabled, onCredential, fallback }: { disabled: b
     })();
     return () => { active = false; };
   }, []);
-  // The fallback shows while Google's button loads, so there is never an empty gap.
-  return <>{state !== "ready" && fallback}{state !== "fallback" && <div className={`google-gsi${state === "loading" ? " is-pending" : ""}`} aria-hidden={state === "loading" || undefined} data-disabled={disabled || undefined}><div ref={holder} className="google-gsi__button" /></div>}</>;
+  // Google only draws its button on-screen, so the holder stays in place; it has no height until
+  // Google shows the button. The fallback covers that wait, so there is never an empty gap.
+  return <>{state !== "fallback" && <div className="google-gsi" aria-hidden={state === "loading" || undefined} data-disabled={disabled || undefined}><div ref={holder} className="google-gsi__button" /></div>}{state !== "ready" && fallback}</>;
 }
