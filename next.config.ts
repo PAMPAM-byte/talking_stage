@@ -6,12 +6,13 @@ import {networkInterfaces} from 'node:os';
 const isDev = process.env.NODE_ENV === 'development';
 const csp = [
   "default-src 'self'",
-  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ''} https://challenges.cloudflare.com`,
-  "style-src 'self' 'unsafe-inline'",
+  // Google sign-in button (5 Nov 2026): the Google Identity Services script, its styles and frames.
+  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ''} https://challenges.cloudflare.com https://accounts.google.com/gsi/client`,
+  "style-src 'self' 'unsafe-inline' https://accounts.google.com/gsi/style",
   "img-src 'self' data: blob:",
   "font-src 'self'",
-  "connect-src 'self'",
-  'frame-src https://challenges.cloudflare.com',
+  "connect-src 'self' https://accounts.google.com/gsi/",
+  'frame-src https://challenges.cloudflare.com https://accounts.google.com/gsi/',
   "worker-src 'self'",
   "manifest-src 'self'",
   "object-src 'none'",
