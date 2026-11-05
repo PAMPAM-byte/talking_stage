@@ -3,7 +3,7 @@ import Link from "next/link";
 import { AccountPage, AccountIntro, AccountPasswordField } from "./account-presentation";
 import { useRouter } from "next/navigation";
 import { useRef, useState, useTransition, type FormEvent } from "react";
-import { resendConfirmation, resetOnboardingDraft, submitAccount } from "@/lib/backend/account-actions";
+import { resendConfirmation, resetOnboardingDraft, startGoogleSignIn, submitAccount } from "@/lib/backend/account-actions";
 import type { TurnstileInstance } from "@marsidev/react-turnstile";
 import { HumanCheck, humanCheckSiteKey } from "./human-check";
 import type { FlowStep } from "./mock-account-flow";
@@ -23,7 +23,7 @@ const titles: Record<FlowStep, [string, string]> = {
 };
 export function RealAccountForm({ step, configured, profile, expired = false, localTestAccount, settings = false, developmentTestLogin = false }: { step: FlowStep; configured: boolean; settings?: boolean; profile?: AccountProfile; expired?: boolean; localTestAccount?: { email: string; password: string }; developmentTestLogin?: boolean }) {
   const router = useRouter(); const [busy, startTransition] = useTransition();
-  const [pendingAction, setPendingAction] = useState<"submit" | "underage" | "leave" | null>(null);
+  const [pendingAction, setPendingAction] = useState<"submit" | "underage" | "leave" | "google" | null>(null);
   const [error, setError] = useState(""); const [message, setMessage] = useState("");
   const [adult, setAdult] = useState(false); const [blocked, setBlocked] = useState(false);
   const [genders, setGenders] = useState(profile?.genders ?? []);
@@ -92,6 +92,19 @@ export function RealAccountForm({ step, configured, profile, expired = false, lo
       finally { setPendingAction(null); if (checksHuman) renewHumanCheck(); }
     });
   }
+  function continueWithGoogle() {
+    if (busy) return;
+    setError(""); setMessage(""); setPendingAction("google");
+    startTransition(async () => {
+      try {
+        const result = await startGoogleSignIn();
+        // Google's consent page is another site, so leave with a full navigation.
+        if (result.destination) { window.location.assign(result.destination); return; }
+        setError(result.error ?? "Google sign-in isn’t available right now. Use your email instead.");
+      } catch { setError("We couldn’t connect. Please try again."); }
+      setPendingAction(null);
+    });
+  }
   function useDifferentEmail() { setConfirmationEmail(""); setError(""); setMessage(""); }
   function declareUnderage() {
     if (busy) return;
@@ -119,6 +132,11 @@ export function RealAccountForm({ step, configured, profile, expired = false, lo
       <input type="hidden" name="version" value={profile?.version ?? 0} />
       {step === "sign-in" && localTestAccount && <Notice title="Testing locally"><p>Use the sample account to explore TalkingStage.</p><p className="caption">Email: {localTestAccount.email}<br />Password: {localTestAccount.password}</p><Button variant="secondary" disabled={busy} onClick={fillTestAccount}>Use test account</Button></Notice>}
       {step === "age" && <><Checkbox name="adult" label="I am 18 or older" checked={adult} disabled={busy} onChange={e => setAdult(e.target.checked)} required aria-describedby="adult-hint" /><p id="adult-hint" className="caption muted">This is your declaration, not independent age verification.</p></>}
+      {["register", "sign-in"].includes(step) && <div className="google-entry">
+        <button type="button" className="google-button" onClick={continueWithGoogle} disabled={busy || !configured} aria-busy={busy && pendingAction === "google"}><GoogleMark />{busy && pendingAction === "google" ? "Opening Google…" : "Continue with Google"}</button>
+        <p className="caption muted">By continuing with Google you accept the <Link href="/terms">Terms</Link> and understand you’ll talk with fictional AI characters.</p>
+        <p className="google-entry__divider caption"><span>or use your email</span></p>
+      </div>}
       {["register", "sign-in", "recover"].includes(step) && <TextField label="Email address" name="email" type="email" placeholder="you@example.com" autoComplete="email" maxLength={254} required />}
       {["register", "sign-in"].includes(step) && <AccountPasswordField label="Password" name="password" autoComplete={step === "sign-in" ? "current-password" : "new-password"} minLength={step === "sign-in" ? 1 : 12} maxLength={128} placeholder={step === "register" ? "Create a strong password" : "Enter your password"} hint={step === "register" ? "Use at least 12 characters." : undefined} required />}{step === "recovery-complete" && <AccountPasswordField label="Password" name="password" autoComplete="new-password" minLength={12} maxLength={128} hint="Use at least 12 characters." required />}
       {step === "recovery-complete" && <AccountPasswordField label="Confirm password" name="confirmPassword" autoComplete="new-password" minLength={12} maxLength={128} required />}
@@ -140,4 +158,8 @@ export function RealAccountForm({ step, configured, profile, expired = false, lo
     </DevelopmentSignInGate>
     {!settings && <p className="account-footer supporting"><Link href={step === "sign-in" ? "/onboarding/age" : "/sign-in"}>{step === "sign-in" ? "Create an account" : "Already have an account? Sign in"}</Link></p>}
   </Content></AccountPage>;
+}
+// Google's standard multicolour G, as its sign-in branding guidelines require.
+function GoogleMark() {
+  return <svg className="google-button__mark" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>;
 }
