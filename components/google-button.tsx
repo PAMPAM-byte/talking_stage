@@ -9,7 +9,8 @@ type Gsi = {
   renderButton(parent: HTMLElement, options: Record<string, unknown>): void;
 };
 declare global { interface Window { google?: { accounts?: { id?: Gsi } } } }
-const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ?? "";
+// Trimmed: a value pasted or piped into the host's settings can carry a trailing newline.
+const clientId = (process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ?? "").trim();
 const scriptSrc = "https://accounts.google.com/gsi/client";
 
 function loadScript() {
