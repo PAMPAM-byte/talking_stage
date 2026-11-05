@@ -50,13 +50,14 @@ export function GoogleButton({ disabled, onCredential, fallback }: { disabled: b
         const watch = setInterval(() => {
           const frame = holder.current?.querySelector("iframe");
           const shown = !!frame && frame.getBoundingClientRect().height > 0 && getComputedStyle(frame).display !== "none";
-          if (!active || shown || Date.now() - started > 8000) { clearInterval(watch); if (active) setState(shown ? "ready" : "fallback"); }
+          if (!active || shown || Date.now() - started > 12000) { clearInterval(watch); if (active) setState(shown ? "ready" : "fallback"); }
         }, 250);
       } catch { if (active) setState("fallback"); }
     })();
     return () => { active = false; };
   }, []);
-  // Google only draws its button on-screen, so the holder stays in place; it has no height until
-  // Google shows the button. The fallback covers that wait, so there is never an empty gap.
-  return <>{state !== "fallback" && <div className="google-gsi" aria-hidden={state === "loading" || undefined} data-disabled={disabled || undefined}><div ref={holder} className="google-gsi__button" /></div>}{state !== "ready" && fallback}</>;
+  // Google only draws its button on-screen, and first shows a stand-in copy before the real one.
+  // While loading, its holder sits invisibly over the fallback (still on-screen), so only one
+  // button is ever visible; the fallback stays if Google never shows the real button.
+  return <div className="google-gsi-slot">{state !== "fallback" && <div className={`google-gsi${state === "loading" ? " is-loading" : ""}`} aria-hidden={state === "loading" || undefined} data-disabled={disabled || undefined}><div ref={holder} className="google-gsi__button" /></div>}{state !== "ready" && fallback}</div>;
 }
