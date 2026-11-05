@@ -30,6 +30,13 @@ export async function submitAccount(step: string, form: FormData): Promise<Accou
     }
     if (step === "age") {
       if (form.get("adult") !== "on") return { error: "Confirm that you are 18 or older to continue." };
+      // A Google account that arrived without a declaration records it here and carries on with setup.
+      const signedIn = await currentAccount();
+      if (signedIn && !signedIn.profile.adult_declared_at) {
+        const { data, error } = await observe('account.onboarding', () => signedIn.client.rpc("accept_adult_declaration"));
+        if (error || data !== true) return { error: "We couldn’t save your answer. Try again." };
+        return { destination: "/onboarding/preferences" };
+      }
       await setFlowCookie("adult", "18-plus-v1");
       return { destination: "/register" };
     }
@@ -94,6 +101,16 @@ export async function submitAccount(step: string, form: FormData): Promise<Accou
     }
     return { error: "This action is unavailable." };
   } catch { emit('account.profile', 'unexpected'); return unavailable; }
+}
+/** Founder request, 5 Nov 2026: sign in or create an account with Google. Returns Google's consent page. */
+export async function startGoogleSignIn(): Promise<AccountResult> {
+  try {
+    const client = await backendClient();
+    if (!client) return unavailable;
+    const { data, error } = await observe('auth.sign-in', () => client.auth.signInWithOAuth({ provider: "google", options: { redirectTo: `${origin()}/auth/callback`, skipBrowserRedirect: true, queryParams: { prompt: "select_account" } } }));
+    if (error || !data.url || new URL(data.url).protocol !== "https:") return providerFailure(error ?? {}) ?? { error: "Google sign-in isn’t available right now. Use your email instead." };
+    return { destination: data.url };
+  } catch { emit('auth.sign-in', 'unexpected'); return unavailable; }
 }
 export async function resendConfirmation(email: string, captchaToken: string): Promise<AccountResult> {
   try {
