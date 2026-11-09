@@ -56,5 +56,21 @@ try{
  const audit=(await db.query("select target_id from private.admin_audit where action='user.lookup' and actor_id=$1",[b])).rows;
  assert(audit.some(r=>r.target_id===a));assert(audit.some(r=>r.target_id===null),'Searches with no match are logged too');
  assert.equal((await db.query("select count(*)::int n from private.admin_audit where action='user.lookup' and actor_id=$1",[b])).rows[0].n,12,'One row per person shown, or one for no match');
+ // Everyone list (9 Nov): most recently active first, limit and paid filters, admins only, no message text.
+ await actor(a);await assert.rejects(db.query('select public.admin_user_list()'),/forbidden/,'Only administrators see everyone');await db.exec('reset role');
+ const list=async(filter='all',page=1)=>{await actor(b);const v=(await db.query('select public.admin_user_list($1,$2) v',[filter,page])).rows[0].v;await db.exec('reset role');return v;};
+ await actor(b);await assert.rejects(db.query("select public.admin_user_list('everyone',1)"),/invalid_filter/);await assert.rejects(db.query("select public.admin_user_list('all',0)"),/invalid_filter/);await db.exec('reset role');
+ const everyone=await list();
+ assert.deepEqual(everyone.counts,{all:3,limit:0,paid:1},'Paid credit lifted Tolu off the limit');
+ assert.equal(everyone.users[0].id,a,'Most recently active first');assert.equal(everyone.users.length,3);
+ assert.deepEqual([everyone.users[0].usedMicroUsd,everyone.users[0].limitMicroUsd,everyone.users[0].paidMinor,everyone.users[0].messagesSent,everyone.users[0].atLimit],[1960000,2800000,200000,3,false]);
+ assert.deepEqual(everyone.users.slice(1).map(x=>x.messagesSent),[0,0]);
+ await db.query("update private.ai_daily_usage set amount_micro_usd=2700000 where scope=$1",[a]);
+ const limited=await list('limit');assert.deepEqual([limited.total,limited.users.map(x=>x.id)],[1,[a]],'Limit filter');
+ assert.deepEqual((await list('paid')).users.map(x=>x.id),[a],'Paid filter');
+ assert.deepEqual((await list('all',2)).users,[],'Past the last page');
+ assert.equal(JSON.stringify(everyone).includes('How was your day'),false,'No message text');
+ assert.equal((await db.query("select count(*)::int n from private.admin_audit where action='user.list' and target_id is null")).rows[0].n,4,'Each list view logged once');
+ console.log('Admin everyone list passed: admins only, valid filters, most recent first, limit and paid filters, payment credit, pages, no message text, views logged.');
  console.log('Admin user lookup passed: admins only, 3+ characters, email/name/ID matches, literal wildcards, limit reached using the worst-case reply, payment credit raises the limit, live payments, activity without message text, every lookup logged.');
 }finally{await db.close();}

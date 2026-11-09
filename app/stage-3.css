@@ -105,3 +105,18 @@
 .person__meter > i { position: absolute; inset-block: 0; inline-size: 2px; background: var(--ink); opacity: .45; }
 .person .activity__grid dd.person__when { font-size: 18px; line-height: 1.4; }
 .person__id { font-family: ui-monospace, monospace; font-size: 12px; overflow-wrap: anywhere; user-select: all; }
+/* People list (9 November): everyone first, filters as counted tabs. */
+.people-filters { display: flex; flex-wrap: wrap; gap: 8px; }
+.people-filter { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 8px 14px; border: 1px solid var(--border); border-radius: 999px; color: var(--ink); text-decoration: none; font-size: 14px; font-weight: 600; }
+.people-filter span { font-variant-numeric: tabular-nums; color: var(--text-secondary); font-weight: 500; }
+.people-filter.is-active { border-color: var(--brand); background: var(--brand-soft); color: var(--brand); }
+.people-filter.is-active span { color: var(--brand); }
+.people-filter:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+.people__table th[scope="row"] { text-align: start; white-space: normal; min-inline-size: 220px; }
+.people__who { display: grid; gap: 2px; color: var(--ink); text-decoration: none; }
+.people__who:hover b { color: var(--brand); text-decoration: underline; }
+.people__who .caption { font-weight: 400; overflow-wrap: anywhere; }
+.people__tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
+.people__tags:empty { display: none; }
+.ai-spend__meter.is-reached > span { background: var(--warning); }
+.people-pages { justify-content: center; align-items: center; }
