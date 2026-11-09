@@ -87,3 +87,21 @@
 .popularity__table th[scope="row"] { text-align: start; }
 .popularity__rank { display: inline-block; min-inline-size: 2ch; margin-inline-end: 8px; color: var(--text-secondary); font-variant-numeric: tabular-nums; }
 .popularity__quiet { color: var(--text-secondary); }
+/* Look up a person (9 November): one card per match; the reply limit is the headline. */
+.person-search { display: flex; flex-wrap: wrap; align-items: end; gap: 12px; }
+.person-search .field { flex: 1 1 260px; }
+.person__head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 16px; }
+.person__head h2 { font-size: 20px; font-weight: 650; }
+.person__email { margin: 2px 0 0; color: var(--text-secondary); overflow-wrap: anywhere; }
+.person__badges { display: flex; flex-wrap: wrap; align-content: start; gap: 6px; }
+.person__limit { display: grid; gap: 8px; padding: 16px 18px; border-radius: 14px; background: var(--brand-soft); }
+.person__limit.is-reached { background: var(--warning-soft); }
+.person__limit-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.person__limit-figure { margin: 0; font-variant-numeric: tabular-nums; }
+.person__limit-figure strong { font-size: 32px; line-height: 1; font-weight: 700; letter-spacing: -.02em; color: var(--ink); }
+.person__meter { position: relative; display: block; block-size: 8px; border-radius: 8px; background: var(--surface); overflow: hidden; }
+.person__meter > span { display: block; block-size: 100%; background: var(--brand); border-radius: inherit; }
+.person__limit.is-reached .person__meter > span { background: var(--warning); }
+.person__meter > i { position: absolute; inset-block: 0; inline-size: 2px; background: var(--ink); opacity: .45; }
+.person .activity__grid dd.person__when { font-size: 18px; line-height: 1.4; }
+.person__id { font-family: ui-monospace, monospace; font-size: 12px; overflow-wrap: anywhere; user-select: all; }

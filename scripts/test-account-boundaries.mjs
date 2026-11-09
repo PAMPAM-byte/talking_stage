@@ -12,6 +12,8 @@ const deps={
  'next/cache':{revalidatePath(){}},
  './server':{backendClient:async()=>client,currentAccount:async options=>{state.reads++;if(state.unavailable){if(options?.failOnUnavailable)throw Error('synthetic account outage');return null;}return state.account;}},
  './flow-cookie':{setFlowCookie:async()=>{},validFlowCookie:async()=>true},
+ // Google sign-in (5 Nov) chooses where to land; not exercised by these account boundaries.
+ './google-landing':{googleLanding:async()=>'/discover'},
  '@/lib/monitoring/events.mjs':{observe:async(_name,work)=>work(),emit(){}},
 };
 const context=createContext({FormData,URL,process:{env:{TALKINGSTAGE_SITE_URL:'http://localhost:3000'}}});
