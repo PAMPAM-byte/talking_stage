@@ -10,17 +10,17 @@ import styles from '@/components/landing-styles';
 import { StructuredData, siteGraph } from '@/lib/structured-data';
 import { pageMetadata } from '@/lib/seo';
 
-export const metadata = pageMetadata({ path: '/', title: 'TalkingStage.buzz: Nigerian AI dating and chat app', absoluteTitle: true, description: 'TalkingStage.buzz is a Nigerian AI dating and chat app for adults. Text fictional AI characters with real Naija personality, in English or Pidgin. Free to chat, 18+.' });
+export const metadata = pageMetadata({ path: '/', title: 'TalkingStage.buzz: Nigerian AI dating and chat app', absoluteTitle: true, description: 'TalkingStage.buzz is a Nigerian AI dating and chat app for adults. Text fictional AI characters with real Naija personality, in English or Pidgin. Start with 10 free coins, 18+.' });
 const introductions = ['char-amara', 'char-idris', 'char-zuri', 'char-kunle'].map(id => cast.find(character => character.id === id)!);
 const steps = [
   { title: 'Make a little space for you.', text: 'Create your account, confirm you’re 18 or older, and choose the personalities and conversation language you prefer.', icon: 'people' as const },
-  { title: 'Find your kind of personality.', text: 'Discover one character at a time. Read what makes them tick, pass, or tap Meet when someone catches your curiosity.', icon: 'discover' as const },
-  { title: 'Say hello. See where it goes.', text: 'Meet takes you straight into your conversation. Start with an introduction, enjoy the banter, and return when you feel like it.', icon: 'message' as const },
+  { title: 'Find your kind of personality.', text: 'Discover one character at a time. Read what makes them tick, pass, or tap Like when someone catches your curiosity.', icon: 'discover' as const },
+  { title: 'Say hello. See where it goes.', text: 'When a character likes you back, start your conversation from Likes. Begin with an introduction, enjoy the banter, and return when you feel like it.', icon: 'message' as const },
 ];
 const questions = [
   { question: 'Am I talking to real people?', answer: 'You’re talking to fictional adult AI characters. Their names, biographies, locations, and AI-generated photos are part of their fictional identities. TalkingStage does not match you with real people or arrange real-world dates.' },
   { question: 'Who is TalkingStage for?', answer: 'TalkingStage is for adults aged 18 and older who want to explore a fictional AI dating experience. You must complete the adult-access and account steps before entering discovery or chat.' },
-  { question: 'What happens when I tap Meet?', answer: 'Meet opens your conversation with that character. If you’ve spoken before, you return to the existing conversation. You can also open their profile separately to learn more before you begin.' },
+  { question: 'What happens when I tap Like?', answer: 'The character goes through their likes every 30 minutes. If they like you back, they appear in Likes and you can start a conversation for 1 coin (everyone starts with 10 free). If you’ve spoken before, you return to the existing conversation for free.' },
   { question: 'Can I choose what a character remembers?', answer: 'You can manage memory for each character in Settings, turn it off, and delete saved facts. Resetting or deleting a conversation has separate options for clearing its saved memories.' },
   { question: 'Do I have to send money?', answer: 'No. Any supported payment is voluntary and goes to TalkingStage’s operator, not a real person represented by a character. You can turn monetary requests off in Settings. See Payment information for details and availability.' },
   { question: 'What kind of conversations are allowed?', answer: 'The launch experience is non-explicit. You can report a character, message, or photo, and use conversation controls to archive, reset, or delete a thread. Visit Support if you need help.' },

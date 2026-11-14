@@ -1,0 +1,9 @@
+{
+  "version": "202611140044",
+  "appliedAt": "2026-11-14T15:54:02.334Z",
+  "migrationHash": "d4c9e0057d1be10cd7e3d7fb8ca7b8688991bfc902d6aa4b76cbd013a250dd94",
+  "encryptedDdlSnapshotVerified": true,
+  "signedOutRefused": true,
+  "enabled": true,
+  "switchedAt": "2026-11-14T15:54:45.876Z"
+}

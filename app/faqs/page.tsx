@@ -13,9 +13,9 @@ const topics = [
     ['How do I get started?', 'Confirm adult eligibility, create your account, and choose your preferred name, personalities, and conversation language. You can choose English or English with Pidgin.'],
   ], link: '/how-it-works', action: 'Read the getting-started guide' },
   { id: 'discovery-chat', title: 'Discovery & conversations', description: 'From a conversation clue to your next hello.', questions: [
-    ['How does Discover work?', 'Discover shows one fictional character at a time. Swipe left or use Pass to keep exploring. Swipe right or use Meet to open a conversation. Filters and Undo help you browse.'],
-    ['What happens when I tap Meet?', 'Meet starts or resumes the conversation with that character directly. Opening a profile is a separate choice when you want more information.'],
-    ['Do I need a mutual match?', 'There is no mutual human matching step. These are fictional AI characters, and Meet takes you into your conversation.'],
+    ['How does Discover work?', 'Discover shows one fictional character at a time. Swipe left or use Pass to keep exploring. Swipe right or use Like to show your interest. Filters and Undo help you browse.'],
+    ['What happens when I tap Like?', 'The character gets your like and goes through their likes every 30 minutes. If they like you back, they appear in Likes, where you can start a conversation for 1 coin. Opening a profile is a separate choice when you want more information.'],
+    ['Do I need a mutual match?', 'Yes, with the character. These are fictional AI characters, each with their own taste, so not every like is returned. Everyone starts with 10 free coins; starting a conversation uses 1 coin, and carrying on is free. More coins cost ₦50 each, at least 10 at a time.'],
     ['Can I return to an existing conversation?', 'Return through Messages to continue an existing thread. You can also use conversation controls to archive, reset, or delete it.'],
   ], link: '/personalities', action: 'Explore the personalities' },
   { id: 'privacy-controls', title: 'Privacy & your controls', description: 'Understand memories, boundaries, and reporting.', questions: [

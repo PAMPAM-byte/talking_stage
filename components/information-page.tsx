@@ -17,7 +17,7 @@ export function InformationPage({ kind }: { kind: InformationKind }) {
   const sections: [string, string][] = kind === 'terms' ? [
     ['Adult eligibility', 'TalkingStage is for adults aged 18 and older. Complete the adult-access steps before entering discovery or starting a conversation. The launch experience is non-explicit.'],
     page.sections[0],
-    ['Your account and conversations', 'Create your account and choose your preferred name, personalities, and conversation language. Meet starts or resumes a conversation with a fictional character. You can return to a thread or use its archive, reset, and deletion controls.'],
+    ['Your account and conversations', 'Create your account and choose your preferred name, personalities, and conversation language. Like a fictional character, and start a conversation once they like you back (1 coin; everyone starts with 10 free). You can return to a thread or use its archive, reset, and deletion controls.'],
     page.sections[1],
     ['Memory and personal choices', 'You can inspect saved memories, turn memory off for a character, and remove saved facts. Resetting or deleting a conversation provides a separate choice for clearing that character’s memories. Read Privacy for the current data and retention information.'],
     ['Voluntary payments', 'Any supported payment is voluntary and received by TalkingStage’s operator. You can decline, ignore, or disable monetary requests. A payment does not buy an item or guarantee a romantic response. Availability and unresolved payment policies are described in Payment information.'],
