@@ -6,11 +6,14 @@ import { currentAccount } from './server';
 import { processReply, processSummary } from './reply-worker';
 import { observe, emit } from '@/lib/monitoring/events.mjs';
 
-export type ConversationResult = { error?: string; code?: 'unavailable' | 'signed_out' | 'ineligible'; id?: string; message?: string; messageId?: string };
+export type ConversationResult = { error?: string; code?: 'unavailable' | 'signed_out' | 'ineligible' | 'no_coins' | 'not_matched'; id?: string; message?: string; messageId?: string };
 const uuid = /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i;
 const lifecycleOperations = new Set(['archive', 'restore', 'reset', 'delete']);
 
 function mutationFailure(failure: string): ConversationResult {
+  // Likes and coins (14 Nov 2026): new chats need a like back and 1 coin.
+  if (failure.includes('no_coins')) return { error: 'You’re out of coins. Buy coins to start a new conversation.', code: 'no_coins' };
+  if (failure.includes('not_matched')) return { error: 'You can start a conversation once they like you back.', code: 'not_matched' };
   if (failure.includes('chat_paused')) return { error: 'Chat is paused. Your saved history is available.' };
   if (failure.includes('archived')) return { error: 'Restore this conversation before sending.' };
   if (failure.includes('conflict') || failure.includes('thread_changed')) {
