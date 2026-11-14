@@ -39,6 +39,7 @@ const webhookDeps={
  '@/lib/backend/payment-service':dependencies['./payment-service'],
  'next/server':{after:task=>{deferred.push(task);}},
  '@/lib/backend/payment-thanks':dependencies['./payment-thanks'],
+ '@/lib/backend/coin-service':{reconcileCoinPurchase:async()=>{throw Error('A gift checkout must not reach the coin ledger');}},
 };
 const webhookModules=new Map();
 for(const [name,exports]of Object.entries(webhookDeps))webhookModules.set(name,new SyntheticModule(Object.keys(exports),function(){for(const [key,value]of Object.entries(exports))this.setExport(key,value);},{context}));
