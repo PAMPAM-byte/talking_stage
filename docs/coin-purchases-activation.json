@@ -1,0 +1,9 @@
+{
+  "version": "202611140046",
+  "appliedAt": "2026-11-14T20:09:43.893Z",
+  "migrationHash": "432f2a4abf8f1aac95dd6cda2c83c939d97be57010e57c552c54132591fba8ea",
+  "encryptedDdlSnapshotVerified": true,
+  "ledgerStepsServiceOnly": true,
+  "priceMinorPerCoin": 5000,
+  "minimumCoins": 10
+}
