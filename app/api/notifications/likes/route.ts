@@ -11,15 +11,17 @@ export async function POST(request: Request) {
   const secret = request.headers.get('x-talkingstage-dispatch') ?? '';
   if (secret.length < 32 || secret.length > 200) return Response.json({ state: 'forbidden' }, { status: 403 });
   let client;
-  try { client = trustedBackendClient(); } catch { return Response.json({ state: 'unavailable' }, { status: 503 }); }
+  // Failures name the step and the database error code only (no user data), so the scheduler's
+  // saved responses explain an outage without anyone reading logs.
+  try { client = trustedBackendClient(); } catch { return Response.json({ state: 'unavailable', step: 'service-client' }, { status: 503 }); }
   const config = await client.rpc('dispatch_config', { p_secret: secret });
   const keys = config.data as { publicKey: string; privateKey: string } | null;
   if (config.error || !keys?.privateKey) return Response.json({ state: 'forbidden' }, { status: 403 });
   const site = process.env.TALKINGSTAGE_SITE_URL ?? 'https://www.talkingstage.buzz';
-  webpush.setVapidDetails(site, keys.publicKey, keys.privateKey);
+  try { webpush.setVapidDetails(site, keys.publicKey, keys.privateKey); } catch { return Response.json({ state: 'unavailable', step: 'vapid' }, { status: 503 }); }
 
   const claimed = await client.rpc('claim_like_notifications', { p_limit: 500 });
-  if (claimed.error) return Response.json({ state: 'unavailable' }, { status: 503 });
+  if (claimed.error) return Response.json({ state: 'unavailable', step: 'claim', code: claimed.error.code ?? null, reason: String(claimed.error.message ?? '').slice(0, 120) }, { status: 503 });
   let sent = 0, failed = 0, forgotten = 0;
   const jobs = (claimed.data as Claimed[]).flatMap(item => (item.subscriptions ?? []).map(sub => ({ item, sub })));
   // Small batches keep within the function time limit without opening hundreds of connections.
