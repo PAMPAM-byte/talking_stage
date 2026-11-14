@@ -4,6 +4,7 @@ import { reconcileGift, type GiftIntent } from '@/lib/backend/payment-service';
 import { revalidatePath } from 'next/cache';
 import { after } from 'next/server';
 import { thankForPayment } from '@/lib/backend/payment-thanks';
+import { reconcileCoinPurchase, type CoinPurchase } from '@/lib/backend/coin-service';
 export const maxDuration=60;
 export async function POST(request:Request) {
  const settings=bachsSettings();if(!settings)return new Response('Unavailable',{status:503});
@@ -20,6 +21,20 @@ export async function POST(request:Request) {
   const client=trustedBackendClient();
   const result=await client.from('payment_intents').select('*').eq('gateway_environment',settings.environment).eq('gateway_organization_id',settings.organizationId).eq('gateway_checkout_id',checkoutId).maybeSingle();
   if(result.error)return new Response('Retry later',{status:503});
+  // Coin purchases (14 Nov 2026) have their own ledger; same verification, no chat receipt.
+  if(!result.data){
+   const reference=typeof event.data.reference==='string'&&event.data.reference.startsWith('TC-')?event.data.reference:null;
+   const coin=await client.rpc('coin_purchase_for_checkout',{p_environment:settings.environment,p_organization:settings.organizationId,p_checkout:checkoutId,p_reference:reference});
+   if(coin.error)return new Response('Retry later',{status:503});
+   if(coin.data){
+    const purchase=coin.data as CoinPurchase;
+    // Creation can race its first webhook; retry instead of losing that event.
+    if(purchase.gateway_checkout_id!==checkoutId)return new Response('Checkout not bound',{status:503});
+    await reconcileCoinPurchase(purchase,{id:event.id,type:event.type});
+    try{revalidatePath('/coins');revalidatePath('/likes');}catch{/* The ledger is authoritative. */}
+    return new Response(null,{status:204});
+   }
+  }
   // Creation can race its first webhook; retry instead of losing that event.
   if(!result.data){
    if(typeof event.data.reference!=='string'||!event.data.reference.startsWith('TS-'))return new Response(null,{status:204});

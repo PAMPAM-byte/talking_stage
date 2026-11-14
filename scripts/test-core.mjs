@@ -14,6 +14,7 @@ const checks = [
   ['test-admin-user-lookup.mjs'],
   ['test-likes-coins.mjs'],
   ['test-like-notifications.mjs'],
+  ['test-coin-purchases.mjs'],
   ['test-cheeky-boundary.mjs'],
   ['--experimental-vm-modules','test-payment-boundaries.mjs'],
   ['test-naija-exchanges.mjs'],

@@ -6,4 +6,5 @@ import { ConnectedCoins } from '@/components/connected-likes';
 import { usesSupabase } from '@/lib/backend/config';
 export const instant = false;
 export const metadata = { title: 'Buy coins', robots: { index: false, follow: false } };
-export default function Page() { return <ProtectedArea area="Coins"><Suspense fallback={<LoadingState label="Loading coins…" />}>{usesSupabase() ? <ConnectedCoins /> : <BuyCoins />}</Suspense></ProtectedArea>; }
+async function Live({ searchParams }: { searchParams: Promise<{ for?: string; purchase?: string }> }) { const q = await searchParams; return <ConnectedCoins forId={q.for} purchaseId={q.purchase} />; }
+export default function Page({ searchParams }: { searchParams: Promise<{ for?: string; purchase?: string }> }) { return <ProtectedArea area="Coins"><Suspense fallback={<LoadingState label="Loading coins…" />}>{usesSupabase() ? <Live searchParams={searchParams} /> : <BuyCoins />}</Suspense></ProtectedArea>; }

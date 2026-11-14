@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { currentAccount } from '@/lib/backend/server';
-import { COIN_PACKS, COIN_PRICE_MINOR, LIKE_REVIEW_MINUTES, coinPriceMinor, coinsLabel } from '@/lib/coins';
+import { COIN_PRICE_MINOR, LIKE_REVIEW_MINUTES, coinsLabel } from '@/lib/coins';
+import { ConnectedBuyCoins } from './connected-buy-coins';
 import { formatNaira } from '@/lib/format';
 import { Coin, CoinBalance } from './coin';
 import { MarkLikesSeen, StartWithCoinButton } from './connected-likes-controls';
@@ -62,19 +63,21 @@ export async function ConnectedLikes() {
   </div>;
 }
 
-/** Buying coins arrives with the Bachs step; until then this shows the balance and prices. */
-export async function ConnectedCoins() {
+/** Buy coins (14 Nov 2026): real purchases through Bachs once payments are configured. */
+export async function ConnectedCoins({ forId, purchaseId }: { forId?: string; purchaseId?: string }) {
   const data = await loadOverview(); if (!data) return null;
-  const { overview } = data;
+  const { account, overview } = data;
   if (!overview) return <Notice title="Coins unavailable" tone="warning">Reload to try again.</Notice>;
   if (!overview.enabled) return notOpen;
-  const coins = overview.coins ?? 0;
-  return <div className="coins-page stack">
+  const shop = (await account.client.rpc('coin_shop')).data as { open: boolean; recipient: string | null; environment: string; maxCoins: number; balance: number } | null;
+  const uuid = /^[a-f0-9-]{36}$/i;
+  const forName = forId && uuid.test(forId) ? (await account.client.from('characters').select('name').eq('id', forId).maybeSingle()).data?.name as string | undefined : undefined;
+  if (purchaseId && uuid.test(purchaseId)) return <ConnectedBuyCoins balance={shop?.balance ?? overview.coins ?? 0} maxCoins={1000} recipient="" sandbox={false} forName={forName} purchaseId={purchaseId} />;
+  if (!shop?.open || !shop.recipient || shop.maxCoins < 10) return <div className="coins-page stack">
     <Link href="/likes" className="profile-back">← Back to Likes</Link>
     <header className="coins-head"><h1 className="display page-title">Buy coins</h1>
-      <p className="coins-head__balance"><Coin size={22} />You have <b>{coinsLabel(coins)}</b></p></header>
-    <p className="muted coins-intro">A coin starts a conversation with a character who liked you back. Carrying on a chat is free.</p>
-    <Notice title="Buying coins opens soon">Coins will cost {formatNaira(COIN_PRICE_MINOR)} each, at least 10 at a time. Chats you’ve already started stay open and free.</Notice>
-    <ul className="coin-packs coin-packs--preview" aria-label="Coin prices">{COIN_PACKS.map(n => <li key={n} className="coin-pack"><span className="coin-pack__count"><Coin size={18} />{n}</span><span className="coin-pack__price">{formatNaira(coinPriceMinor(n))}</span></li>)}</ul>
+      <p className="coins-head__balance"><Coin size={22} />You have <b>{coinsLabel(overview.coins ?? 0)}</b></p></header>
+    <Notice title="Buying coins is paused">Coins cost {formatNaira(COIN_PRICE_MINOR)} each, at least 10 at a time. Try again a little later; chats you’ve already started stay open and free.</Notice>
   </div>;
+  return <ConnectedBuyCoins balance={shop.balance} maxCoins={shop.maxCoins} recipient={shop.recipient} sandbox={shop.environment === 'sandbox'} forName={forName} />;
 }
