@@ -46,7 +46,7 @@ test('selected gender survives visiting and refreshing a preview profile', async
   for (const [label, gender] of [['Women', 'woman'], ['Men', 'man'], ['Everyone', 'all']]) {
     await page.getByRole('button', { name: label, exact: true }).click();
     await expect(page.locator('.character-card')).toHaveCount(1);
-    await page.getByRole('link', { name: 'View profile', exact: true }).click();
+    await page.getByRole('link', { name: /^View .+’s full profile$/ }).click();
     await expect(page).toHaveURL(new RegExp(`/characters/[^?]+\\?gender=${gender}`));
     await page.reload();
     await page.getByRole('link', { name: 'Back to discovery', exact: true }).click();
@@ -57,7 +57,7 @@ test('selected gender survives visiting and refreshing a preview profile', async
 
 test('gallery stays with its character, keyboard works, and starting resumes one conversation', async ({ page }) => {
   await signIn(page);
-  await page.getByRole('link', { name: 'View profile', exact: true }).click();
+  await page.getByRole('link', { name: /^View .+’s full profile$/ }).click();
   await expect(page.getByRole('heading', { name: `${amara.name}, ${amara.age}` })).toBeVisible();
   await page.getByRole('button', { name: /View photos/ }).click();
   const dialog = page.getByRole('dialog');
