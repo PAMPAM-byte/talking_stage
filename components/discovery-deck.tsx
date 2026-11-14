@@ -123,7 +123,12 @@ export function DiscoveryDeck({ cards, scope, onMeet }: { cards: DiscoveryCard[]
             <div className="discovery-deck__photo" key={card.id}>{card.photo}</div>
             <span className="discovery-deck__badge">✦ AI character</span>
             {Math.abs(drag) > 24 && <span aria-hidden="true" className={`discovery-deck__verdict ${drag > 0 ? 'is-meet' : 'is-pass'}`}>{drag > 0 ? 'Meet' : 'Pass'}</span>}
-            <div className="discovery-deck__identity"><h2>{card.name}<span>, {card.age}</span></h2><p>{card.location}</p><Link href={card.href} className="discovery-deck__profile">View profile </Link></div>
+            {/* Full-photo card (14 Nov 2026): who they are and their one-line intro sit on the photo. */}
+            <div className="discovery-deck__identity">
+              <div className="discovery-deck__nameline"><h2>{card.name}<span>, {card.age}</span></h2><Link href={card.href} className="discovery-deck__profile" aria-label={`View ${card.name}’s full profile`}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7" /></svg></Link></div>
+              <p className="discovery-deck__facts">{[card.occupation, card.location].filter(Boolean).join(' · ')}</p>
+              <p className="discovery-deck__clue">&ldquo;{card.clue}&rdquo;</p>
+            </div>
           </div>
           {guide && <div className="discovery-guide" role="note" aria-label="How Discover works">
             <span className="discovery-guide__arrow is-pass" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M15 5l-7 7 7 7" /></svg>Pass</span>
@@ -138,7 +143,8 @@ export function DiscoveryDeck({ cards, scope, onMeet }: { cards: DiscoveryCard[]
           </div>
           <p id="deck-instructions" className="discovery-deck__hint caption muted">Swipe left to pass · right to meet. Or use the buttons.</p>
         </div>
-        <aside className="discovery-deck__details stack"><div><p className="caption muted">One thing about me</p><blockquote>“{card.clue}”</blockquote></div>{card.occupation && <p className="supporting muted">{card.occupation}</p>}<details className="discovery-deck__about"><summary>A little more about {card.name}<span aria-hidden="true">+</span></summary><div className="stack"><div className="row">{card.interests.slice(0, 3).map(interest => <span className="interest-label" key={interest}>{interest}</span>)}</div>{card.bio && <p className="supporting">{card.bio}</p>}<Link href={card.href}>View full profile</Link></div></details></aside>
+        {/* Wide screens: the intro is already on the card, so this panel tells the rest. */}
+        <aside className="discovery-deck__details discovery-deck__more stack" aria-label={`More about ${card.name}`}><p className="discovery-deck__more-eyebrow">A little about {card.name}</p>{card.bio && <p className="discovery-deck__bio">{card.bio}</p>}{card.interests.length > 0 && <div className="stack discovery-deck__interests"><p className="caption muted">Into</p><div className="row">{card.interests.slice(0, 5).map(interest => <span className="interest-label" key={interest}>{interest}</span>)}</div></div>}<Link href={card.href} className="discovery-deck__more-link">View full profile and photos</Link></aside>
       </div>
     </> : <div className="discovery-deck__complete"><EmptyState icon="discover" title="You’re all caught up" action={<div className="row"><Button variant="secondary" onClick={() => move(0)}>Browse again</Button>{index > 0 && <Button variant="quiet" onClick={() => move(index - 1)}>Undo last pass</Button>}</div>}>Browse again or adjust your filters to discover someone different.</EmptyState></div>}
   </section>;

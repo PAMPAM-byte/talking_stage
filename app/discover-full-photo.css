@@ -1,0 +1,45 @@
+/* Full-photo Discover cards (14 November 2026). The photo is the card; name, age, what they do
+   and their one-line intro sit on it, the intro set in the display serif like a caption. On
+   phones the card fills the screen and the Undo/Pass/Meet buttons float over its lower edge. */
+.discovery-deck__identity { display: grid; gap: 6px; padding: 96px 20px 20px; background: linear-gradient(180deg, transparent 0%, rgb(24 16 21 / 55%) 32%, rgb(24 16 21 / 94%) 100%); }
+.discovery-deck__nameline { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; }
+.discovery-deck__identity h2 { margin: 0; font-size: 32px; line-height: 1.1; text-shadow: 0 1px 12px rgb(0 0 0 / 25%); }
+.discovery-deck__identity .discovery-deck__facts { margin: 0; font-size: 12px; line-height: 1.5; color: #fff1f3; opacity: .92; }
+.discovery-deck__identity .discovery-deck__clue { margin: 4px 0 0; font-family: var(--font-display), Georgia, serif; font-size: 18px; line-height: 1.38; color: #fff; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; text-wrap: pretty; }
+.discovery-deck__profile { flex: none; display: grid; place-items: center; inline-size: 44px; block-size: 44px; min-height: 44px; padding: 0; border-radius: 50%; background: rgb(255 255 255 / 18%); border: 1px solid rgb(255 255 255 / 45%); color: #fff; backdrop-filter: blur(6px); transition: background-color 160ms ease; }
+.discovery-deck__profile svg { inline-size: 20px; block-size: 20px; }
+.discovery-deck__profile:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+@media (hover: hover) { .discovery-deck__profile:hover { background: rgb(255 255 255 / 30%); } }
+
+/* The side panel now carries the bio and interests (wide screens only). */
+.discovery-deck__more { display: none; }
+.discovery-deck__details > .discovery-deck__more-eyebrow { margin: 0; color: var(--brand); font-size: 11px; font-weight: 750; letter-spacing: .04em; text-transform: uppercase; }
+.discovery-deck__details > .discovery-deck__bio { margin: 0; font-family: var(--font-display), Georgia, serif; font-size: 22px; line-height: 1.5; color: var(--ink); text-wrap: pretty; }
+.discovery-deck__interests .row { gap: 8px; }
+.discovery-deck__more .discovery-deck__more-link { display: inline-flex; align-items: center; min-height: 44px; font-size: 13px; font-weight: 700; }
+@media (min-width: 1000px) {
+  .discovery-deck__more { display: flex; padding: 32px; border: 0; border-radius: 24px; background: var(--brand-soft); }
+}
+
+/* Phones: a taller card, buttons over its lower edge, no labels (each button has an accessible name). */
+@media (max-width: 699px) {
+  .discovery-deck__meta, .discovery-deck__hint { display: none; }
+  .discovery-deck__card.character-card { height: clamp(360px, calc(100svh - 326px), 620px); border-radius: 24px; }
+  .discovery-deck__identity { padding: 96px 18px 104px; }
+  .discovery-deck__identity h2 { font-size: 30px; }
+  .discovery-deck__identity .discovery-deck__clue { font-size: 17px; -webkit-line-clamp: 2; }
+  .discovery-deck__actions { position: relative; z-index: 2; margin-top: -92px; padding-top: 0; padding-bottom: 16px; gap: 22px; align-items: center; pointer-events: none; }
+  .discovery-deck__actions .deck-action { pointer-events: auto; width: auto; gap: 0; }
+  .discovery-deck__actions .deck-action__label { position: absolute; inline-size: 1px; block-size: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .discovery-deck__actions .deck-action__icon { box-shadow: 0 6px 18px rgb(0 0 0 / 28%); }
+  .deck-action--pass .deck-action__icon { width: 60px; height: 60px; }
+  .deck-action--meet .deck-action__icon { width: 72px; height: 72px; border-width: 4px; }
+  .discovery-deck__actions .deck-action:disabled .deck-action__icon { opacity: .85; }
+  /* Keep the first-visit guide clear of the floating buttons. */
+  .discovery-guide__panel { bottom: 100px; }
+  .discovery-guide { border-radius: 24px; }
+  .discovery-deck__layout { gap: 0; }
+}
+@media (max-width: 359px) { .discovery-deck__card.character-card { height: clamp(320px, calc(100svh - 316px), 540px); } .discovery-deck__identity .discovery-deck__clue { font-size: 16px; } }
+/* Wider screens: keep Undo/Pass/Meet in view under the card on a typical laptop. */
+@media (min-width: 700px) { .discovery-deck__card.character-card { height: clamp(320px, calc(100svh - 410px), 540px); } }
