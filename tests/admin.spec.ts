@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { startPreviewChat } from './helpers/preview-likes';
 import cast from '../lib/mock/public-cast.json';
 
 async function operator(page: Page, role = 'admin') {
@@ -100,14 +101,14 @@ test('ledger distinguishes all statuses/events; reconciliation retries leave pen
 });
 
 test('independent global and character pauses preserve history and failed configuration preserves edits', async ({ page }) => {
-  await operator(page); await customer(page); await page.goto('/characters/char-amara'); await page.getByRole('button', { name: 'Shoot your shot' }).click(); await expect(page.getByRole('textbox', { name: 'Message Amara' })).toBeVisible();
+  await operator(page); await customer(page); await page.goto('/characters/char-amara'); await startPreviewChat(page); await expect(page.getByRole('textbox', { name: 'Message Amara' })).toBeVisible();
   await page.goto('/admin/operations'); await page.getByRole('switch', { name: 'Allow payments', exact: true }).uncheck(); await page.getByRole('switch', { name: 'Allow photo sharing', exact: true }).uncheck(); await page.getByLabel('Capability scope').selectOption('char-chidi'); await page.getByRole('switch', { name: 'Allow chat', exact: true }).uncheck();
   await scenario(page, 'conflict'); await page.getByRole('button', { name: 'Review configuration changes' }).click(); await page.getByRole('dialog').getByRole('button', { name: 'Confirm configuration' }).click(); await expect(page.getByRole('dialog')).toContainText('changed'); await page.keyboard.press('Escape');
   await page.getByRole('button', { name: 'Reload configuration version, keep edits' }).click(); await scenario(page, 'ready'); await configure(page);
   await page.goto('/messages/preview-char-amara'); await expect(page.getByRole('textbox', { name: 'Message Amara' })).toBeEnabled(); await expect(page.getByText('Payments paused', { exact: true })).toBeVisible();
   await page.getByRole('textbox', { name: 'Message Amara' }).fill('Show me a character photo.'); await page.getByRole('button', { name: 'Send message' }).click(); await expect(page.getByLabel('Conversation messages').getByText('Character photos are paused for now. We can keep talking.', { exact: true })).toBeVisible();
   await page.getByRole('button', { name: 'Conversation options' }).click(); await expect(page.getByRole('button', { name: 'Send a voluntary gift' })).toBeDisabled(); await page.keyboard.press('Escape');
-  await page.goto('/characters/char-chidi'); await expect(page.getByRole('button', { name: 'Shoot your shot' })).toBeDisabled();
+  await page.goto('/characters/char-chidi'); await expect(page.getByRole('button', { name: /^Like / })).toBeDisabled();
   await page.goto('/admin/operations'); await page.getByRole('switch', { name: 'Allow chat', exact: true }).uncheck(); await configure(page); await page.goto('/messages/preview-char-amara'); await expect(page.getByRole('textbox', { name: 'Message Amara' })).toBeDisabled(); await expect(page.getByText('Saved in preview', { exact: true })).toBeVisible();
 });
 

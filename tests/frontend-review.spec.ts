@@ -1,4 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
+import { startPreviewChat } from './helpers/preview-likes';
+import { startPreviewChat } from './helpers/preview-likes';
 
 async function signIn(page: Page) {
   await page.goto('/sign-in');
@@ -28,7 +30,7 @@ test('landing through chat, gift failure, history and admin reconciliation is on
   await page.goto('/'); await page.keyboard.press('Tab'); await expect(page.getByRole('link', { name: 'Skip to content' })).toBeFocused();
   await page.keyboard.press('Enter'); await expect(page).toHaveURL(/#main-content$/);
   await signIn(page); await labelledControls(page);
-  await page.goto('/characters/char-amara'); await page.getByRole('button', { name: 'Shoot your shot' }).click();
+  await page.goto('/characters/char-amara'); await startPreviewChat(page);
   await expect(page.getByRole('textbox', { name: 'Message Amara' })).toBeVisible();
   const log = page.getByRole('log', { name: 'Conversation messages' }); await expect(log).toHaveAttribute('aria-live', 'polite');
   await page.getByRole('textbox', { name: 'Message Amara' }).fill('That sounds like a good day. Tell me more.');
@@ -72,7 +74,7 @@ test('landscape, enlarged layout, labels and focused composer remain usable', as
   // 1280 CSS px at 200% browser zoom yields an effective 640 px layout.
   await page.setViewportSize({ width: 640, height: 450 });
   await page.goto('/settings/preferences'); await fits(page); await labelledControls(page);
-  await page.goto('/characters/char-amara'); await page.getByRole('button', { name: 'Shoot your shot' }).click();
+  await page.goto('/characters/char-amara'); await startPreviewChat(page);
   await page.setViewportSize({ width: 390, height: 360 }); const composer = page.getByRole('textbox', { name: 'Message Amara' }); await composer.focus();
   await expect(composer).toBeFocused(); await expect(composer).toBeInViewport(); await expect(page.getByRole('button', { name: 'Send message' })).toBeInViewport(); await fits(page);
   await page.screenshot({ path: 'docs/reviews/stage-7/chat-compact-390.png', fullPage: true });

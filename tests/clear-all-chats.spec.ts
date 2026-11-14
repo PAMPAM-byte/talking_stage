@@ -1,4 +1,6 @@
 import { test, expect } from '@playwright/test';
+import { startPreviewChat } from './helpers/preview-likes';
+import { startPreviewChat } from './helpers/preview-likes';
 
 test('clear all chats confirms removal of active and archived preview chats', async ({ page }) => {
   await page.goto('/sign-in');
@@ -8,7 +10,7 @@ test('clear all chats confirms removal of active and archived preview chats', as
   await expect(page).toHaveURL(/\/discover$/);
   for (const key of ['char-amara', 'char-chidi']) {
     await page.goto(`/characters/${key}`);
-    await page.getByRole('button', { name: 'Shoot your shot' }).click();
+    await startPreviewChat(page);
     await expect(page.getByRole('textbox', { name: /^Message / })).toBeVisible();
   }
   await page.goto('/messages');

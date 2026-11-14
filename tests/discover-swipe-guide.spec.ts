@@ -12,7 +12,7 @@ for (const width of [320, 390, 1440]) test(`swipe guide shows once and Got it di
   await signIn(page);
   const guide = page.getByRole('note', { name: 'How Discover works' });
   await expect(guide).toBeVisible();
-  await expect(guide).toContainText('Swipe right to Meet');
+  await expect(guide).toContainText('Swipe right to Like');
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.waitForTimeout(1100);
   await page.screenshot({ path: `.local-services/discover-guide-${width}.png` });

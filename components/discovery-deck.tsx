@@ -14,8 +14,11 @@ export type DiscoveryCard = {
 
 const guideKey = 'talkingstage:discover-guide:v1';
 
-/** Pass browses locally; Meet starts or resumes the existing conversation flow. */
-export function DiscoveryDeck({ cards, scope, onMeet }: { cards: DiscoveryCard[]; scope: string; onMeet: (id: string) => Promise<{ id?: string; error?: string }> }) {
+/** Pass browses locally. Meet starts or resumes a conversation; with onLike (likes and coins,
+ * 14 Nov 2026) the right-hand action becomes Like: the character answers later, from Likes. */
+export function DiscoveryDeck({ cards, scope, onMeet, onLike }: { cards: DiscoveryCard[]; scope: string; onMeet?: (id: string) => Promise<{ id?: string; error?: string }>; onLike?: (id: string) => Promise<{ error?: string }> }) {
+  const like = !!onLike;
+  const verb = like ? 'Like' : 'Meet';
   const router = useRouter();
   const [index, setIndex] = useState(0);
   const [drag, setDrag] = useState(0);
@@ -23,6 +26,9 @@ export function DiscoveryDeck({ cards, scope, onMeet }: { cards: DiscoveryCard[]
   const [announcement, setAnnouncement] = useState('');
   const [opening, setOpening] = useState(false);
   const [error, setError] = useState('');
+  const [sent, setSent] = useState('');
+  const sentTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => () => { if (sentTimer.current) clearTimeout(sentTimer.current); }, []);
   const mounted = useRef(true);
   useEffect(() => { mounted.current = true; return () => { mounted.current = false; }; }, []);
   const origin = useRef<{ id: number; x: number; y: number } | null>(null);
@@ -66,7 +72,21 @@ export function DiscoveryDeck({ cards, scope, onMeet }: { cards: DiscoveryCard[]
     if (direction === 'meet') showMeetFeedback(document.querySelector('.deck-action--meet')?.getBoundingClientRect());
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     timer.current = setTimeout(async () => {
-      if (direction === 'meet') {
+      if (direction === 'meet' && onLike) {
+        try {
+          const result = await onLike(card.id);
+          if (!mounted.current) return;
+          if (result.error) { setExit(null); setDrag(0); locked.current = false; setError(result.error); return; }
+          const next = cards[index + 1];
+          setAnnouncement(`Liked ${card.name}. ${next ? `Now showing ${next.name}.` : 'You have explored everyone who matches your filters.'}`);
+          setSent(card.name);
+          if (sentTimer.current) clearTimeout(sentTimer.current);
+          sentTimer.current = setTimeout(() => setSent(''), 3200);
+          move(index + 1);
+        } catch {
+          if (mounted.current) { setExit(null); setDrag(0); locked.current = false; setError('Your like wasn’t sent. Try again.'); }
+        }
+      } else if (direction === 'meet' && onMeet) {
         setExit(null); setDrag(0); setOpening(true);
         try {
           const result = await onMeet(card.id);
@@ -109,7 +129,7 @@ export function DiscoveryDeck({ cards, scope, onMeet }: { cards: DiscoveryCard[]
   const style = { '--drag-x': `${drag}px`, '--drag-angle': `${Math.max(-12, Math.min(12, drag / 22))}deg` } as CSSProperties;
   return <section className="discovery-deck" data-selection-size={cards.length} aria-label="Discover characters one at a time">
     <p className="sr-only" role="status" aria-live="polite">{announcement}</p>
-    {error && <Notice live tone="danger" title="Conversation couldn’t open">{error}</Notice>}
+    {error && <Notice live tone="danger" title={like ? 'Like not sent' : 'Conversation couldn’t open'}>{error}</Notice>}
     {card ? <>
       <div className="discovery-deck__meta"><span className="caption muted">{index + 1} of {cards.length} to discover</span></div>
       <div className="discovery-deck__layout">
@@ -119,10 +139,11 @@ export function DiscoveryDeck({ cards, scope, onMeet }: { cards: DiscoveryCard[]
             if (event.target !== event.currentTarget) return;
             if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') { event.preventDefault(); choose(event.key === 'ArrowLeft' ? 'pass' : 'meet'); }
             if (event.key === 'Escape') { origin.current = null; setDrag(0); }
-          }} tabIndex={0} aria-label={`${card.name}, ${card.age}. Left arrow to pass, right arrow to meet.`} aria-describedby="deck-instructions">
+          }} tabIndex={0} aria-label={`${card.name}, ${card.age}. Left arrow to pass, right arrow to ${verb.toLowerCase()}.`} aria-describedby="deck-instructions">
             <div className="discovery-deck__photo" key={card.id}>{card.photo}</div>
             <span className="discovery-deck__badge">✦ AI character</span>
-            {Math.abs(drag) > 24 && <span aria-hidden="true" className={`discovery-deck__verdict ${drag > 0 ? 'is-meet' : 'is-pass'}`}>{drag > 0 ? 'Meet' : 'Pass'}</span>}
+            {Math.abs(drag) > 24 && <span aria-hidden="true" className={`discovery-deck__verdict ${drag > 0 ? 'is-meet' : 'is-pass'}`}>{drag > 0 ? verb : 'Pass'}</span>}
+            {sent && <p className="discovery-deck__sent" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21S2 15 2 8.5a5.5 5.5 0 0 1 10-3 5.5 5.5 0 0 1 10 3C22 15 12 21 12 21Z" /></svg>Like sent to {sent}</p>}
             {/* Full-photo card (14 Nov 2026): who they are and their one-line intro sit on the photo. */}
             <div className="discovery-deck__identity">
               <div className="discovery-deck__nameline"><h2>{card.name}<span>, {card.age}</span></h2><Link href={card.href} className="discovery-deck__profile" aria-label={`View ${card.name}’s full profile`}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7" /></svg></Link></div>
@@ -133,15 +154,15 @@ export function DiscoveryDeck({ cards, scope, onMeet }: { cards: DiscoveryCard[]
           {guide && <div className="discovery-guide" role="note" aria-label="How Discover works">
             <span className="discovery-guide__arrow is-pass" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M15 5l-7 7 7 7" /></svg>Pass</span>
             <span className="discovery-guide__arrow is-meet" aria-hidden="true">Meet<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M9 5l7 7-7 7" /></svg></span>
-            <div className="discovery-guide__panel"><p><strong>Swipe right to Meet</strong> and start chatting. Swipe left to pass.</p><button type="button" className="discovery-guide__done" onClick={dismissGuide}>Got it</button></div>
+            <div className="discovery-guide__panel"><p>{like ? <><strong>Swipe right to Like.</strong> If they like you back, you can start chatting. Swipe left to pass.</> : <><strong>Swipe right to Meet</strong> and start chatting. Swipe left to pass.</>}</p><button type="button" className="discovery-guide__done" onClick={dismissGuide}>Got it</button></div>
           </div>}
           </div>
           <div className="discovery-deck__actions">
-            <button type="button" className="deck-action deck-action--undo" disabled={index === 0 || !!exit || opening} onClick={() => { setAnnouncement('Last pass undone.'); move(index - 1); }} aria-label="Undo last pass"><span className="deck-action__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M4 10a8 8 0 1 1 1 9M4 4v6h6" /></svg></span><span className="deck-action__label">Undo</span></button>
+            <button type="button" className="deck-action deck-action--undo" disabled={index === 0 || !!exit || opening} onClick={() => { setAnnouncement('Last pass undone.'); move(index - 1); }} aria-label={like ? 'Go back one card' : 'Undo last pass'}><span className="deck-action__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M4 10a8 8 0 1 1 1 9M4 4v6h6" /></svg></span><span className="deck-action__label">Undo</span></button>
             <button type="button" className="deck-action deck-action--pass" disabled={!!exit || opening} onClick={() => choose('pass')} aria-label={`Pass ${card.name}`}><span className="deck-action__icon"><Icon name="close" /></span><span className="deck-action__label">Pass</span></button>
-            <button type="button" className="deck-action deck-action--meet" disabled={!!exit || opening} aria-busy={opening} aria-label={`Meet ${card.name}`} onClick={() => choose('meet')}><span className="deck-action__icon">{opening ? <span className="spinner" aria-hidden="true" /> : <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21S2 15 2 8.5a5.5 5.5 0 0 1 10-3 5.5 5.5 0 0 1 10 3C22 15 12 21 12 21Z" /></svg>}</span><span className="deck-action__label">{opening ? 'Opening…' : 'Meet'}</span></button>
+            <button type="button" className="deck-action deck-action--meet" disabled={!!exit || opening} aria-busy={opening} aria-label={`${verb} ${card.name}`} onClick={() => choose('meet')}><span className="deck-action__icon">{opening ? <span className="spinner" aria-hidden="true" /> : <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21S2 15 2 8.5a5.5 5.5 0 0 1 10-3 5.5 5.5 0 0 1 10 3C22 15 12 21 12 21Z" /></svg>}</span><span className="deck-action__label">{opening ? 'Opening…' : verb}</span></button>
           </div>
-          <p id="deck-instructions" className="discovery-deck__hint caption muted">Swipe left to pass · right to meet. Or use the buttons.</p>
+          <p id="deck-instructions" className="discovery-deck__hint caption muted">Swipe left to pass · right to {verb.toLowerCase()}. Or use the buttons.</p>
         </div>
         {/* Wide screens: the intro is already on the card, so this panel tells the rest. */}
         <aside className="discovery-deck__details discovery-deck__more stack" aria-label={`More about ${card.name}`}><p className="discovery-deck__more-eyebrow">A little about {card.name}</p>{card.bio && <p className="discovery-deck__bio">{card.bio}</p>}{card.interests.length > 0 && <div className="stack discovery-deck__interests"><p className="caption muted">Into</p><div className="row">{card.interests.slice(0, 5).map(interest => <span className="interest-label" key={interest}>{interest}</span>)}</div></div>}<Link href={card.href} className="discovery-deck__more-link">View full profile and photos</Link></aside>

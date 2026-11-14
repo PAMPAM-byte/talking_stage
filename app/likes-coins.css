@@ -1,0 +1,95 @@
+/* Likes and coins (14 November 2026). Signature: the TalkingStage coin, brand red and stamped
+   with the brand's opening quote mark, because a coin opens a conversation. Everything else
+   reuses the shared red/white/blush tokens, Manrope and the display serif for clues. */
+.coin { flex: none; display: block; }
+.coin__rim { fill: #a81a37; }
+.coin__face { fill: var(--brand); stroke: rgb(255 255 255 / 35%); stroke-width: .8; }
+.coin__mark { fill: #fff; font-family: var(--font-display), Georgia, serif; font-size: 17px; }
+
+.coin-balance { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 4px 6px 4px 8px; border-radius: 999px; background: var(--surface); border: 1px solid #f3c9d2; color: var(--ink); text-decoration: none; font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; transition: border-color 120ms ease, background-color 120ms ease; }
+.coin-balance__count { font-size: 17px; }
+.coin-balance__word { font-size: 13px; font-weight: 600; color: var(--text-secondary); }
+.coin-balance__add { display: grid; place-items: center; inline-size: 28px; block-size: 28px; margin-inline-start: 4px; border-radius: 50%; background: var(--brand-soft); color: var(--brand); font-size: 18px; line-height: 1; }
+.coin-balance.is-empty { border-color: var(--warning); }
+.coin-balance:focus-visible { outline: 2px solid var(--brand); outline-offset: 3px; }
+@media (hover: hover) { .coin-balance:hover { border-color: var(--brand); } }
+
+/* Likes page */
+.likes-page { gap: 24px; }
+.likes-head { display: grid; gap: 6px; }
+.likes-head__row { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.likes-head .page-title { margin: 0; }
+.likes-head p { margin: 0; max-width: 46ch; }
+.likes-section-title { display: flex; align-items: center; gap: 10px; margin: 0; font-size: 18px; }
+.likes-count { display: inline-grid; place-items: center; min-inline-size: 26px; block-size: 26px; padding: 0 8px; border-radius: 999px; background: var(--brand); color: #fff; font-size: 13px; font-variant-numeric: tabular-nums; }
+.likes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); gap: 20px; margin: 0; padding: 0; list-style: none; }
+.match-card { display: flex; flex-direction: column; gap: 12px; }
+.match-card__photo { position: relative; display: block; aspect-ratio: 4 / 5; border-radius: 20px; overflow: hidden; background: var(--brand-soft); color: #fff; text-decoration: none; }
+.match-card__photo .character-photo { position: absolute; inset: 0; }
+.match-card__photo:focus-visible { outline: 2px solid var(--brand); outline-offset: 3px; }
+.match-card__new { position: absolute; top: 12px; left: 12px; padding: 4px 10px; border-radius: 999px; background: var(--brand); color: #fff; font-size: 12px; font-weight: 750; }
+.match-card__identity { position: absolute; inset: auto 0 0; display: grid; gap: 2px; padding: 64px 16px 14px; background: linear-gradient(180deg, transparent, rgb(24 16 21 / 88%)); }
+.match-card__identity strong { font-size: 22px; line-height: 1.15; }
+.match-card__identity strong span { font-weight: 500; }
+.match-card__when { font-size: 12px; color: #fff1f3; }
+.likes-page .match-card__clue { margin: 0; font-family: var(--font-display), Georgia, serif; font-size: 17px; line-height: 1.4; color: var(--ink); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.match-card__action { inline-size: 100%; margin-top: auto; }
+.match-card__cost { display: inline-flex; align-items: center; gap: 4px; margin-inline-start: 10px; padding: 2px 8px 2px 3px; border-radius: 999px; background: rgb(255 255 255 / 20%); font-variant-numeric: tabular-nums; }
+.match-card__cost .coin__rim { fill: #fff; }
+.coin-rules { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 16px; background: var(--brand-soft); }
+.coin-rules p { margin: 0; font-size: 14px; }
+.coin-rules a { font-weight: 700; margin-inline-start: 4px; }
+.profile-liked { display: flex; align-items: center; gap: 8px; margin: 0; padding: 12px 14px; border-radius: 12px; background: var(--brand-soft); color: var(--ink); font-size: 14px; }
+.profile-liked .icon { color: var(--brand); fill: var(--brand); flex: none; }
+
+/* Discover: brief "Like sent" note over the next card */
+.discovery-deck__sent { position: absolute; z-index: 3; top: 60px; left: 50%; display: inline-flex; align-items: center; gap: 6px; margin: 0; padding: 8px 14px; border-radius: 999px; background: var(--surface); color: var(--ink); font-size: 13px; font-weight: 700; white-space: nowrap; box-shadow: 0 8px 24px rgb(36 33 38 / 18%); transform: translateX(-50%); animation: like-sent 3.2s ease forwards; pointer-events: none; }
+.discovery-deck__sent svg { inline-size: 14px; block-size: 14px; color: var(--brand); }
+@keyframes like-sent { 0% { opacity: 0; transform: translate(-50%, -6px); } 8%, 82% { opacity: 1; transform: translate(-50%, 0); } 100% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .discovery-deck__sent { animation: none; } }
+
+/* Buy coins */
+.coins-page { gap: 20px; max-width: 560px; }
+.coins-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 16px; }
+.coins-head .page-title { margin: 0; }
+.coins-head__balance { display: inline-flex; align-items: center; gap: 8px; margin: 0; font-size: 14px; color: var(--text-secondary); }
+.coins-head__balance b { color: var(--ink); font-variant-numeric: tabular-nums; }
+.coins-intro { margin: 0; }
+.coin-packs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 0; padding: 0; border: 0; }
+.coin-pack { position: relative; display: grid; gap: 4px; padding: 16px; border: 1.5px solid var(--border-control); border-radius: 16px; background: var(--surface); cursor: pointer; transition: border-color 120ms ease, background-color 120ms ease; }
+.coin-pack input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.coin-pack__count { display: inline-flex; align-items: center; gap: 8px; font-size: 22px; font-weight: 750; font-variant-numeric: tabular-nums; }
+.coin-pack__price { font-size: 14px; color: var(--text-secondary); font-variant-numeric: tabular-nums; }
+.coin-pack.is-selected { border-color: var(--brand); background: var(--brand-soft); box-shadow: inset 0 0 0 1px var(--brand); }
+.coin-pack:has(input:focus-visible) { outline: 2px solid var(--brand); outline-offset: 3px; }
+.coin-pack--other { grid-column: 1 / -1; }
+.coin-pack--other .coin-pack__count { font-size: 15px; font-weight: 700; }
+.coin-other { max-width: 280px; }
+.field__error { color: var(--danger); }
+.coins-summary { display: grid; gap: 0; margin: 0; padding: 4px 16px; border: 1px solid var(--border); border-radius: 16px; background: var(--surface); }
+.coins-summary div { display: flex; justify-content: space-between; gap: 16px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+.coins-summary div:last-child { border-bottom: 0; }
+.coins-summary dt { color: var(--text-secondary); font-size: 14px; }
+.coins-summary dd { margin: 0; font-weight: 700; text-align: end; font-variant-numeric: tabular-nums; }
+.coins-pay { inline-size: 100%; min-height: 52px; font-size: 16px; }
+.coins-page .caption { margin: 0; }
+.coins-done { display: grid; justify-items: center; gap: 12px; padding: 32px 0; text-align: center; }
+.coins-done .page-title { margin: 8px 0 0; }
+.coins-done p { margin: 0; }
+.coins-done__stack { display: flex; }
+.coins-done__stack .coin + .coin { margin-inline-start: -22px; }
+.coins-done__stack .coin { animation: coin-drop 420ms cubic-bezier(.2, .8, .3, 1.2) both; filter: drop-shadow(0 4px 8px rgb(168 26 55 / 25%)); }
+.coins-done__stack .coin:nth-child(2) { animation-delay: 90ms; }
+.coins-done__stack .coin:nth-child(3) { animation-delay: 180ms; }
+@keyframes coin-drop { from { opacity: 0; transform: translateY(-18px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .coins-done__stack .coin { animation: none; } }
+
+@media (max-width: 599px) {
+  .likes-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+  .match-card__identity { padding: 48px 12px 10px; }
+  .match-card__identity strong { font-size: 18px; }
+  .likes-page .match-card__clue { font-size: 15px; }
+  .match-card__action { flex-direction: column; gap: 4px; min-height: 64px; padding: 8px 6px; font-size: 13.5px; white-space: nowrap; }
+  .match-card__cost { margin-inline-start: 0; font-size: 12px; }
+}
+@media (max-width: 359px) { .likes-grid { grid-template-columns: 1fr; } }

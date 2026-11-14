@@ -1,5 +1,6 @@
 import cast from '../lib/mock/public-cast.json';
 import { expect, test, type Page } from '@playwright/test';
+import { startPreviewChat } from './helpers/preview-likes';
 
 async function login(page: Page) {
   await page.goto('/sign-in'); await page.getByLabel('Email address').fill('demo@talkingstage.example');
@@ -7,7 +8,7 @@ async function login(page: Page) {
   await page.getByRole('button', { name: 'Sign in to preview' }).click(); await expect(page).toHaveURL(/\/discover$/);
 }
 async function chat(page: Page) {
-  await page.goto('/characters/char-amara'); await page.getByRole('button', { name: /Shoot your shot|Resume conversation/ }).click();
+  await page.goto('/characters/char-amara'); await startPreviewChat(page);
   await expect(page.getByRole('textbox', { name: 'Message Amara' })).toBeVisible();
 }
 async function saveScenario(page: Page, value: string) {
@@ -98,7 +99,7 @@ test('muted and early conversations have no request; decline is graceful and nev
   await page.getByRole('button', { name: 'Not now', exact: true }).click(); await expect(page.getByText('That’s fine. We can carry on with our conversation.', { exact: true })).toBeVisible();
   await page.getByRole('button', { name: 'Load request sample' }).click(); await expect(page.getByText('Declined requests are not repeated.', { exact: false })).toBeVisible();
   await expect(page.getByRole('textbox', { name: 'Message Amara' })).toBeEnabled();
-  await page.goto('/characters/char-tunde'); await page.getByRole('button', { name: 'Shoot your shot' }).click(); await expect(page.getByRole('textbox', { name: 'Message Tunde' })).toBeVisible();
+  await page.goto('/characters/char-tunde'); await startPreviewChat(page); await expect(page.getByRole('textbox', { name: 'Message Tunde' })).toBeVisible();
   await page.getByText('Request policy review controls', { exact: true }).click(); await page.getByRole('checkbox', { name: 'Use eligible familiar-conversation sample' }).check(); await page.getByRole('button', { name: 'Load request sample' }).click();
   await page.getByRole('button', { name: 'Ignore request' }).click(); await expect(page.getByRole('button', { name: 'Choose amount' })).toHaveCount(0);
   await page.goto('/settings/requests'); await page.getByRole('switch').uncheck(); await page.getByRole('button', { name: 'Save request setting' }).click(); await expect(page.getByText('Monetary requests muted.', { exact: true })).toBeVisible();

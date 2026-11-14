@@ -1,4 +1,6 @@
 import { test, expect } from '@playwright/test';
+import { startPreviewChat } from './helpers/preview-likes';
+import { startPreviewChat } from './helpers/preview-likes';
 test('chat keeps sending and composer visibility across screen sizes', async ({ page }) => {
   await page.goto('/sign-in');
   await page.getByLabel('Email address').fill('demo@talkingstage.example');
@@ -6,7 +8,7 @@ test('chat keeps sending and composer visibility across screen sizes', async ({ 
   await page.getByRole('button', { name: 'Sign in to preview' }).click();
   await expect(page).toHaveURL(/\/discover$/);
   await page.goto('/characters/char-amara');
-  await page.getByRole('button', { name: 'Shoot your shot' }).click();
+  await startPreviewChat(page);
   const input = page.getByRole('textbox', { name: 'Message Amara' });
   await input.fill('Hello, tell me about your favourite music.');
   await page.getByRole('button', { name: 'Send message' }).click();

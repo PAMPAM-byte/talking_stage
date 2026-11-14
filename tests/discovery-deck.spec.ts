@@ -38,16 +38,15 @@ test('one profile, pass, undo, refresh continuity, meet and end-of-deck recovery
   const next = await card.getByRole('heading').innerText();
   await page.reload();
   await expect(card.getByRole('heading')).toHaveText(next);
-  await page.getByRole('button', { name: /^Meet / }).click();
-  await expect(page).toHaveURL(/\/messages\/preview-/);
-  const conversationUrl = page.url();
-  await page.goto('/discover');
+  // Like (14 Nov 2026) stays on Discover: the character answers later in Likes; no chat opens.
+  await page.getByRole('button', { name: /^Like / }).click();
+  await expect(page).toHaveURL(/\/discover/);
+  await expect(card.getByRole('heading')).not.toHaveText(next);
+  expect(await page.evaluate(() => JSON.parse(sessionStorage.getItem('talkingstage:mock-conversations:v1') ?? '[]').length)).toBe(0);
+  expect(await page.evaluate(() => Object.keys(JSON.parse(sessionStorage.getItem('talkingstage:likes-coins:v1:mock-account') ?? '{}').likes ?? {}).length)).toBe(1);
+  await page.getByRole('button', { name: 'Go back one card', exact: true }).click();
   await expect(card.getByRole('heading')).toHaveText(next);
-  await page.getByRole('button', { name: /^Meet / }).click();
-  await expect(page).toHaveURL(conversationUrl);
-  expect(await page.evaluate(() => JSON.parse(sessionStorage.getItem('talkingstage:mock-conversations:v1') ?? '[]').length)).toBe(1);
-  await page.goto('/discover');
-  await page.getByRole('button', { name: 'Undo last pass', exact: true }).click();
+  await page.getByRole('button', { name: 'Go back one card', exact: true }).click();
   await expect(card.getByRole('heading')).toHaveText(original);
   await page.emulateMedia({ reducedMotion: 'reduce' });
   for (let i = 0; i < 50 && await card.count(); i++) await page.getByRole('button', { name: /^Pass / }).click();
@@ -56,17 +55,13 @@ test('one profile, pass, undo, refresh continuity, meet and end-of-deck recovery
   await expect(card.getByRole('heading')).toHaveText(original);
 });
 
-test('Meet preserves the card when chat is paused and can retry when available', async ({ page }) => {
+test('Like moves to the next card and stays on Discover', async ({ page }) => {
   await signIn(page);
-  await page.getByText('Developer review scenarios', { exact: true }).click();
-  await page.getByLabel('Discovery scenario').selectOption('paused');
-  await page.getByRole('button', { name: /^Meet / }).click();
-  await expect(page.locator('.discovery-deck').getByRole('alert')).toContainText('Conversation couldn’t open');
-  await expect(page).toHaveURL(/\/discover$/);
-  await expect(page.locator('.discovery-deck__card')).toHaveCount(1);
-  await page.getByLabel('Discovery scenario').selectOption('ready');
-  await page.getByRole('button', { name: /^Meet / }).click();
-  await expect(page).toHaveURL(/\/messages\/preview-/);
+  const card = page.locator('.discovery-deck__card');
+  const name = await card.getByRole('heading').innerText();
+  await page.getByRole('button', { name: /^Like / }).click();
+  await expect(card.getByRole('heading')).not.toHaveText(name);
+  await expect(page).toHaveURL(/\/discover/);
 });
 
 test('drag threshold, cancel, horizontal swipe, keyboard and right swipe', async ({ page }) => {
@@ -83,16 +78,18 @@ test('drag threshold, cancel, horizontal swipe, keyboard and right swipe', async
   await expect(card.getByRole('heading')).toHaveText(original);
   await page.mouse.move(x, y); await page.mouse.down(); await page.mouse.move(x - 140, y, { steps: 8 }); await page.mouse.up();
   await expect(card.getByRole('heading')).not.toHaveText(original);
-  await page.getByRole('button', { name: 'Undo last pass' }).click();
+  await page.getByRole('button', { name: 'Go back one card' }).click();
   await card.focus(); await page.keyboard.press('ArrowLeft');
   await expect(card.getByRole('heading')).not.toHaveText(original);
   await expect.poll(() => card.evaluate(node => getComputedStyle(node).transform)).toBe('matrix(1, 0, 0, 1, 0, 0)');
   const current = (await card.boundingBox())!;
   const rightX = current.x + current.width / 2, rightY = current.y + current.height / 3;
   await page.mouse.move(rightX, rightY); await page.mouse.down(); await page.mouse.move(rightX + 150, rightY, { steps: 8 });
-  await expect(page.locator('.discovery-deck__verdict')).toHaveText('Meet');
+  await expect(page.locator('.discovery-deck__verdict')).toHaveText('Like');
+  const liked = await card.getByRole('heading').innerText();
   await page.mouse.up();
-  await expect(page).toHaveURL(/\/messages\/preview-/);
+  await expect(card.getByRole('heading')).not.toHaveText(liked);
+  await expect(page).toHaveURL(/\/discover/);
 });
 
 test('single-card layout fits mobile and desktop and actions avoid navigation', async ({ page }) => {
@@ -101,7 +98,7 @@ test('single-card layout fits mobile and desktop and actions avoid navigation', 
     await page.setViewportSize({ width, height: 844 });
     await expect(page.locator('.discovery-deck__card')).toHaveCount(1);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-    await page.getByRole('button', { name: /^Meet / }).scrollIntoViewIfNeeded();
+    await page.getByRole('button', { name: /^Like / }).scrollIntoViewIfNeeded();
     const actions = (await page.locator('.discovery-deck__actions').boundingBox())!;
     const nav = (await page.getByRole('navigation', { name: 'Main navigation' }).boundingBox())!;
     if (width < 900) expect(actions.y + actions.height, `Actions clear navigation at ${width}px`).toBeLessThanOrEqual(nav.y);

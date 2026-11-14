@@ -1,4 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
+import { startPreviewChat } from './helpers/preview-likes';
+import { startPreviewChat } from './helpers/preview-likes';
 
 async function signIn(page: Page) {
   await page.goto('/sign-in');
@@ -9,7 +11,7 @@ async function signIn(page: Page) {
 }
 async function openChat(page: Page) {
   await page.goto('/characters/char-amara');
-  await page.getByRole('button', { name: 'Shoot your shot' }).click();
+  await startPreviewChat(page);
   await expect(page.getByRole('heading', { name: 'Your conversation with Amara' })).toBeVisible();
 }
 const start = 'You’re chatting with Amara, a fictional AI character.';
