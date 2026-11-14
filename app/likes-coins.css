@@ -93,3 +93,7 @@
   .match-card__cost { margin-inline-start: 0; font-size: 12px; }
 }
 @media (max-width: 359px) { .likes-grid { grid-template-columns: 1fr; } }
+/* Live photos and the price list shown before coin purchases open. */
+.match-card__photo .match-card__img { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; object-fit: cover; }
+.coin-packs--preview { list-style: none; }
+.coin-packs--preview .coin-pack { cursor: default; }

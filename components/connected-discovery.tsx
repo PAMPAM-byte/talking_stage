@@ -11,6 +11,8 @@ import { ConnectedDiscoveryDeck } from './connected-discovery-deck';
 import { loadDiscoveryFeed } from '@/lib/discovery-feed';
 import { shuffledCharacterOrder, shuffleKey } from '@/lib/character-order';
 import {ConversationControl} from './connected-conversation-forms';
+import {LikeProfileButton} from './connected-likes-controls';
+import {LIKE_REVIEW_MINUTES} from '@/lib/coins';
 import {configuredReplyModel} from '@/lib/backend/reply-worker';
 type Filters={gender?:string;interest?:string;personality?:string;page?:string};
 type CastRow = { id:string;name:string;age:number;gender:string;bio:string;conversation_clue:string;fictional_location:string;occupation:string;interests:string[];personality:string[] };
@@ -42,13 +44,15 @@ export async function ConnectedDiscovery({ filters:requestedFilters }: {filters:
  if(!data) return <Notice title="Discovery unavailable" tone="warning">Reload to try again.</Notice>;
  // A new order on every sign-in, kept for the session; each filter has its own shuffle.
  const filters=data.filters;
+ // Likes and coins (14 Nov 2026): Like once switched on; Meet if the check fails.
+ let likes=false;try{likes=(await data.account.client.rpc('likes_enabled')).data===true;}catch{/* Meet stays. */}
  const seed=`${data.account.user.id}:${data.account.user.last_sign_in_at??''}`;
  const rows=shuffledCharacterOrder(data.characters,`${seed}:${JSON.stringify(filters)}`);
  const genderHref=(gender:string)=>{if(gender==='all')return '/discover?gender=all';const query=new URLSearchParams({gender});for(const key of ['interest','personality'] as const)if(filters[key])query.set(key,filters[key]!);return `/discover?${query}`;};
  return <div className="discovery-page discovery-page--swipe stack"><header className="discovery-heading"><div className="stack"><p className="supporting muted">Welcome, {data.account.profile.display_name}.</p><h1 className="display discovery-title">Find your spark.</h1><p className="muted">Find someone who catches your attention.</p></div></header>
  <nav className="row" aria-label="Character gender">{[['all','Everyone'],['woman','Women'],['man','Men']].map(([gender,label])=><Link key={gender} className="chip" href={genderHref(gender)} aria-current={filters.gender===gender?'page':undefined}>{label}</Link>)}</nav>
  <ConnectedDiscoveryFilters filters={filters} interests={data.collection.interests} personalities={data.collection.personalities} />
- {rows.length ? <ConnectedDiscoveryDeck key={JSON.stringify(filters)} scope={`${data.account.profile.id}:${JSON.stringify(filters)}:${shuffleKey(seed)}`} cards={rows.map(c => {
+ {rows.length ? <ConnectedDiscoveryDeck likes={likes} key={JSON.stringify(filters)} scope={`${data.account.profile.id}:${JSON.stringify(filters)}:${shuffleKey(seed)}`} cards={rows.map(c => {
    const photo = data.assets.find(a => a.character_id === c.id && a.slot === 'portrait');
    return { id: c.id, name: c.name, age: c.age, location: c.fictional_location, occupation: c.occupation, clue: c.conversation_clue, bio: c.bio, interests: c.interests, href: characterHref(c.id, filters), photo: photo ?
      // eslint-disable-next-line @next/next/no-img-element
@@ -56,12 +60,22 @@ export async function ConnectedDiscovery({ filters:requestedFilters }: {filters:
  })} /> : <EmptyState title="No characters to show" action={<Link href="/discover?gender=all">Reset filters</Link>}>Try another filter, or return when more reviewed characters are available.</EmptyState>}
  </div>;
 }
+// Likes and coins (14 Nov 2026): Like first; once they like you back, starting uses 1 coin.
+async function profileAction(account:NonNullable<Awaited<ReturnType<typeof currentAccount>>>,c:{id:string;name:string}){
+ const [overview,existing]=await Promise.all([account.client.rpc('likes_overview'),account.client.from('conversations').select('id').eq('character_id',c.id).is('deleted_at',null).limit(1)]);
+ const likes=overview.data as {enabled:boolean;coins?:number;matches?:{characterId:string}[];liked?:string[]}|null;
+ if(existing.data?.length)return <ConversationControl id={c.id} operation="start" label="Resume conversation"/>;
+ if(!likes?.enabled)return <ConversationControl id={c.id} operation="start" label="Start conversation"/>;
+ if(likes.matches?.some(m=>m.characterId===c.id))return <div className="stack"><ConversationControl id={c.id} operation="start" label="Start conversation · 1 coin"/><p className="caption muted">{c.name} liked you back. Starting a conversation uses 1 coin; you have {likes.coins}.</p></div>;
+ if(likes.liked?.includes(c.id))return <p className="profile-liked" role="status">You liked {c.name}. Characters check their likes every {LIKE_REVIEW_MINUTES} minutes.</p>;
+ return <LikeProfileButton id={c.id} name={c.name}/>;
+}
 export async function ConnectedCharacter({id,backHref='/discover'}:{id:string;backHref?:string}) {
  if(!/^[a-f0-9-]{36}$/i.test(id)) return <EmptyState title="Character unavailable">This character is not available. Return to discovery.</EmptyState>;
  const data=await eligibleCast(id);const c=data?.characters[0];
  if(!data||!c) return <EmptyState title="Character unavailable" action={<Link href={backHref}>Back to discovery</Link>}>This character is not available right now.</EmptyState>;
  const capabilities=await data.account.client.rpc('effective_capabilities',{p_character:c.id});
  const model=configuredReplyModel();const replies=!!model&&(await data.account.client.rpc('reply_availability',{p_model:model})).data===true;
- const conversationAction=capabilities.data?.chat===true?<ConversationControl id={c.id} operation="start" label="Start conversation"/>:<Notice title="Chat is paused">You can still explore this character’s profile.</Notice>;
+ const conversationAction=capabilities.data?.chat===true?await profileAction(data.account,c):<Notice title="Chat is paused">You can still explore this character’s profile.</Notice>;
  return <div className="profile-page stack"><Link className="profile-back" href={backHref}>Back to discovery</Link><div className="profile-layout"><section className="profile-gallery stack" aria-label={`${c.name}'s photos`}><ConnectedProfilePhotos name={c.name} assets={data.assets}/></section><section className="profile-details stack"><div><p className="profile-eyebrow">A little introduction</p><h1 className="display profile-title">{c.name}, {c.age}</h1><div className="profile-facts">{characterStyles(c.personality,c.fictional_location).map(label=><span key={label} className="profile-style">{label}</span>)}<span>{c.occupation}</span><span>{c.fictional_location}</span></div></div><blockquote className="conversation-clue profile-clue"><span className="caption">One thing about me</span><p>&ldquo;{c.conversation_clue}&rdquo;</p></blockquote><div className="profile-section stack"><h2>A little about me</h2><p>{c.bio}</p></div><div className="profile-section stack"><CharacterInterests interests={c.interests} /></div><div className="profile-conversation-action">{conversationAction}</div>{!replies&&<Notice title="Replies are not available yet">You can save messages while we prepare AI replies.</Notice>}<ReportControl target={{kind:"character",id:c.id}} label={`${c.name}'s profile`} buttonLabel="Report character" preview={`${c.name}, ${c.age} - ${c.bio}`}/></section></div></div>;
 }
