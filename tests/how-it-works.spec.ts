@@ -4,7 +4,7 @@ test('how it works explains the journey and fits all screen sizes', async ({ pag
   await page.goto('/how-it-works');
   await expect(page.locator('main')).toHaveCount(1);
   await expect(page.locator('.how-step')).toHaveCount(3);
-  await expect(page.locator('#step-discover')).toContainText('Meet opens chat directly');
+  await expect(page.locator('#step-discover')).toContainText('Like sends your interest');
   await expect(page.locator('.how-preference-preview')).toContainText('Illustrative onboarding preview');
   for (const width of [320, 390, 768, 1440]) {
     await page.setViewportSize({ width, height: 900 });
@@ -25,7 +25,7 @@ test('landing entry, section navigation, keyboard FAQ and onboarding work', asyn
   const faq = page.locator('.how-faq details').first();
   await faq.locator('summary').focus(); await page.keyboard.press('Enter');
   await expect(faq).toHaveAttribute('open', '');
-  await expect(faq.locator('p')).toContainText('no mutual human matching');
+  await expect(faq.locator('p')).toContainText('each character goes through their likes every 30 minutes');
   await page.getByRole('link', { name: 'Start with hello', exact: true }).click();
   await expect(page).toHaveURL(/\/onboarding\/age$/);
 });

@@ -22,7 +22,7 @@ test('landing entry, topic focus, keyboard expansion and help links work', async
   const answer = page.locator('#discovery-chat details').nth(1);
   await answer.locator('summary').focus(); await page.keyboard.press('Enter');
   await expect(answer).toHaveAttribute('open', '');
-  await expect(answer.locator('p')).toContainText('conversation with that character directly');
+  await expect(answer.locator('p')).toContainText('start a conversation for 1 coin');
   await page.keyboard.press('Enter'); await expect(answer).not.toHaveAttribute('open', '');
   await page.getByRole('link', { name: 'Explore Support', exact: true }).click();
   await expect(page).toHaveURL(/\/support$/);
