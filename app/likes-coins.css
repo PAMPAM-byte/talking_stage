@@ -97,3 +97,41 @@
 .match-card__photo .match-card__img { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; object-fit: cover; }
 .coin-packs--preview { list-style: none; }
 .coin-packs--preview .coin-pack { cursor: default; }
+
+/* Like-back notifications (14 Nov 2026) */
+.shell__nav-item { position: relative; }
+.nav-badge { display: inline-grid; place-items: center; min-inline-size: 20px; block-size: 20px; padding: 0 6px; margin-inline-start: 6px; border-radius: 999px; background: var(--brand); color: #fff; font-size: 11px; font-weight: 800; line-height: 1; font-variant-numeric: tabular-nums; box-shadow: 0 0 0 2px var(--surface); }
+.shell__nav-item[aria-current="page"] .nav-badge { background: #fff; color: var(--brand); box-shadow: none; }
+@media (max-width: 899px) { .nav-badge { position: absolute; top: 4px; left: calc(50% + 4px); margin: 0; min-inline-size: 18px; block-size: 18px; font-size: 10px; } }
+
+.like-toast { position: fixed; z-index: 120; top: 16px; left: 50%; display: flex; align-items: center; gap: 12px; inline-size: min(440px, calc(100vw - 32px)); padding: 12px 12px 12px 14px; border-radius: 18px; background: var(--surface); box-shadow: 0 12px 40px rgb(36 33 38 / 22%); transform: translateX(-50%); animation: like-toast-in 280ms cubic-bezier(.2, .8, .3, 1.1) both; }
+.like-toast__heart { flex: none; display: grid; place-items: center; inline-size: 40px; block-size: 40px; border-radius: 50%; background: var(--brand); color: #fff; }
+.like-toast__heart .icon { fill: #fff; }
+.like-toast p { display: grid; gap: 2px; flex: 1; min-inline-size: 0; margin: 0; font-size: 14px; }
+.like-toast p span { color: var(--text-secondary); font-size: 12px; }
+.like-toast__go { flex: none; min-height: 44px; display: inline-flex; align-items: center; padding: 0 12px; border-radius: 12px; background: var(--brand-soft); font-size: 13px; font-weight: 750; text-decoration: none; }
+.like-toast__close { flex: none; display: grid; place-items: center; inline-size: 36px; block-size: 36px; border: 0; border-radius: 50%; background: transparent; color: var(--text-secondary); cursor: pointer; }
+.like-toast__close:focus-visible, .like-toast__go:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+@keyframes like-toast-in { from { opacity: 0; transform: translate(-50%, -12px); } to { opacity: 1; transform: translate(-50%, 0); } }
+
+.push-prompt { position: fixed; z-index: 110; left: 50%; bottom: calc(96px + env(safe-area-inset-bottom)); display: grid; grid-template-columns: auto 1fr; gap: 10px 12px; inline-size: min(460px, calc(100vw - 32px)); padding: 16px; border: 1px solid #f3c9d2; border-radius: 20px; background: var(--surface); box-shadow: 0 16px 48px rgb(36 33 38 / 20%); transform: translateX(-50%); animation: like-toast-in 280ms ease both; }
+.push-prompt__icon { display: grid; place-items: center; inline-size: 40px; block-size: 40px; border-radius: 50%; background: var(--brand-soft); color: var(--brand); }
+.push-prompt__icon .icon { fill: var(--brand); }
+.push-prompt__text strong { display: block; font-size: 15px; }
+.push-prompt__text p { margin: 4px 0 0; font-size: 13px; color: var(--text-secondary); }
+.push-prompt__text .push-prompt__error { color: var(--danger); }
+.push-prompt__actions { grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
+@media (min-width: 900px) { .push-prompt { left: auto; right: 24px; bottom: 24px; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .like-toast, .push-prompt { animation: none; } }
+
+.notification-settings { max-width: 640px; }
+.setting-card { padding: 20px; border: 1px solid var(--border); border-radius: 20px; background: var(--surface); }
+.setting-card h2 { margin: 0; font-size: 17px; }
+.setting-card p { margin: 0; }
+.notification-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+.notification-choice { display: grid; gap: 10px; margin: 0; padding: 0; border: 0; }
+.notification-option { position: relative; display: block; padding: 14px 16px; border: 1.5px solid var(--border-control); border-radius: 14px; cursor: pointer; }
+.notification-option input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.notification-option > span { display: grid; gap: 2px; font-size: 14px; }
+.notification-option.is-selected { border-color: var(--brand); background: var(--brand-soft); box-shadow: inset 0 0 0 1px var(--brand); }
+.notification-option:has(input:focus-visible) { outline: 2px solid var(--brand); outline-offset: 3px; }

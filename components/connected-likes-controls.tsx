@@ -5,6 +5,7 @@ import { LIKE_REVIEW_MINUTES } from '@/lib/coins';
 import { conversationAction } from '@/lib/backend/conversation-actions';
 import { likeAction, markLikesSeenAction } from '@/lib/backend/likes-actions';
 import { Coin } from './coin';
+import { likesBadge } from '@/lib/likes-badge';
 import { Icon } from './ui/icon';
 import { Button, Notice } from './ui/primitives';
 
@@ -13,7 +14,7 @@ export function LikeProfileButton({ id, name }: { id: string; name: string }) {
   if (liked) return <p className="profile-liked" role="status"><Icon name="heart" />You liked {name}. Characters check their likes every {LIKE_REVIEW_MINUTES} minutes.</p>;
   return <div className="stack">
     {error && <Notice live tone="danger" title="Like not sent">{error}</Notice>}
-    <Button loading={pending} onClick={() => start(async () => { const result = await likeAction(id); if (result.error) setError(result.error); else setLiked(true); })}><Icon name="heart" />Like {name}</Button>
+    <Button loading={pending} onClick={() => start(async () => { const result = await likeAction(id); if (result.error) setError(result.error); else { setLiked(true); window.dispatchEvent(new CustomEvent('talkingstage:liked', { detail: { name } })); } })}><Icon name="heart" />Like {name}</Button>
   </div>;
 }
 
@@ -34,6 +35,6 @@ export function StartWithCoinButton({ id, name }: { id: string; name: string }) 
 
 /** Opening Likes counts as seeing new likes back; the "New" marks stay for this visit. */
 export function MarkLikesSeen({ count }: { count: number }) {
-  useEffect(() => { if (count > 0) { const t = setTimeout(() => { void markLikesSeenAction(); }, 400); return () => clearTimeout(t); } }, [count]);
+  useEffect(() => { if (count > 0) { const t = setTimeout(() => { void markLikesSeenAction().then(() => likesBadge.set(0)); }, 400); return () => clearTimeout(t); } }, [count]);
   return null;
 }
