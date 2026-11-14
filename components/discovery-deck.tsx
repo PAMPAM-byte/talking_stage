@@ -80,6 +80,8 @@ export function DiscoveryDeck({ cards, scope, onMeet, onLike }: { cards: Discove
           const next = cards[index + 1];
           setAnnouncement(`Liked ${card.name}. ${next ? `Now showing ${next.name}.` : 'You have explored everyone who matches your filters.'}`);
           setSent(card.name);
+          // Lets the notifications prompt offer to tell them when this character likes back.
+          window.dispatchEvent(new CustomEvent('talkingstage:liked', { detail: { name: card.name } }));
           if (sentTimer.current) clearTimeout(sentTimer.current);
           sentTimer.current = setTimeout(() => setSent(''), 3200);
           move(index + 1);

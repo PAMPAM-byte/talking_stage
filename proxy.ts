@@ -27,7 +27,7 @@ export async function proxy(request: NextRequest) {
     verified = !!data?.claims?.sub;
     identityUnavailable = !!error && error.name !== 'AuthSessionMissingError' && ![400, 401, 403].includes(error.status ?? 0);
   } catch { identityUnavailable = true; }
-  const privateRoute = ["/discover", "/characters", "/messages", "/settings", "/payments", "/gifts", "/admin"].some(prefix => request.nextUrl.pathname === prefix || request.nextUrl.pathname.startsWith(`${prefix}/`));
+  const privateRoute = ["/discover", "/likes", "/coins", "/characters", "/messages", "/settings", "/payments", "/gifts", "/admin"].some(prefix => request.nextUrl.pathname === prefix || request.nextUrl.pathname.startsWith(`${prefix}/`));
   if (privateRoute && !verified) {
     // An identity-service outage is not evidence that the user signed out.
     // Fail closed without sending an authenticated payment flow back to login.
@@ -62,4 +62,4 @@ export async function proxy(request: NextRequest) {
   // Identity, onboarding, roles and ownership are independently enforced in DAL/RLS.
   return response;
 }
-export const config = { matcher: ["/sign-in", "/register", "/onboarding/:path*", "/recover/:path*", "/auth/:path*", "/discover/:path*", "/characters/:path*", "/messages/:path*", "/settings/:path*", "/payments/:path*", "/gifts/:path*", "/admin/:path*", "/api/conversations/:path*", "/api/cast-assets/:path*"] };
+export const config = { matcher: ["/sign-in", "/register", "/onboarding/:path*", "/recover/:path*", "/auth/:path*", "/discover/:path*", "/likes/:path*", "/coins/:path*", "/characters/:path*", "/messages/:path*", "/settings/:path*", "/payments/:path*", "/gifts/:path*", "/admin/:path*", "/api/conversations/:path*", "/api/cast-assets/:path*"] };
