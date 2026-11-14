@@ -1,0 +1,9 @@
+{
+  "version": "202611140045",
+  "appliedAt": "2026-11-14T19:17:24.596Z",
+  "migrationHash": "3fcf0264c005806b8e106ca2ad278467044076b42177349c3bc678a43e19b12d",
+  "encryptedDdlSnapshotVerified": true,
+  "keysGeneratedAndStoredPrivately": true,
+  "schedule": "0,30 * * * * (UTC)",
+  "sender": "https://www.talkingstage.buzz/api/notifications/likes"
+}
