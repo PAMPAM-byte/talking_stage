@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { startPreviewChat } from './helpers/preview-likes';
 
 test('public and account pages share the landing identity and fit all widths', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
@@ -53,8 +54,8 @@ test('discovery, profiles, chat, settings and administration use the shared red 
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     }
   }
-  await page.goto('/discover');
-  await page.getByRole('button', { name: /^Meet / }).click();
+  await page.goto('/characters/char-amara');
+  await startPreviewChat(page);
   await expect(page).toHaveURL(/\/messages\/preview-/);
   // The accepted 14–15 October chat refinement uses a rose conversation canvas.
   await expect(page.locator('.chat-shell')).toHaveCSS('background-color', 'rgb(251, 242, 244)');

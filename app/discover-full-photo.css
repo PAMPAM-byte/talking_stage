@@ -43,3 +43,5 @@
 @media (max-width: 359px) { .discovery-deck__card.character-card { height: clamp(320px, calc(100svh - 316px), 540px); } .discovery-deck__identity .discovery-deck__clue { font-size: 16px; } }
 /* Wider screens: keep Undo/Pass/Meet in view under the card on a typical laptop. */
 @media (min-width: 700px) { .discovery-deck__card.character-card { height: clamp(320px, calc(100svh - 410px), 540px); } }
+/* Tablets keep the floating navigation pill: leave room for it below the actions. */
+@media (min-width: 700px) and (max-width: 899px) { .discovery-deck__card.character-card { height: clamp(300px, calc(100svh - 500px), 540px); } }

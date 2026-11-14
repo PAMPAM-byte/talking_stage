@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { startPreviewChat } from './helpers/preview-likes';
 
 async function signIn(page: Page) {
   await page.goto('/sign-in');
@@ -9,7 +10,7 @@ async function signIn(page: Page) {
 }
 async function openChat(page: Page, name = 'Amara') {
   await page.goto(`/characters/char-${name.toLowerCase()}`);
-  await page.getByRole('button', { name: 'Shoot your shot' }).click();
+  await startPreviewChat(page);
   await expect(page.getByRole('heading', { name: `Your conversation with ${name}` })).toBeVisible();
   await expect(page.getByRole('textbox', { name: `Message ${name}` })).toBeVisible();
 }

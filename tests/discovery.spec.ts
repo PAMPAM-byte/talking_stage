@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { startPreviewChat } from './helpers/preview-likes';
 import cast from '../lib/mock/public-cast.json';
 const amara = cast.find(c => c.id === 'char-amara')!;
 const zainab = cast.find(c => c.id === 'char-zainab')!;
@@ -71,7 +72,7 @@ test('gallery stays with its character, keyboard works, and starting resumes one
   await expect(dialog.locator('img')).toHaveAttribute('src', /char-amara-portrait/);
   await page.keyboard.press('Escape');
   await expect(page.getByRole('button', { name: /View photos/ })).toBeFocused();
-  await page.getByRole('button', { name: 'Shoot your shot' }).click();
+  await startPreviewChat(page);
   await expect(page).toHaveURL(/\/messages\/preview-char-amara$/);
   await expect(page.getByRole('heading', { name: 'Your conversation with Amara' })).toBeVisible();
   await page.reload();
@@ -97,7 +98,7 @@ test('missing, deactivated, paused and broken assets have useful recovery', asyn
   await page.getByLabel('Discovery scenario').selectOption('deactivated');
   await expect(page.getByRole('heading', { name: 'Character unavailable' })).toBeVisible();
   await page.getByLabel('Discovery scenario').selectOption('paused');
-  await expect(page.getByRole('button', { name: 'Shoot your shot' })).toBeDisabled();
+  await expect(page.getByRole('button', { name: /^Like / })).toBeDisabled();
   await page.getByLabel('Discovery scenario').selectOption('ready');
   await page.getByRole('button', { name: 'Toggle failed photo preview' }).click();
   await expect(page.getByText('Photo couldn’t be loaded.', { exact: true })).toBeVisible();
