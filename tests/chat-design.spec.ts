@@ -1,6 +1,5 @@
 import { test, expect } from '@playwright/test';
 import { startPreviewChat } from './helpers/preview-likes';
-import { startPreviewChat } from './helpers/preview-likes';
 test('chat keeps sending and composer visibility across screen sizes', async ({ page }) => {
   await page.goto('/sign-in');
   await page.getByLabel('Email address').fill('demo@talkingstage.example');

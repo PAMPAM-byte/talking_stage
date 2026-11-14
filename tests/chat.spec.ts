@@ -1,6 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
 import { startPreviewChat } from './helpers/preview-likes';
-import { startPreviewChat } from './helpers/preview-likes';
 
 async function signIn(page: Page) {
   await page.goto('/sign-in');

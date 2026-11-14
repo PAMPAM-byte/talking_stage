@@ -1,6 +1,5 @@
 import { test, expect } from '@playwright/test';
 import { startPreviewChat } from './helpers/preview-likes';
-import { startPreviewChat } from './helpers/preview-likes';
 
 test('clear all chats confirms removal of active and archived preview chats', async ({ page }) => {
   await page.goto('/sign-in');
