@@ -23,11 +23,13 @@ test('terms navigation, disclosures and related policy links work', async ({ pag
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/terms');
   await expect(page.getByRole('heading', { level: 1, name: 'Terms of service' })).toBeVisible();
-  await expect(page.getByText('Draft for product review', { exact: true })).toBeVisible();
-  await expect(page.locator('.policy-content > section')).toHaveCount(8);
-  await page.getByRole('navigation', { name: 'On this page' }).getByRole('link', { name: 'Voluntary payments' }).click();
-  await expect(page).toHaveURL(/#terms-section-6$/);
-  await expect(page.locator('#terms-section-6')).toBeInViewport();
+  // Live pages (15 Nov 2026): no draft banner or preview-era statements.
+  await expect(page.getByText('Draft for product review', { exact: true })).toHaveCount(0);
+  await expect(page.locator('.policy-page')).not.toContainText(/local preview|simulated|before public launch|still require/i);
+  await expect(page.locator('.policy-content > section')).toHaveCount(9);
+  await page.getByRole('navigation', { name: 'On this page' }).getByRole('link', { name: 'Gifts and payments' }).click();
+  await expect(page).toHaveURL(/#terms-section-5$/);
+  await expect(page.locator('#terms-section-5')).toBeInViewport();
   await page.getByRole('link', { name: 'Read Payment information' }).click();
   await expect(page).toHaveURL(/\/payment-information$/);
   await expect(page.getByRole('heading', { level: 1, name: 'Payment information' })).toBeVisible();

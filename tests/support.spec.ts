@@ -4,7 +4,8 @@ test('support topics, guidance and contact scope fit all screen sizes', async ({
   await page.goto('/support');
   await expect(page.getByRole('heading', { level: 1, name: 'Help & support' })).toBeVisible();
   await expect(page.getByRole('navigation', { name: 'Help topics' }).locator('a')).toHaveCount(4);
-  await expect(page.locator('.support-faq details')).toHaveCount(5);
+  await expect(page.locator('.support-faq details')).toHaveCount(7);
+  await expect(page.locator('.support-page')).not.toContainText(/local preview|simulated|still require/i);
   await expect(page.locator('.support-contact')).toContainText('support@talkingstage.buzz');
   for (const width of [320, 390, 768, 1440]) {
     await page.setViewportSize({ width, height: 900 });
@@ -15,7 +16,7 @@ test('support topics, guidance and contact scope fit all screen sizes', async ({
 test('support topic links, keyboard FAQs and recovery navigation work', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/support');
-  const topic = page.getByRole('navigation', { name: 'Help topics' }).getByRole('link', { name: /Payments & requests/ });
+  const topic = page.getByRole('navigation', { name: 'Help topics' }).getByRole('link', { name: /Coins & payments/ });
   await topic.focus(); await page.keyboard.press('Enter');
   await expect(page.locator('#help-payments')).toBeFocused();
   await expect(page).toHaveURL(/#help-payments$/);
