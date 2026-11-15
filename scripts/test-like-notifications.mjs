@@ -62,3 +62,10 @@ try{
   assert.equal((await db.query(`select has_function_privilege('anon','public.${fn}','execute') v`)).rows[0].v,false,fn);
  console.log('Like notifications passed: own devices only, HTTPS endpoints, names by default with a private option, keys and sending service-only behind the secret, sent once when visible, refusals and old likes never sent, off means nothing sent, expired browsers forgotten.');
 }finally{await db.close();}
+// Supabase API sessions load pg_safeupdate: every UPDATE/DELETE in an API-callable function needs WHERE.
+{
+ const {readFile:rf}=await import('node:fs/promises');
+ const sql=(await rf('supabase/migrations/202611150047_notification_claim_where.sql','utf8')).replace(/\s+/g,' ');
+ for(const statement of sql.match(/\bupdate [a-z_.]+ set [^;]+;/gi)??[])assert(/\bwhere\b/i.test(statement),`UPDATE without WHERE: ${statement.slice(0,80)}`);
+ console.log('Safe-update guard passed: every UPDATE in the claim has a WHERE clause.');
+}
