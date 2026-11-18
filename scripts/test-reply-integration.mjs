@@ -130,7 +130,13 @@ try{
  await actor(a);const later=await send('Synthetic ordered input',2);await actor('', 'service_role');
  assert.equal((await claim(later)).state,'earlier_reply_pending');
  assert.equal(await finish(recovered,null,'provider_error'),'failed');
- assert.equal((await claim(later)).state,'earlier_reply_pending');
+ // A failed reply (for example during a provider outage) no longer blocks the chat: the newer
+ // message is answered and the failed reply is closed, keeping its user message.
+ const afterFailure=await claim(later);assert.equal(afterFailure.state,'claimed');
+ await db.exec('reset role');assert.equal((await db.query('select state from private.reply_jobs where user_message_id=$1',[newest])).rows[0].state,'cancelled');
+ assert.equal((await db.query('select count(*)::int as n from public.messages where id=$1',[newest])).rows[0].n,1);
+ assert(afterFailure.history.some(item=>item.id===newest),'The skipped message stays in the reply context');
+ await actor('', 'service_role');
  // Operations spend view: administrators only, aggregate figures without identifiers.
  await actor(a);await assert.rejects(db.query('select public.admin_ai_spend()'),/forbidden/);
  await db.exec('reset role');await db.query("insert into private.user_roles(user_id,role) values($1,'admin')",[a]);await actor(a);
