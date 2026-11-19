@@ -25,7 +25,7 @@ test('landing entry, section navigation, keyboard FAQ and onboarding work', asyn
   const faq = page.locator('.how-faq details').first();
   await faq.locator('summary').focus(); await page.keyboard.press('Enter');
   await expect(faq).toHaveAttribute('open', '');
-  await expect(faq.locator('p')).toContainText('each character goes through their likes every 30 minutes');
+  await expect(faq.locator('p')).toContainText('the character answers straight away');
   await page.getByRole('link', { name: 'Start with hello', exact: true }).click();
   await expect(page).toHaveURL(/\/onboarding\/age$/);
 });

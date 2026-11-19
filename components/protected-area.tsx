@@ -11,7 +11,7 @@ import { Notice, Skeleton } from "./ui/primitives";
 import { ChatLoading } from './chat-loading';
 import { ConversationContinuity } from './conversation-continuity';
 import { AccountRestore } from './account-restore';
-import { LikesWatcher, PushPrompt } from './like-notifications';
+import { LikesWatcher } from './like-notifications';
 
 async function ConnectedArea({ area, children, standalone = false }: { area: string; children: ReactNode; standalone?: boolean }) {
   if (!supabaseConfig()) return <PublicShell><Notice title="Account services are unavailable" tone="warning">Please try again later.</Notice></PublicShell>;
@@ -39,7 +39,7 @@ async function ConnectedArea({ area, children, standalone = false }: { area: str
     const current=area==='Coins'?'Likes':area;
     // Highlights follow client navigation (match); the Likes count is refreshed by LikesWatcher.
     const items:NavItem[]=[{label:'Discover',icon:'discover',href:'/discover',match:'prefix',active:current==='Discover'},...(likes?[{label:'Likes',icon:'heart' as const,href:'/likes',match:'prefix' as const,badge:fresh}]:[]),{label:'Messages',icon:'message',href:'/messages',match:'prefix',active:current==='Messages'},{label:'Settings',icon:'settings',href:'/settings',match:'prefix',active:current==='Settings'}];
-    return <AppShell items={items} actions={<form action={signOutAccount}><button className="button button--quiet">Sign out</button></form>}>{likes?<><LikesWatcher initial={fresh}/><PushPrompt/>{children}</>:children}</AppShell>;
+    return <AppShell items={items} actions={<form action={signOutAccount}><button className="button button--quiet">Sign out</button></form>}>{likes?<><LikesWatcher initial={fresh}/>{children}</>:children}</AppShell>;
   }
   if (area === "Admin" && (path?.startsWith('/admin/characters') || (path?.startsWith('/admin/reports') || ['/admin/assets','/admin/operations','/admin/people','/admin/audit'].includes(path??'')))) return <AppShell admin items={[{ label: 'Cast', icon: 'discover', href: '/admin/characters', match: 'prefix' }, { label: 'Assets', icon: 'photo', href: '/admin/assets', match: 'exact' }, { label: 'Operations', icon: 'settings', href: '/admin/operations', match: 'exact' }, {label:'People',icon:'people',href:'/admin/people',match:'exact'}, {label:'Reports',icon:'shield',href:'/admin/reports',match:'prefix'},{label:'Activity',icon:'settings',href:'/admin/audit',match:'exact'}]} actions={<form action={signOutAccount}><button className="button button--quiet">Sign out</button></form>}>{children}</AppShell>;
   return <AppShell items={[{ label: "Discover", icon: "discover", href: "/discover", active: area === "Discover" }, { label: "Messages", icon: "message", href: "/messages", active: area === "Messages" }, { label: "Settings", icon: "settings", href: "/settings", active: area === "Settings" }]} actions={<form action={signOutAccount}><button className="button button--quiet">Sign out</button></form>}><h1 className="display page-title">{area === "Discover" ? `Welcome, ${account.profile.display_name}.` : area}</h1>{<Notice title={area === "Discover" ? "Characters are being prepared" : "This space isn’t available yet"}><Link href="/settings/preferences">Update your preferences</Link> while we prepare this space.</Notice>}</AppShell>;

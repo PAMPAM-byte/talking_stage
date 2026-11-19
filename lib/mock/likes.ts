@@ -1,11 +1,10 @@
-// Preview-only likes and coins. Browser session storage, no money, no AI. The live version
-// decides likes in the database every 30 minutes; this file imitates that so the screens can
-// be reviewed. Each character's choice comes from their own pickiness, fixed per person.
-import { MAX_COIN_PURCHASE, RELIKE_AFTER_DAYS, STARTING_COINS, nextReviewAt, validCoinCount } from '../coins';
+// Preview-only likes and coins. Browser session storage, no money, no AI. Like the live version,
+// a character answers a like straight away (19 November 2026) so the screens can be reviewed. Each character's choice comes from their own pickiness, fixed per person.
+import { MAX_COIN_PURCHASE, RELIKE_AFTER_DAYS, STARTING_COINS, validCoinCount } from '../coins';
 import { getAccount } from './account';
 import { characters, savedConversation, startConversation } from './discovery';
 
-export type LikeRecord = { likedAt: number; reviewAt: number; outcome: 'pending' | 'match' | 'no'; reviewedAt?: number; seen?: boolean };
+export type LikeRecord = { likedAt: number; reviewAt?: number; outcome: 'pending' | 'match' | 'no'; reviewedAt?: number; seen?: boolean };
 type LedgerEntry = { kind: 'welcome' | 'purchase' | 'start'; amount: number; at: number; characterId?: string };
 type State = { version: 1; coins: number; ledger: LedgerEntry[]; likes: Record<string, LikeRecord>; firstMatchGiven: boolean };
 
@@ -36,20 +35,23 @@ export const likesSnapshot = () => read();
 const serverSnapshot = empty;
 export const likesServerSnapshot = () => serverSnapshot;
 
-/** The 30-minute review: each character decides on the likes that are due. `force` runs it now (preview only). */
-export function reviewDueLikes(force = false) {
+/** Answers any like saved by the old half-hourly preview, so earlier session state still resolves. */
+export function reviewDueLikes() {
   const state = read(); const now = Date.now(); let changed = false;
   const likes = { ...state.likes }; let firstMatchGiven = state.firstMatchGiven;
   for (const [id, like] of Object.entries(likes).sort((a, b) => a[1].likedAt - b[1].likedAt)) {
-    if (like.outcome !== 'pending' || (!force && like.reviewAt > now)) continue;
-    const roll = (hash(`${getAccount().user?.id}:${id}`) % 1000) / 1000;
-    // Everyone hears back from at least one character on their first review, so the app never feels broken.
-    const match = !firstMatchGiven || roll < likeBackRate(id);
+    if (like.outcome !== 'pending') continue;
+    const match = decide(id, firstMatchGiven);
     if (match) firstMatchGiven = true;
     likes[id] = { ...like, outcome: match ? 'match' : 'no', reviewedAt: now, seen: false };
     changed = true;
   }
   if (changed) write({ ...state, likes, firstMatchGiven });
+}
+
+/** Each character's choice, fixed per person. Everyone's first like is a like back, so the app never feels broken. */
+function decide(characterId: string, firstMatchGiven: boolean) {
+  return !firstMatchGiven || (hash(`${getAccount().user?.id}:${characterId}`) % 1000) / 1000 < likeBackRate(characterId);
 }
 
 export type LikeStatus = 'none' | 'pending' | 'match';
@@ -67,9 +69,9 @@ export async function likeCharacter(characterId: string): Promise<{ error?: stri
   if (!characters.some(c => c.id === characterId)) return { error: 'This character is unavailable.', status: 'none' };
   const state = read(); const current = likeStatus(state, characterId);
   if (current !== 'none') return { status: current };
-  const likedAt = Date.now();
-  write({ ...state, likes: { ...state.likes, [characterId]: { likedAt, reviewAt: nextReviewAt(likedAt), outcome: 'pending' } } });
-  return { status: 'pending' };
+  const now = Date.now(); const match = decide(characterId, state.firstMatchGiven);
+  write({ ...state, firstMatchGiven: state.firstMatchGiven || match, likes: { ...state.likes, [characterId]: { likedAt: now, outcome: match ? 'match' : 'no', reviewedAt: now, seen: false } } });
+  return { status: match ? 'match' : 'pending' };
 }
 
 export function markMatchesSeen() {

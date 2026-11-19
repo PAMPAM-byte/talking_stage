@@ -7,7 +7,7 @@ import { characterNameAge } from '@/lib/cast-labels';
 
 export const metadata = pageMetadata({ path: '/how-it-works', title: "How TalkingStage works", description: "How TalkingStage works: confirm you’re 18+, browse fictional Nigerian AI characters on Discover, tap Like, and start texting when a character likes you back. Start with 10 free coins, with full control over memories and chats." });
 const questions = [
-  ['Do I need to match before chatting?', 'Yes. Tap Like, and each character goes through their likes every 30 minutes. When one likes you back, they appear in Likes and you can start a conversation for 1 coin. Everyone starts with 10 free coins, and carrying on a chat is free.'],
+  ['Do I need to match before chatting?', 'Yes. Tap Like, and the character answers straight away. When one likes you back, you can start a conversation for 1 coin, right away or later from Likes. Everyone starts with 10 free coins, and carrying on a chat is free.'],
   ['Can I return to a conversation?', 'Yes. Return through Messages to continue an existing thread. Conversation controls also let you archive, reset, or delete a thread.'],
   ['Can I control saved memories?', 'Review saved memories in Settings, turn memory off for a character, or delete facts. Clearing a conversation and clearing its saved memories are separate choices.'],
   ['Are payments required?', 'Any supported payment is voluntary support for TalkingStage’s operator. You can decline, ignore, or disable monetary requests. Read Payment Information for availability and draft policy details.'],

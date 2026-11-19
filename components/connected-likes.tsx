@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { currentAccount } from '@/lib/backend/server';
-import { COIN_PRICE_MINOR, LIKE_REVIEW_MINUTES, coinsLabel } from '@/lib/coins';
+import { COIN_PRICE_MINOR, coinsLabel } from '@/lib/coins';
 import { ConnectedBuyCoins } from './connected-buy-coins';
 import { formatNaira } from '@/lib/format';
 import { Coin, CoinBalance } from './coin';
@@ -38,7 +38,7 @@ export async function ConnectedLikes() {
   return <div className="likes-page stack">
     <header className="likes-head">
       <div className="likes-head__row"><h1 className="display page-title">Likes</h1><CoinBalance coins={coins} /></div>
-      <p className="muted">Characters go through their likes every {LIKE_REVIEW_MINUTES} minutes. Anyone who likes you back appears here.</p>
+      <p className="muted">Characters answer your like straight away. Anyone who likes you back appears here.</p>
     </header>
     {coins < 1 && matches.some(m => !m.conversationId) && <Notice tone="warning" title="You’re out of coins">Buy coins to start a new conversation. Chats you’ve already started stay open. <Link href="/coins">Buy coins</Link></Notice>}
     {matches.length ? <section className="stack" aria-labelledby="matches-title">
@@ -57,7 +57,7 @@ export async function ConnectedLikes() {
       </li>; })}</ul>
       <MarkLikesSeen count={overview.newCount ?? 0} />
     </section> : <EmptyState icon="heart" title={waiting ? 'No one has liked you back yet' : 'No likes yet'} action={<Link href="/discover" className="button button--primary">{waiting ? 'Keep discovering' : 'Go to Discover'}</Link>}>
-      {waiting ? `Your likes are with the characters. They check every ${LIKE_REVIEW_MINUTES} minutes, so look back soon.` : 'Like characters in Discover. When one likes you back, you can start a conversation.'}
+      {waiting ? 'Every character has their own taste. Keep liking in Discover, and anyone who likes you back appears here.' : 'Like characters in Discover. When one likes you back, you can start a conversation.'}
     </EmptyState>}
     <aside className="coin-rules" aria-label="How coins work"><Coin size={28} /><p>Starting a conversation uses <b>1 coin</b>. Carrying on a chat is free. <Link href="/coins">Buy coins</Link></p></aside>
   </div>;

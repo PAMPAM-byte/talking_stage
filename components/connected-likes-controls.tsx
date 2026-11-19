@@ -1,7 +1,6 @@
 "use client";
 import { useRouter } from 'next/navigation';
 import { useEffect, useState, useTransition } from 'react';
-import { LIKE_REVIEW_MINUTES } from '@/lib/coins';
 import { conversationAction } from '@/lib/backend/conversation-actions';
 import { likeAction, markLikesSeenAction } from '@/lib/backend/likes-actions';
 import { Coin } from './coin';
@@ -10,11 +9,13 @@ import { Icon } from './ui/icon';
 import { Button, Notice } from './ui/primitives';
 
 export function LikeProfileButton({ id, name }: { id: string; name: string }) {
-  const [liked, setLiked] = useState(false); const [error, setError] = useState(''); const [pending, start] = useTransition();
-  if (liked) return <p className="profile-liked" role="status"><Icon name="heart" />You liked {name}. Characters check their likes every {LIKE_REVIEW_MINUTES} minutes.</p>;
+  const [liked, setLiked] = useState<'pending' | 'match' | null>(null); const [error, setError] = useState(''); const [pending, start] = useTransition();
+  // Characters answer straight away (19 Nov 2026): a like back offers the conversation at once.
+  if (liked === 'match') return <div className="stack"><p className="profile-liked profile-liked--back" role="status"><Icon name="heart" />{name} liked you back.</p><StartWithCoinButton id={id} name={name} /></div>;
+  if (liked) return <p className="profile-liked" role="status"><Icon name="heart" />You liked {name}.</p>;
   return <div className="stack">
     {error && <Notice live tone="danger" title="Like not sent">{error}</Notice>}
-    <Button loading={pending} onClick={() => start(async () => { const result = await likeAction(id); if (result.error) setError(result.error); else { setLiked(true); window.dispatchEvent(new CustomEvent('talkingstage:liked', { detail: { name } })); } })}><Icon name="heart" />Like {name}</Button>
+    <Button loading={pending} onClick={() => start(async () => { const result = await likeAction(id); if (result.error) setError(result.error); else { setLiked(result.status === 'match' ? 'match' : 'pending'); if (result.status === 'match') window.dispatchEvent(new CustomEvent('talkingstage:liked-back')); } })}><Icon name="heart" />Like {name}</Button>
   </div>;
 }
 
