@@ -6,7 +6,9 @@ import { useEffect, useRef, useState, type CSSProperties, type PointerEvent, typ
 import { Icon } from './ui/icon';
 import { Button, EmptyState, Notice } from './ui/primitives';
 import { showMeetFeedback } from './meet-feedback';
+import { Coin } from './coin';
 
+export type StartResult = { id?: string; error?: string; code?: string };
 export type DiscoveryCard = {
   id: string; name: string; age: number; location: string; occupation?: string;
   clue: string; bio?: string; interests: string[]; href: string; photo: ReactNode;
@@ -15,8 +17,9 @@ export type DiscoveryCard = {
 const guideKey = 'talkingstage:discover-guide:v1';
 
 /** Pass browses locally. Meet starts or resumes a conversation; with onLike (likes and coins,
- * 14 Nov 2026) the right-hand action becomes Like: the character answers later, from Likes. */
-export function DiscoveryDeck({ cards, scope, onMeet, onLike }: { cards: DiscoveryCard[]; scope: string; onMeet?: (id: string) => Promise<{ id?: string; error?: string }>; onLike?: (id: string) => Promise<{ error?: string }> }) {
+ * 14 Nov 2026) the right-hand action becomes Like. Since 19 Nov the character answers at once: a like
+ * back opens the match moment with Start conversation; otherwise the like simply reads as sent. */
+export function DiscoveryDeck({ cards, scope, onMeet, onLike, onStart }: { cards: DiscoveryCard[]; scope: string; onMeet?: (id: string) => Promise<{ id?: string; error?: string }>; onLike?: (id: string) => Promise<{ error?: string; match?: boolean }>; onStart?: (id: string) => Promise<StartResult> }) {
   const like = !!onLike;
   const verb = like ? 'Like' : 'Meet';
   const router = useRouter();
@@ -27,6 +30,10 @@ export function DiscoveryDeck({ cards, scope, onMeet, onLike }: { cards: Discove
   const [opening, setOpening] = useState(false);
   const [error, setError] = useState('');
   const [sent, setSent] = useState('');
+  const [match, setMatch] = useState<DiscoveryCard | null>(null);
+  const [starting, setStarting] = useState(false);
+  const matchPanel = useRef<HTMLDivElement>(null);
+  useEffect(() => { if (match) matchPanel.current?.querySelector('button')?.focus(); }, [match]);
   const sentTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   useEffect(() => () => { if (sentTimer.current) clearTimeout(sentTimer.current); }, []);
   const mounted = useRef(true);
@@ -65,6 +72,20 @@ export function DiscoveryDeck({ cards, scope, onMeet, onLike }: { cards: Discove
     setIndex(next); setDrag(0); setExit(null); locked.current = false;
     try { sessionStorage.setItem(storageKey, cards[next]?.id ?? 'end'); } catch { /* Optional continuity. */ }
   }
+  function closeMatch() { setMatch(null); setStarting(false); }
+  async function startMatch() {
+    if (!match || !onStart || starting) return;
+    setStarting(true); setError('');
+    try {
+      const result = await onStart(match.id);
+      if (!mounted.current) return;
+      if (result.id) { router.push(`/messages/${encodeURIComponent(result.id)}`); return; }
+      if (result.code === 'no_coins') { router.push(`/coins?for=${encodeURIComponent(match.id)}`); return; }
+      setStarting(false); setError(result.error ?? 'The conversation could not open. Try again.');
+    } catch {
+      if (mounted.current) { setStarting(false); setError('The conversation could not open. Try again.'); }
+    }
+  }
   function choose(direction: 'pass' | 'meet') {
     if (!card || locked.current) return;
     dismissGuide();
@@ -78,12 +99,17 @@ export function DiscoveryDeck({ cards, scope, onMeet, onLike }: { cards: Discove
           if (!mounted.current) return;
           if (result.error) { setExit(null); setDrag(0); locked.current = false; setError(result.error); return; }
           const next = cards[index + 1];
-          setAnnouncement(`Liked ${card.name}. ${next ? `Now showing ${next.name}.` : 'You have explored everyone who matches your filters.'}`);
-          setSent(card.name);
-          // Lets the notifications prompt offer to tell them when this character likes back.
-          window.dispatchEvent(new CustomEvent('talkingstage:liked', { detail: { name: card.name } }));
-          if (sentTimer.current) clearTimeout(sentTimer.current);
-          sentTimer.current = setTimeout(() => setSent(''), 3200);
+          if (result.match) {
+            setAnnouncement(`${card.name} liked you back.`);
+            setMatch(card);
+            // The Likes badge counts it without a second pop-up.
+            window.dispatchEvent(new CustomEvent('talkingstage:liked-back'));
+          } else {
+            setAnnouncement(`Liked ${card.name}. ${next ? `Now showing ${next.name}.` : 'You have explored everyone who matches your filters.'}`);
+            setSent(card.name);
+            if (sentTimer.current) clearTimeout(sentTimer.current);
+            sentTimer.current = setTimeout(() => setSent(''), 3200);
+          }
           move(index + 1);
         } catch {
           if (mounted.current) { setExit(null); setDrag(0); locked.current = false; setError('Your like wasn’t sent. Try again.'); }
@@ -131,7 +157,20 @@ export function DiscoveryDeck({ cards, scope, onMeet, onLike }: { cards: Discove
   const style = { '--drag-x': `${drag}px`, '--drag-angle': `${Math.max(-12, Math.min(12, drag / 22))}deg` } as CSSProperties;
   return <section className="discovery-deck" data-selection-size={cards.length} aria-label="Discover characters one at a time">
     <p className="sr-only" role="status" aria-live="polite">{announcement}</p>
-    {error && <Notice live tone="danger" title={like ? 'Like not sent' : 'Conversation couldn’t open'}>{error}</Notice>}
+    {error && <Notice live tone="danger" title={match ? 'Conversation couldn’t open' : like ? 'Like not sent' : 'Conversation couldn’t open'}>{error}</Notice>}
+    {match && <div className="deck-match" role="dialog" aria-modal="true" aria-labelledby="deck-match-title" aria-describedby="deck-match-note" onKeyDown={event => { if (event.key === 'Escape') closeMatch(); }}>
+      <div className="deck-match__panel" ref={matchPanel}>
+        <span className="deck-match__hearts" aria-hidden="true"><Icon name="heart" /><Icon name="heart" /><Icon name="heart" /></span>
+        <div className="deck-match__portrait">{match.photo}</div>
+        <h2 id="deck-match-title" className="deck-match__title">{match.name} liked you back</h2>
+        <p className="deck-match__clue">&ldquo;{match.clue}&rdquo;</p>
+        <div className="deck-match__actions">
+          {onStart && <Button className="deck-match__start" loading={starting} onClick={() => { void startMatch(); }} aria-label={`Start a conversation with ${match.name}, uses 1 coin`}>Start conversation<span className="match-card__cost"><Coin size={16} />1</span></Button>}
+          <button type="button" className="deck-match__later" disabled={starting} onClick={closeMatch}>Keep discovering</button>
+        </div>
+        <p id="deck-match-note" className="deck-match__note">{match.name} stays in Likes, so you can start later.</p>
+      </div>
+    </div>}
     {card ? <>
       <div className="discovery-deck__meta"><span className="caption muted">{index + 1} of {cards.length} to discover</span></div>
       <div className="discovery-deck__layout">

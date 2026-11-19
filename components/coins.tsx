@@ -2,10 +2,10 @@
 import { useEffect, useSyncExternalStore } from 'react';
 import { likesServerSnapshot, likesSnapshot, reviewDueLikes, subscribeLikes } from '@/lib/mock/likes';
 
-/** Preview likes/coins state; runs the due 30-minute review on mount and every 30 seconds. */
+/** Preview likes/coins state; answers any like left over from the old half-hourly preview. */
 export function usePreviewLikes() {
   const state = useSyncExternalStore(subscribeLikes, likesSnapshot, likesServerSnapshot);
-  useEffect(() => { reviewDueLikes(); const t = setInterval(() => reviewDueLikes(), 30_000); return () => clearInterval(t); }, []);
+  useEffect(() => { reviewDueLikes(); }, []);
   return state;
 }
 

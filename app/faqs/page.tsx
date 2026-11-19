@@ -14,7 +14,7 @@ const topics = [
   ], link: '/how-it-works', action: 'Read the getting-started guide' },
   { id: 'discovery-chat', title: 'Discovery & conversations', description: 'From a conversation clue to your next hello.', questions: [
     ['How does Discover work?', 'Discover shows one fictional character at a time. Swipe left or use Pass to keep exploring. Swipe right or use Like to show your interest. Filters and Undo help you browse.'],
-    ['What happens when I tap Like?', 'The character gets your like and goes through their likes every 30 minutes. If they like you back, they appear in Likes, where you can start a conversation for 1 coin. Opening a profile is a separate choice when you want more information.'],
+    ['What happens when I tap Like?', 'The character answers straight away. If they like you back, you can start a conversation for 1 coin right there, or later from Likes. Opening a profile is a separate choice when you want more information.'],
     ['Do I need a mutual match?', 'Yes, with the character. These are fictional AI characters, each with their own taste, so not every like is returned. Everyone starts with 10 free coins; starting a conversation uses 1 coin, and carrying on is free. More coins cost ₦50 each, at least 10 at a time.'],
     ['Can I return to an existing conversation?', 'Return through Messages to continue an existing thread. You can also use conversation controls to archive, reset, or delete it.'],
   ], link: '/personalities', action: 'Explore the personalities' },

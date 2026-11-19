@@ -24,7 +24,6 @@ try{
  const overview=id=>as(id,'select public.likes_overview() v').then(r=>r.v);
  const start=(id,c)=>as(id,'select public.start_conversation($1) v',[c]).then(r=>r.v);
  const like=(id,c)=>as(id,'select public.like_character($1) v',[c]).then(r=>r.v);
- const reveal=async(user,c)=>db.query("update private.character_likes set show_at=now()-interval '1 minute' where user_id=$1 and character_id=$2",[user,c]);
 
  // Installed switched off: Meet keeps working, nothing about likes or coins is visible.
  assert.equal((await as(a,'select public.likes_enabled() v')).v,false);
@@ -35,17 +34,18 @@ try{
 
  await db.exec('update private.likes_configuration set enabled=true');
  assert.equal((await as(a,'select public.likes_enabled() v')).v,true);
- // First like: decided straight away (everyone's first is a like back), shown only from the next half hour.
- assert.deepEqual(await like(a,c1),{status:'pending'});
- const row=(await db.query('select outcome,show_at,liked_at from private.character_likes where user_id=$1 and character_id=$2',[a,c1])).rows[0];
- assert.equal(row.outcome,'match');
- const wait=(new Date(row.show_at)-new Date(row.liked_at))/60000;assert(wait>=20&&wait<50,'Shown at least 20 minutes later');
- assert.equal(new Date(row.show_at).getUTCMinutes()%30,0);assert.equal(new Date(row.show_at).getUTCSeconds(),0,'On the hour or half hour');
+ // A like that waited under the old half-hourly answer is not shown before its time.
+ await db.query("insert into private.character_likes(user_id,character_id,show_at,outcome) values($1,$2,now()+interval '10 minutes','match')",[a,c1]);
  let o=await overview(a);
  assert.deepEqual([o.coins,o.newCount,o.matches.length],[10,0,0],'10 welcome coins; not shown yet');assert.deepEqual(o.liked,[c1]);
  assert.deepEqual(await like(a,c1),{status:'pending'},'Liking again changes nothing');
  await fails(a,'select public.start_conversation($1)',[c1],/not_matched/,'No chat before the like back is shown');
- await reveal(a,c1);
+ await db.query('delete from private.character_likes where user_id=$1 and character_id=$2',[a,c1]);
+ // First like: answered straight away, and everyone's first is a like back. No push follows.
+ assert.deepEqual(await like(a,c1),{status:'match'});
+ const row=(await db.query('select outcome,show_at<=now() shown,notified_at is not null notified from private.character_likes where user_id=$1 and character_id=$2',[a,c1])).rows[0];
+ assert.deepEqual([row.outcome,row.shown,row.notified],['match',true,true]);
+ assert.deepEqual(await like(a,c1),{status:'match'},'Liking again changes nothing');
  o=await overview(a);assert.deepEqual([o.newCount,o.matches.length,o.matches[0].characterId,o.matches[0].conversationId,o.liked.length],[1,1,c1,null,0]);
  assert.equal(o.matches[0].clue,'Synthetic clue');
  await as(a,'select public.mark_likes_seen()');assert.equal((await overview(a)).newCount,0);
@@ -69,8 +69,9 @@ try{
  assert.equal(JSON.stringify(await overview(a)).includes('"no"'),false,'No refusal in anything a user can read');
  await db.query("update private.character_likes set show_at=now()-interval '8 days',liked_at=now()-interval '8 days' where user_id=$1 and character_id=$2",[a,c3]);
  assert.equal((await overview(a)).liked.length,0);
- assert.deepEqual(await like(a,c3),{status:'pending'});
- assert((await db.query("select liked_at>now()-interval '1 minute' fresh from private.character_likes where user_id=$1 and character_id=$2",[a,c3])).rows[0].fresh,'Decided afresh');
+ const again=await like(a,c3);
+ const fresh=(await db.query("select liked_at>now()-interval '1 minute' fresh,outcome from private.character_likes where user_id=$1 and character_id=$2",[a,c3])).rows[0];
+ assert(fresh.fresh,'Decided afresh');assert.equal(again.status,fresh.outcome==='match'?'match':'pending','A no still reads as sent');
 
  // Out of coins.
  await fails(a,'select public.admin_grant_coins($1,$2)',[a,5],/forbidden/,'Only admins adjust coins');
@@ -95,5 +96,5 @@ try{
  for(const fn of ['likes_overview()','like_character(uuid)','likes_enabled()','admin_grant_coins(uuid,integer)','mark_likes_seen()'])
   assert.equal((await db.query(`select has_function_privilege('anon','public.${fn}','execute') v`)).rows[0].v,false,fn);
  assert.equal((await overview(b)).matches.some(m=>m.characterId===c1),false,'Only your own likes');
- console.log('Likes and coins passed: off until switched on, decided on like and shown from the next half hour (20+ minutes), first like answered, refusals never visible and retryable after 7 days, 10 welcome coins once, 1 coin per new character, reopening and past chats free, no chat without a coin, admin adjustments logged and never negative.');
+ console.log('Likes and coins passed: off until switched on, answered the moment someone likes (no push for those), older waiting likes held to their time, first like answered, refusals never visible and retryable after 7 days, 10 welcome coins once, 1 coin per new character, reopening and past chats free, no chat without a coin, admin adjustments logged and never negative.');
 }finally{await db.close();}

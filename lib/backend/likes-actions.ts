@@ -2,8 +2,8 @@
 import { revalidatePath } from 'next/cache';
 import { currentAccount } from './server';
 
-// Likes and coins (14 Nov 2026). The database decides when a like is sent and shows the
-// answer from the next half hour; a character who doesn't like someone back is never announced.
+// Likes and coins (14 Nov 2026). Since 19 Nov a character answers a like straight away: "match"
+// means they liked you back; a character who doesn't is never announced and the like reads as sent.
 const uuid = /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i;
 
 export async function likeAction(characterId: string): Promise<{ error?: string; status?: 'pending' | 'match' }> {

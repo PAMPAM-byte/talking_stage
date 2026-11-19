@@ -12,7 +12,6 @@ import { loadDiscoveryFeed } from '@/lib/discovery-feed';
 import { shuffledCharacterOrder, shuffleKey } from '@/lib/character-order';
 import {ConversationControl} from './connected-conversation-forms';
 import {LikeProfileButton} from './connected-likes-controls';
-import {LIKE_REVIEW_MINUTES} from '@/lib/coins';
 import {configuredReplyModel} from '@/lib/backend/reply-worker';
 type Filters={gender?:string;interest?:string;personality?:string;page?:string};
 type CastRow = { id:string;name:string;age:number;gender:string;bio:string;conversation_clue:string;fictional_location:string;occupation:string;interests:string[];personality:string[] };
@@ -67,7 +66,7 @@ async function profileAction(account:NonNullable<Awaited<ReturnType<typeof curre
  if(existing.data?.length)return <ConversationControl id={c.id} operation="start" label="Resume conversation"/>;
  if(!likes?.enabled)return <ConversationControl id={c.id} operation="start" label="Start conversation"/>;
  if(likes.matches?.some(m=>m.characterId===c.id))return <div className="stack"><ConversationControl id={c.id} operation="start" label="Start conversation · 1 coin"/><p className="caption muted">{c.name} liked you back. Starting a conversation uses 1 coin; you have {likes.coins}.</p></div>;
- if(likes.liked?.includes(c.id))return <p className="profile-liked" role="status">You liked {c.name}. Characters check their likes every {LIKE_REVIEW_MINUTES} minutes.</p>;
+ if(likes.liked?.includes(c.id))return <p className="profile-liked" role="status">You liked {c.name}.</p>;
  return <LikeProfileButton id={c.id} name={c.name}/>;
 }
 export async function ConnectedCharacter({id,backHref='/discover'}:{id:string;backHref?:string}) {
